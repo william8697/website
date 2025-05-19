@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Crypto Trading Market</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body, html {
+      height: 100%;
+      color: #0c0b0b;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .background-container video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.85);
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-title video {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    
+    .logo-title h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2e7d32;
+      cursor: pointer;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .nav a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    
+    .nav a:hover {
+      background: rgba(232, 245, 233, 0.7);
+    }
+    
+    .section {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      margin: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+    
+    .section:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .section-header h2 {
+      color: #2e7d32;
+    }
+    
+    .view-more {
+      color: #2e7d32;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    ul { 
+      list-style: none; 
+      padding: 0; 
+    }
+    
+    li { 
+      background: rgba(249, 249, 249, 0.7); 
+      margin: 10px 0; 
+      padding: 15px; 
+      border-radius: 8px; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    
+    li:hover {
+      background: rgba(249, 249, 249, 0.9);
+    }
+    
+    .coin-info {
+      display: flex;
+      align-items: center;
+    }
+    
+    img { 
+      vertical-align: middle; 
+      margin-right: 10px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .price-change {
+      font-weight: bold;
+    }
+    
+    .positive {
+      color: #2e7d32;
+    }
+    
+    .negative {
+      color: #c62828;
+    }
+    
+    .crypto-table {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th, td {
+      padding: 12px 8px;
+      text-align: left;
+      border-bottom: 1px solid rgba(224, 224, 224, 0.7);
+      cursor: pointer;
+    }
+    
+    th {
+      color: #040504;
+      font-weight: bold;
+    }
+    
+    tr:hover {
+      background: rgba(249, 249, 249, 0.7);
+    }
+    
+    .gainers-trending {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    
+    .gainers, .trending {
+      flex: 1;
+      background: rgba(249, 249, 249, 0.7);
+      padding: 15px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    
+    .gainers:hover, .trending:hover {
+      background: rgba(249, 249, 249, 0.9);
+    }
+    
+    .gainers h3, .trending h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+    
+    .testimonials {
+      text-align: center;
+      padding: 30px 15px;
+      background: rgba(255, 255, 255, 0.8);
+    }
+    
+    .testimonial-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 20px;
+    }
+    
+    .testimonial-box {
+      background: rgba(249, 249, 249, 0.7);
+      padding: 20px;
+      flex: 1;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+    
+    .testimonial-box:hover {
+      background: rgba(249, 249, 249, 0.9);
+    }
+    
+    .testimonial-box img {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+    }
+    
+    .stats-box {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(46, 125, 50, 0.8);
+      color: white;
+      padding: 20px;
+      font-size: 18px;
+      border-radius: 8px;
+      margin: 15px;
+    }
+    
+    .stats-box .number {
+      color: #fff;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    
+    footer {
+      text-align: center;
+      background: rgba(3, 8, 3, 0.9);
+      color: #fff;
+      padding: 15px;
+      font-size: 14px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+    
+    .live-chart {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    iframe {
+      width: 100%;
+      height: 400px;
+      border: none;
+      border-radius: 8px;
+    }
+    
+    /* Dashboard specific styles */
+    .dashboard-header {
+      text-align: center;
+      padding: 20px;
+      margin: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      margin: 15px;
+      padding-bottom: 60px; /* Add padding to prevent footer overlap */
+    }
+    
+    .dashboard-card {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .balance-display {
+      font-size: 2rem;
+      text-align: center;
+      margin: 15px 0;
+      font-weight: bold;
+    }
+    
+    .balance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .balance-item {
+      background: rgba(46, 125, 50, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .balance-amount {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    
+    .stat-item {
+      background: rgba(46, 125, 50, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .btn-primary {
+      background: #2e7d32;
+      color: white;
+      border: none;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #2e7d32;
+      color: #2e7d32;
+    }
+    
+    .activity-list {
+      list-style: none;
+    }
+    
+    .activity-item {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .status-success {
+      background: rgba(46, 125, 50, 0.2);
+      color: #2e7d32;
+    }
+    
+    .status-pending {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffa000;
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background: rgba(255,255,255,0.95);
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    
+    .close-modal {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #2e7d32;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    /* Deposit processing styles */
+    .deposit-processing {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .deposit-processing h3 {
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+    
+    .deposit-timer {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #2e7d32;
+      margin: 15px 0;
+    }
+    
+    .deposit-instructions {
+      background: rgba(46, 125, 50, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      text-align: left;
+    }
+    
+    .deposit-instructions ol {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+    
+    .deposit-instructions li {
+      margin-bottom: 8px;
+      background: transparent;
+      padding: 0;
+    }
+    
+    /* Error message */
+    .error-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #c62828;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1001;
+      display: none;
+      animation: fadeInOut 3s ease-in-out;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; top: 0; }
+      10% { opacity: 1; top: 20px; }
+      90% { opacity: 1; top: 20px; }
+      100% { opacity: 0; top: 0; }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" id="errorMessage"></div>
+
+  <header>
+    <div class="logo-title">
+      <video autoplay muted loop>
+        <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      </video>
+      <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
+    </div>
+    <div class="nav">
+      <a href="dashboard.html" style="background: rgba(232, 245, 233, 0.3);">Dashboard</a>
+      <a href="index.html">Home</a>
+      <a href="account.html">Settings</a>
+      <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+    </div>
+  </header>
+
+  <div class="dashboard-header">
+    <h2>Your Trading Dashboard</h2>
+    <p>Monitor your portfolio and trading activity</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Account Overview Card -->
+    <div class="dashboard-card">
+      <div class="section-header">
+        <h3>Account Overview</h3>
+      </div>
+      <div class="balance-display" id="totalBalance">$0.00</div>
+      
+      <div class="balance-grid" id="balanceGrid">
+        <!-- Balances will be loaded here -->
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="showDepositModal()">Deposit Funds</button>
+        <button class="btn btn-outline" onclick="showWithdrawModal()">Withdraw</button>
+      </div>
+    </div>
+
+    <!-- Active Trades Card -->
+    <div class="dashboard-card">
+      <div class="section-header">
+        <h3>Active Trades</h3>
+        <a class="view-more" onclick="showMoreTrades()">View More</a>
+      </div>
+      <ul class="activity-list" id="activeTradesList">
+        <li class="activity-item">
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No active trades
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Recent Transactions Card -->
+    <div class="dashboard-card">
+      <div class="section-header">
+        <h3>Recent Transactions</h3>
+        <a class="view-more" onclick="showMoreTransactions()">View More</a>
+      </div>
+      <ul class="activity-list" id="recentTransactionsList">
+        <li class="activity-item">
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No recent transactions
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Arbitrage Opportunities Card -->
+    <div class="dashboard-card">
+      <div class="section-header">
+        <h3>Arbitrage Opportunities</h3>
+        <a class="view-more" onclick="showMoreArbitrage()">View More</a>
+      </div>
+      <div id="arbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
+        Loading opportunities...
+      </div>
+    </div>
+  </div>
+
+  <div class="live-chart">
+    <h2>BTC/USDT Live Market Chart</h2>
+    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=light"></iframe>
+  </div>
+
+  <footer>
+    © 2025 Crypto Trading Market. All Rights Reserved
+  </footer>
+
+  <!-- Deposit Modal -->
+  <div id="depositModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('depositModal')">&times;</span>
+      <h2>Deposit Funds</h2>
+      
+      <div class="deposit-form" id="depositForm">
+        <div class="form-group">
+          <label>Deposit Method</label>
+          <select disabled>
+            <option value="btc">Bitcoin (BTC)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Your BTC Address</label>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="text" id="btcAddress" value="1DopKPckf8QNE53FnaazSAd5DDR8kmetYr" readonly>
+            <button onclick="copyToClipboard('btcAddress')" style="padding: 5px 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy</button>
+          </div>
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+            Send only BTC to this address. Sending other assets may result in permanent loss.
+          </p>
+        </div>
+        
+        <div class="form-group">
+          <label>Amount (Optional)</label>
+          <input type="number" id="depositAmount" placeholder="Enter amount (optional)" min="0" step="0.00000001">
+        </div>
+        
+        <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="initiateDeposit()">
+          Confirm Deposit
+        </button>
+      </div>
+      
+      <div class="deposit-processing" id="depositProcessing">
+        <h3>Deposit in Progress</h3>
+        <div class="deposit-timer" id="depositTimer">
+          Processing time remaining: 2:00
+        </div>
+        
+        <div class="deposit-instructions">
+          <p><strong>Important Instructions:</strong></p>
+          <ol>
+            <li>Send your BTC deposit to the address provided</li>
+            <li>Minimum deposit: 0.001 BTC</li>
+            <li>Do not refresh or close this page during processing</li>
+            <li>Deposits typically take 2-3 network confirmations (10-30 minutes)</li>
+            <li>Your balance will update automatically once confirmed</li>
+          </ol>
+          <p style="color: #c62828; margin-top: 10px; font-weight: bold;">
+            Warning: Refreshing the page may delay your deposit processing
+          </p>
+        </div>
+        
+        <div style="margin-top: 20px;">
+          <button class="btn btn-outline" onclick="cancelDeposit()" style="width: 100%;">
+            Cancel Deposit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div id="withdrawModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('withdrawModal')">&times;</span>
+      <h2>Withdraw Funds</h2>
+      <div class="withdraw-form">
+        <div class="form-group">
+          <label>Withdrawal Method</label>
+          <select id="withdrawMethod" onchange="updateAddressNote()">
+        <option value="btc">Bitcoin (BTC)</option>
+<option value="eth">Ethereum (ETH)</option>
+<option value="usdt">Tether (USDT)</option>
+<option value="xrp">XRP (XRP)</option>
+<option value="bnb">BNB (BNB)</option>
+<option value="sol">Solana (SOL)</option>
+<option value="usdc">USD Coin (USDC)</option>
+<option value="doge">Dogecoin (DOGE)</option>
+<option value="ada">Cardano (ADA)</option>
+<option value="trx">TRON (TRX)</option>
+<option value="steth">Lido Staked Ether (STETH)</option>
+<option value="sui">Sui (SUI)</option>
+<option value="wbtc">Wrapped Bitcoin (WBTC)</option>
+<option value="link">Chainlink (LINK)</option>
+<option value="wsteth">Wrapped stETH (WSTETH)</option>
+<option value="avax">Avalanche (AVAX)</option>
+<option value="xlm">Stellar (XLM)</option>
+<option value="shib">Shiba Inu (SHIB)</option>
+<option value="hbar">Hedera (HBAR)</option>
+<option value="hype">Hyperliquid (HYPE)</option>
+
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Wallet Address</label>
+          <input type="text" id="withdrawAddress" placeholder="Enter your wallet address">
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;" id="addressNote">
+            Ensure this is a valid address
+          </p>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Amount to Withdraw (USD)</label>
+            <input type="number" id="withdrawAmount" placeholder="Enter amount" min="0" step="0.01">
+          </div>
+          <div class="form-group">
+            <label>Available Balance</label>
+            <input type="text" id="availableBalance" readonly>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary" style="width: 100%; margin-top: 15px;" onclick="submitWithdrawal()">
+          Submit Withdrawal Request
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- More Trades Modal -->
+  <div id="moreTradesModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('moreTradesModal')">&times;</span>
+      <h2>All Active Trades</h2>
+      <ul class="activity-list" id="allTradesList">
+        <li class="activity-item">
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No active trades
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- More Transactions Modal -->
+  <div id="moreTransactionsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('moreTransactionsModal')">&times;</span>
+      <h2>All Transactions</h2>
+      <ul class="activity-list" id="allTransactionsList">
+        <li class="activity-item">
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No transactions found
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- More Arbitrage Modal -->
+  <div id="moreArbitrageModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('moreArbitrageModal')">&times;</span>
+      <h2>All Arbitrage Opportunities</h2>
+      <div id="allArbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
+        Loading opportunities...
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage">
+    <h3 id="successTitle">Success!</h3>
+    <p id="successText"></p>
+    <button onclick="closeSuccess()">Continue</button>
+  </div>
+
+  <script>
+    // User state
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    let userBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+    let userBalances = JSON.parse(localStorage.getItem('userBalances')) || {};
+    let activeTrades = 0;
+    let dailyPL = 0;
+    let coinPrices = JSON.parse(localStorage.getItem('coinPrices')) || {};
+    let allCoinsData = [];
+    let allGainersData = [];
+    let allTrendingData = [];
+    let allArbitrageOpportunities = [];
+    let depositTimerInterval;
+    let depositTimeRemaining = 120; // 2 minutes in seconds
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+      fetchUserData();
+      fetchArbitrageOpportunities();
+      
+      // Ensure video plays on mobile
+      const videos = document.querySelectorAll('video');
+      videos.forEach(video => {
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.play().catch(e => console.log('Video play prevented:', e));
+      });
+      
+      // Load coin data from index.html
+      loadCoinData();
+      
+      // Update prices every 30 seconds
+      setInterval(updatePricesFromHome, 30000);
+    });
+
+    // Load coin data from index.html
+    function loadCoinData() {
+      const storedCoins = localStorage.getItem('allCoinsData');
+      const storedGainers = localStorage.getItem('allGainersData');
+      const storedTrending = localStorage.getItem('allTrendingData');
+      
+      if (storedCoins) allCoinsData = JSON.parse(storedCoins);
+      if (storedGainers) allGainersData = JSON.parse(storedGainers);
+      if (storedTrending) allTrendingData = JSON.parse(storedTrending);
+      
+      // Initialize user balances if not set
+      if (Object.keys(userBalances).length === 0) {
+        userBalances = {
+          usd: userBalance,
+          btc: userBalance / (coinPrices['bitcoin']?.currentPrice || 66300),
+          eth: userBalance / (coinPrices['ethereum']?.currentPrice || 3025),
+          bnb: userBalance / (coinPrices['binancecoin']?.currentPrice || 580)
+        };
+        localStorage.setItem('userBalances', JSON.stringify(userBalances));
+      }
+    }
+
+    // Update prices from index.html data
+    function updatePricesFromHome() {
+      const prices = JSON.parse(localStorage.getItem('coinPrices')) || {};
+      if (Object.keys(prices).length > 0) {
+        coinPrices = prices;
+        updateBalances();
+        updateUI();
+        fetchArbitrageOpportunities();
+      }
+    }
+
+    // Fetch user data
+    async function fetchUserData() {
+      try {
+        // In a real app, this would call your Node.js backend
+        // For demo, we'll use localStorage data
+        userBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+        userBalances = JSON.parse(localStorage.getItem('userBalances')) || {};
+        
+        // Update balances based on current prices
+        updateBalances();
+        updateUI();
+        
+        // Simulate recent transactions
+        const transactions = [
+          {
+            type: "Deposit",
+            amount: 1000.00,
+            status: "Completed",
+            timestamp: new Date().getTime() - 86400000, // 1 day ago
+            currency: "USD"
+          },
+          {
+            type: "Trade",
+            amount: 45.25,
+            status: "Completed",
+            timestamp: new Date().getTime() - 3600000, // 1 hour ago
+            currency: "USD"
+          }
+        ];
+        
+        updateTransactions(transactions);
+        
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+
+    // Update balances based on current prices
+    function updateBalances() {
+      if (coinPrices['bitcoin']) {
+        userBalances.btc = userBalances.usd / coinPrices['bitcoin'].currentPrice;
+      }
+      if (coinPrices['ethereum']) {
+        userBalances.eth = userBalances.usd / coinPrices['ethereum'].currentPrice;
+      }
+      if (coinPrices['binancecoin']) {
+        userBalances.bnb = userBalances.usd / coinPrices['binancecoin'].currentPrice;
+      }
+      
+      localStorage.setItem('userBalances', JSON.stringify(userBalances));
+    }
+
+    // Fetch arbitrage opportunities from index.html data
+    async function fetchArbitrageOpportunities() {
+      try {
+        // Get the latest coin prices from localStorage
+        const prices = JSON.parse(localStorage.getItem('coinPrices')) || {};
+        
+        // Find coins with price differences (simulating arbitrage)
+        const opportunities = [];
+        const coins = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)];
+        
+        // Find coins with profit potential (price increase)
+        coins.forEach(coin => {
+          const coinId = coin.id || coin.item?.id;
+          const coinData = prices[coinId];
+          if (coinData && coinData.isProfit && coinData.changePercent > 1) {
+            opportunities.push({
+              id: coinId,
+              pair: (coin.symbol || coin.id).toUpperCase() + '/USDT',
+              profit: coinData.changePercent,
+              buyExchange: 'Internal',
+              buyPrice: coinData.originalPrice,
+              sellExchange: 'Market',
+              sellPrice: coinData.currentPrice,
+              coinData: coin
+            });
+          }
+        });
+        
+        // Sort by highest profit first
+        opportunities.sort((a, b) => b.profit - a.profit);
+        
+        allArbitrageOpportunities = opportunities;
+        updateArbitrageOpportunities(opportunities.slice(0, 2));
+        
+      } catch (error) {
+        console.error('Error fetching arbitrage opportunities:', error);
+        document.getElementById('arbitrageOpportunities').innerHTML = `
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            Failed to load opportunities
+          </div>
+        `;
+      }
+    }
+
+    // Update UI elements
+    function updateUI() {
+      document.getElementById('totalBalance').textContent = `$${userBalance.toFixed(2)}`;
+      document.getElementById('activeTrades').textContent = activeTrades;
+      document.getElementById('dailyPL').textContent = `$${dailyPL.toFixed(2)}`;
+      document.getElementById('availableBalance').value = `$${userBalance.toFixed(2)}`;
+      
+      // Update balance grid
+      const balanceGrid = document.getElementById('balanceGrid');
+      balanceGrid.innerHTML = '';
+      
+      const currencies = [
+        { code: 'usd', name: 'USD', icon: '$' },
+        { code: 'btc', name: 'BTC', icon: '₿' },
+        { code: 'eth', name: 'ETH', icon: 'Ξ' },
+        { code: 'bnb', name: 'BNB', icon: '' }
+      ];
+      
+      currencies.forEach(currency => {
+        const balanceItem = document.createElement('div');
+        balanceItem.className = 'balance-item';
+        
+        let amount;
+        if (currency.code === 'usd') {
+          amount = userBalances.usd.toFixed(2);
+        } else {
+          amount = userBalances[currency.code]?.toFixed(6) || '0.000000';
+        }
+        
+        balanceItem.innerHTML = `
+          <div class="stat-label">${currency.name}</div>
+          <div class="balance-amount">${currency.icon}${amount}</div>
+        `;
+        balanceGrid.appendChild(balanceItem);
+      });
+    }
+
+    // Update transactions list
+    function updateTransactions(transactions) {
+      const list = document.getElementById('recentTransactionsList');
+      const allList = document.getElementById('allTransactionsList');
+      
+      if (transactions.length === 0) {
+        list.innerHTML = `
+          <li class="activity-item">
+            <div style="text-align: center; color: #666; padding: 1rem;">
+              No recent transactions
+          </div>
+        `;
+        allList.innerHTML = `
+          <li class="activity-item">
+            <div style="text-align: center; color: #666; padding: 1rem;">
+              No transactions found
+            </div>
+          </li>
+        `;
+        return;
+      }
+      
+      list.innerHTML = '';
+      allList.innerHTML = '';
+      
+      transactions.slice(0, 3).forEach(tx => {
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <div style="font-weight: bold;">${tx.type}</div>
+              <div style="font-size: 0.85rem; color: #666;">
+                ${new Date(tx.timestamp).toLocaleString()}
+                <span class="status status-${tx.status.toLowerCase()}">${tx.status}</span>
+              </div>
+            </div>
+            <div style="font-weight: bold; color: ${tx.amount >= 0 ? '#2e7d32' : '#c62828'}">
+              ${tx.amount >= 0 ? '+' : ''}${tx.currency === 'USD' ? '$' : ''}${Math.abs(tx.amount).toFixed(tx.currency === 'USD' ? 2 : 6)} ${tx.currency || ''}
+            </div>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+      
+      transactions.forEach(tx => {
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <div style="font-weight: bold;">${tx.type}</div>
+              <div style="font-size: 0.85rem; color: #666;">
+                ${new Date(tx.timestamp).toLocaleString()}
+                <span class="status status-${tx.status.toLowerCase()}">${tx.status}</span>
+              </div>
+            </div>
+            <div style="font-weight: bold; color: ${tx.amount >= 0 ? '#2e7d32' : '#c62828'}">
+              ${tx.amount >= 0 ? '+' : ''}${tx.currency === 'USD' ? '$' : ''}${Math.abs(tx.amount).toFixed(tx.currency === 'USD' ? 2 : 6)} ${tx.currency || ''}
+            </div>
+          </div>
+        `;
+        allList.appendChild(li);
+      });
+    }
+
+    // Update arbitrage opportunities
+    function updateArbitrageOpportunities(opportunities) {
+      const container = document.getElementById('arbitrageOpportunities');
+      const allContainer = document.getElementById('allArbitrageOpportunities');
+      
+      if (opportunities.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No arbitrage opportunities available
+          </div>
+        `;
+        allContainer.innerHTML = `
+          <div style="text-align: center; color: #666; padding: 1rem;">
+            No arbitrage opportunities available
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = '';
+      allContainer.innerHTML = '';
+      
+      opportunities.forEach(opp => {
+        const oppElement = document.createElement('div');
+        oppElement.style.marginBottom = '1rem';
+        oppElement.style.padding = '1rem';
+        oppElement.style.background = 'rgba(46, 125, 50, 0.1)';
+        oppElement.style.borderRadius = '8px';
+        oppElement.innerHTML = `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <div style="font-weight: bold;">${opp.pair}</div>
+            <div style="color: #2e7d32; font-weight: bold;">+${opp.profit.toFixed(2)}%</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.9rem;">
+            <div>
+              <div style="font-weight: bold;">Buy at ${opp.buyExchange}</div>
+              <div style="color: #666;">$${opp.buyPrice.toFixed(2)}</div>
+            </div>
+            <div>
+              <div style="font-weight: bold;">Sell at ${opp.sellExchange}</div>
+              <div style="color: #666;">$${opp.sellPrice.toFixed(2)}</div>
+            </div>
+          </div>
+          <button onclick="executeArbitrage('${opp.id}')" 
+            style="width: 100%; margin-top: 0.75rem; padding: 0.5rem; 
+            background: #2e7d32; color: white; border: none; 
+            border-radius: 4px; cursor: pointer;"
+            ${userBalance < 100 ? 'disabled style="background: #cccccc;"' : ''}>
+            ${userBalance < 100 ? 'Minimum $100 required' : 'Execute Trade'}
+          </button>
+        `;
+        container.appendChild(oppElement);
+      });
+      
+      allArbitrageOpportunities.forEach(opp => {
+        const oppElement = document.createElement('div');
+        oppElement.style.marginBottom = '1rem';
+        oppElement.style.padding = '1rem';
+        oppElement.style.background = 'rgba(46, 125, 50, 0.1)';
+        oppElement.style.borderRadius = '8px';
+        oppElement.innerHTML = `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <div style="font-weight: bold;">${opp.pair}</div>
+            <div style="color: #2e7d32; font-weight: bold;">+${opp.profit.toFixed(2)}%</div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.9rem;">
+            <div>
+              <div style="font-weight: bold;">Buy at ${opp.buyExchange}</div>
+              <div style="color: #666;">$${opp.buyPrice.toFixed(2)}</div>
+            </div>
+            <div>
+              <div style="font-weight: bold;">Sell at ${opp.sellExchange}</div>
+              <div style="color: #666;">$${opp.sellPrice.toFixed(2)}</div>
+            </div>
+          </div>
+          <button onclick="executeArbitrage('${opp.id}')" 
+            style="width: 100%; margin-top: 0.75rem; padding: 0.5rem; 
+            background: #2e7d32; color: white; border: none; 
+            border-radius: 4px; cursor: pointer;"
+            ${userBalance < 100 ? 'disabled style="background: #cccccc;"' : ''}>
+            ${userBalance < 100 ? 'Minimum $100 required' : 'Execute Trade'}
+          </button>
+        `;
+        allContainer.appendChild(oppElement);
+      });
+    }
+
+    // Execute arbitrage trade
+    function executeArbitrage(opportunityId) {
+      if (userBalance < 100) {
+        showSuccessMessage('Minimum Balance Required', 'You need at least $100 in your account to perform arbitrage trading.');
+        return;
+      }
+      
+      // Find the opportunity
+      const opportunity = allArbitrageOpportunities.find(opp => opp.id === opportunityId);
+      
+      if (!opportunity) {
+        showSuccessMessage('Error', 'Could not find trading opportunity.');
+        return;
+      }
+      
+      const coinData = coinPrices[opportunityId];
+      if (!coinData || !coinData.isProfit) {
+        showSuccessMessage('Opportunity Expired', 'This arbitrage opportunity is no longer available.');
+        return;
+      }
+      
+      // Calculate profit (1-5% of balance)
+      const profitPercent = 1 + Math.random() * 4; // 1-5%
+      const profitAmount = (userBalance * profitPercent / 100).toFixed(2);
+      
+      // Update balance
+      userBalance = parseFloat((userBalance + parseFloat(profitAmount)).toFixed(2));
+      userBalances.usd = userBalance;
+      updateBalances();
+      
+      localStorage.setItem('userBalance', userBalance.toString());
+      localStorage.setItem('userBalances', JSON.stringify(userBalances));
+      
+      // Update UI
+      updateUI();
+      
+      // Add to transactions
+      const transactionsList = document.getElementById('recentTransactionsList');
+      const allTransactionsList = document.getElementById('allTransactionsList');
+      
+      if (transactionsList.children.length === 1 && 
+          transactionsList.children[0].textContent.includes('No recent transactions')) {
+        transactionsList.innerHTML = '';
+      }
+      
+      const tx = {
+        type: "Arbitrage",
+        amount: parseFloat(profitAmount),
+        status: "Completed",
+        timestamp: new Date().getTime(),
+        currency: "USD"
+      };
+      
+      const li = document.createElement('li');
+      li.className = 'activity-item';
+      li.innerHTML = `
+        <div style="display: flex; justify-content: space-between;">
+          <div>
+            <div style="font-weight: bold;">${tx.type}</div>
+            <div style="font-size: 0.85rem; color: #666;">
+              Just now • <span class="status status-success">${tx.status}</span>
+            </div>
+          </div>
+          <div style="font-weight: bold; color: #2e7d32">
+            +$${profitAmount}
+          </div>
+        </div>
+      `;
+      transactionsList.insertBefore(li, transactionsList.firstChild);
+      
+      const allLi = li.cloneNode(true);
+      allTransactionsList.insertBefore(allLi, allTransactionsList.firstChild);
+      
+      showSuccessMessage('Trade Executed', `Arbitrage trade completed successfully! Profit: $${profitAmount}`);
+    }
+
+    // Show deposit modal
+    function showDepositModal() {
+      document.getElementById('depositModal').style.display = 'block';
+      document.getElementById('depositForm').style.display = 'block';
+      document.getElementById('depositProcessing').style.display = 'none';
+      depositTimeRemaining = 120; // Reset timer
+    }
+
+    // Initiate deposit process
+    function initiateDeposit() {
+      const amount = parseFloat(document.getElementById('depositAmount').value) || 0;
+      
+      // Show processing screen
+      document.getElementById('depositForm').style.display = 'none';
+      document.getElementById('depositProcessing').style.display = 'block';
+      
+      // Start countdown timer
+      updateDepositTimer();
+      depositTimerInterval = setInterval(updateDepositTimer, 1000);
+      
+      // In a real app, this would call your Node.js backend to monitor the deposit
+      // For demo, we'll simulate a deposit confirmation after 2 minutes
+      setTimeout(() => {
+        completeDeposit(amount);
+      }, 120000); // 2 minutes
+    }
+    
+    // Update deposit timer display
+    function updateDepositTimer() {
+      depositTimeRemaining--;
+      
+      if (depositTimeRemaining <= 0) {
+        clearInterval(depositTimerInterval);
+        document.getElementById('depositTimer').textContent = 'Processing complete';
+        return;
+      }
+      
+      const minutes = Math.floor(depositTimeRemaining / 60);
+      const seconds = depositTimeRemaining % 60;
+      document.getElementById('depositTimer').textContent = 
+        `Processing time remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    }
+    
+    // Complete deposit process
+    function completeDeposit(amount) {
+      clearInterval(depositTimerInterval);
+      
+      // In a real app, this would verify the deposit with your Node.js backend
+      // For demo, we'll just add the amount to the balance
+      if (amount > 0) {
+        userBalance += amount;
+        userBalances.usd = userBalance;
+        localStorage.setItem('userBalance', userBalance.toString());
+        localStorage.setItem('userBalances', JSON.stringify(userBalances));
+        
+        // Add transaction
+        const transactionsList = document.getElementById('recentTransactionsList');
+        const allTransactionsList = document.getElementById('allTransactionsList');
+        
+        if (transactionsList.children.length === 1 && 
+            transactionsList.children[0].textContent.includes('No recent transactions')) {
+          transactionsList.innerHTML = '';
+        }
+        
+        const tx = {
+          type: "Deposit",
+          amount: amount,
+          status: "Completed",
+          timestamp: new Date().getTime(),
+          currency: "USD"
+        };
+        
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <div style="font-weight: bold;">${tx.type}</div>
+              <div style="font-size: 0.85rem; color: #666;">
+                Just now • <span class="status status-success">${tx.status}</span>
+              </div>
+            </div>
+            <div style="font-weight: bold; color: #2e7d32">
+              +$${amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+        transactionsList.insertBefore(li, transactionsList.firstChild);
+        
+        const allLi = li.cloneNode(true);
+        allTransactionsList.insertBefore(allLi, allTransactionsList.firstChild);
+      }
+      
+      // Update UI
+      updateUI();
+      
+      // Show success message
+      showSuccessMessage('Deposit Complete', amount > 0 ? 
+        `Your deposit of $${amount.toFixed(2)} has been processed successfully.` :
+        'Your deposit is being processed. Your balance will update once confirmed on the blockchain.');
+      
+      // Close modal
+      closeModal('depositModal');
+    }
+    
+    // Cancel deposit process
+    function cancelDeposit() {
+      clearInterval(depositTimerInterval);
+      document.getElementById('depositForm').style.display = 'block';
+      document.getElementById('depositProcessing').style.display = 'none';
+      showError('Deposit cancelled');
+    }
+
+    // Show withdraw modal
+    function showWithdrawModal() {
+      document.getElementById('withdrawModal').style.display = 'block';
+      
+      // Update address note based on selected method
+      const methodSelect = document.getElementById('withdrawMethod');
+      methodSelect.addEventListener('change', updateAddressNote);
+      updateAddressNote();
+    }
+
+    // Show more trades modal
+    function showMoreTrades() {
+      document.getElementById('moreTradesModal').style.display = 'block';
+    }
+
+    // Show more transactions modal
+    function showMoreTransactions() {
+      document.getElementById('moreTransactionsModal').style.display = 'block';
+    }
+
+    // Show more arbitrage modal
+    function showMoreArbitrage() {
+      document.getElementById('moreArbitrageModal').style.display = 'block';
+    }
+
+    // Update address note based on selected withdrawal method
+    function updateAddressNote() {
+      const method = document.getElementById('withdrawMethod').value;
+      const note = document.getElementById('addressNote');
+      
+      switch(method) {
+        case 'btc':
+          note.textContent = 'Ensure this is a valid BTC address';
+          break;
+        case 'eth':
+          note.textContent = 'Ensure this is a valid ETH address (ERC20)';
+          break;
+        case 'bnb':
+          note.textContent = 'Ensure this is a valid BNB address (BEP20)';
+          break;
+        case 'usdt':
+          note.textContent = 'Ensure this is a valid USDT address (TRC20 or ERC20)';
+          break;
+      }
+    }
+
+    // Show error message
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 3000);
+    }
+
+    // Submit withdrawal request
+    function submitWithdrawal() {
+      const amount = parseFloat(document.getElementById('withdrawAmount').value);
+      const address = document.getElementById('withdrawAddress').value.trim();
+      const method = document.getElementById('withdrawMethod').value;
+      
+      if (!address) {
+        showError('Please enter a valid wallet address');
+        return;
+      }
+      
+      if (isNaN(amount) || amount <= 0) {
+        showError('Please enter a valid amount');
+        return;
+      }
+      
+      if (amount < 350) {
+        showError('Minimum withdrawal amount is $350');
+        return;
+      }
+      
+      if (amount > userBalance) {
+        showError('Insufficient funds for this withdrawal');
+        return;
+      }
+
+      // Added caution message
+      const confirmMessage = `You are about to withdraw $${amount.toFixed(2)} via ${method.toUpperCase()} to address: ${address}\n\n` +
+                            `IMPORTANT: Please ensure you have selected the correct withdrawal method (${method.toUpperCase()}) and are sending to a compatible ${method.toUpperCase()} wallet address.\n\n` +
+                            `Sending to the wrong address will result in permanent loss of funds.\n\n` +
+                            `Are you sure you want to proceed?`;
+      
+      if (!confirm(confirmMessage)) {
+        return;
+      }
+      
+      // Simulate withdrawal processing
+      setTimeout(() => {
+        // Update balance
+        userBalance = parseFloat((userBalance - amount).toFixed(2));
+        userBalances.usd = userBalance;
+        updateBalances();
+        
+        localStorage.setItem('userBalance', userBalance.toString());
+        localStorage.setItem('userBalances', JSON.stringify(userBalances));
+        
+        // Update UI
+        updateUI();
+        
+        // Add to transactions
+        const transactionsList = document.getElementById('recentTransactionsList');
+        const allTransactionsList = document.getElementById('allTransactionsList');
+        
+        if (transactionsList.children.length === 1 && 
+            transactionsList.children[0].textContent.includes('No recent transactions')) {
+          transactionsList.innerHTML = '';
+        }
+        
+        const tx = {
+          type: `Withdrawal (${method.toUpperCase()})`,
+          amount: -amount,
+          status: "Processing",
+          timestamp: new Date().getTime(),
+          currency: "USD"
+        };
+        
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <div style="font-weight: bold;">${tx.type}</div>
+              <div style="font-size: 0.85rem; color: #666;">
+                Just now • <span class="status status-pending">${tx.status}</span>
+              </div>
+            </div>
+            <div style="font-weight: bold; color: #c62828">
+              -$${amount.toFixed(2)}
+            </div>
+          </div>
+        `;
+        transactionsList.insertBefore(li, transactionsList.firstChild);
+        
+        const allLi = li.cloneNode(true);
+        allTransactionsList.insertBefore(allLi, allTransactionsList.firstChild);
+        
+        closeModal('withdrawModal');
+        showSuccessMessage('Withdrawal Submitted', `Your withdrawal request for $${amount.toFixed(2)} has been submitted and is being processed.`);
+      }, 1000);
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      element.select();
+      document.execCommand('copy');
+      
+      // Show tooltip
+      const originalText = element.value;
+      element.value = 'Copied!';
+      setTimeout(() => {
+        element.value = originalText;
+      }, 2000);
+    }
+
+    // Show success message
+    function showSuccessMessage(title, text) {
+      document.getElementById('successTitle').textContent = title;
+      document.getElementById('successText').textContent = text;
+      document.getElementById('successMessage').style.display = 'block';
+    }
+
+    // Close success message
+    function closeSuccess() {
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Logout user
+    function logoutUser() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userBalance');
+      localStorage.removeItem('userBalances');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

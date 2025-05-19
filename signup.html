@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | Crypto Trading Market</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-y: auto;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: #121212;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .background-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.5;
+    }
+
+    .logo-title-container {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .logo-title-container video {
+      width: 60px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .logo-title-container h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #4CAF50;
+      margin: 0;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .logo-title-container h1:hover {
+      opacity: 0.9;
+    }
+
+    .signup-wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      overflow: auto;
+      flex: 1;
+    }
+
+    .signup-container {
+      background-color: rgba(28, 28, 28, 0.9);
+      padding: 25px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      margin: 60px 0 20px;
+      backdrop-filter: blur(5px);
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #07b84b;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .auth-choice-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .auth-choice-btn {
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .wallet-choice {
+      background-color: #1e90ff;
+      color: white;
+    }
+
+    .wallet-choice:hover {
+      background-color: #1a7fd8;
+      transform: translateY(-1px);
+    }
+
+    .normal-choice {
+      background-color: #2a2a2a;
+      color: white;
+      border: 1px solid #444;
+    }
+
+    .normal-choice:hover {
+      background-color: #333;
+      transform: translateY(-1px);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: #e0e0e0;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background-color: #2a2a2a;
+      color: #fff;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #1e90ff;
+      box-shadow: 0 0 0 2px rgba(30, 144, 255, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #15802a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #10852f;
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.85rem;
+    }
+
+    .links a {
+      color: #1e90ff;
+      text-decoration: none;
+      margin: 0 5px;
+      transition: opacity 0.2s;
+    }
+
+    .links a:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .success-message, .error-message {
+      text-align: center;
+      font-size: 0.9rem;
+      display: none;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      font-weight: 500;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-message {
+      color: #00e676;
+      background-color: rgba(0, 230, 118, 0.1);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+    }
+
+    .error-message {
+      color: #ff5252;
+      background-color: rgba(255, 82, 82, 0.1);
+      border: 1px solid rgba(255, 82, 82, 0.3);
+    }
+
+    /* Wallet buttons styles */
+    .wallet-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .wallet-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .wallet-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .wallet-btn:active {
+      transform: translateY(0);
+    }
+
+    .wallet-btn img {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+
+    .metamask-btn {
+      background-color: hsl(227, 54%, 24%);
+      color: white;
+    }
+
+    .metamask-btn:hover {
+      background-color: hsl(227, 54%, 20%);
+    }
+
+    .trustwallet-btn {
+      background-color: #3375bb;
+      color: white;
+    }
+
+    .trustwallet-btn:hover {
+      background-color: #2a65a1;
+    }
+
+    .binance-btn {
+      background-color: #f0b90b;
+      color: #000;
+    }
+
+    .binance-btn:hover {
+      background-color: #d8a90a;
+    }
+
+    /* Form sections */
+    .wallet-section, .normal-form {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Wallet connection modal */
+    #walletModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #walletModal > div {
+      background-color: #2a2a2a;
+      padding: 25px;
+      border-radius: 8px;
+      max-width: 350px;
+      width: 90%;
+      text-align: center;
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #modalTitle {
+      color: #1e90ff;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    #walletStatus {
+      margin: 15px 0;
+      padding: 12px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      min-height: 20px;
+    }
+
+    #walletAddress {
+      display: none;
+      word-break: break-all;
+      margin: 15px 0;
+      font-family: monospace;
+      color: #1e90ff;
+      font-size: 0.8rem;
+      padding: 10px;
+      background-color: rgba(30, 144, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    #continueBtn {
+      display: none;
+      width: 100%;
+      padding: 12px;
+      background-color: #1e90ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    #continueBtn:hover {
+      background-color: #1a7fd8;
+    }
+
+    #cancelBtn {
+      width: 100%;
+      padding: 12px;
+      background-color: transparent;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    #cancelBtn:hover {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* Mobile instructions */
+    .mobile-instructions {
+      display: none;
+      background-color: rgba(30, 144, 255, 0.1);
+      color: #1e90ff;
+      padding: 12px;
+      border-radius: 6px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      border: 1px solid rgba(30, 144, 255, 0.2);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .logo-title-container h1 {
+        font-size: 1.2rem;
+      }
+
+      .signup-container {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo-title-container {
+        top: 10px;
+        left: 10px;
+      }
+      
+      .logo-title-container video {
+        width: 50px;
+      }
+      
+      .logo-title-container h1 {
+        font-size: 1.1rem;
+      }
+
+      .signup-container {
+        padding: 15px;
+        max-width: 340px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select {
+        padding: 9px;
+        font-size: 0.85rem;
+      }
+
+      button, .wallet-btn {
+        padding: 10px;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Google Places Autocomplete styles */
+    .pac-container {
+      background-color: #2a2a2a;
+      border: 1px solid #444;
+      border-radius: 6px;
+      box-shadow: none;
+      margin-top: -10px;
+      z-index: 1001 !important;
+    }
+
+    .pac-item {
+      color: #fff;
+      padding: 10px;
+      border-top: 1px solid #444;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    .pac-item:hover {
+      background-color: #333;
+    }
+
+    .pac-item-query {
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .pac-matched {
+      color: #1e90ff;
+      font-weight: 500;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <video autoplay muted loop>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="logo-title-container">
+    <video autoplay muted loop>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
+  </div>
+
+  <div class="signup-wrapper">
+    <div class="signup-container">
+      <h2>Create Account</h2>
+      
+      <!-- Initial choice buttons -->
+      <div class="auth-choice-container" id="authChoice">
+        <div class="auth-choice-btn wallet-choice" onclick="showWalletOptions()">
+          Sign Up with Wallet
+        </div>
+        <div class="auth-choice-btn normal-choice" onclick="showNormalForm()">
+          Sign Up with Email
+        </div>
+      </div>
+      
+      <!-- Wallet section (hidden by default) -->
+      <div class="wallet-section" id="walletSection">
+        <div class="wallet-buttons">
+          <button class="wallet-btn metamask-btn" onclick="connectWallet('metamask')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask">
+            Sign up with MetaMask
+          </button>
+          <button class="wallet-btn trustwallet-btn" onclick="connectWallet('trustwallet')">
+            <img src="https://trustwallet.com/assets/images/media/assets/TWT.png" alt="Trust Wallet">
+            Sign up with Trust Wallet
+          </button>
+          <button class="wallet-btn binance-btn" onclick="connectWallet('binance')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" alt="Binance">
+            Sign up with Binance
+          </button>
+        </div>
+        
+        <div class="mobile-instructions" id="mobileInstructions"></div>
+        
+        <div class="links">
+          <a href="#" onclick="showAuthChoice()">← Back to signup options</a>
+        </div>
+      </div>
+      
+      <!-- Normal form (hidden by default) -->
+      <div class="normal-form" id="normalForm">
+        <form id="signupForm">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" required pattern="^\S+$" placeholder="Enter your first name">
+
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" required pattern="^\S+$" placeholder="Enter your last name">
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+          <label for="country">Country</label>
+          <input type="text" id="country" name="country" required placeholder="Start typing your country..." autocomplete="off">
+
+          <label for="currency">Preferred Currency</label>
+          <select id="currency" name="currency" required>
+            <option value="">Select currency</option>
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="JPY">JPY - Yen</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+          </select>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Create a password">
+
+          <button type="submit">Register</button>
+
+          <div class="success-message" id="successMessage">Successfully Registered!</div>
+          <div class="error-message" id="errorMessage">Something went wrong. Please try again.</div>
+        </form>
+        <div class="links">
+          <a href="#" onclick="showAuthChoice()">← Back to signup options</a>
+          <a href="/login.html">Already have an account? Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wallet connection modal -->
+  <div id="walletModal" style="display: none;">
+    <div>
+      <h3 id="modalTitle">Connect Wallet</h3>
+      <div id="walletStatus">
+        <span id="statusText">Connecting to wallet...</span>
+      </div>
+      <div id="walletAddress" style="display: none;"></div>
+      <button id="continueBtn" onclick="proceedAfterWalletConnect()">Continue</button>
+      <button id="cancelBtn" onclick="closeWalletModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@metamask/onboarding@1.0.1/dist/metamask-onboarding.bundle.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6Ty5ZHqoSA2jlyqnyi1c7HqLp6G8Ij7I&libraries=places"></script>
+  
+  <script>
+    // Initialize Google Places Autocomplete for country input
+    function initAutocomplete() {
+      const countryInput = document.getElementById('country');
+      const options = {
+        types: ['(regions)'],
+        componentRestrictions: {country: []},
+        fields: ['address_components', 'formatted_address']
+      };
+      
+      const autocomplete = new google.maps.places.Autocomplete(countryInput, options);
+      
+      autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (!place.address_components) {
+          document.getElementById('errorMessage').textContent = 'Please select a valid country from the suggestions';
+          document.getElementById('errorMessage').style.display = 'block';
+          return;
+        }
+        
+        // Extract country name from the place details
+        const countryComponent = place.address_components.find(component => 
+          component.types.includes('country')
+        );
+        
+        if (countryComponent) {
+          document.getElementById('country').value = countryComponent.long_name;
+          document.getElementById('errorMessage').style.display = 'none';
+        } else {
+          document.getElementById('errorMessage').textContent = 'Please select a valid country';
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      });
+      
+      // Handle when user types but doesn't select from dropdown
+      countryInput.addEventListener('change', function() {
+        if (!this.value) {
+          document.getElementById('errorMessage').textContent = 'Country is required';
+          document.getElementById('errorMessage').style.display = 'block';
+        }
+      });
+    }
+
+    // Call the autocomplete initialization when Google Maps API is loaded
+    google.maps.event.addDomListener(window, 'load', initAutocomplete);
+
+    // Show/hide sections
+    function showAuthChoice() {
+      document.getElementById('authChoice').style.display = 'flex';
+      document.getElementById('walletSection').style.display = 'none';
+      document.getElementById('normalForm').style.display = 'none';
+      document.getElementById('mobileInstructions').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    function showWalletOptions() {
+      document.getElementById('authChoice').style.display = 'none';
+      document.getElementById('walletSection').style.display = 'block';
+      document.getElementById('normalForm').style.display = 'none';
+      document.querySelector('.wallet-buttons').style.display = 'flex';
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    function showNormalForm() {
+      document.getElementById('authChoice').style.display = 'none';
+      document.getElementById('walletSection').style.display = 'none';
+      document.getElementById('normalForm').style.display = 'block';
+      document.getElementById('successMessage').style.display = 'none';
+      document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    // Form validation and submission
+    const form = document.getElementById('signupForm');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Validate country input
+      const countryInput = document.getElementById('country');
+      if (!countryInput.value) {
+        errorMessage.textContent = 'Please select a country';
+        errorMessage.style.display = 'block';
+        countryInput.focus();
+        return;
+      }
+      
+      // Show loading state
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+      submitButton.innerHTML = '<span class="spinner"></span> Registering...';
+      submitButton.disabled = true;
+      
+      // Simulate API call
+      setTimeout(() => {
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+        
+        // Reset button state
+        submitButton.textContent = originalButtonText;
+        submitButton.disabled = false;
+        
+        // Redirect after delay
+        setTimeout(() => {
+          form.reset();
+          window.location.href = "Dashboard.html";
+        }, 1500);
+      }, 2000);
+    });
+
+    // Wallet connection functionality
+    async function connectWallet(walletType) {
+      const modal = document.getElementById('walletModal');
+      const statusText = document.getElementById('statusText');
+      const walletAddress = document.getElementById('walletAddress');
+      const continueBtn = document.getElementById('continueBtn');
+      const modalTitle = document.getElementById('modalTitle');
+      const mobileInstructions = document.getElementById('mobileInstructions');
+      
+      // Show modal
+      modal.style.display = 'flex';
+      modalTitle.textContent = `Connect ${walletType.charAt(0).toUpperCase() + walletType.slice(1)}`;
+      statusText.innerHTML = '<span class="spinner"></span> Connecting to wallet...';
+      walletAddress.style.display = 'none';
+      continueBtn.style.display = 'none';
+      mobileInstructions.style.display = 'none';
+
+      try {
+        let accounts = [];
+        
+        // Handle different wallet types
+        switch(walletType) {
+          case 'metamask':
+            accounts = await connectMetaMask();
+            break;
+          case 'trustwallet':
+            accounts = await connectTrustWallet();
+            break;
+          case 'binance':
+            accounts = await connectBinance();
+            break;
+          default:
+            throw new Error('Unknown wallet type');
+        }
+
+        if (accounts.length === 0) {
+          throw new Error('No accounts found');
+        }
+
+        // Display success
+        statusText.innerHTML = '✅ Connected successfully';
+        walletAddress.textContent = accounts[0];
+        walletAddress.style.display = 'block';
+        continueBtn.style.display = 'block';
+
+        // Store wallet info
+        localStorage.setItem('connectedWallet', walletType);
+        localStorage.setItem('walletAddress', accounts[0]);
+
+      } catch (error) {
+        statusText.innerHTML = `❌ ${error.message || 'Connection failed'}`;
+        console.error('Wallet connection error:', error);
+        
+        // Show mobile instructions if needed
+        if (error.message.includes('mobile') && walletType === 'trustwallet') {
+          mobileInstructions.innerHTML = `
+            <strong>Trust Wallet Mobile Instructions:</strong>
+            <p>1. Open Trust Wallet app</p>
+            <p>2. Tap the browser icon</p>
+            <p>3. Navigate back to this page</p>
+            <p>4. Try connecting again</p>
+          `;
+          mobileInstructions.style.display = 'block';
+        }
+      }
+    }
+
+    // MetaMask connection
+    async function connectMetaMask() {
+      if (!window.ethereum || !window.ethereum.isMetaMask) {
+        // Start MetaMask onboarding if not installed
+        const onboarding = new MetaMaskOnboarding();
+        onboarding.startOnboarding();
+        throw new Error('Please install MetaMask');
+      }
+
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        return accounts;
+      } catch (error) {
+        if (error.code === 4001) {
+          throw new Error('User rejected the request');
+        }
+        throw new Error('Failed to connect to MetaMask');
+      }
+    }
+
+    // Trust Wallet connection
+    async function connectTrustWallet() {
+      if (!window.ethereum || !window.ethereum.isTrust) {
+        // Try to open Trust Wallet app link on mobile
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          window.location.href = 'https://link.trustwallet.com/open_url?url=' + encodeURIComponent(window.location.href);
+          throw new Error('Redirecting to Trust Wallet...');
+        } else {
+          throw new Error('Please use Trust Wallet browser or install the extension');
+        }
+      }
+
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        return accounts;
+      } catch (error) {
+        throw new Error('User rejected the request');
+      }
+    }
+
+    // Binance connection
+    async function connectBinance() {
+      if (!window.BinanceChain) {
+        // Try to open Binance Chain Wallet app link on mobile
+        if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+          window.location.href = 'https://binance.com/en/download';
+          throw new Error('Please install Binance Chain Wallet app');
+        } else {
+          throw new Error('Please install Binance Chain Wallet extension');
+        }
+      }
+
+      try {
+        const accounts = await window.BinanceChain.request({ method: 'eth_requestAccounts' });
+        return accounts;
+      } catch (error) {
+        throw new Error('User rejected the request');
+      }
+    }
+
+    function proceedAfterWalletConnect() {
+      closeWalletModal();
+      document.getElementById('successMessage').textContent = 'Wallet connected successfully!';
+      document.getElementById('successMessage').style.display = 'block';
+      
+      setTimeout(() => {
+        window.location.href = "Dashboard.html";
+      }, 1500);
+    }
+
+    function closeWalletModal() {
+      document.getElementById('walletModal').style.display = 'none';
+    }
+
+    // Initialize by showing choice buttons
+    showAuthChoice();
+  </script>
+</body>
+</html>

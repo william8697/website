@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Crypto Trading Market</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body, html {
+      height: 100%;
+      color: #333;
+      overflow-x: hidden;
+      position: relative;
+      background-color: #f5f5f5;
+    }
+    
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .background-container video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      opacity: 0.15;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0c0c0c;
+      padding: 10px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-title video {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    
+    .logo-title h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2e7d32;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+    
+    .nav a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 8px 15px;
+      border-radius: 4px;
+      transition: all 0.3s;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .nav a:hover, .nav a:focus {
+      background: rgba(46, 125, 50, 0.9);
+      color: white;
+      outline: none;
+    }
+    
+    .nav a.active {
+      background: rgba(46, 125, 50, 0.7);
+      color: white;
+    }
+    
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 80px;
+    }
+    
+    .section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border-left: 4px solid #2e7d32;
+    }
+    
+    .section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .section-header {
+      padding: 20px;
+      background: rgba(46, 125, 50, 0.05);
+      border-bottom: 1px solid rgba(46, 125, 50, 0.1);
+    }
+    
+    .section-header h2 {
+      color: #2e7d32;
+      font-size: 28px;
+    }
+    
+    .about-content {
+      padding: 25px;
+    }
+    
+    .about-content h3 {
+      color: #2e7d32;
+      margin-bottom: 15px;
+      font-size: 22px;
+      border-bottom: 1px solid rgba(46, 125, 50, 0.2);
+      padding-bottom: 10px;
+    }
+    
+    .about-content p {
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    
+    .stats-box {
+      display: flex;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #2e7d32, #1b5e20);
+      color: white;
+      padding: 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      margin: 25px 0;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .stats-box div {
+      text-align: center;
+      flex: 1;
+    }
+    
+    .stats-box .number {
+      color: #fff;
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 5px;
+      display: block;
+    }
+    
+    .team-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+    
+    .team-member {
+      flex: 1;
+      min-width: 280px;
+      max-width: 320px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: all 0.3s;
+      border-top: 3px solid #2e7d32;
+    }
+    
+    .team-member:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    
+    .team-member img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #2e7d32;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .team-member h4 {
+      color: #2e7d32;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+    
+    .team-member p {
+      color: #666;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+    
+    .team-member .position {
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .team-member a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: all 0.3s;
+      border: 1px solid #2e7d32;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    
+    .team-member a:hover {
+      background: #2e7d32;
+      color: white;
+    }
+    
+    /* Profile Modal Styles */
+    .profile-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .profile-modal.active {
+      display: flex;
+      opacity: 1;
+    }
+    
+    .profile-modal-content {
+      background-color: white;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    
+    .profile-modal.active .profile-modal-content {
+      transform: translateY(0);
+    }
+    
+    .profile-modal-header {
+      padding: 20px;
+      background: rgba(46, 125, 50, 0.1);
+      border-bottom: 1px solid rgba(46, 125, 50, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .profile-modal-header h3 {
+      color: #2e7d32;
+      font-size: 24px;
+    }
+    
+    .close-modal {
+      font-size: 28px;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .close-modal:hover {
+      color: #2e7d32;
+    }
+    
+    .profile-modal-body {
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .profile-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2e7d32;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .profile-details {
+      width: 100%;
+      text-align: center;
+    }
+    
+    .profile-name {
+      color: #2e7d32;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .profile-position {
+      font-size: 18px;
+      color: #333;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    
+    .profile-bio {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    .profile-stat {
+      text-align: center;
+      margin: 10px;
+      min-width: 120px;
+    }
+    
+    .profile-stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    
+    .profile-stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .profile-social {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .profile-social a {
+      color: #2e7d32;
+      font-size: 24px;
+      transition: color 0.3s;
+    }
+    
+    .profile-social a:hover {
+      color: #1b5e20;
+    }
+    
+    footer {
+      text-align: center;
+      background: rgba(3, 8, 3, 0.95);
+      color: #fff;
+      padding: 20px;
+      font-size: 14px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .main-content {
+        padding: 25px 15px 80px;
+      }
+      
+      .section-header h2 {
+        font-size: 24px;
+      }
+      
+      .about-content h3 {
+        font-size: 20px;
+      }
+      
+      .stats-box {
+        flex-direction: column;
+        gap: 20px;
+        padding: 25px;
+      }
+      
+      .stats-box div {
+        margin-bottom: 15px;
+      }
+      
+      .stats-box div:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 15px;
+      }
+      
+      .nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .nav a {
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+      
+      .team-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .team-member {
+        width: 100%;
+        max-width: 350px;
+      }
+      
+      .profile-modal-body {
+        padding: 20px;
+      }
+      
+      .profile-image {
+        width: 150px;
+        height: 150px;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .logo-title h1 {
+        font-size: 22px;
+      }
+      
+      .logo-title video {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+      
+      .section-header h2 {
+        font-size: 22px;
+      }
+      
+      .about-content {
+        padding: 20px;
+      }
+      
+      .team-member {
+        padding: 20px;
+      }
+      
+      .team-member img {
+        width: 140px;
+        height: 140px;
+      }
+      
+      .profile-modal-content {
+        width: 95%;
+      }
+      
+      .profile-name {
+        font-size: 24px;
+      }
+      
+      .profile-position {
+        font-size: 16px;
+      }
+      
+      .profile-stat {
+        min-width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <header>
+    <div class="logo-title">
+      <video autoplay muted loop playsinline>
+        <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      </video>
+      <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
+    </div>
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="account.html">Settings</a>
+      <a href="faqs.html">FAQs</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="section">
+      <div class="section-header">
+        <h2>About Crypto Trading Market</h2>
+      </div>
+      <div class="about-content">
+        <h3>Who We Are</h3>
+        <p>
+          Crypto Trading Market is a cutting-edge platform designed for traders to engage in cryptocurrency arbitrage trading.
+          Our mission is to provide the tools and resources necessary for seamless and profitable trading in the crypto market.
+          Whether you are a beginner or an experienced trader, we aim to help you make informed decisions with real-time data, 
+          analytics, and strategic insights.
+        </p>
+        
+        <div class="stats-box">
+          <div>
+            <div>Active Users</div>
+            <div class="number">5,000,000+</div>
+          </div>
+          <div>
+            <div>Daily Trades</div>
+            <div class="number">800,000+</div>
+          </div>
+          <div>
+            <div>Assets Supported</div>
+            <div class="number">50+</div>
+          </div>
+        </div>
+        
+        <h3>Our Vision</h3>
+        <p>
+          To be the most trusted and efficient cryptocurrency trading platform that helps users optimize their investments 
+          through sophisticated arbitrage strategies. We believe in democratizing access to crypto trading opportunities
+          while maintaining the highest standards of security and transparency.
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h2>Meet Our Leadership Team</h2>
+      </div>
+      <div class="about-content">
+        <div class="team-container">
+          <div class="team-member">
+            <img src="https://www.dropbox.com/scl/fi/5gjzf5k6cor7x6ymp9huv/WhatsApp-Image-2025-05-17-at-01.51.53_437ec726.jpg?rlkey=5dch5p0z90hjrw25547swjahj&st=mriobw5c&dl=1" alt="Patrick Doe - CEO">
+            <h4>Patrick Doe</h4>
+            <p class="position">CEO & Founder</p>
+            <p>10+ years in blockchain technology</p>
+            <a class="view-profile" data-member="patrick">View Profile</a>
+          </div>
+          <div class="team-member">
+            <img src="https://www.dropbox.com/scl/fi/ttao0b88ym2j182sl6t50/WhatsApp-Image-2025-05-17-at-01.51.53_6a4a505f.jpg?rlkey=lvdaruw6r2lxpu9zgwvrrq84b&st=8j7ptoep&dl=1" alt="Jane Smith - CTO">
+            <h4>Jane Smith</h4>
+            <p class="position">Chief Technical Officer</p>
+            <p>Former Lead Engineer at CoinTech</p>
+            <a class="view-profile" data-member="jane">View Profile</a>
+          </div>
+          <div class="team-member">
+            <img src="https://www.dropbox.com/scl/fi/g9qh6u1aw0f42v5j1xraq/WhatsApp-Image-2025-05-17-at-01.51.52_b8e13c2d.jpg?rlkey=uah46wj0vj2jam6saz8ieilyu&st=c6nihhu8&dl=1" alt="Michael Brown - Lead Developer">
+            <h4>Michael Brown</h4>
+            <p class="position">Lead Developer</p>
+            <p>Specializes in trading algorithms</p>
+            <a class="view-profile" data-member="michael">View Profile</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <h2>Our Technology</h2>
+      </div>
+      <div class="about-content">
+        <h3>Advanced Trading Infrastructure</h3>
+        <p>
+          Our platform is built on a high-performance trading engine that processes thousands of transactions per second
+          with sub-millisecond latency. We leverage machine learning algorithms to identify arbitrage opportunities
+          across multiple exchanges in real-time, giving our users a competitive edge in the fast-moving crypto markets.
+        </p>
+        
+        <h3>Security First</h3>
+        <p>
+          Security is our top priority. We implement bank-grade encryption, multi-signature wallets, and cold storage
+          solutions to ensure your assets are always protected. Our systems undergo regular security audits by
+          independent third-party firms to maintain the highest security standards in the industry.
+        </p>
+        
+        <h3>Continuous Innovation</h3>
+        <p>
+          We invest heavily in research and development to stay ahead of market trends. Our team of engineers and data
+          scientists continuously improves our trading algorithms and platform features to provide our users with the
+          most advanced trading tools available.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Modal -->
+  <div class="profile-modal" id="profileModal">
+    <div class="profile-modal-content">
+      <div class="profile-modal-header">
+        <h3 id="modalTitle">Team Member Profile</h3>
+        <span class="close-modal" id="closeModal">&times;</span>
+      </div>
+      <div class="profile-modal-body" id="profileModalBody">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Crypto Trading Market. All Rights Reserved
+  </footer>
+
+  <script>
+    // Team member data (in a real app, this would come from your backend)
+    const teamMembers = {
+      patrick: {
+        name: "Patrick Doe",
+        position: "CEO & Founder",
+        image: "https://www.dropbox.com/scl/fi/5gjzf5k6cor7x6ymp9huv/WhatsApp-Image-2025-05-17-at-01.51.53_437ec726.jpg?rlkey=5dch5p0z90hjrw25547swjahj&st=mriobw5c&dl=1",
+        bio: "Patrick is a visionary leader with over a decade of experience in blockchain technology and cryptocurrency markets. He founded Crypto Trading Market in 2018 with the goal of creating a platform that makes sophisticated trading strategies accessible to everyone. Under his leadership, the company has grown to serve over a million users worldwide.",
+        experience: "12 years",
+        education: "MBA, Stanford University",
+        expertise: "Blockchain Architecture, Business Strategy",
+        social: {
+          linkedin: "#",
+          twitter: "#",
+          github: "#"
+        }
+      },
+      jane: {
+        name: "Jane Smith",
+        position: "Chief Technical Officer",
+        image: "https://www.dropbox.com/scl/fi/ttao0b88ym2j182sl6t50/WhatsApp-Image-2025-05-17-at-01.51.53_6a4a505f.jpg?rlkey=lvdaruw6r2lxpu9zgwvrrq84b&st=8j7ptoep&dl=1",
+        bio: "Jane leads our engineering team with a focus on building robust, scalable systems. Before joining Crypto Trading Market, she was the Lead Engineer at CoinTech where she developed high-frequency trading systems. She specializes in distributed systems and real-time data processing.",
+        experience: "8 years",
+        education: "M.S. Computer Science, MIT",
+        expertise: "Distributed Systems, Real-time Data",
+        social: {
+          linkedin: "#",
+          twitter: "#",
+          github: "#"
+        }
+      },
+      michael: {
+        name: "Michael Brown",
+        position: "Lead Developer",
+        image: "https://www.dropbox.com/scl/fi/g9qh6u1aw0f42v5j1xraq/WhatsApp-Image-2025-05-17-at-01.51.52_b8e13c2d.jpg?rlkey=uah46wj0vj2jam6saz8ieilyu&st=c6nihhu8&dl=1",
+        bio: "Michael is our algorithmic trading expert, designing and implementing the sophisticated strategies that power our platform. With a background in quantitative finance, he bridges the gap between advanced mathematics and practical trading applications.",
+        experience: "6 years",
+        education: "Ph.D. Financial Mathematics, University of Chicago",
+        expertise: "Algorithmic Trading, Quantitative Analysis",
+        social: {
+          linkedin: "#",
+          twitter: "#",
+          github: "#"
+        }
+      }
+    };
+
+    // DOM elements
+    const profileModal = document.getElementById('profileModal');
+    const profileModalBody = document.getElementById('profileModalBody');
+    const modalTitle = document.getElementById('modalTitle');
+    const closeModal = document.getElementById('closeModal');
+    const viewProfileButtons = document.querySelectorAll('.view-profile');
+
+    // Function to open profile modal
+    function openProfileModal(memberId) {
+      const member = teamMembers[memberId];
+      if (!member) return;
+
+      // Update modal title
+      modalTitle.textContent = `${member.name}'s Profile`;
+
+      // Create profile content
+      profileModalBody.innerHTML = `
+        <img src="${member.image}" alt="${member.name}" class="profile-image">
+        <div class="profile-details">
+          <h2 class="profile-name">${member.name}</h2>
+          <p class="profile-position">${member.position}</p>
+          
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-value">${member.experience}</div>
+              <div class="profile-stat-label">Experience</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-value">${member.education.split(',')[0]}</div>
+              <div class="profile-stat-label">Education</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-value">${member.expertise.split(',')[0]}</div>
+              <div class="profile-stat-label">Expertise</div>
+            </div>
+          </div>
+          
+          <p class="profile-bio">${member.bio}</p>
+          
+          <div class="profile-social">
+            <a href="${member.social.linkedin}" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="${member.social.twitter}" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="${member.social.github}" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+          </div>
+        </div>
+      `;
+
+      // Load Font Awesome for icons if not already loaded
+      if (!document.querySelector('link[href*="font-awesome"]')) {
+        const faLink = document.createElement('link');
+        faLink.rel = 'stylesheet';
+        faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css';
+        document.head.appendChild(faLink);
+      }
+
+      // Show modal
+      profileModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Function to close profile modal
+    function closeProfileModal() {
+      profileModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners
+    viewProfileButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const memberId = button.getAttribute('data-member');
+        openProfileModal(memberId);
+      });
+    });
+
+    closeModal.addEventListener('click', closeProfileModal);
+
+    // Close modal when clicking outside the content
+    profileModal.addEventListener('click', (e) => {
+      if (e.target === profileModal) {
+        closeProfileModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && profileModal.classList.contains('active')) {
+        closeProfileModal();
+      }
+    });
+
+    // Ensure video plays on mobile
+    document.addEventListener('DOMContentLoaded', () => {
+      const videos = document.querySelectorAll('video');
+      videos.forEach(video => {
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.play().catch(e => console.log('Video play prevented:', e));
+      });
+
+      // Preload team member images
+      const imageUrls = [
+        'https://www.dropbox.com/scl/fi/ttao0b88ym2j182sl6t50/WhatsApp-Image-2025-05-17-at-01.51.53_6a4a505f.jpg?rlkey=lvdaruw6r2lxpu9zgwvrrq84b&st=8j7ptoep&dl=1',
+        'https://www.dropbox.com/scl/fi/g9qh6u1aw0f42v5j1xraq/WhatsApp-Image-2025-05-17-at-01.51.52_b8e13c2d.jpg?rlkey=uah46wj0vj2jam6saz8ieilyu&st=c6nihhu8&dl=1',
+        'https://www.dropbox.com/scl/fi/5gjzf5k6cor7x6ymp9huv/WhatsApp-Image-2025-05-17-at-01.51.53_437ec726.jpg?rlkey=5dch5p0z90hjrw25547swjahj&st=mriobw5c&dl=1'
+      ];
+
+      imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+      });
+
+      // Animate stats numbers
+      const statsNumbers = document.querySelectorAll('.stats-box .number');
+      statsNumbers.forEach(number => {
+        const target = parseInt(number.textContent.replace(/,/g, ''));
+        const suffix = number.textContent.match(/\D+$/)?.[0] || '';
+        const duration = 2000;
+        const start = 0;
+        const startTime = Date.now();
+        
+        const animate = () => {
+          const now = Date.now();
+          const progress = Math.min(1, (now - startTime) / duration);
+          const value = Math.floor(progress * target);
+          number.textContent = value.toLocaleString() + suffix;
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        
+        animate();
+      });
+    });
+  </script>
+</body>
+</html>

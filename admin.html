@@ -1,0 +1,3084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Arbitrage Trading Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #2a3042;
+            --secondary-color: #3a416f;
+            --accent-color: #7367f0;
+            --success-color: #28c76f;
+            --danger-color: #ea5455;
+            --warning-color: #ff9f43;
+            --info-color: #00cfe8;
+            --dark-color: #161d31;
+            --light-color: #f8f8f8;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f5f9;
+            color: #6e6b7b;
+        }
+        
+        .sidebar {
+            background-color: var(--primary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 260px;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .sidebar-brand {
+            padding: 1.5rem 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-brand i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+        
+        .sidebar-menu a {
+            color: #d0d2d6;
+            display: block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255,255,255,0.05);
+            color: white;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .sidebar-menu a i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(34, 41, 47, 0.05);
+            padding: 1.5rem;
+            border-radius: 0.5rem 0.5rem 0 0 !important;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .stat-card .stat-title {
+            font-size: 0.875rem;
+            color: #6e6b7b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card .stat-change {
+            font-size: 0.75rem;
+        }
+        
+        .stat-card .stat-change.up {
+            color: var(--success-color);
+        }
+        
+        .stat-card .stat-change.down {
+            color: var(--danger-color);
+        }
+        
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.6em;
+            font-size: 0.75rem;
+        }
+        
+        .badge-success {
+            background-color: rgba(40, 199, 111, 0.12);
+            color: var(--success-color);
+        }
+        
+        .badge-danger {
+            background-color: rgba(234, 84, 85, 0.12);
+            color: var(--danger-color);
+        }
+        
+        .badge-warning {
+            background-color: rgba(255, 159, 67, 0.12);
+            color: var(--warning-color);
+        }
+        
+        .badge-info {
+            background-color: rgba(0, 207, 232, 0.12);
+            color: var(--info-color);
+        }
+        
+        .badge-primary {
+            background-color: rgba(115, 103, 240, 0.12);
+            color: var(--accent-color);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: #5e5873;
+            border-top: none;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .activity-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(34, 41, 47, 0.05);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: #b9b9c3;
+        }
+        
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 25px 0 rgba(34, 41, 47, 0.1);
+        }
+        
+        .dropdown-item {
+            padding: 0.5rem 1.5rem;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(115, 103, 240, 0.08);
+            color: var(--accent-color);
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid #d8d6de;
+            border-radius: 0.375rem;
+            padding: 0.571rem 1rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 3px 10px 0 rgba(115, 103, 240, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #5e50ee;
+            border-color: #5e50ee;
+        }
+        
+        .btn-outline-primary {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.6rem;
+            padding: 0.25em 0.4em;
+        }
+        
+        .user-selector {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-selector:hover {
+            background-color: rgba(115, 103, 240, 0.08);
+        }
+        
+        .user-selector.active {
+            background-color: rgba(115, 103, 240, 0.15);
+        }
+        
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                margin-left: -260px;
+            }
+            
+            .sidebar.active {
+                margin-left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .navbar-toggler {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="bi bi-currency-exchange"></i>
+            <span>Arbitrage Admin</span>
+        </div>
+        <div class="sidebar-menu">
+            <a href="#" class="active" id="dashboard-link">
+                <i class="bi bi-speedometer2"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" id="users-link">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
+            </a>
+            <a href="#" id="trades-link">
+                <i class="bi bi-graph-up"></i>
+                <span>Trades</span>
+            </a>
+            <a href="#" id="transactions-link">
+                <i class="bi bi-cash-stack"></i>
+                <span>Transactions</span>
+            </a>
+            <a href="#" id="support-link">
+                <i class="bi bi-headset"></i>
+                <span>Support Tickets</span>
+                <span class="badge bg-danger notification-badge" id="pending-tickets-count">0</span>
+            </a>
+            <a href="#" id="kyc-link">
+                <i class="bi bi-shield-check"></i>
+                <span>KYC Verification</span>
+                <span class="badge bg-warning notification-badge" id="pending-kyc-count">0</span>
+            </a>
+            <a href="#" id="settings-link">
+                <i class="bi bi-gear"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" id="broadcast-link">
+                <i class="bi bi-megaphone"></i>
+                <span>Broadcast</span>
+            </a>
+            <a href="#" id="logs-link">
+                <i class="bi bi-journal-text"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler d-lg-none" type="button" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="d-flex align-items-center">
+                    <h4 class="mb-0" id="page-title">Admin Dashboard</h4>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-3">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bell"></i>
+                            <span class="badge bg-danger notification-badge" id="notifications-count">0</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style="width: 300px;">
+                            <li>
+                                <h6 class="dropdown-header">Notifications</h6>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <div id="notifications-list">
+                                <!-- Notifications will be loaded here -->
+                            </div>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-center" href="#" id="view-all-notifications">View all notifications</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=7367f0&color=fff" alt="Admin" class="user-avatar">
+                            <span id="admin-username">Admin</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-person me-2"></i>Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-gear me-2"></i>Settings
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="#" id="logout-btn">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content">
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card stat-card">
+                        <div class="stat-title">Total Users</div>
+                        <div class="stat-value" id="total-users">0</div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> <span id="user-growth-rate">0%</span> from last week
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card stat-card">
+                        <div class="stat-title">Active Users</div>
+                        <div class="stat-value" id="active-users">0</div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> <span id="active-growth-rate">0%</span> from last week
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card stat-card">
+                        <div class="stat-title">Total Trades</div>
+                        <div class="stat-value" id="total-trades">0</div>
+                        <div class="stat-change up">
+                            <i class="bi bi-arrow-up"></i> <span id="trade-growth-rate">0%</span> from last week
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card stat-card">
+                        <div class="stat-title">Total Volume</div>
+                        <div class="stat-value" id="total-volume">$0</div>
+                        <div class="stat-change down">
+                            <i class="bi bi-arrow-down"></i> <span id="volume-change-rate">0%</span> from last week
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Platform Growth</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="growthChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">User Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="userDistributionChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Users</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-users">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="recent-users-table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Email</th>
+                                            <th>Joined</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-users-body">
+                                        <!-- Will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Recent Activities</h5>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-activities">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-feed" id="activity-feed">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Content (Hidden by default) -->
+        <div id="users-content" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">User Management</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" id="export-users-btn">
+                            <i class="bi bi-download me-1"></i> Export
+                        </button>
+                        <button class="btn btn-sm btn-primary" id="add-user-btn">
+                            <i class="bi bi-plus me-1"></i> Add User
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="user-search" placeholder="Search users...">
+                                <button class="btn btn-outline-secondary" type="button" id="search-users-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <select class="form-select me-2" style="width: 150px;" id="user-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="suspended">Suspended</option>
+                                </select>
+                                <select class="form-select" style="width: 150px;" id="user-kyc-filter">
+                                    <option value="">All KYC</option>
+                                    <option value="verified">Verified</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="unverified">Unverified</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Wallet</th>
+                                    <th>Balance</th>
+                                    <th>Status</th>
+                                    <th>KYC</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3" id="users-pagination">
+                            <!-- Will be populated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trades Content (Hidden by default) -->
+        <div id="trades-content" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Trade Management</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" id="export-trades-btn">
+                            <i class="bi bi-download me-1"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="trade-search" placeholder="Search trades...">
+                                <button class="btn btn-outline-secondary" type="button" id="search-trades-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-end">
+                                <select class="form-select me-2" style="width: 150px;" id="trade-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="failed">Failed</option>
+                                </select>
+                                <select class="form-select me-2" style="width: 150px;" id="trade-type-filter">
+                                    <option value="">All Types</option>
+                                    <option value="arbitrage">Arbitrage</option>
+                                    <option value="normal">Normal</option>
+                                </select>
+                                <input type="date" class="form-control" style="width: 150px;" id="trade-date-filter">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="trades-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Profit</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trades-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3" id="trades-pagination">
+                            <!-- Will be populated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Content (Hidden by default) -->
+        <div id="support-content" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Support Tickets</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" id="export-tickets-btn">
+                            <i class="bi bi-download me-1"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="ticket-search" placeholder="Search tickets...">
+                                <button class="btn btn-outline-secondary" type="button" id="search-tickets-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <select class="form-select me-2" style="width: 150px;" id="ticket-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="open">Open</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                                <select class="form-select" style="width: 150px;" id="ticket-priority-filter">
+                                    <option value="">All Priorities</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="tickets-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Subject</th>
+                                    <th>Category</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tickets-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3" id="tickets-pagination">
+                            <!-- Will be populated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- KYC Content (Hidden by default) -->
+        <div id="kyc-content" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">KYC Verification</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="kyc-search" placeholder="Search KYC requests...">
+                                <button class="btn btn-outline-secondary" type="button" id="search-kyc-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <select class="form-select" style="width: 150px;" id="kyc-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="kyc-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Document Type</th>
+                                    <th>Submitted</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kyc-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3" id="kyc-pagination">
+                            <!-- Will be populated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Broadcast Content (Hidden by default) -->
+        <div id="broadcast-content" class="d-none">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Send Broadcast Message</h5>
+                </div>
+                <div class="card-body">
+                    <form id="broadcast-form">
+                        <div class="mb-3">
+                            <label for="broadcast-title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="broadcast-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="broadcast-message" class="form-label">Message</label>
+                            <textarea class="form-control" id="broadcast-message" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="broadcast-type" class="form-label">Message Type</label>
+                            <select class="form-select" id="broadcast-type" required>
+                                <option value="info">Information</option>
+                                <option value="warning">Warning</option>
+                                <option value="urgent">Urgent</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="broadcast-audience" class="form-label">Audience</label>
+                            <select class="form-select" id="broadcast-audience" required>
+                                <option value="all">All Users</option>
+                                <option value="active">Active Users Only</option>
+                                <option value="inactive">Inactive Users Only</option>
+                                <option value="unverified">Unverified Users</option>
+                                <option value="verified">Verified Users Only</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Broadcast</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Logs Content (Hidden by default) -->
+        <div id="logs-content" class="d-none">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Activity Logs</h5>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" id="export-logs-btn">
+                            <i class="bi bi-download me-1"></i> Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="log-search" placeholder="Search logs...">
+                                <button class="btn btn-outline-secondary" type="button" id="search-logs-btn">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <select class="form-select me-2" style="width: 150px;" id="log-type-filter">
+                                    <option value="">All Types</option>
+                                    <option value="login">Login</option>
+                                    <option value="trade">Trade</option>
+                                    <option value="withdrawal">Withdrawal</option>
+                                    <option value="deposit">Deposit</option>
+                                    <option value="account">Account</option>
+                                </select>
+                                <input type="date" class="form-control" style="width: 150px;" id="log-date-filter">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="logs-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>User</th>
+                                    <th>Activity</th>
+                                    <th>Type</th>
+                                    <th>IP Address</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logs-table-body">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mt-3" id="logs-pagination">
+                            <!-- Will be populated by JavaScript -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div class="modal fade" id="userDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img src="" alt="User" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px;" id="user-detail-avatar">
+                            <h4 id="user-detail-name">Loading...</h4>
+                            <span class="badge" id="user-detail-status">Active</span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <p id="user-detail-email">Loading...</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Wallet Address</label>
+                                    <p id="user-detail-wallet">Loading...</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Country</label>
+                                    <p id="user-detail-country">Loading...</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">KYC Status</label>
+                                    <p><span class="badge" id="user-detail-kyc">Loading...</span></p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Account Balance</label>
+                                    <p id="user-detail-balance">Loading...</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Login</label>
+                                    <p id="user-detail-lastlogin">Loading...</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="form-label">Account Actions</label>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-sm btn-outline-primary" id="message-user-btn">Send Message</button>
+                                        <button class="btn btn-sm btn-outline-warning" id="reset-password-btn">Reset Password</button>
+                                        <button class="btn btn-sm btn-outline-danger" id="suspend-user-btn">Suspend Account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <h5 class="mb-3">Recent Activities</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Type</th>
+                                    <th>IP Address</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-activity-table">
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Detail Modal -->
+    <div class="modal fade" id="ticketDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Support Ticket #<span id="ticket-id">12345</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                <label class="form-label me-2 mb-0">Status:</label>
+                                <select class="form-select form-select-sm" style="width: 120px;" id="ticket-status-select">
+                                    <option value="open">Open</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="resolved">Resolved</option>
+                                </select>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <label class="form-label me-2 mb-0">Priority:</label>
+                                <select class="form-select form-select-sm" style="width: 120px;" id="ticket-priority-select">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end gap-2">
+                                <button class="btn btn-sm btn-outline-primary" id="assign-ticket-btn">Assign to Me</button>
+                                <button class="btn btn-sm btn-primary" id="save-ticket-btn">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Ticket Details</h6>
+                                <small class="text-muted" id="ticket-date">Loading...</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Subject</label>
+                                <p id="ticket-subject">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <p id="ticket-category">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <p id="ticket-description">Loading...</p>
+                            </div>
+                            <div>
+                                <label class="form-label">Attachments</label>
+                                <div class="d-flex gap-2" id="ticket-attachments">
+                                    <!-- Attachments will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Conversation</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chat-container" style="max-height: 300px; overflow-y: auto;" id="ticket-conversation">
+                                <!-- Conversation will be loaded here -->
+                            </div>
+                            <div class="mt-3">
+                                <textarea class="form-control mb-2" placeholder="Type your reply..." rows="3" id="ticket-reply"></textarea>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-secondary me-2" id="attach-file-btn">
+                                            <i class="bi bi-paperclip"></i>
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary" id="send-reply-btn">Send Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KYC Detail Modal -->
+    <div class="modal fade" id="kycDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">KYC Verification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>User Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <p id="kyc-fullname">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Date of Birth</label>
+                                <p id="kyc-dob">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Country</label>
+                                <p id="kyc-country">Loading...</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Verification Status</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Current Status</label>
+                                <p><span class="badge" id="kyc-current-status">Loading...</span></p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Submitted On</label>
+                                <p id="kyc-submitted">Loading...</p>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Last Updated</label>
+                                <p id="kyc-updated">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6>Identity Document</h6>
+                            <div class="document-preview mb-3">
+                                <img src="" alt="ID Front" class="img-fluid rounded border" id="kyc-id-front">
+                            </div>
+                            <div class="document-preview">
+                                <img src="" alt="ID Back" class="img-fluid rounded border" id="kyc-id-back">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Proof of Address</h6>
+                            <div class="document-preview mb-3">
+                                <img src="" alt="Proof of Address" class="img-fluid rounded border" id="kyc-proof-address">
+                            </div>
+                            <h6>Selfie with Document</h6>
+                            <div class="document-preview">
+                                <img src="" alt="Selfie with ID" class="img-fluid rounded border" id="kyc-selfie">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>Verification Decision</h6>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-success" id="approve-kyc-btn">
+                                    <i class="bi bi-check-circle me-1"></i> Approve
+                                </button>
+                                <button class="btn btn-danger" id="reject-kyc-btn">
+                                    <i class="bi bi-x-circle me-1"></i> Reject
+                                </button>
+                                <button class="btn btn-outline-secondary" id="request-more-info-btn">
+                                    <i class="bi bi-info-circle me-1"></i> Request More Info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form">
+                        <div class="mb-3">
+                            <label for="add-user-fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="add-user-fullname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="add-user-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="add-user-password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-country" class="form-label">Country</label>
+                            <select class="form-select" id="add-user-country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <!-- More countries would be added here -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-wallet" class="form-label">Wallet Address (Optional)</label>
+                            <input type="text" class="form-control" id="add-user-wallet">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-status" class="form-label">Account Status</label>
+                            <select class="form-select" id="add-user-status" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-user-btn">Save User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        // Global variables
+        let adminToken = localStorage.getItem('adminToken');
+        let currentUserId = '';
+        let currentTicketId = '';
+        let currentKycId = '';
+        let socket = null;
+        let growthChart = null;
+        let userDistributionChart = null;
+
+        // Initialize the admin dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if admin is logged in
+            if (!adminToken) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize WebSocket connection
+            initWebSocket();
+
+            // Load admin profile
+            loadAdminProfile();
+
+            // Initialize navigation
+            initNavigation();
+
+            // Initialize charts
+            initCharts();
+
+            // Load dashboard data
+            loadDashboardData();
+
+            // Initialize modals
+            initModals();
+
+            // Initialize forms
+            initForms();
+
+            // Initialize event listeners
+            initEventListeners();
+        });
+
+        // Initialize WebSocket connection
+        function initWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            const wsUrl = protocol + window.location.host + '/ws/admin';
+            
+            socket = new WebSocket(wsUrl);
+
+            socket.onopen = function() {
+                console.log('WebSocket connected');
+                // Authenticate with the server
+                socket.send(JSON.stringify({
+                    type: 'auth',
+                    token: adminToken
+                }));
+            };
+
+            socket.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                handleWebSocketMessage(message);
+            };
+
+            socket.onclose = function() {
+                console.log('WebSocket disconnected');
+                // Try to reconnect after 5 seconds
+                setTimeout(initWebSocket, 5000);
+            };
+
+            socket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        // Handle WebSocket messages
+        function handleWebSocketMessage(message) {
+            switch (message.type) {
+                case 'new_user':
+                    updateUserStats();
+                    addNewUserNotification(message.data);
+                    break;
+                case 'new_trade':
+                    updateTradeStats();
+                    addNewTradeNotification(message.data);
+                    break;
+                case 'new_ticket':
+                    updateTicketStats();
+                    addNewTicketNotification(message.data);
+                    break;
+                case 'new_kyc':
+                    updateKycStats();
+                    addNewKycNotification(message.data);
+                    break;
+                case 'user_activity':
+                    if (document.getElementById('userDetailModal').classList.contains('show') && 
+                        currentUserId === message.data.userId) {
+                        updateUserActivities(currentUserId);
+                    }
+                    break;
+                case 'ticket_update':
+                    if (document.getElementById('ticketDetailModal').classList.contains('show') && 
+                        currentTicketId === message.data.ticketId) {
+                        loadTicketDetails(currentTicketId);
+                    }
+                    break;
+                case 'kyc_update':
+                    if (document.getElementById('kycDetailModal').classList.contains('show') && 
+                        currentKycId === message.data.kycId) {
+                        loadKYCDetails(currentKycId);
+                    }
+                    break;
+            }
+        }
+
+        // Load admin profile
+        function loadAdminProfile() {
+            fetch('/api/admin/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load admin profile');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('admin-username').textContent = data.name;
+                // Update avatar with admin's initials
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=7367f0&color=fff`;
+                document.querySelector('#userDropdown img').src = avatarUrl;
+            })
+            .catch(error => {
+                console.error('Error loading admin profile:', error);
+            });
+        }
+
+        // Initialize navigation
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+            const contentSections = document.querySelectorAll('.main-content > div');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => section.classList.add('d-none'));
+                    
+                    // Show the corresponding content section
+                    const targetId = this.id.replace('-link', '-content');
+                    document.getElementById(targetId).classList.remove('d-none');
+                    
+                    // Update page title
+                    const pageTitle = this.querySelector('span').textContent;
+                    document.getElementById('page-title').textContent = pageTitle;
+
+                    // Load data for the section
+                    switch(targetId) {
+                        case 'users-content':
+                            loadUsers();
+                            break;
+                        case 'trades-content':
+                            loadTrades();
+                            break;
+                        case 'support-content':
+                            loadTickets();
+                            break;
+                        case 'kyc-content':
+                            loadKYC();
+                            break;
+                        case 'logs-content':
+                            loadActivityLogs();
+                            break;
+                    }
+                });
+            });
+
+            // Toggle sidebar on mobile
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+        }
+
+        // Initialize charts
+        function initCharts() {
+            // Platform Growth Chart
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            growthChart = new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'New Users',
+                            data: [],
+                            borderColor: '#7367f0',
+                            backgroundColor: 'rgba(115, 103, 240, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Total Trades',
+                            data: [],
+                            borderColor: '#28c76f',
+                            backgroundColor: 'rgba(40, 199, 111, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // User Distribution Chart
+            const userDistCtx = document.getElementById('userDistributionChart').getContext('2d');
+            userDistributionChart = new Chart(userDistCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Verified', 'Pending KYC', 'Unverified', 'Suspended'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [
+                            '#28c76f',
+                            '#ff9f43',
+                            '#00cfe8',
+                            '#ea5455'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Load dashboard data
+        function loadDashboardData() {
+            fetch('/api/admin/stats', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load dashboard stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update stats
+                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
+                document.getElementById('active-users').textContent = data.activeUsers.toLocaleString();
+                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.userGrowthRate + '%';
+                document.getElementById('active-growth-rate').textContent = data.activeGrowthRate + '%';
+                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+
+                // Update charts
+                updateGrowthChart(data.growthData);
+                updateUserDistributionChart(data.userDistribution);
+
+                // Load recent users
+                loadRecentUsers();
+
+                // Load recent activities
+                loadRecentActivities();
+
+                // Load notifications
+                loadNotifications();
+            })
+            .catch(error => {
+                console.error('Error loading dashboard data:', error);
+            });
+        }
+
+        // Update growth chart
+        function updateGrowthChart(data) {
+            growthChart.data.labels = data.labels;
+            growthChart.data.datasets[0].data = data.users;
+            growthChart.data.datasets[1].data = data.trades;
+            growthChart.update();
+        }
+
+        // Update user distribution chart
+        function updateUserDistributionChart(data) {
+            userDistributionChart.data.datasets[0].data = [
+                data.verified,
+                data.pending,
+                data.unverified,
+                data.suspended
+            ];
+            userDistributionChart.update();
+        }
+
+        // Load recent users
+        function loadRecentUsers() {
+            fetch('/api/admin/users?limit=5', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load recent users');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('recent-users-body');
+                tbody.innerHTML = '';
+
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycStatus === 'verified' ? '28c76f' : user.kycStatus === 'pending' ? 'ff9f43' : '00cfe8'}&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${user.email || 'Wallet user'}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading recent users:', error);
+            });
+        }
+
+        // Load recent activities
+        function loadRecentActivities() {
+            fetch('/api/admin/logs?limit=5', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load recent activities');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const activityFeed = document.getElementById('activity-feed');
+                activityFeed.innerHTML = '';
+
+                data.logs.forEach(log => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+
+                    let iconClass = '';
+                    let iconBg = '';
+                    let activityText = '';
+
+                    switch(log.type) {
+                        case 'login':
+                            iconClass = 'bi-box-arrow-in-right';
+                            iconBg = 'primary';
+                            activityText = `User ${log.user.fullName} logged in`;
+                            break;
+                        case 'trade':
+                            iconClass = 'bi-currency-exchange';
+                            iconBg = 'success';
+                            activityText = `User ${log.user.fullName} completed a trade`;
+                            break;
+                        case 'withdrawal':
+                            iconClass = 'bi-cash-stack';
+                            iconBg = 'warning';
+                            activityText = `User ${log.user.fullName} requested a withdrawal`;
+                            break;
+                        case 'deposit':
+                            iconClass = 'bi-wallet2';
+                            iconBg = 'info';
+                            activityText = `User ${log.user.fullName} made a deposit`;
+                            break;
+                        default:
+                            iconClass = 'bi-activity';
+                            iconBg = 'secondary';
+                            activityText = log.description;
+                    }
+
+                    activityItem.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <div class="avatar me-3">
+                                    <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                        <i class="bi ${iconClass}"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">${activityText}</h6>
+                                    <p class="mb-0">${log.description}</p>
+                                </div>
+                            </div>
+                            <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
+                        </div>
+                    `;
+                    activityFeed.appendChild(activityItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading recent activities:', error);
+            });
+        }
+
+        // Load notifications
+        function loadNotifications() {
+            fetch('/api/admin/notifications', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load notifications');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('notifications-count').textContent = data.unreadCount;
+                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+
+                const notificationsList = document.getElementById('notifications-list');
+                notificationsList.innerHTML = '';
+
+                data.notifications.forEach(notification => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi ${notification.icon} ${notification.type === 'trade' ? 'text-success' : notification.type === 'user' ? 'text-primary' : 'text-warning'}"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="mb-0">${notification.title}</p>
+                                    <small class="text-muted">${new Date(notification.timestamp).toLocaleString()}</small>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    notificationsList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading notifications:', error);
+            });
+        }
+
+        // Load users
+        function loadUsers(page = 1, search = '', status = '', kyc = '') {
+            let url = `/api/admin/users?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (kyc) url += `&kyc=${kyc}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load users');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '';
+
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycStatus === 'verified' ? '28c76f' : user.kycStatus === 'pending' ? 'ff9f43' : '00cfe8'}&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${user.email || 'Wallet user'}</td>
+                        <td>${user.walletAddress ? user.walletAddress.substring(0, 6) + '...' + user.walletAddress.substring(user.walletAddress.length - 4) : 'N/A'}</td>
+                        <td>$${user.balance.toFixed(2)}</td>
+                        <td>
+                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${user.kycStatus === 'verified' ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
+                                ${user.kycStatus.charAt(0).toUpperCase() + user.kycStatus.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-user-btn" 
+                                    data-id="${user._id}" 
+                                    data-name="${user.fullName}" 
+                                    data-email="${user.email || ''}" 
+                                    data-wallet="${user.walletAddress || ''}" 
+                                    data-country="${user.country || ''}" 
+                                    data-status="${user.status}" 
+                                    data-kyc="${user.kycStatus}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('users-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading users:', error);
+            });
+        }
+
+        // Load trades
+        function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
+            let url = `/api/admin/trades?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (type) url += `&type=${type}`;
+            if (date) url += `&date=${date}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load trades');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('trades-table-body');
+                tbody.innerHTML = '';
+
+                data.trades.forEach(trade => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${trade._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.fullName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${trade.user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${trade.type === 'arbitrage' ? 'bg-primary' : 'bg-info'}">
+                                ${trade.type.charAt(0).toUpperCase() + trade.type.slice(1)}
+                            </span>
+                        </td>
+                        <td>$${trade.amount.toFixed(2)}</td>
+                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit.toFixed(2)}</td>
+                        <td>
+                            <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(trade.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('trades-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading trades:', error);
+            });
+        }
+
+        // Load tickets
+        function loadTickets(page = 1, search = '', status = '', priority = '') {
+            let url = `/api/admin/tickets?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (priority) url += `&priority=${priority}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load tickets');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('tickets-table-body');
+                tbody.innerHTML = '';
+
+                data.tickets.forEach(ticket => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${ticket._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user.fullName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${ticket.user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${ticket.subject}</td>
+                        <td>${ticket.category}</td>
+                        <td>
+                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
+                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
+                                ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(ticket.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
+                                    data-id="${ticket._id}" 
+                                    data-subject="${ticket.subject}" 
+                                    data-category="${ticket.category}" 
+                                    data-status="${ticket.status}" 
+                                    data-priority="${ticket.priority}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('tickets-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading tickets:', error);
+            });
+        }
+
+        // Load KYC
+        function loadKYC(page = 1, search = '', status = '') {
+            let url = `/api/admin/kyc?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load KYC');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('kyc-table-body');
+                tbody.innerHTML = '';
+
+                data.kycRequests.forEach(kyc => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.user.fullName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${kyc.user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${kyc.documentType}</td>
+                        <td>${new Date(kyc.submittedAt).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${kyc.status === 'approved' ? 'bg-success' : kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-kyc-btn" 
+                                    data-id="${kyc._id}" 
+                                    data-name="${kyc.user.fullName}" 
+                                    data-country="${kyc.user.country}" 
+                                    data-status="${kyc.status}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('kyc-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading KYC:', error);
+            });
+        }
+
+        // Load activity logs
+        function loadActivityLogs(page = 1, search = '', type = '', date = '') {
+            let url = `/api/admin/logs?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (type) url += `&type=${type}`;
+            if (date) url += `&date=${date}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load activity logs');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('logs-table-body');
+                tbody.innerHTML = '';
+
+                data.logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${log._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user.fullName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${log.user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${log.description}</td>
+                        <td>
+                            <span class="badge ${log.type === 'trade' ? 'bg-success' : log.type === 'login' ? 'bg-primary' : 'bg-secondary'}">
+                                ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
+                            </span>
+                        </td>
+                        <td>${log.ipAddress}</td>
+                        <td>${new Date(log.timestamp).toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('logs-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading activity logs:', error);
+            });
+        }
+
+        // Update pagination
+        function updatePagination(elementId, totalPages, currentPage) {
+            const pagination = document.getElementById(elementId);
+            pagination.innerHTML = '';
+
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>`;
+            pagination.appendChild(prevLi);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                pagination.appendChild(li);
+            }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>`;
+            pagination.appendChild(nextLi);
+        }
+
+        // Initialize modals
+        function initModals() {
+            // User detail modal
+            const userDetailModal = new bootstrap.Modal(document.getElementById('userDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-user-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-user-btn');
+                    currentUserId = button.getAttribute('data-id');
+                    
+                    // Load user details
+                    loadUserDetails(currentUserId);
+                    
+                    // Show modal
+                    userDetailModal.show();
+                }
+            });
+
+            // Ticket detail modal
+            const ticketDetailModal = new bootstrap.Modal(document.getElementById('ticketDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-ticket-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-ticket-btn');
+                    currentTicketId = button.getAttribute('data-id');
+                    
+                    // Load ticket details
+                    loadTicketDetails(currentTicketId);
+                    
+                    // Show modal
+                    ticketDetailModal.show();
+                }
+            });
+
+            // KYC detail modal
+            const kycDetailModal = new bootstrap.Modal(document.getElementById('kycDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-kyc-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-kyc-btn');
+                    currentKycId = button.getAttribute('data-id');
+                    
+                    // Load KYC details
+                    loadKYCDetails(currentKycId);
+                    
+                    // Show modal
+                    kycDetailModal.show();
+                }
+            });
+
+            // Add user modal
+            const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+            
+            document.getElementById('add-user-btn').addEventListener('click', function() {
+                addUserModal.show();
+            });
+        }
+
+        // Load user details
+        function loadUserDetails(userId) {
+            fetch(`/api/admin/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load user details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update avatar
+                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.fullName)}&background=7367f0&color=fff`;
+                
+                // Update user info
+                document.getElementById('user-detail-name').textContent = data.fullName;
+                document.getElementById('user-detail-email').textContent = data.email || 'Wallet user';
+                document.getElementById('user-detail-wallet').textContent = data.walletAddress || 'Not connected';
+                document.getElementById('user-detail-country').textContent = data.country || 'Not specified';
+                document.getElementById('user-detail-balance').textContent = '$' + data.balance.toFixed(2);
+                document.getElementById('user-detail-lastlogin').textContent = data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'Never';
+                
+                // Update status badge
+                const statusBadge = document.getElementById('user-detail-status');
+                statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                statusBadge.className = 'badge ' + (
+                    data.status === 'active' ? 'bg-success' : 
+                    data.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
+                );
+                
+                // Update KYC badge
+                const kycBadge = document.getElementById('user-detail-kyc');
+                kycBadge.textContent = data.kycStatus.charAt(0).toUpperCase() + data.kycStatus.slice(1);
+                kycBadge.className = 'badge ' + (
+                    data.kycStatus === 'verified' ? 'bg-success' : 
+                    data.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
+                );
+                
+                // Load user activities
+                updateUserActivities(userId);
+            })
+            .catch(error => {
+                console.error('Error loading user details:', error);
+            });
+        }
+
+        // Update user activities
+        function updateUserActivities(userId) {
+            fetch(`/api/admin/users/${userId}/activities`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load user activities');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('user-activity-table');
+                tbody.innerHTML = '';
+
+                data.activities.forEach(activity => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${activity.description}</td>
+                        <td>${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}</td>
+                        <td>${activity.ipAddress}</td>
+                        <td>${new Date(activity.timestamp).toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading user activities:', error);
+            });
+        }
+
+        // Load ticket details
+        function loadTicketDetails(ticketId) {
+            fetch(`/api/admin/tickets/${ticketId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ticket details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update ticket info
+                document.getElementById('ticket-id').textContent = data._id.substring(0, 8);
+                document.getElementById('ticket-subject').textContent = data.subject;
+                document.getElementById('ticket-category').textContent = data.category;
+                document.getElementById('ticket-description').textContent = data.description;
+                document.getElementById('ticket-date').textContent = new Date(data.createdAt).toLocaleString();
+                
+                // Update status and priority selects
+                document.getElementById('ticket-status-select').value = data.status;
+                document.getElementById('ticket-priority-select').value = data.priority;
+                
+                // Update attachments
+                const attachmentsContainer = document.getElementById('ticket-attachments');
+                attachmentsContainer.innerHTML = '';
+                
+                if (data.attachments && data.attachments.length > 0) {
+                    data.attachments.forEach(attachment => {
+                        const link = document.createElement('a');
+                        link.href = attachment.url;
+                        link.className = 'btn btn-sm btn-outline-secondary me-2';
+                        link.target = '_blank';
+                        link.innerHTML = `<i class="bi bi-file-earmark-text me-1"></i> ${attachment.name}`;
+                        attachmentsContainer.appendChild(link);
+                    });
+                } else {
+                    attachmentsContainer.innerHTML = '<p>No attachments</p>';
+                }
+                
+                // Update conversation
+                updateTicketConversation(ticketId);
+            })
+            .catch(error => {
+                console.error('Error loading ticket details:', error);
+            });
+        }
+
+        // Update ticket conversation
+        function updateTicketConversation(ticketId) {
+            fetch(`/api/admin/tickets/${ticketId}/conversation`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ticket conversation');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const conversationContainer = document.getElementById('ticket-conversation');
+                conversationContainer.innerHTML = '';
+
+                data.messages.forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `chat-message mb-3 ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
+                    
+                    messageDiv.innerHTML = `
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong>${message.sender === 'admin' ? 'You' : message.userName}</strong>
+                            <small class="text-muted">${new Date(message.timestamp).toLocaleString()}</small>
+                        </div>
+                        <div class="p-3 ${message.sender === 'admin' ? 'bg-primary text-white rounded' : 'bg-light rounded'}">
+                            <p class="mb-0">${message.content}</p>
+                        </div>
+                    `;
+                    
+                    conversationContainer.appendChild(messageDiv);
+                });
+                
+                // Scroll to bottom
+                conversationContainer.scrollTop = conversationContainer.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error loading ticket conversation:', error);
+            });
+        }
+
+        // Load KYC details
+        function loadKYCDetails(kycId) {
+            fetch(`/api/admin/kyc/${kycId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load KYC details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update user info
+                document.getElementById('kyc-fullname').textContent = data.user.fullName;
+                document.getElementById('kyc-dob').textContent = data.dateOfBirth ? new Date(data.dateOfBirth).toLocaleDateString() : 'Not provided';
+                document.getElementById('kyc-country').textContent = data.user.country || 'Not provided';
+                document.getElementById('kyc-submitted').textContent = new Date(data.submittedAt).toLocaleString();
+                document.getElementById('kyc-updated').textContent = data.updatedAt ? new Date(data.updatedAt).toLocaleString() : 'Not updated';
+                
+                // Update status badge
+                const statusBadge = document.getElementById('kyc-current-status');
+                statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                statusBadge.className = 'badge ' + (
+                    data.status === 'approved' ? 'bg-success' : 
+                    data.status === 'pending' ? 'bg-warning' : 'bg-danger'
+                );
+                
+                // Update document images
+                document.getElementById('kyc-id-front').src = data.idFront || 'https://via.placeholder.com/400x250?text=ID+Front';
+                document.getElementById('kyc-id-back').src = data.idBack || 'https://via.placeholder.com/400x250?text=ID+Back';
+                document.getElementById('kyc-proof-address').src = data.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
+                document.getElementById('kyc-selfie').src = data.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
+            })
+            .catch(error => {
+                console.error('Error loading KYC details:', error);
+            });
+        }
+
+        // Initialize forms
+        function initForms() {
+            // Broadcast form
+            document.getElementById('broadcast-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('broadcast-title').value;
+                const message = document.getElementById('broadcast-message').value;
+                const type = document.getElementById('broadcast-type').value;
+                const audience = document.getElementById('broadcast-audience').value;
+                
+                fetch('/api/admin/broadcast', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + adminToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        message,
+                        type,
+                        audience
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to send broadcast');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Show success message
+                    alert('Broadcast message has been sent successfully!');
+                    
+                    // Reset form
+                    this.reset();
+                })
+                .catch(error => {
+                    console.error('Error sending broadcast:', error);
+                    alert('Failed to send broadcast: ' + error.message);
+                });
+            });
+
+            // Add user form
+            document.getElementById('save-user-btn').addEventListener('click', function() {
+                const form = document.getElementById('add-user-form');
+                const fullName = document.getElementById('add-user-fullname').value;
+                const email = document.getElementById('add-user-email').value;
+                const password = document.getElementById('add-user-password').value;
+                const country = document.getElementById('add-user-country').value;
+                const wallet = document.getElementById('add-user-wallet').value;
+                const status = document.getElementById('add-user-status').value;
+                
+                fetch('/api/admin/users', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + adminToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        password,
+                        country,
+                        walletAddress: wallet,
+                        status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add user');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Show success message
+                    alert('User has been added successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Reload users
+                    loadUsers();
+                })
+                .catch(error => {
+                    console.error('Error adding user:', error);
+                    alert('Failed to add user: ' + error.message);
+                });
+            });
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Pagination
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.page-link')) {
+                    e.preventDefault();
+                    const page = parseInt(e.target.getAttribute('data-page'));
+                    const paginationId = e.target.closest('.pagination').id;
+                    
+                    switch(paginationId) {
+                        case 'users-pagination':
+                            const userSearch = document.getElementById('user-search').value;
+                            const userStatus = document.getElementById('user-status-filter').value;
+                            const userKYC = document.getElementById('user-kyc-filter').value;
+                            loadUsers(page, userSearch, userStatus, userKYC);
+                            break;
+                        case 'trades-pagination':
+                            const tradeSearch = document.getElementById('trade-search').value;
+                            const tradeStatus = document.getElementById('trade-status-filter').value;
+                            const tradeType = document.getElementById('trade-type-filter').value;
+                            const tradeDate = document.getElementById('trade-date-filter').value;
+                            loadTrades(page, tradeSearch, tradeStatus, tradeType, tradeDate);
+                            break;
+                        case 'tickets-pagination':
+                            const ticketSearch = document.getElementById('ticket-search').value;
+                            const ticketStatus = document.getElementById('ticket-status-filter').value;
+                            const ticketPriority = document.getElementById('ticket-priority-filter').value;
+                            loadTickets(page, ticketSearch, ticketStatus, ticketPriority);
+                            break;
+                        case 'kyc-pagination':
+                            const kycSearch = document.getElementById('kyc-search').value;
+                            const kycStatus = document.getElementById('kyc-status-filter').value;
+                            loadKYC(page, kycSearch, kycStatus);
+                            break;
+                        case 'logs-pagination':
+                            const logSearch = document.getElementById('log-search').value;
+                            const logType = document.getElementById('log-type-filter').value;
+                            const logDate = document.getElementById('log-date-filter').value;
+                            loadActivityLogs(page, logSearch, logType, logDate);
+                            break;
+                    }
+                }
+            });
+
+            // Search and filter
+            document.getElementById('search-users-btn').addEventListener('click', function() {
+                const search = document.getElementById('user-search').value;
+                const status = document.getElementById('user-status-filter').value;
+                const kyc = document.getElementById('user-kyc-filter').value;
+                loadUsers(1, search, status, kyc);
+            });
+
+            document.getElementById('search-trades-btn').addEventListener('click', function() {
+                const search = document.getElementById('trade-search').value;
+                const status = document.getElementById('trade-status-filter').value;
+                const type = document.getElementById('trade-type-filter').value;
+                const date = document.getElementById('trade-date-filter').value;
+                loadTrades(1, search, status, type, date);
+            });
+
+            document.getElementById('search-tickets-btn').addEventListener('click', function() {
+                const search = document.getElementById('ticket-search').value;
+                const status = document.getElementById('ticket-status-filter').value;
+                const priority = document.getElementById('ticket-priority-filter').value;
+                loadTickets(1, search, status, priority);
+            });
+
+            document.getElementById('search-kyc-btn').addEventListener('click', function() {
+                const search = document.getElementById('kyc-search').value;
+                const status = document.getElementById('kyc-status-filter').value;
+                loadKYC(1, search, status);
+            });
+
+            document.getElementById('search-logs-btn').addEventListener('click', function() {
+                const search = document.getElementById('log-search').value;
+                const type = document.getElementById('log-type-filter').value;
+                const date = document.getElementById('log-date-filter').value;
+                loadActivityLogs(1, search, type, date);
+            });
+
+            // View all buttons
+            document.getElementById('view-all-users').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('users-link').click();
+            });
+
+            document.getElementById('view-all-activities').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('logs-link').click();
+            });
+
+            // Ticket actions
+            document.getElementById('assign-ticket-btn').addEventListener('click', function() {
+                assignTicketToMe();
+            });
+
+            document.getElementById('save-ticket-btn').addEventListener('click', function() {
+                updateTicketStatus();
+            });
+
+            document.getElementById('send-reply-btn').addEventListener('click', function() {
+                sendTicketReply();
+            });
+
+            // KYC actions
+            document.getElementById('approve-kyc-btn').addEventListener('click', function() {
+                approveKYC(true);
+            });
+
+            document.getElementById('reject-kyc-btn').addEventListener('click', function() {
+                approveKYC(false);
+            });
+
+            document.getElementById('request-more-info-btn').addEventListener('click', function() {
+                requestMoreKYCInfo();
+            });
+
+            // User actions
+            document.getElementById('message-user-btn').addEventListener('click', function() {
+                alert('This feature will be implemented in the next version');
+            });
+
+            document.getElementById('reset-password-btn').addEventListener('click', function() {
+                resetUserPassword();
+            });
+
+            document.getElementById('suspend-user-btn').addEventListener('click', function() {
+                toggleUserStatus();
+            });
+
+            // Export buttons
+            document.getElementById('export-users-btn').addEventListener('click', function() {
+                exportData('users');
+            });
+
+            document.getElementById('export-trades-btn').addEventListener('click', function() {
+                exportData('trades');
+            });
+
+            document.getElementById('export-tickets-btn').addEventListener('click', function() {
+                exportData('tickets');
+            });
+
+            document.getElementById('export-logs-btn').addEventListener('click', function() {
+                exportData('logs');
+            });
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('adminToken');
+                window.location.href = 'login.html';
+            });
+        }
+
+        // Assign ticket to me
+        function assignTicketToMe() {
+            fetch(`/api/admin/tickets/${currentTicketId}/assign`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to assign ticket');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Ticket has been assigned to you');
+                loadTicketDetails(currentTicketId);
+            })
+            .catch(error => {
+                console.error('Error assigning ticket:', error);
+                alert('Failed to assign ticket: ' + error.message);
+            });
+        }
+
+        // Update ticket status
+        function updateTicketStatus() {
+            const status = document.getElementById('ticket-status-select').value;
+            const priority = document.getElementById('ticket-priority-select').value;
+            
+            fetch(`/api/admin/tickets/${currentTicketId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status,
+                    priority
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update ticket');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Ticket has been updated successfully');
+                loadTicketDetails(currentTicketId);
+                loadTickets(); // Refresh tickets list
+            })
+            .catch(error => {
+                console.error('Error updating ticket:', error);
+                alert('Failed to update ticket: ' + error.message);
+            });
+        }
+
+        // Send ticket reply
+        function sendTicketReply() {
+            const message = document.getElementById('ticket-reply').value;
+            
+            if (!message.trim()) {
+                alert('Please enter a message');
+                return;
+            }
+            
+            fetch(`/api/admin/tickets/${currentTicketId}/reply`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send reply');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear reply textarea
+                document.getElementById('ticket-reply').value = '';
+                
+                // Update conversation
+                updateTicketConversation(currentTicketId);
+            })
+            .catch(error => {
+                console.error('Error sending reply:', error);
+                alert('Failed to send reply: ' + error.message);
+            });
+        }
+
+        // Approve or reject KYC
+        function approveKYC(approve) {
+            fetch(`/api/admin/kyc/${currentKycId}/approve`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    approve
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update KYC status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(`KYC has been ${approve ? 'approved' : 'rejected'}`);
+                loadKYCDetails(currentKycId);
+                loadKYC(); // Refresh KYC list
+            })
+            .catch(error => {
+                console.error('Error updating KYC status:', error);
+                alert('Failed to update KYC status: ' + error.message);
+            });
+        }
+
+        // Request more KYC info
+        function requestMoreKYCInfo() {
+            const reason = prompt('Please specify what additional information is required:');
+            
+            if (!reason) {
+                return;
+            }
+            
+            fetch(`/api/admin/kyc/${currentKycId}/request-info`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reason
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to request more info');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Request for more information has been sent');
+                loadKYCDetails(currentKycId);
+            })
+            .catch(error => {
+                console.error('Error requesting more info:', error);
+                alert('Failed to request more info: ' + error.message);
+            });
+        }
+
+        // Reset user password
+        function resetUserPassword() {
+            const newPassword = prompt('Enter new password for the user:');
+            
+            if (!newPassword) {
+                return;
+            }
+            
+            fetch(`/api/admin/users/${currentUserId}/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newPassword
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to reset password');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Password has been reset successfully');
+            })
+            .catch(error => {
+                console.error('Error resetting password:', error);
+                alert('Failed to reset password: ' + error.message);
+            });
+        }
+
+        // Toggle user status
+        function toggleUserStatus() {
+            const currentStatus = document.getElementById('user-detail-status').textContent.toLowerCase();
+            const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+            const confirmMessage = `Are you sure you want to ${newStatus === 'active' ? 'activate' : 'suspend'} this user?`;
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            fetch(`/api/admin/users/${currentUserId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update user status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(`User has been ${newStatus === 'active' ? 'activated' : 'suspended'}`);
+                loadUserDetails(currentUserId);
+                loadUsers(); // Refresh users list
+            })
+            .catch(error => {
+                console.error('Error updating user status:', error);
+                alert('Failed to update user status: ' + error.message);
+            });
+        }
+
+        // Export data
+        function exportData(type) {
+            let endpoint = '';
+            
+            switch(type) {
+                case 'users':
+                    endpoint = '/api/admin/users/export';
+                    break;
+                case 'trades':
+                    endpoint = '/api/admin/trades/export';
+                    break;
+                case 'tickets':
+                    endpoint = '/api/admin/tickets/export';
+                    break;
+                case 'logs':
+                    endpoint = '/api/admin/logs/export';
+                    break;
+                default:
+                    return;
+            }
+            
+            fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to export data');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            })
+            .catch(error => {
+                console.error(`Error exporting ${type}:`, error);
+                alert(`Failed to export ${type}: ` + error.message);
+            });
+        }
+
+        // Update user stats
+        function updateUserStats() {
+            fetch('/api/admin/stats/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update user stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
+                document.getElementById('active-users').textContent = data.activeUsers.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.growthRate + '%';
+                
+                // Update chart if on dashboard
+                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
+                    updateGrowthChart(data.chartData);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating user stats:', error);
+            });
+        }
+
+        // Update trade stats
+        function updateTradeStats() {
+            fetch('/api/admin/stats/trades', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update trade stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
+                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+                
+                // Update chart if on dashboard
+                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
+                    updateGrowthChart(data.chartData);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating trade stats:', error);
+            });
+        }
+
+        // Update ticket stats
+        function updateTicketStats() {
+            fetch('/api/admin/stats/tickets', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update ticket stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                
+                // Update notifications if needed
+                loadNotifications();
+            })
+            .catch(error => {
+                console.error('Error updating ticket stats:', error);
+            });
+        }
+
+        // Update KYC stats
+        function updateKycStats() {
+            fetch('/api/admin/stats/kyc', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + adminToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update KYC stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                
+                // Update user distribution chart if on dashboard
+                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
+                    updateUserDistributionChart(data.userDistribution);
+                }
+                
+                // Update notifications if needed
+                loadNotifications();
+            })
+            .catch(error => {
+                console.error('Error updating KYC stats:', error);
+            });
+        }
+
+        // Add new user notification
+        function addNewUserNotification(user) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-plus text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New user registered: ${user.fullName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateUserStats();
+        }
+
+        // Add new trade notification
+        function addNewTradeNotification(trade) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-currency-exchange text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New trade completed: $${trade.amount.toFixed(2)}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTradeStats();
+        }
+
+        // Add new ticket notification
+        function addNewTicketNotification(ticket) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingTicketsCount = document.getElementById('pending-tickets-count');
+            const currentTicketsCount = parseInt(pendingTicketsCount.textContent);
+            pendingTicketsCount.textContent = currentTicketsCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-ticket-perforated text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New support ticket: ${ticket.subject}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTicketStats();
+        }
+
+        // Add new KYC notification
+        function addNewKycNotification(kyc) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingKycCount = document.getElementById('pending-kyc-count');
+            const currentKycCount = parseInt(pendingKycCount.textContent);
+            pendingKycCount.textContent = currentKycCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-check text-info"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New KYC submission: ${kyc.user.fullName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateKycStats();
+        }
+    </script>
+</body>
+</html>

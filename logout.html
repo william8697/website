@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logout - Crypto Trading Market</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body, html {
+      height: 100%;
+      color: #0c0b0b;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .background-container video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+    
+    .logout-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .logo-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    
+    .logo-title video {
+      width: 60px;
+      height: 60px;
+      margin-right: 15px;
+    }
+    
+    .logo-title h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    
+    .logout-message {
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+    
+    .logout-message h2 {
+      font-size: 32px;
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+    
+    .logout-message p {
+      font-size: 18px;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      max-width: 300px;
+      height: 6px;
+      background: rgba(46, 125, 50, 0.2);
+      border-radius: 3px;
+      margin-bottom: 30px;
+      overflow: hidden;
+    }
+    
+    .progress {
+      height: 100%;
+      background: #2e7d32;
+      width: 0%;
+      animation: progress 5s linear forwards;
+    }
+    
+    @keyframes progress {
+      to { width: 100%; }
+    }
+    
+    .login-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      background: #2e7d32;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .login-btn:hover {
+      background: #1b5e20;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    }
+    
+    .login-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    footer {
+      position: absolute;
+      bottom: 20px;
+      text-align: center;
+      width: 100%;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <div class="logout-container">
+    <div class="logo-title">
+      <video autoplay muted loop>
+        <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      </video>
+      <h1>Crypto Trading Market</h1>
+    </div>
+    
+    <div class="logout-message">
+      <h2>You've Been Logged Out</h2>
+      <p>Thank you for using Crypto Trading Market. Your session has been securely terminated.</p>
+    </div>
+    
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+    
+    <button class="login-btn" id="loginBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15M10 17L15 12M15 12L10 7M15 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Return to Login</span>
+    </button>
+  </div>
+
+  <footer>
+    © 2025 Crypto Trading Market. All Rights Reserved
+  </footer>
+
+  <script>
+    // Ensure video plays on mobile
+    document.addEventListener('DOMContentLoaded', () => {
+      const videos = document.querySelectorAll('video');
+      videos.forEach(video => {
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.play().catch(e => console.log('Video play prevented:', e));
+      });
+      
+      // Clear user data from localStorage
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userSettings');
+      
+      // Redirect to login page after 5 seconds
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 5000);
+      
+      // Manual redirect button
+      document.getElementById('loginBtn').addEventListener('click', () => {
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>

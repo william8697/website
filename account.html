@@ -1,0 +1,982 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Crypto Trading Market</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+    
+    body, html {
+      height: 100%;
+      color: #0c0b0b;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .background-container video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(12, 12, 12, 0.85);
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-title video {
+      width: 50px;
+      height: 50px;
+      margin-right: 15px;
+    }
+    
+    .logo-title h1 {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2e7d32;
+      cursor: pointer;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .nav a {
+      color: #2e7d32;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+    
+    .nav a:hover {
+      background: rgba(232, 245, 233, 0.7);
+    }
+    
+    .section {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      margin: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+    }
+    
+    .section:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .section-header h2 {
+      color: #2e7d32;
+    }
+    
+    .settings-container {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 15px 60px;
+    }
+    
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 15px;
+    }
+    
+    .settings-card {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .settings-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .settings-card h3 {
+      color: #2e7d32;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(46, 125, 50, 0.3);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .form-group input, 
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .form-row .form-group {
+      flex: 1;
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-primary {
+      background: #2e7d32;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #1b5e20;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid #2e7d32;
+      color: #2e7d32;
+    }
+    
+    .btn-outline:hover {
+      background: rgba(46, 125, 50, 0.1);
+    }
+    
+    .btn-danger {
+      background: #c62828;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #8e0000;
+    }
+    
+    .security-notice {
+      background: rgba(46, 125, 50, 0.1);
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+      border-left: 4px solid #2e7d32;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .status-success {
+      background: rgba(46, 125, 50, 0.2);
+      color: #2e7d32;
+    }
+    
+    .status-warning {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffa000;
+    }
+    
+    .status-danger {
+      background: rgba(198, 40, 40, 0.2);
+      color: #c62828;
+    }
+    
+    .kyc-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .document-upload {
+      border: 2px dashed #ddd;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    
+    .document-upload:hover {
+      border-color: #2e7d32;
+    }
+    
+    .document-preview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background: rgba(255,255,255,0.95);
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    
+    .close-modal {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #2e7d32;
+    }
+    
+    /* Success message */
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 1001;
+      text-align: center;
+      display: none;
+      max-width: 400px;
+    }
+    
+    .success-message h3 {
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+    
+    .success-message p {
+      margin-bottom: 20px;
+    }
+    
+    .success-message button {
+      padding: 10px 20px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    /* Error message */
+    .error-message {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #c62828;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1001;
+      display: none;
+      animation: fadeInOut 3s ease-in-out;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; top: 0; }
+      10% { opacity: 1; top: 20px; }
+      90% { opacity: 1; top: 20px; }
+      100% { opacity: 0; top: 0; }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+      
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .settings-container {
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <video autoplay muted loop playsinline>
+      <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" id="errorMessage"></div>
+
+  <header>
+    <div class="logo-title">
+      <video autoplay muted loop>
+        <source src="https://dl.dropboxusercontent.com/scl/fi/grduhrszolyx2ipyvjm64/Logo.mp4?rlkey=z9xijvc8x9cpjs7o2dq3r533b&st=iuyj95p2" type="video/mp4">
+      </video>
+      <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
+    </div>
+    <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="index.html">Home</a>
+      <a href="account.html">Account</a>
+      <a href="settings.html" style="background: rgba(232, 245, 233, 0.3);">Settings</a>
+      <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+    </div>
+  </header>
+
+  <div class="settings-container">
+    <div class="settings-grid">
+      <!-- Account Settings Card -->
+      <div class="settings-card">
+        <h3>Account Settings</h3>
+        
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="userEmail" value="user@example.com" readonly>
+        </div>
+        
+        <div class="form-group">
+          <label>Account Status</label>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="status status-success">Verified</span>
+            <span style="font-size: 0.9rem; color: #666;">Last login: <span id="lastLogin">Today at 14:30</span></span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Account Creation Date</label>
+          <input type="text" id="accountCreated" value="May 15, 2025" readonly>
+        </div>
+        
+        <div class="security-notice">
+          <h4>Security Notice</h4>
+          <p>For your security, please ensure your account information is kept up to date and never share your password with anyone.</p>
+        </div>
+        
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="logoutUser()">Logout</button>
+        </div>
+      </div>
+      
+      <!-- KYC Verification Card -->
+      <div class="settings-card">
+        <h3>KYC Verification</h3>
+        
+        <div class="kyc-status">
+          <span class="status status-warning">Pending Verification</span>
+          <span style="font-size: 0.9rem; color: #666;">Complete KYC for full access</span>
+        </div>
+        
+        <div class="form-group">
+          <label>Full Legal Name</label>
+          <input type="text" id="kycName" placeholder="As shown on your ID">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" id="kycDob">
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select id="kycCountry">
+              <option value="">Select Country</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="JP">Japan</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" id="kycAddress1" placeholder="Street address">
+          <input type="text" id="kycAddress2" placeholder="Apartment, suite, etc." style="margin-top: 8px;">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" id="kycCity">
+          </div>
+          <div class="form-group">
+            <label>Postal Code</label>
+            <input type="text" id="kycPostalCode">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>ID Document Type</label>
+          <select id="kycIdType">
+            <option value="">Select Document Type</option>
+            <option value="passport">Passport</option>
+            <option value="drivers_license">Driver's License</option>
+            <option value="national_id">National ID</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>ID Document Number</label>
+          <input type="text" id="kycIdNumber" placeholder="Document number">
+        </div>
+        
+        <div class="form-group">
+          <label>Upload ID Document (Front)</label>
+          <div class="document-upload" onclick="document.getElementById('kycIdFront').click()">
+            <p>Click to upload or drag and drop</p>
+            <p style="font-size: 0.8rem; color: #666;">JPG, PNG or PDF (Max 5MB)</p>
+            <img id="kycIdFrontPreview" class="document-preview">
+          </div>
+          <input type="file" id="kycIdFront" accept="image/*,.pdf" style="display: none;" onchange="previewDocument('kycIdFront', 'kycIdFrontPreview')">
+        </div>
+        
+        <div class="form-group">
+          <label>Upload ID Document (Back)</label>
+          <div class="document-upload" onclick="document.getElementById('kycIdBack').click()">
+            <p>Click to upload or drag and drop</p>
+            <p style="font-size: 0.8rem; color: #666;">JPG, PNG or PDF (Max 5MB)</p>
+            <img id="kycIdBackPreview" class="document-preview">
+          </div>
+          <input type="file" id="kycIdBack" accept="image/*,.pdf" style="display: none;" onchange="previewDocument('kycIdBack', 'kycIdBackPreview')">
+        </div>
+        
+        <div class="form-group">
+          <label>Selfie with ID and Note</label>
+          <div class="document-upload" onclick="document.getElementById('kycSelfie').click()">
+            <p>Click to upload or drag and drop</p>
+            <p style="font-size: 0.8rem; color: #666;">JPG or PNG (Max 5MB)</p>
+            <img id="kycSelfiePreview" class="document-preview">
+          </div>
+          <input type="file" id="kycSelfie" accept="image/*" style="display: none;" onchange="previewDocument('kycSelfie', 'kycSelfiePreview')">
+          <p style="font-size: 0.8rem; color: #666;">Hold your ID next to your face with a note saying "Crypto Trading Market" and today's date</p>
+        </div>
+        
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="submitKyc()">Submit Verification</button>
+        </div>
+      </div>
+      
+      <!-- Password Change Card -->
+      <div class="settings-card">
+        <h3>Change Password</h3>
+        
+        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" id="currentPassword" placeholder="Enter your current password">
+        </div>
+        
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" id="newPassword" placeholder="Enter your new password">
+        </div>
+        
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input type="password" id="confirmPassword" placeholder="Confirm your new password">
+        </div>
+        
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+        </div>
+        
+        <div style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+          Password requirements: Minimum 8 characters, at least one uppercase letter, one number, and one special character.
+        </div>
+      </div>
+      
+      <!-- Preferences Card -->
+      <div class="settings-card">
+        <h3>Preferences</h3>
+        
+        <div class="form-group">
+          <label>Preferred Currency</label>
+          <select id="preferredCurrency">
+            <option value="USD">US Dollar (USD)</option>
+            <option value="EUR">Euro (EUR)</option>
+            <option value="GBP">British Pound (GBP)</option>
+            <option value="JPY">Japanese Yen (JPY)</option>
+            <option value="BTC">Bitcoin (BTC)</option>
+            <option value="ETH">Ethereum (ETH)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Language</label>
+          <select id="languagePreference">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Theme</label>
+          <select id="themePreference">
+            <option value="light">Light Theme</option>
+            <option value="dark">Dark Theme</option>
+            <option value="system">System Default</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="emailNotifications" checked> Email Notifications
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="smsNotifications"> SMS Notifications
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="twoFactorAuth"> Two-Factor Authentication (2FA)
+          </label>
+        </div>
+        
+        <div class="form-group">
+          <button class="btn btn-primary" onclick="savePreferences()">Save Preferences</button>
+        </div>
+      </div>
+      
+      <!-- Advanced Settings Card -->
+      <div class="settings-card">
+        <h3>Advanced Settings</h3>
+        
+        <div class="form-group">
+          <label>API Key</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="apiKey" value="sk_live_***********" readonly>
+            <button class="btn btn-outline" onclick="regenerateApiKey()">Regenerate</button>
+          </div>
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+            Keep your API key secure. Do not share it with anyone.
+          </p>
+        </div>
+        
+        <div class="form-group">
+          <label>Export Account Data</label>
+          <button class="btn btn-outline" onclick="exportAccountData()">Request Data Export</button>
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+            You can request a complete export of your account data.
+          </p>
+        </div>
+        
+        <div class="form-group">
+          <label>Delete Account</label>
+          <button class="btn btn-danger" onclick="showDeleteAccountModal()">Delete Account</button>
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">
+            Warning: This action is irreversible and will permanently delete all your data.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Crypto Trading Market. All Rights Reserved
+  </footer>
+
+  <!-- Delete Account Modal -->
+  <div id="deleteAccountModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeModal('deleteAccountModal')">&times;</span>
+      <h2>Delete Account</h2>
+      
+      <div style="margin-bottom: 20px;">
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+        <p style="color: #c62828; font-weight: bold; margin-top: 10px;">
+          All your data, including transaction history and balances, will be permanently deleted.
+        </p>
+      </div>
+      
+      <div class="form-group">
+        <label>Enter your password to confirm</label>
+        <input type="password" id="deleteAccountPassword" placeholder="Enter your password">
+      </div>
+      
+      <div class="form-group">
+        <button class="btn btn-danger" onclick="deleteAccount()">Permanently Delete Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="success-message" id="successMessage">
+    <h3 id="successTitle">Success!</h3>
+    <p id="successText"></p>
+    <button onclick="closeSuccess()">Continue</button>
+  </div>
+
+  <script>
+    // User state
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    let kycStatus = localStorage.getItem('kycStatus') || 'pending';
+    
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!currentUser) {
+        window.location.href = 'login.html';
+        return;
+      }
+      
+      // Load user settings
+      loadUserSettings();
+      updateKYCStatus();
+      
+      // Ensure video plays on mobile
+      const videos = document.querySelectorAll('video');
+      videos.forEach(video => {
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.play().catch(e => console.log('Video play prevented:', e));
+      });
+    });
+
+    // Load user settings from localStorage or backend
+    function loadUserSettings() {
+      const userSettings = JSON.parse(localStorage.getItem('userSettings')) || {
+        preferredCurrency: 'USD',
+        language: 'en',
+        theme: 'light',
+        emailNotifications: true,
+        smsNotifications: false,
+        twoFactorAuth: false,
+        lastLogin: new Date().toLocaleString()
+      };
+      
+      // Update form fields
+      document.getElementById('userEmail').value = currentUser?.email || 'user@example.com';
+      document.getElementById('lastLogin').textContent = userSettings.lastLogin;
+      document.getElementById('accountCreated').value = new Date(currentUser?.createdAt || Date.now()).toLocaleDateString();
+      document.getElementById('preferredCurrency').value = userSettings.preferredCurrency;
+      document.getElementById('languagePreference').value = userSettings.language;
+      document.getElementById('themePreference').value = userSettings.theme;
+      document.getElementById('emailNotifications').checked = userSettings.emailNotifications;
+      document.getElementById('smsNotifications').checked = userSettings.smsNotifications;
+      document.getElementById('twoFactorAuth').checked = userSettings.twoFactorAuth;
+    }
+
+    // Update KYC status display
+    function updateKYCStatus() {
+      const kycStatusElement = document.querySelector('.kyc-status .status');
+      
+      if (kycStatus === 'verified') {
+        kycStatusElement.textContent = 'Verified';
+        kycStatusElement.className = 'status status-success';
+        document.querySelector('.kyc-status span:last-child').textContent = 'Your account is fully verified';
+      } else if (kycStatus === 'pending') {
+        kycStatusElement.textContent = 'Pending Verification';
+        kycStatusElement.className = 'status status-warning';
+      } else if (kycStatus === 'rejected') {
+        kycStatusElement.textContent = 'Verification Rejected';
+        kycStatusElement.className = 'status status-danger';
+      }
+    }
+
+    // Preview uploaded document
+    function previewDocument(inputId, previewId) {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // Submit KYC verification
+    function submitKyc() {
+      const name = document.getElementById('kycName').value;
+      const dob = document.getElementById('kycDob').value;
+      const country = document.getElementById('kycCountry').value;
+      const address1 = document.getElementById('kycAddress1').value;
+      const idType = document.getElementById('kycIdType').value;
+      const idNumber = document.getElementById('kycIdNumber').value;
+      const idFront = document.getElementById('kycIdFront').files[0];
+      const idBack = document.getElementById('kycIdBack').files[0];
+      const selfie = document.getElementById('kycSelfie').files[0];
+      
+      // Basic validation
+      if (!name || !dob || !country || !address1 || !idType || !idNumber || !idFront || !selfie) {
+        showError('Please fill in all required fields and upload all required documents');
+        return;
+      }
+      
+      // In a real app, this would upload files to backend and submit KYC data
+      // For demo, we'll simulate KYC submission
+      setTimeout(() => {
+        // Save KYC data to localStorage
+        const kycData = {
+          name,
+          dob,
+          country,
+          address1,
+          idType,
+          idNumber,
+          submittedAt: new Date().toISOString()
+        };
+        localStorage.setItem('kycData', JSON.stringify(kycData));
+        
+        // Update status to pending (in a real app, backend would verify)
+        kycStatus = 'pending';
+        localStorage.setItem('kycStatus', kycStatus);
+        updateKYCStatus();
+        
+        showSuccessMessage('KYC Submitted', 'Your verification documents have been submitted successfully. Verification typically takes 1-3 business days.');
+      }, 1500);
+    }
+
+    // Change password
+    function changePassword() {
+      const currentPassword = document.getElementById('currentPassword').value;
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        showError('Please fill in all password fields');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        showError('New passwords do not match');
+        return;
+      }
+      
+      if (newPassword.length < 8) {
+        showError('Password must be at least 8 characters long');
+        return;
+      }
+      
+      if (!/[A-Z]/.test(newPassword) || !/[0-9]/.test(newPassword) || !/[^A-Za-z0-9]/.test(newPassword)) {
+        showError('Password must contain at least one uppercase letter, one number, and one special character');
+        return;
+      }
+      
+      // In a real app, this would call your Node.js backend to verify current password and update
+      // For demo, we'll simulate a successful password change
+      setTimeout(() => {
+        // Clear password fields
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        
+        showSuccessMessage('Password Changed', 'Your password has been updated successfully.');
+      }, 1000);
+    }
+
+    // Save preferences
+    function savePreferences() {
+      const preferences = {
+        preferredCurrency: document.getElementById('preferredCurrency').value,
+        language: document.getElementById('languagePreference').value,
+        theme: document.getElementById('themePreference').value,
+        emailNotifications: document.getElementById('emailNotifications').checked,
+        smsNotifications: document.getElementById('smsNotifications').checked,
+        twoFactorAuth: document.getElementById('twoFactorAuth').checked,
+        lastLogin: new Date().toLocaleString()
+      };
+      
+      // In a real app, this would call your Node.js backend to save preferences
+      // For demo, we'll save to localStorage
+      localStorage.setItem('userSettings', JSON.stringify(preferences));
+      
+      showSuccessMessage('Preferences Saved', 'Your settings have been updated successfully.');
+      
+      // Apply theme if changed
+      if (preferences.theme === 'dark') {
+        document.body.style.backgroundColor = '#121212';
+        document.body.style.color = '#ffffff';
+      } else if (preferences.theme === 'light') {
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#0c0b0b';
+      }
+    }
+
+    // Regenerate API key
+    function regenerateApiKey() {
+      if (!confirm('Are you sure you want to regenerate your API key? Any applications using the current key will stop working.')) {
+        return;
+      }
+      
+      // Generate a mock API key (in a real app, this would be done server-side)
+      const newApiKey = 'sk_live_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      document.getElementById('apiKey').value = newApiKey;
+      
+      // In a real app, this would call your Node.js backend to update the API key
+      showSuccessMessage('API Key Regenerated', 'Your new API key has been generated successfully. Update any applications using the previous key.');
+    }
+
+    // Export account data
+    function exportAccountData() {
+      // In a real app, this would call your Node.js backend to prepare data export
+      showSuccessMessage('Export Requested', 'Your account data export has been requested. You will receive an email with download instructions when it is ready.');
+    }
+
+    // Show delete account modal
+    function showDeleteAccountModal() {
+      document.getElementById('deleteAccountModal').style.display = 'block';
+    }
+
+    // Delete account
+    function deleteAccount() {
+      const password = document.getElementById('deleteAccountPassword').value;
+      
+      if (!password) {
+        showError('Please enter your password to confirm');
+        return;
+      }
+      
+      if (!confirm('This will permanently delete your account and all associated data. Are you absolutely sure?')) {
+        return;
+      }
+      
+      // In a real app, this would call your Node.js backend to verify password and delete account
+      // For demo, we'll simulate account deletion
+      setTimeout(() => {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('userSettings');
+        localStorage.removeItem('kycData');
+        localStorage.removeItem('kycStatus');
+        showSuccessMessage('Account Deleted', 'Your account has been permanently deleted. Redirecting to home page...');
+        
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 3000);
+      }, 1000);
+    }
+
+    // Logout user
+    function logoutUser() {
+      // In a real app, this would call your Node.js backend to invalidate the session
+      localStorage.removeItem('currentUser');
+      showSuccessMessage('Logged Out', 'You have been successfully logged out. Redirecting to login page...');
+      
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);
+    }
+
+    // Show error message
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 3000);
+    }
+
+    // Show success message
+    function showSuccessMessage(title, text) {
+      document.getElementById('successTitle').textContent = title;
+      document.getElementById('successText').textContent = text;
+      document.getElementById('successMessage').style.display = 'block';
+    }
+
+    // Close success message
+    function closeSuccess() {
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+  </script>
+</body>
+</html>
