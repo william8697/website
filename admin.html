@@ -3079,6 +3079,535 @@
             // Update stats
             updateKycStats();
         }
+        // Global variables
+let currentAdminData = {};
+let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+
+// DOM Elements
+const loginForm = document.getElementById('admin-login-form');
+const dashboardSection = document.getElementById('dashboard-section');
+const usersSection = document.getElementById('users-section');
+const tradesSection = document.getElementById('trades-section');
+const ticketsSection = document.getElementById('tickets-section');
+const logoutBtn = document.getElementById('logout-btn');
+
+// Check admin authentication on page load
+document.addEventListener('DOMContentLoaded', async () => {
+  if (authToken) {
+    try {
+      const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/verify', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+      
+      if (response.ok) {
+        currentAdminData = await response.json();
+        showDashboard();
+        loadDashboardStats();
+      } else {
+        showLogin();
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      showLogin();
+    }
+  } else {
+    showLogin();
+  }
+});
+
+// Admin Login
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('admin-email').value;
+    const password = document.getElementById('admin-password').value;
+    const rememberMe = document.getElementById('remember-me').checked;
+
+    try {
+      const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        if (rememberMe) {
+          localStorage.setItem('adminToken', data.token);
+        } else {
+          sessionStorage.setItem('adminToken', data.token);
+        }
+        authToken = data.token;
+        currentAdminData = data.data.admin;
+        showDashboard();
+        loadDashboardStats();
+      } else {
+        showError('Login failed: ' + (data.message || 'Invalid credentials'));
+      }
+    } catch (error) {
+      showError('Network error. Please try again.');
+      console.error('Login error:', error);
+    }
+  });
+}
+
+// Logout
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminToken');
+    authToken = null;
+    currentAdminData = {};
+    showLogin();
+  });
+}
+
+// Load Dashboard Stats
+async function loadDashboardStats() {
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/dashboard-stats', {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      updateDashboardUI(data.data);
+    } else {
+      showError('Failed to load dashboard data');
+    }
+  } catch (error) {
+    showError('Network error loading dashboard');
+    console.error('Dashboard error:', error);
+  }
+}
+
+// Load Users
+async function loadUsers(page = 1, search = '') {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?page=${page}&search=${encodeURIComponent(search)}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      renderUsersTable(data.data.users, data.data.total, page);
+    } else {
+      showError('Failed to load users');
+    }
+  } catch (error) {
+    showError('Network error loading users');
+    console.error('Users error:', error);
+  }
+}
+
+// Load Trades
+async function loadTrades(page = 1, filter = 'all') {
+  try {
+    const response = await fetch(`https://your-render-app.onrender.com/api/v1/admin/trades?page=${page}&filter=${filter}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      renderTradesTable(data.data.trades, data.data.total, page);
+    } else {
+      showError('Failed to load trades');
+    }
+  } catch (error) {
+    showError('Network error loading trades');
+    console.error('Trades error:', error);
+  }
+}
+
+// Load Support Tickets
+async function loadTickets(page = 1, status = 'open') {
+  try {
+    const response = await fetch(`https://your-render-app.onrender.com/api/v1/admin/tickets?page=${page}&status=${status}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      renderTicketsTable(data.data.tickets, data.data.total, page);
+    } else {
+      showError('Failed to load tickets');
+    }
+  } catch (error) {
+    showError('Network error loading tickets');
+    console.error('Tickets error:', error);
+  }
+}
+
+// UI Update Functions
+function showLogin() {
+  document.getElementById('login-section').style.display = 'block';
+  document.getElementById('admin-content').style.display = 'none';
+}
+
+function showDashboard() {
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('admin-content').style.display = 'block';
+  document.getElementById('admin-name').textContent = currentAdminData.name || 'Admin';
+}
+
+function updateDashboardUI(stats) {
+  document.getElementById('total-users').textContent = stats.totalUsers.toLocaleString();
+  document.getElementById('verified-users').textContent = stats.verifiedUsers.toLocaleString();
+  document.getElementById('total-trades').textContent = stats.totalTrades.toLocaleString();
+  document.getElementById('total-volume').textContent = `$${stats.totalVolume.toLocaleString()}`;
+  document.getElementById('total-profit').textContent = `$${stats.totalProfit.toLocaleString()}`;
+  document.getElementById('open-tickets').textContent = stats.openTickets.toLocaleString();
+}
+
+function renderUsersTable(users, total, currentPage) {
+  const tableBody = document.getElementById('users-table-body');
+  tableBody.innerHTML = '';
+
+  users.forEach(user => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${user._id}</td>
+      <td>${user.firstName} ${user.lastName}</td>
+      <td>${user.email}</td>
+      <td>${user.walletAddress || 'N/A'}</td>
+      <td>${user.country}</td>
+      <td>$${user.balance?.toFixed(2) || '0.00'}</td>
+      <td>${user.kycVerified ? 'Verified' : 'Pending'}</td>
+      <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+      <td>
+        <button class="btn btn-sm btn-primary view-user" data-id="${user._id}">View</button>
+        <button class="btn btn-sm btn-warning edit-user" data-id="${user._id}">Edit</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  updatePagination('users-pagination', total, currentPage, loadUsers);
+}
+
+function renderTradesTable(trades, total, currentPage) {
+  const tableBody = document.getElementById('trades-table-body');
+  tableBody.innerHTML = '';
+
+  trades.forEach(trade => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${trade._id}</td>
+      <td>${trade.user?.firstName || 'Deleted'} ${trade.user?.lastName || 'User'}</td>
+      <td>${trade.fromCoin} → ${trade.toCoin}</td>
+      <td>$${trade.amount.toFixed(2)}</td>
+      <td>${trade.expectedProfit}%</td>
+      <td>${trade.actualProfit ? trade.actualProfit + '%' : '--'}</td>
+      <td>${trade.status}</td>
+      <td>${new Date(trade.createdAt).toLocaleString()}</td>
+      <td>
+        <button class="btn btn-sm btn-primary view-trade" data-id="${trade._id}">Details</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  updatePagination('trades-pagination', total, currentPage, loadTrades);
+}
+
+function renderTicketsTable(tickets, total, currentPage) {
+  const tableBody = document.getElementById('tickets-table-body');
+  tableBody.innerHTML = '';
+
+  tickets.forEach(ticket => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${ticket._id}</td>
+      <td>${ticket.user?.firstName || 'Deleted'} ${ticket.user?.lastName || 'User'}</td>
+      <td>${ticket.subject}</td>
+      <td>${ticket.status}</td>
+      <td>${ticket.replies.length}</td>
+      <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
+      <td>
+        <button class="btn btn-sm btn-primary view-ticket" data-id="${ticket._id}">View</button>
+        <button class="btn btn-sm btn-success resolve-ticket" data-id="${ticket._id}">Resolve</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  updatePagination('tickets-pagination', total, currentPage, loadTickets);
+}
+
+function updatePagination(elementId, totalItems, currentPage, callback) {
+  const pagination = document.getElementById(elementId);
+  if (!pagination) return;
+
+  const totalPages = Math.ceil(totalItems / 20);
+  pagination.innerHTML = '';
+
+  if (currentPage > 1) {
+    const prevBtn = document.createElement('li');
+    prevBtn.className = 'page-item';
+    prevBtn.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      callback(currentPage - 1);
+    });
+    pagination.appendChild(prevBtn);
+  }
+
+  for (let i = 1; i <= totalPages; i++) {
+    const pageBtn = document.createElement('li');
+    pageBtn.className = `page-item ${i === currentPage ? 'active' : ''}`;
+    pageBtn.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+    pageBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      callback(i);
+    });
+    pagination.appendChild(pageBtn);
+  }
+
+  if (currentPage < totalPages) {
+    const nextBtn = document.createElement('li');
+    nextBtn.className = 'page-item';
+    nextBtn.innerHTML = `<a class="page-link" href="#">Next</a>`;
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      callback(currentPage + 1);
+    });
+    pagination.appendChild(nextBtn);
+  }
+}
+
+function showError(message) {
+  const errorAlert = document.getElementById('error-alert');
+  if (errorAlert) {
+    errorAlert.textContent = message;
+    errorAlert.style.display = 'block';
+    setTimeout(() => {
+      errorAlert.style.display = 'none';
+    }, 5000);
+  } else {
+    alert(message);
+  }
+}
+
+// Navigation
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = link.getAttribute('data-target');
+    
+    document.querySelectorAll('.content-section').forEach(section => {
+      section.style.display = 'none';
+    });
+    
+    document.getElementById(target).style.display = 'block';
+    
+    switch(target) {
+      case 'users-section':
+        loadUsers();
+        break;
+      case 'trades-section':
+        loadTrades();
+        break;
+      case 'tickets-section':
+        loadTickets();
+        break;
+      case 'dashboard-section':
+        loadDashboardStats();
+        break;
+    }
+  });
+});
+
+// Event delegation for dynamic buttons
+document.addEventListener('click', async (e) => {
+  // Handle view user
+  if (e.target.classList.contains('view-user')) {
+    const userId = e.target.getAttribute('data-id');
+    viewUserDetails(userId);
+  }
+  
+  // Handle edit user
+  if (e.target.classList.contains('edit-user')) {
+    const userId = e.target.getAttribute('data-id');
+    editUser(userId);
+  }
+  
+  // Handle view trade
+  if (e.target.classList.contains('view-trade')) {
+    const tradeId = e.target.getAttribute('data-id');
+    viewTradeDetails(tradeId);
+  }
+  
+  // Handle view ticket
+  if (e.target.classList.contains('view-ticket')) {
+    const ticketId = e.target.getAttribute('data-id');
+    viewTicketDetails(ticketId);
+  }
+  
+  // Handle resolve ticket
+  if (e.target.classList.contains('resolve-ticket')) {
+    const ticketId = e.target.getAttribute('data-id');
+    resolveTicket(ticketId);
+  }
+});
+
+// Detailed View Functions
+async function viewUserDetails(userId) {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Show modal with user details
+      showUserModal(data.data.user);
+    } else {
+      showError('Failed to load user details');
+    }
+  } catch (error) {
+    showError('Network error loading user details');
+    console.error('User details error:', error);
+  }
+}
+
+async function editUser(userId) {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Show edit form with user data
+      showEditUserForm(data.data.user);
+    } else {
+      showError('Failed to load user for editing');
+    }
+  } catch (error) {
+    showError('Network error loading user for editing');
+    console.error('Edit user error:', error);
+  }
+}
+
+async function viewTradeDetails(tradeId) {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades/${tradeId}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Show modal with trade details
+      showTradeModal(data.data.trade);
+    } else {
+      showError('Failed to load trade details');
+    }
+  } catch (error) {
+    showError('Network error loading trade details');
+    console.error('Trade details error:', error);
+  }
+}
+
+async function viewTicketDetails(ticketId) {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Show modal with ticket details
+      showTicketModal(data.data.ticket);
+    } else {
+      showError('Failed to load ticket details');
+    }
+  } catch (error) {
+    showError('Network error loading ticket details');
+    console.error('Ticket details error:', error);
+  }
+}
+
+async function resolveTicket(ticketId) {
+  try {
+    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}/resolve`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      showSuccess('Ticket resolved successfully');
+      loadTickets();
+    } else {
+      showError('Failed to resolve ticket');
+    }
+  } catch (error) {
+    showError('Network error resolving ticket');
+    console.error('Resolve ticket error:', error);
+  }
+}
+
+function showSuccess(message) {
+  const successAlert = document.getElementById('success-alert');
+  if (successAlert) {
+    successAlert.textContent = message;
+    successAlert.style.display = 'block';
+    setTimeout(() => {
+      successAlert.style.display = 'none';
+    }, 5000);
+  } else {
+    alert(message);
+  }
+}
+
+// Modal display functions (you'll need to implement these based on your UI)
+function showUserModal(user) {
+  // Implement your modal display logic here
+  console.log('Showing user:', user);
+  alert(`User Details:\nName: ${user.firstName} ${user.lastName}\nEmail: ${user.email}\nBalance: $${user.balance}`);
+}
+
+function showEditUserForm(user) {
+  // Implement your edit form display logic here
+  console.log('Editing user:', user);
+  alert(`Edit form for user: ${user.firstName} ${user.lastName}`);
+}
+
+function showTradeModal(trade) {
+  // Implement your modal display logic here
+  console.log('Showing trade:', trade);
+  alert(`Trade Details:\nFrom: ${trade.fromCoin}\nTo: ${trade.toCoin}\nAmount: $${trade.amount}`);
+}
+
+function showTicketModal(ticket) {
+  // Implement your modal display logic here
+  console.log('Showing ticket:', ticket);
+  alert(`Ticket Details:\nSubject: ${ticket.subject}\nStatus: ${ticket.status}`);
+}
     </script>
 </body>
 </html>
