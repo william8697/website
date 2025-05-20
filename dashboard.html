@@ -1560,6 +1560,139 @@
       localStorage.removeItem('userBalances');
       window.location.href = 'login.html';
     }
+    // Load dashboard data
+async function loadDashboard() {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  
+  if (!token) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  try {
+    // Get user data
+    const userResponse = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    // Get trades
+    const tradesResponse = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/trades/my-trades', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (userResponse.ok && tradesResponse.ok) {
+      const userData = await userResponse.json();
+      const tradesData = await tradesResponse.json();
+
+      // Update user info
+      document.getElementById('user-name').textContent = 
+        `${userData.data.user.firstName} ${userData.data.user.lastName}`;
+      document.getElementById('user-email').textContent = userData.data.user.email;
+      document.getElementById('user-balance').textContent = 
+        `$${userData.data.user.balance.toFixed(2)}`;
+      document.getElementById('user-country').textContent = userData.data.user.country;
+      document.getElementById('user-currency').textContent = userData.data.user.currency;
+
+      // Update trades table
+      const tradesTable = document.getElementById('trades-table');
+      tradesTable.innerHTML = ''; // Clear existing rows
+      
+      tradesData.data.trades.forEach(trade => {
+        const row = tradesTable.insertRow();
+        row.insertCell(0).textContent = trade.fromCoin;
+        row.insertCell(1).textContent = trade.toCoin;
+        row.insertCell(2).textContent = `$${trade.amount.toFixed(2)}`;
+        row.insertCell(3).textContent = `${trade.expectedProfit}%`;
+        row.insertCell(4).textContent = trade.actualProfit ? 
+          `${trade.actualProfit}%` : '--';
+        row.insertCell(5).textContent = new Date(trade.createdAt).toLocaleString();
+      });
+
+      // Update chart data (use your existing chart logic)
+      updateChart(tradesData.data.trades);
+    } else {
+      window.location.href = 'login.html';
+    }
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+    alert('Failed to load dashboard data. Please try again.');
+  }
+}
+
+// Handle deposit
+document.getElementById('deposit-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const amount = parseFloat(document.getElementById('deposit-amount').value);
+  const currency = document.getElementById('deposit-currency').value;
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/trades/deposit', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount, currency })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Deposit successful! Your balance will update shortly.');
+      loadDashboard(); // Refresh data
+    } else {
+      alert(data.message || 'Deposit failed. Please try again.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Handle withdrawal
+document.getElementById('withdraw-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const amount = parseFloat(document.getElementById('withdraw-amount').value);
+  const walletAddress = document.getElementById('withdraw-address').value;
+  const currency = document.getElementById('withdraw-currency').value;
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  if (amount < 350) {
+    alert('Minimum withdrawal amount is $350');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/trades/withdraw', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount, walletAddress, currency })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Withdrawal request submitted successfully!');
+      loadDashboard(); // Refresh data
+    } else {
+      alert(data.message || 'Withdrawal failed. Please try again.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Initialize dashboard
+window.addEventListener('DOMContentLoaded', loadDashboard);
   </script>
 </body>
 </html>
