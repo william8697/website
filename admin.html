@@ -352,17 +352,17 @@
                 <form id="admin-login-form">
                     <div class="mb-3">
                         <label for="admin-email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="admin-email" required>
+                        <input type="email" class="form-control" id="admin-email" placeholder="admin@example.com" required>
                     </div>
                     <div class="mb-3">
                         <label for="admin-password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="admin-password" required>
+                        <input type="password" class="form-control" id="admin-password" placeholder="Enter password" required>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="remember-me">
                         <label class="form-check-label" for="remember-me">Remember me</label>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <button type="submit" class="btn btn-primary w-100" id="login-btn">Login</button>
                 </form>
             </div>
         </div>
@@ -1515,6 +1515,11 @@
                 const password = document.getElementById('admin-password').value;
                 const rememberMe = document.getElementById('remember-me').checked;
                 
+                // Show loading state on button
+                const loginBtn = document.getElementById('login-btn');
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+                
                 fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/login', {
                     method: 'POST',
                     headers: {
@@ -1543,13 +1548,14 @@
                     
                     // Load dashboard data
                     loadDashboardStats();
-                    
-                    // Initialize WebSocket connection
-                    initWebSocket();
                 })
                 .catch(error => {
                     showError('Login failed: ' + (error.message || 'Invalid credentials'));
                     console.error('Login error:', error);
+                })
+                .finally(() => {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
                 });
             });
 
@@ -1677,78 +1683,6 @@
                     console.error('Error adding user:', error);
                 });
             });
-        }
-
-        // Initialize WebSocket connection
-        function initWebSocket() {
-            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-            const wsUrl = protocol + window.location.host + '/ws/admin';
-            
-            socket = new WebSocket(wsUrl);
-
-            socket.onopen = function() {
-                console.log('WebSocket connected');
-                // Authenticate with the server
-                socket.send(JSON.stringify({
-                    type: 'auth',
-                    token: authToken
-                }));
-            };
-
-            socket.onmessage = function(event) {
-                const message = JSON.parse(event.data);
-                handleWebSocketMessage(message);
-            };
-
-            socket.onclose = function() {
-                console.log('WebSocket disconnected');
-                // Try to reconnect after 5 seconds
-                setTimeout(initWebSocket, 5000);
-            };
-
-            socket.onerror = function(error) {
-                console.error('WebSocket error:', error);
-            };
-        }
-
-        // Handle WebSocket messages
-        function handleWebSocketMessage(message) {
-            switch (message.type) {
-                case 'new_user':
-                    updateUserStats();
-                    addNewUserNotification(message.data);
-                    break;
-                case 'new_trade':
-                    updateTradeStats();
-                    addNewTradeNotification(message.data);
-                    break;
-                case 'new_ticket':
-                    updateTicketStats();
-                    addNewTicketNotification(message.data);
-                    break;
-                case 'new_kyc':
-                    updateKycStats();
-                    addNewKycNotification(message.data);
-                    break;
-                case 'user_activity':
-                    if (document.getElementById('userDetailModal').classList.contains('show') && 
-                        currentUserId === message.data.userId) {
-                        updateUserActivities(currentUserId);
-                    }
-                    break;
-                case 'ticket_update':
-                    if (document.getElementById('ticketDetailModal').classList.contains('show') && 
-                        currentTicketId === message.data.ticketId) {
-                        loadTicketDetails(currentTicketId);
-                    }
-                    break;
-                case 'kyc_update':
-                    if (document.getElementById('kycDetailModal').classList.contains('show') && 
-                        currentKycId === message.data.kycId) {
-                        loadKYCDetails(currentKycId);
-                    }
-                    break;
-            }
         }
 
         // Initialize event listeners
