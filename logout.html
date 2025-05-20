@@ -213,6 +213,16 @@
         window.location.href = 'login.html';
       });
     });
+    // Handle logout
+function logout() {
+  localStorage.removeItem('token');
+  sessionStorage.removeItem('token');
+  localStorage.removeItem('wallet');
+  window.location.href = 'index.html';
+}
+
+// Automatically logout when page loads
+window.addEventListener('DOMContentLoaded', logout);
   </script>
 </body>
 </html>
