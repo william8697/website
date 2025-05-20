@@ -977,6 +977,168 @@
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
     }
+    // Load user settings
+async function loadSettings() {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  
+  if (!token) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      const user = userData.data.user;
+
+      // Populate form fields
+      document.getElementById('first-name').value = user.firstName;
+      document.getElementById('last-name').value = user.lastName;
+      document.getElementById('email').value = user.email;
+      document.getElementById('country').value = user.country;
+      document.getElementById('currency').value = user.currency;
+      document.getElementById('account-created').textContent = 
+        new Date(user.createdAt).toLocaleDateString();
+      
+      // KYC status
+      if (user.kycVerified) {
+        document.getElementById('kyc-status').textContent = 'Verified';
+        document.getElementById('kyc-section').style.display = 'none';
+      } else {
+        document.getElementById('kyc-status').textContent = 'Not Verified';
+      }
+    } else {
+      window.location.href = 'login.html';
+    }
+  } catch (err) {
+    console.error('Settings load error:', err);
+    alert('Failed to load settings. Please try again.');
+  }
+}
+
+// Update profile
+document.getElementById('profile-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = {
+    firstName: document.getElementById('first-name').value,
+    lastName: document.getElementById('last-name').value,
+    country: document.getElementById('country').value,
+    currency: document.getElementById('currency').value
+  };
+
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/updateMe', {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Profile updated successfully!');
+      loadSettings(); // Refresh data
+    } else {
+      alert(data.message || 'Profile update failed. Please try again.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Change password
+document.getElementById('password-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const currentPassword = document.getElementById('current-password').value;
+  const newPassword = document.getElementById('new-password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  if (newPassword !== confirmPassword) {
+    alert('New passwords do not match!');
+    return;
+  }
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/auth/updateMyPassword', {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        currentPassword,
+        newPassword,
+        newPasswordConfirm: confirmPassword
+      })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('Password changed successfully!');
+      document.getElementById('password-form').reset();
+    } else {
+      alert(data.message || 'Password change failed. Please try again.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Handle KYC submission
+document.getElementById('kyc-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  formData.append('fullName', document.getElementById('kyc-full-name').value);
+  formData.append('dob', document.getElementById('kyc-dob').value);
+  formData.append('address', document.getElementById('kyc-address').value);
+  formData.append('idType', document.getElementById('kyc-id-type').value);
+  formData.append('idNumber', document.getElementById('kyc-id-number').value);
+  formData.append('idFront', document.getElementById('kyc-id-front').files[0]);
+  formData.append('idBack', document.getElementById('kyc-id-back').files[0]);
+  formData.append('selfie', document.getElementById('kyc-selfie').files[0]);
+
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/kyc', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      alert('KYC submitted successfully! Verification may take 1-3 business days.');
+      loadSettings(); // Refresh data
+    } else {
+      alert(data.message || 'KYC submission failed. Please try again.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Initialize settings page
+window.addEventListener('DOMContentLoaded', loadSettings);
   </script>
 </body>
 </html>
