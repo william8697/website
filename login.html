@@ -837,6 +837,92 @@
         }
       });
     }
+    // Handle email login
+document.getElementById('email-login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = {
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    rememberMe: document.getElementById('remember-me').checked
+  };
+
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      if (formData.rememberMe) {
+        localStorage.setItem('token', data.token);
+      } else {
+        sessionStorage.setItem('token', data.token);
+      }
+      window.location.href = 'dashboard.html';
+    } else {
+      alert(data.message || 'Login failed. Please check your credentials.');
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
+});
+
+// Handle wallet login
+async function handleWalletLogin(walletType) {
+  try {
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const walletAddress = accounts[0];
+    
+    const message = `Please sign this message to verify your ${walletType} wallet for login.`;
+    const signature = await window.ethereum.request({
+      method: 'personal_sign',
+      params: [message, walletAddress]
+    });
+    
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/auth/wallet-login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        walletAddress,
+        signature,
+        walletType
+      })
+    });
+
+    const data = await response.json();
+    
+    if (response.ok) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('wallet', walletAddress);
+      window.location.href = 'dashboard.html';
+    } else {
+      alert(data.message || 'Wallet login failed');
+    }
+  } catch (err) {
+    console.error('Wallet login error:', err);
+    alert('Wallet connection failed. Please make sure your wallet is connected and try again.');
+  }
+}
+
+// Attach wallet handlers
+document.getElementById('metamask-login').addEventListener('click', () => handleWalletLogin('metamask'));
+document.getElementById('trustwallet-login').addEventListener('click', () => handleWalletLogin('trustwallet'));
+document.getElementById('binance-login').addEventListener('click', () => handleWalletLogin('binance'));
+
+// Check if user is already logged in
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('token') || sessionStorage.getItem('token')) {
+    window.location.href = 'dashboard.html';
+  }
+});
   </script>
 </body>
 </html>
