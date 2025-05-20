@@ -27,6 +27,62 @@
             color: #6e6b7b;
         }
         
+        /* Login Page Styles */
+        #login-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--primary-color);
+        }
+        
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+            overflow: hidden;
+        }
+        
+        .login-header {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .login-header i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .login-body {
+            padding: 1.5rem;
+        }
+        
+        .form-control {
+            border: 1px solid #d8d6de;
+            border-radius: 0.375rem;
+            padding: 0.571rem 1rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 3px 10px 0 rgba(115, 103, 240, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #5e50ee;
+            border-color: #5e50ee;
+        }
+        
+        /* Admin Dashboard Styles */
         .sidebar {
             background-color: var(--primary-color);
             color: white;
@@ -212,37 +268,6 @@
             color: var(--accent-color);
         }
         
-        .form-control, .form-select {
-            border: 1px solid #d8d6de;
-            border-radius: 0.375rem;
-            padding: 0.571rem 1rem;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 3px 10px 0 rgba(115, 103, 240, 0.1);
-        }
-        
-        .btn-primary {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        
-        .btn-primary:hover {
-            background-color: #5e50ee;
-            border-color: #5e50ee;
-        }
-        
-        .btn-outline-primary {
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        
-        .btn-outline-primary:hover {
-            background-color: var(--accent-color);
-            color: white;
-        }
-        
         .notification-badge {
             position: absolute;
             top: -5px;
@@ -291,577 +316,680 @@
                 display: block;
             }
         }
+        
+        /* Hidden sections */
+        #admin-content {
+            display: none;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        #dashboard-section {
+            display: block;
+        }
+        
+        /* Alert styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-brand">
-            <i class="bi bi-currency-exchange"></i>
-            <span>Arbitrage Admin</span>
-        </div>
-        <div class="sidebar-menu">
-            <a href="#" class="active" id="dashboard-link">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" id="users-link">
-                <i class="bi bi-people"></i>
-                <span>Users</span>
-            </a>
-            <a href="#" id="trades-link">
-                <i class="bi bi-graph-up"></i>
-                <span>Trades</span>
-            </a>
-            <a href="#" id="transactions-link">
-                <i class="bi bi-cash-stack"></i>
-                <span>Transactions</span>
-            </a>
-            <a href="#" id="support-link">
-                <i class="bi bi-headset"></i>
-                <span>Support Tickets</span>
-                <span class="badge bg-danger notification-badge" id="pending-tickets-count">0</span>
-            </a>
-            <a href="#" id="kyc-link">
-                <i class="bi bi-shield-check"></i>
-                <span>KYC Verification</span>
-                <span class="badge bg-warning notification-badge" id="pending-kyc-count">0</span>
-            </a>
-            <a href="#" id="settings-link">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
-            <a href="#" id="broadcast-link">
-                <i class="bi bi-megaphone"></i>
-                <span>Broadcast</span>
-            </a>
-            <a href="#" id="logs-link">
-                <i class="bi bi-journal-text"></i>
-                <span>Activity Logs</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <button class="navbar-toggler d-lg-none" type="button" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
-                <div class="d-flex align-items-center">
-                    <h4 class="mb-0" id="page-title">Admin Dashboard</h4>
-                </div>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown me-3">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-bell"></i>
-                            <span class="badge bg-danger notification-badge" id="notifications-count">0</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style="width: 300px;">
-                            <li>
-                                <h6 class="dropdown-header">Notifications</h6>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <div id="notifications-list">
-                                <!-- Notifications will be loaded here -->
-                            </div>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-center" href="#" id="view-all-notifications">View all notifications</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://ui-avatars.com/api/?name=Admin+User&background=7367f0&color=fff" alt="Admin" class="user-avatar">
-                            <span id="admin-username">Admin</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-person me-2"></i>Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bi bi-gear me-2"></i>Settings
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="#" id="logout-btn">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+    <!-- Login Section -->
+    <div id="login-section">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="bi bi-shield-lock"></i>
+                <h3>Admin Login</h3>
             </div>
-        </nav>
-
-        <!-- Dashboard Content -->
-        <div id="dashboard-content">
-            <div class="row">
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card">
-                        <div class="stat-title">Total Users</div>
-                        <div class="stat-value" id="total-users">0</div>
-                        <div class="stat-change up">
-                            <i class="bi bi-arrow-up"></i> <span id="user-growth-rate">0%</span> from last week
-                        </div>
+            <div class="login-body">
+                <form id="admin-login-form">
+                    <div class="mb-3">
+                        <label for="admin-email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="admin-email" required>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card">
-                        <div class="stat-title">Active Users</div>
-                        <div class="stat-value" id="active-users">0</div>
-                        <div class="stat-change up">
-                            <i class="bi bi-arrow-up"></i> <span id="active-growth-rate">0%</span> from last week
-                        </div>
+                    <div class="mb-3">
+                        <label for="admin-password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="admin-password" required>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card">
-                        <div class="stat-title">Total Trades</div>
-                        <div class="stat-value" id="total-trades">0</div>
-                        <div class="stat-change up">
-                            <i class="bi bi-arrow-up"></i> <span id="trade-growth-rate">0%</span> from last week
-                        </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember-me">
+                        <label class="form-check-label" for="remember-me">Remember me</label>
                     </div>
-                </div>
-                <div class="col-md-6 col-lg-3">
-                    <div class="card stat-card">
-                        <div class="stat-title">Total Volume</div>
-                        <div class="stat-value" id="total-volume">$0</div>
-                        <div class="stat-change down">
-                            <i class="bi bi-arrow-down"></i> <span id="volume-change-rate">0%</span> from last week
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">Platform Growth</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="growthChart" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title">User Distribution</h5>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="userDistributionChart" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Recent Users</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-users">View All</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="recent-users-table">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Email</th>
-                                            <th>Joined</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recent-users-body">
-                                        <!-- Will be populated by JavaScript -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Recent Activities</h5>
-                            <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-activities">View All</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="activity-feed" id="activity-feed">
-                                <!-- Will be populated by JavaScript -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Users Content (Hidden by default) -->
-        <div id="users-content" class="d-none">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">User Management</h5>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" id="export-users-btn">
-                            <i class="bi bi-download me-1"></i> Export
-                        </button>
-                        <button class="btn btn-sm btn-primary" id="add-user-btn">
-                            <i class="bi bi-plus me-1"></i> Add User
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="user-search" placeholder="Search users...">
-                                <button class="btn btn-outline-secondary" type="button" id="search-users-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select me-2" style="width: 150px;" id="user-status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="suspended">Suspended</option>
-                                </select>
-                                <select class="form-select" style="width: 150px;" id="user-kyc-filter">
-                                    <option value="">All KYC</option>
-                                    <option value="verified">Verified</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="unverified">Unverified</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="users-table">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Email</th>
-                                    <th>Wallet</th>
-                                    <th>Balance</th>
-                                    <th>Status</th>
-                                    <th>KYC</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-table-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-3" id="users-pagination">
-                            <!-- Will be populated by JavaScript -->
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-        <!-- Trades Content (Hidden by default) -->
-        <div id="trades-content" class="d-none">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Trade Management</h5>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" id="export-trades-btn">
-                            <i class="bi bi-download me-1"></i> Export
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="trade-search" placeholder="Search trades...">
-                                <button class="btn btn-outline-secondary" type="button" id="search-trades-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select me-2" style="width: 150px;" id="trade-status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="failed">Failed</option>
-                                </select>
-                                <select class="form-select me-2" style="width: 150px;" id="trade-type-filter">
-                                    <option value="">All Types</option>
-                                    <option value="arbitrage">Arbitrage</option>
-                                    <option value="normal">Normal</option>
-                                </select>
-                                <input type="date" class="form-control" style="width: 150px;" id="trade-date-filter">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="trades-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
-                                    <th>Profit</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="trades-table-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-3" id="trades-pagination">
-                            <!-- Will be populated by JavaScript -->
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-        <!-- Support Content (Hidden by default) -->
-        <div id="support-content" class="d-none">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Support Tickets</h5>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" id="export-tickets-btn">
-                            <i class="bi bi-download me-1"></i> Export
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="ticket-search" placeholder="Search tickets...">
-                                <button class="btn btn-outline-secondary" type="button" id="search-tickets-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select me-2" style="width: 150px;" id="ticket-status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="open">Open</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="resolved">Resolved</option>
-                                </select>
-                                <select class="form-select" style="width: 150px;" id="ticket-priority-filter">
-                                    <option value="">All Priorities</option>
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="tickets-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Subject</th>
-                                    <th>Category</th>
-                                    <th>Priority</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tickets-table-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-3" id="tickets-pagination">
-                            <!-- Will be populated by JavaScript -->
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-        <!-- KYC Content (Hidden by default) -->
-        <div id="kyc-content" class="d-none">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">KYC Verification</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="kyc-search" placeholder="Search KYC requests...">
-                                <button class="btn btn-outline-secondary" type="button" id="search-kyc-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select" style="width: 150px;" id="kyc-status-filter">
-                                    <option value="">All Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="kyc-table">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Document Type</th>
-                                    <th>Submitted</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="kyc-table-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-3" id="kyc-pagination">
-                            <!-- Will be populated by JavaScript -->
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-
-        <!-- Broadcast Content (Hidden by default) -->
-        <div id="broadcast-content" class="d-none">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Send Broadcast Message</h5>
-                </div>
-                <div class="card-body">
-                    <form id="broadcast-form">
-                        <div class="mb-3">
-                            <label for="broadcast-title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="broadcast-title" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="broadcast-message" class="form-label">Message</label>
-                            <textarea class="form-control" id="broadcast-message" rows="5" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="broadcast-type" class="form-label">Message Type</label>
-                            <select class="form-select" id="broadcast-type" required>
-                                <option value="info">Information</option>
-                                <option value="warning">Warning</option>
-                                <option value="urgent">Urgent</option>
-                                <option value="maintenance">Maintenance</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="broadcast-audience" class="form-label">Audience</label>
-                            <select class="form-select" id="broadcast-audience" required>
-                                <option value="all">All Users</option>
-                                <option value="active">Active Users Only</option>
-                                <option value="inactive">Inactive Users Only</option>
-                                <option value="unverified">Unverified Users</option>
-                                <option value="verified">Verified Users Only</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Broadcast</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Activity Logs Content (Hidden by default) -->
-        <div id="logs-content" class="d-none">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Activity Logs</h5>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" id="export-logs-btn">
-                            <i class="bi bi-download me-1"></i> Export
-                        </button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="log-search" placeholder="Search logs...">
-                                <button class="btn btn-outline-secondary" type="button" id="search-logs-btn">
-                                    <i class="bi bi-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex justify-content-end">
-                                <select class="form-select me-2" style="width: 150px;" id="log-type-filter">
-                                    <option value="">All Types</option>
-                                    <option value="login">Login</option>
-                                    <option value="trade">Trade</option>
-                                    <option value="withdrawal">Withdrawal</option>
-                                    <option value="deposit">Deposit</option>
-                                    <option value="account">Account</option>
-                                </select>
-                                <input type="date" class="form-control" style="width: 150px;" id="log-date-filter">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="logs-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>User</th>
-                                    <th>Activity</th>
-                                    <th>Type</th>
-                                    <th>IP Address</th>
-                                    <th>Timestamp</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logs-table-body">
-                                <!-- Will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mt-3" id="logs-pagination">
-                            <!-- Will be populated by JavaScript -->
-                        </ul>
-                    </nav>
-                </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
             </div>
         </div>
     </div>
 
+    <!-- Admin Content (Hidden by default) -->
+    <div id="admin-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <i class="bi bi-currency-exchange"></i>
+                <span>Arbitrage Admin</span>
+            </div>
+            <div class="sidebar-menu">
+                <a href="#" class="active" id="dashboard-link" data-target="dashboard-section">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" id="users-link" data-target="users-section">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="#" id="trades-link" data-target="trades-section">
+                    <i class="bi bi-graph-up"></i>
+                    <span>Trades</span>
+                </a>
+                <a href="#" id="transactions-link" data-target="transactions-section">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Transactions</span>
+                </a>
+                <a href="#" id="support-link" data-target="support-section">
+                    <i class="bi bi-headset"></i>
+                    <span>Support Tickets</span>
+                    <span class="badge bg-danger notification-badge" id="pending-tickets-count">0</span>
+                </a>
+                <a href="#" id="kyc-link" data-target="kyc-section">
+                    <i class="bi bi-shield-check"></i>
+                    <span>KYC Verification</span>
+                    <span class="badge bg-warning notification-badge" id="pending-kyc-count">0</span>
+                </a>
+                <a href="#" id="settings-link" data-target="settings-section">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" id="broadcast-link" data-target="broadcast-section">
+                    <i class="bi bi-megaphone"></i>
+                    <span>Broadcast</span>
+                </a>
+                <a href="#" id="logs-link" data-target="logs-section">
+                    <i class="bi bi-journal-text"></i>
+                    <span>Activity Logs</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <button class="navbar-toggler d-lg-none" type="button" id="sidebarToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <div class="d-flex align-items-center">
+                        <h4 class="mb-0" id="page-title">Admin Dashboard</h4>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bell"></i>
+                                <span class="badge bg-danger notification-badge" id="notifications-count">0</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationsDropdown" style="width: 300px;">
+                                <li>
+                                    <h6 class="dropdown-header">Notifications</h6>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <div id="notifications-list">
+                                    <!-- Notifications will be loaded here -->
+                                </div>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item text-center" href="#" id="view-all-notifications">View all notifications</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://ui-avatars.com/api/?name=Admin+User&background=7367f0&color=fff" alt="Admin" class="user-avatar">
+                                <span id="admin-name">Admin</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-person me-2"></i>Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-gear me-2"></i>Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#" id="logout-btn">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Alerts -->
+            <div id="error-alert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span id="error-message"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span id="success-message"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="dashboard-section" class="content-section">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-title">Total Users</div>
+                            <div class="stat-value" id="total-users">0</div>
+                            <div class="stat-change up">
+                                <i class="bi bi-arrow-up"></i> <span id="user-growth-rate">0%</span> from last week
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-title">Verified Users</div>
+                            <div class="stat-value" id="verified-users">0</div>
+                            <div class="stat-change up">
+                                <i class="bi bi-arrow-up"></i> <span id="verified-growth-rate">0%</span> from last week
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-title">Total Trades</div>
+                            <div class="stat-value" id="total-trades">0</div>
+                            <div class="stat-change up">
+                                <i class="bi bi-arrow-up"></i> <span id="trade-growth-rate">0%</span> from last week
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card stat-card">
+                            <div class="stat-title">Total Volume</div>
+                            <div class="stat-value" id="total-volume">$0</div>
+                            <div class="stat-change down">
+                                <i class="bi bi-arrow-down"></i> <span id="volume-change-rate">0%</span> from last week
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">Platform Growth</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="growthChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">User Distribution</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="userDistributionChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Users</h5>
+                                <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-users">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover" id="recent-users-table">
+                                        <thead>
+                                            <tr>
+                                                <th>User</th>
+                                                <th>Email</th>
+                                                <th>Joined</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-users-body">
+                                            <!-- Will be populated by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Recent Activities</h5>
+                                <a href="#" class="btn btn-sm btn-outline-primary" id="view-all-activities">View All</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="activity-feed" id="activity-feed">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Content -->
+            <div id="users-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">User Management</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="export-users-btn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="add-user-btn">
+                                <i class="bi bi-plus me-1"></i> Add User
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="user-search" placeholder="Search users...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-users-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select me-2" style="width: 150px;" id="user-status-filter">
+                                        <option value="">All Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                        <option value="suspended">Suspended</option>
+                                    </select>
+                                    <select class="form-select" style="width: 150px;" id="user-kyc-filter">
+                                        <option value="">All KYC</option>
+                                        <option value="verified">Verified</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="unverified">Unverified</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Wallet</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                        <th>KYC</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="users-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trades Content -->
+            <div id="trades-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Trade Management</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="export-trades-btn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="trade-search" placeholder="Search trades...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-trades-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select me-2" style="width: 150px;" id="trade-status-filter">
+                                        <option value="">All Status</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="failed">Failed</option>
+                                    </select>
+                                    <select class="form-select me-2" style="width: 150px;" id="trade-type-filter">
+                                        <option value="">All Types</option>
+                                        <option value="arbitrage">Arbitrage</option>
+                                        <option value="normal">Normal</option>
+                                    </select>
+                                    <input type="date" class="form-control" style="width: 150px;" id="trade-date-filter">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="trades-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Profit</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trades-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="trades-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Tickets Content -->
+            <div id="support-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Support Tickets</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="export-tickets-btn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="ticket-search" placeholder="Search tickets...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-tickets-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select me-2" style="width: 150px;" id="ticket-status-filter">
+                                        <option value="">All Status</option>
+                                        <option value="open">Open</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="resolved">Resolved</option>
+                                    </select>
+                                    <select class="form-select" style="width: 150px;" id="ticket-priority-filter">
+                                        <option value="">All Priorities</option>
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="tickets-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                        <th>Priority</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tickets-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="tickets-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KYC Content -->
+            <div id="kyc-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">KYC Verification</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="kyc-search" placeholder="Search KYC requests...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-kyc-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select" style="width: 150px;" id="kyc-status-filter">
+                                        <option value="">All Status</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="kyc-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Document Type</th>
+                                        <th>Submitted</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="kyc-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="kyc-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Logs Content -->
+            <div id="logs-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Activity Logs</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="export-logs-btn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="log-search" placeholder="Search logs...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-logs-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select me-2" style="width: 150px;" id="log-type-filter">
+                                        <option value="">All Types</option>
+                                        <option value="login">Login</option>
+                                        <option value="trade">Trade</option>
+                                        <option value="withdrawal">Withdrawal</option>
+                                        <option value="deposit">Deposit</option>
+                                        <option value="account">Account</option>
+                                    </select>
+                                    <input type="date" class="form-control" style="width: 150px;" id="log-date-filter">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="logs-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Activity</th>
+                                        <th>Type</th>
+                                        <th>IP Address</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="logs-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Broadcast Content -->
+            <div id="broadcast-section" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Send Broadcast Message</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="broadcast-form">
+                            <div class="mb-3">
+                                <label for="broadcast-title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="broadcast-title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="broadcast-message" class="form-label">Message</label>
+                                <textarea class="form-control" id="broadcast-message" rows="5" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="broadcast-type" class="form-label">Message Type</label>
+                                <select class="form-select" id="broadcast-type" required>
+                                    <option value="info">Information</option>
+                                    <option value="warning">Warning</option>
+                                    <option value="urgent">Urgent</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="broadcast-audience" class="form-label">Audience</label>
+                                <select class="form-select" id="broadcast-audience" required>
+                                    <option value="all">All Users</option>
+                                    <option value="active">Active Users Only</option>
+                                    <option value="inactive">Inactive Users Only</option>
+                                    <option value="unverified">Unverified Users</option>
+                                    <option value="verified">Verified Users Only</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Broadcast</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div id="settings-section" class="content-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">System Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="settings-form">
+                            <div class="mb-3">
+                                <label for="system-name" class="form-label">System Name</label>
+                                <input type="text" class="form-control" id="system-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="maintenance-mode" class="form-label">Maintenance Mode</label>
+                                <select class="form-select" id="maintenance-mode" required>
+                                    <option value="false">Disabled</option>
+                                    <option value="true">Enabled</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="registration-status" class="form-label">New Registrations</label>
+                                <select class="form-select" id="registration-status" required>
+                                    <option value="true">Enabled</option>
+                                    <option value="false">Disabled</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kyc-requirement" class="form-label">KYC Requirement</label>
+                                <select class="form-select" id="kyc-requirement" required>
+                                    <option value="true">Required</option>
+                                    <option value="false">Not Required</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
     <!-- User Detail Modal -->
     <div class="modal fade" id="userDetailModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1184,7 +1312,8 @@
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
         // Global variables
-        let adminToken = localStorage.getItem('adminToken');
+        let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+        let currentAdminData = {};
         let currentUserId = '';
         let currentTicketId = '';
         let currentKycId = '';
@@ -1195,35 +1324,360 @@
         // Initialize the admin dashboard
         document.addEventListener('DOMContentLoaded', function() {
             // Check if admin is logged in
-            if (!adminToken) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Initialize WebSocket connection
-            initWebSocket();
-
-            // Load admin profile
-            loadAdminProfile();
-
-            // Initialize navigation
-            initNavigation();
-
-            // Initialize charts
-            initCharts();
-
-            // Load dashboard data
-            loadDashboardData();
-
-            // Initialize modals
-            initModals();
-
-            // Initialize forms
-            initForms();
-
+            checkAuthStatus();
+            
             // Initialize event listeners
             initEventListeners();
+            
+            // Initialize navigation
+            initNavigation();
+            
+            // Initialize modals
+            initModals();
+            
+            // Initialize forms
+            initForms();
         });
+
+        // Check authentication status
+        function checkAuthStatus() {
+            if (authToken) {
+                verifyToken();
+            } else {
+                showLogin();
+            }
+        }
+
+        // Verify token with backend
+        function verifyToken() {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/verify', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Token verification failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                currentAdminData = data.data.admin;
+                showDashboard();
+                loadDashboardStats();
+            })
+            .catch(error => {
+                console.error('Error verifying token:', error);
+                showLogin();
+            });
+        }
+
+        // Show login section
+        function showLogin() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('admin-content').style.display = 'none';
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            document.getElementById('admin-name').textContent = currentAdminData.name || 'Admin';
+        }
+
+        // Initialize navigation
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all content sections
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show the corresponding content section
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).style.display = 'block';
+                    
+                    // Update page title
+                    const pageTitle = this.querySelector('span').textContent;
+                    document.getElementById('page-title').textContent = pageTitle;
+
+                    // Load data for the section
+                    switch(targetId) {
+                        case 'users-section':
+                            loadUsers();
+                            break;
+                        case 'trades-section':
+                            loadTrades();
+                            break;
+                        case 'support-section':
+                            loadTickets();
+                            break;
+                        case 'kyc-section':
+                            loadKYC();
+                            break;
+                        case 'logs-section':
+                            loadActivityLogs();
+                            break;
+                        case 'dashboard-section':
+                            loadDashboardStats();
+                            break;
+                    }
+                });
+            });
+
+            // Toggle sidebar on mobile
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+        }
+
+        // Initialize modals
+        function initModals() {
+            // User detail modal
+            const userDetailModal = new bootstrap.Modal(document.getElementById('userDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-user-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-user-btn');
+                    currentUserId = button.getAttribute('data-id');
+                    
+                    // Load user details
+                    loadUserDetails(currentUserId);
+                    
+                    // Show modal
+                    userDetailModal.show();
+                }
+            });
+
+            // Ticket detail modal
+            const ticketDetailModal = new bootstrap.Modal(document.getElementById('ticketDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-ticket-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-ticket-btn');
+                    currentTicketId = button.getAttribute('data-id');
+                    
+                    // Load ticket details
+                    loadTicketDetails(currentTicketId);
+                    
+                    // Show modal
+                    ticketDetailModal.show();
+                }
+            });
+
+            // KYC detail modal
+            const kycDetailModal = new bootstrap.Modal(document.getElementById('kycDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-kyc-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-kyc-btn');
+                    currentKycId = button.getAttribute('data-id');
+                    
+                    // Load KYC details
+                    loadKYCDetails(currentKycId);
+                    
+                    // Show modal
+                    kycDetailModal.show();
+                }
+            });
+
+            // Add user modal
+            const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+            
+            document.getElementById('add-user-btn').addEventListener('click', function() {
+                addUserModal.show();
+            });
+        }
+
+        // Initialize forms
+        function initForms() {
+            // Admin login form
+            document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('admin-email').value;
+                const password = document.getElementById('admin-password').value;
+                const rememberMe = document.getElementById('remember-me').checked;
+                
+                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Login failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store token based on remember me selection
+                    if (rememberMe) {
+                        localStorage.setItem('adminToken', data.token);
+                    } else {
+                        sessionStorage.setItem('adminToken', data.token);
+                    }
+                    authToken = data.token;
+                    currentAdminData = data.data.admin;
+                    
+                    // Show dashboard
+                    showDashboard();
+                    
+                    // Load dashboard data
+                    loadDashboardStats();
+                    
+                    // Initialize WebSocket connection
+                    initWebSocket();
+                })
+                .catch(error => {
+                    showError('Login failed: ' + (error.message || 'Invalid credentials'));
+                    console.error('Login error:', error);
+                });
+            });
+
+            // Broadcast form
+            document.getElementById('broadcast-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('broadcast-title').value;
+                const message = document.getElementById('broadcast-message').value;
+                const type = document.getElementById('broadcast-type').value;
+                const audience = document.getElementById('broadcast-audience').value;
+                
+                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/broadcast', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        message,
+                        type,
+                        audience
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to send broadcast');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Broadcast message has been sent successfully!');
+                    this.reset();
+                })
+                .catch(error => {
+                    showError('Failed to send broadcast: ' + error.message);
+                    console.error('Error sending broadcast:', error);
+                });
+            });
+
+            // Settings form
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const systemName = document.getElementById('system-name').value;
+                const maintenanceMode = document.getElementById('maintenance-mode').value === 'true';
+                const registrationStatus = document.getElementById('registration-status').value === 'true';
+                const kycRequirement = document.getElementById('kyc-requirement').value === 'true';
+                
+                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        systemName,
+                        maintenanceMode,
+                        registrationStatus,
+                        kycRequirement
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to save settings');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Settings have been saved successfully!');
+                })
+                .catch(error => {
+                    showError('Failed to save settings: ' + error.message);
+                    console.error('Error saving settings:', error);
+                });
+            });
+
+            // Add user form
+            document.getElementById('save-user-btn').addEventListener('click', function() {
+                const form = document.getElementById('add-user-form');
+                const fullName = document.getElementById('add-user-fullname').value;
+                const email = document.getElementById('add-user-email').value;
+                const password = document.getElementById('add-user-password').value;
+                const country = document.getElementById('add-user-country').value;
+                const wallet = document.getElementById('add-user-wallet').value;
+                const status = document.getElementById('add-user-status').value;
+                
+                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullName,
+                        email,
+                        password,
+                        country,
+                        walletAddress: wallet,
+                        status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add user');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('User has been added successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Reload users
+                    loadUsers();
+                })
+                .catch(error => {
+                    showError('Failed to add user: ' + error.message);
+                    console.error('Error adding user:', error);
+                });
+            });
+        }
 
         // Initialize WebSocket connection
         function initWebSocket() {
@@ -1237,7 +1691,7 @@
                 // Authenticate with the server
                 socket.send(JSON.stringify({
                     type: 'auth',
-                    token: adminToken
+                    token: authToken
                 }));
             };
 
@@ -1297,82 +1751,211 @@
             }
         }
 
-        // Load admin profile
-        function loadAdminProfile() {
-            fetch('/api/admin/profile', {
+        // Initialize event listeners
+        function initEventListeners() {
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminToken');
+                authToken = null;
+                currentAdminData = {};
+                showLogin();
+            });
+
+            // View all buttons
+            document.getElementById('view-all-users').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('users-link').click();
+            });
+
+            document.getElementById('view-all-activities').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('logs-link').click();
+            });
+
+            // Search and filter buttons
+            document.getElementById('search-users-btn').addEventListener('click', function() {
+                const search = document.getElementById('user-search').value;
+                const status = document.getElementById('user-status-filter').value;
+                const kyc = document.getElementById('user-kyc-filter').value;
+                loadUsers(1, search, status, kyc);
+            });
+
+            document.getElementById('search-trades-btn').addEventListener('click', function() {
+                const search = document.getElementById('trade-search').value;
+                const status = document.getElementById('trade-status-filter').value;
+                const type = document.getElementById('trade-type-filter').value;
+                const date = document.getElementById('trade-date-filter').value;
+                loadTrades(1, search, status, type, date);
+            });
+
+            document.getElementById('search-tickets-btn').addEventListener('click', function() {
+                const search = document.getElementById('ticket-search').value;
+                const status = document.getElementById('ticket-status-filter').value;
+                const priority = document.getElementById('ticket-priority-filter').value;
+                loadTickets(1, search, status, priority);
+            });
+
+            document.getElementById('search-kyc-btn').addEventListener('click', function() {
+                const search = document.getElementById('kyc-search').value;
+                const status = document.getElementById('kyc-status-filter').value;
+                loadKYC(1, search, status);
+            });
+
+            document.getElementById('search-logs-btn').addEventListener('click', function() {
+                const search = document.getElementById('log-search').value;
+                const type = document.getElementById('log-type-filter').value;
+                const date = document.getElementById('log-date-filter').value;
+                loadActivityLogs(1, search, type, date);
+            });
+
+            // Pagination
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.page-link')) {
+                    e.preventDefault();
+                    const page = parseInt(e.target.getAttribute('data-page'));
+                    const paginationId = e.target.closest('.pagination').id;
+                    
+                    switch(paginationId) {
+                        case 'users-pagination':
+                            const userSearch = document.getElementById('user-search').value;
+                            const userStatus = document.getElementById('user-status-filter').value;
+                            const userKYC = document.getElementById('user-kyc-filter').value;
+                            loadUsers(page, userSearch, userStatus, userKYC);
+                            break;
+                        case 'trades-pagination':
+                            const tradeSearch = document.getElementById('trade-search').value;
+                            const tradeStatus = document.getElementById('trade-status-filter').value;
+                            const tradeType = document.getElementById('trade-type-filter').value;
+                            const tradeDate = document.getElementById('trade-date-filter').value;
+                            loadTrades(page, tradeSearch, tradeStatus, tradeType, tradeDate);
+                            break;
+                        case 'tickets-pagination':
+                            const ticketSearch = document.getElementById('ticket-search').value;
+                            const ticketStatus = document.getElementById('ticket-status-filter').value;
+                            const ticketPriority = document.getElementById('ticket-priority-filter').value;
+                            loadTickets(page, ticketSearch, ticketStatus, ticketPriority);
+                            break;
+                        case 'kyc-pagination':
+                            const kycSearch = document.getElementById('kyc-search').value;
+                            const kycStatus = document.getElementById('kyc-status-filter').value;
+                            loadKYC(page, kycSearch, kycStatus);
+                            break;
+                        case 'logs-pagination':
+                            const logSearch = document.getElementById('log-search').value;
+                            const logType = document.getElementById('log-type-filter').value;
+                            const logDate = document.getElementById('log-date-filter').value;
+                            loadActivityLogs(page, logSearch, logType, logDate);
+                            break;
+                    }
+                }
+            });
+
+            // Ticket actions
+            document.getElementById('assign-ticket-btn').addEventListener('click', function() {
+                assignTicketToMe();
+            });
+
+            document.getElementById('save-ticket-btn').addEventListener('click', function() {
+                updateTicketStatus();
+            });
+
+            document.getElementById('send-reply-btn').addEventListener('click', function() {
+                sendTicketReply();
+            });
+
+            // KYC actions
+            document.getElementById('approve-kyc-btn').addEventListener('click', function() {
+                approveKYC(true);
+            });
+
+            document.getElementById('reject-kyc-btn').addEventListener('click', function() {
+                approveKYC(false);
+            });
+
+            document.getElementById('request-more-info-btn').addEventListener('click', function() {
+                requestMoreKYCInfo();
+            });
+
+            // User actions
+            document.getElementById('message-user-btn').addEventListener('click', function() {
+                alert('This feature will be implemented in the next version');
+            });
+
+            document.getElementById('reset-password-btn').addEventListener('click', function() {
+                resetUserPassword();
+            });
+
+            document.getElementById('suspend-user-btn').addEventListener('click', function() {
+                toggleUserStatus();
+            });
+
+            // Export buttons
+            document.getElementById('export-users-btn').addEventListener('click', function() {
+                exportData('users');
+            });
+
+            document.getElementById('export-trades-btn').addEventListener('click', function() {
+                exportData('trades');
+            });
+
+            document.getElementById('export-tickets-btn').addEventListener('click', function() {
+                exportData('tickets');
+            });
+
+            document.getElementById('export-logs-btn').addEventListener('click', function() {
+                exportData('logs');
+            });
+        }
+
+        // Load dashboard data
+        function loadDashboardStats() {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/dashboard-stats', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to load admin profile');
+                    throw new Error('Failed to load dashboard stats');
                 }
                 return response.json();
             })
             .then(data => {
-                document.getElementById('admin-username').textContent = data.name;
-                // Update avatar with admin's initials
-                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name)}&background=7367f0&color=fff`;
-                document.querySelector('#userDropdown img').src = avatarUrl;
+                // Update stats
+                document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
+                document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
+                document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.data.userGrowthRate + '%';
+                document.getElementById('verified-growth-rate').textContent = data.data.verifiedGrowthRate + '%';
+                document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
+
+                // Initialize charts if not already initialized
+                if (!growthChart) {
+                    initCharts();
+                }
+
+                // Update charts
+                updateGrowthChart(data.data.growthData);
+                updateUserDistributionChart(data.data.userDistribution);
+
+                // Load recent users
+                loadRecentUsers();
+
+                // Load recent activities
+                loadRecentActivities();
+
+                // Load notifications
+                loadNotifications();
             })
             .catch(error => {
-                console.error('Error loading admin profile:', error);
-            });
-        }
-
-        // Initialize navigation
-        function initNavigation() {
-            const navLinks = document.querySelectorAll('.sidebar-menu a');
-            const contentSections = document.querySelectorAll('.main-content > div');
-            
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // Remove active class from all links
-                    navLinks.forEach(navLink => navLink.classList.remove('active'));
-                    
-                    // Add active class to clicked link
-                    this.classList.add('active');
-                    
-                    // Hide all content sections
-                    contentSections.forEach(section => section.classList.add('d-none'));
-                    
-                    // Show the corresponding content section
-                    const targetId = this.id.replace('-link', '-content');
-                    document.getElementById(targetId).classList.remove('d-none');
-                    
-                    // Update page title
-                    const pageTitle = this.querySelector('span').textContent;
-                    document.getElementById('page-title').textContent = pageTitle;
-
-                    // Load data for the section
-                    switch(targetId) {
-                        case 'users-content':
-                            loadUsers();
-                            break;
-                        case 'trades-content':
-                            loadTrades();
-                            break;
-                        case 'support-content':
-                            loadTickets();
-                            break;
-                        case 'kyc-content':
-                            loadKYC();
-                            break;
-                        case 'logs-content':
-                            loadActivityLogs();
-                            break;
-                    }
-                });
-            });
-
-            // Toggle sidebar on mobile
-            document.getElementById('sidebarToggle').addEventListener('click', function() {
-                document.querySelector('.sidebar').classList.toggle('active');
+                showError('Error loading dashboard data: ' + error.message);
+                console.error('Error loading dashboard data:', error);
             });
         }
 
@@ -1451,50 +2034,6 @@
             });
         }
 
-        // Load dashboard data
-        function loadDashboardData() {
-            fetch('/api/admin/stats', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + adminToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load dashboard stats');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Update stats
-                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-                document.getElementById('active-users').textContent = data.activeUsers.toLocaleString();
-                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-                document.getElementById('user-growth-rate').textContent = data.userGrowthRate + '%';
-                document.getElementById('active-growth-rate').textContent = data.activeGrowthRate + '%';
-                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
-
-                // Update charts
-                updateGrowthChart(data.growthData);
-                updateUserDistributionChart(data.userDistribution);
-
-                // Load recent users
-                loadRecentUsers();
-
-                // Load recent activities
-                loadRecentActivities();
-
-                // Load notifications
-                loadNotifications();
-            })
-            .catch(error => {
-                console.error('Error loading dashboard data:', error);
-            });
-        }
-
         // Update growth chart
         function updateGrowthChart(data) {
             growthChart.data.labels = data.labels;
@@ -1516,10 +2055,10 @@
 
         // Load recent users
         function loadRecentUsers() {
-            fetch('/api/admin/users?limit=5', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?limit=5', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1533,12 +2072,12 @@
                 const tbody = document.getElementById('recent-users-body');
                 tbody.innerHTML = '';
 
-                data.users.forEach(user => {
+                data.data.users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycStatus === 'verified' ? '28c76f' : user.kycStatus === 'pending' ? 'ff9f43' : '00cfe8'}&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
                                      alt="User" class="user-avatar">
                                 <span>${user.fullName}</span>
                             </div>
@@ -1561,10 +2100,10 @@
 
         // Load recent activities
         function loadRecentActivities() {
-            fetch('/api/admin/logs?limit=5', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs?limit=5', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1578,7 +2117,7 @@
                 const activityFeed = document.getElementById('activity-feed');
                 activityFeed.innerHTML = '';
 
-                data.logs.forEach(log => {
+                data.data.logs.forEach(log => {
                     const activityItem = document.createElement('div');
                     activityItem.className = 'activity-item';
 
@@ -1639,10 +2178,10 @@
 
         // Load notifications
         function loadNotifications() {
-            fetch('/api/admin/notifications', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/notifications', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1653,14 +2192,14 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('notifications-count').textContent = data.unreadCount;
-                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
-                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                document.getElementById('notifications-count').textContent = data.data.unreadCount;
+                document.getElementById('pending-tickets-count').textContent = data.data.pendingTickets;
+                document.getElementById('pending-kyc-count').textContent = data.data.pendingKYC;
 
                 const notificationsList = document.getElementById('notifications-list');
                 notificationsList.innerHTML = '';
 
-                data.notifications.forEach(notification => {
+                data.data.notifications.forEach(notification => {
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <a class="dropdown-item" href="#">
@@ -1685,7 +2224,7 @@
 
         // Load users
         function loadUsers(page = 1, search = '', status = '', kyc = '') {
-            let url = `/api/admin/users?page=${page}`;
+            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (kyc) url += `&kyc=${kyc}`;
@@ -1693,7 +2232,7 @@
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1707,12 +2246,13 @@
                 const tbody = document.getElementById('users-table-body');
                 tbody.innerHTML = '';
 
-                data.users.forEach(user => {
+                data.data.users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
+                        <td>${user._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycStatus === 'verified' ? '28c76f' : user.kycStatus === 'pending' ? 'ff9f43' : '00cfe8'}&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
                                      alt="User" class="user-avatar">
                                 <span>${user.fullName}</span>
                             </div>
@@ -1726,8 +2266,8 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge ${user.kycStatus === 'verified' ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
-                                ${user.kycStatus.charAt(0).toUpperCase() + user.kycStatus.slice(1)}
+                            <span class="badge ${user.kycVerified ? 'bg-success' : 'bg-secondary'}">
+                                ${user.kycVerified ? 'Verified' : 'Unverified'}
                             </span>
                         </td>
                         <td>
@@ -1738,7 +2278,7 @@
                                     data-wallet="${user.walletAddress || ''}" 
                                     data-country="${user.country || ''}" 
                                     data-status="${user.status}" 
-                                    data-kyc="${user.kycStatus}">
+                                    data-kyc="${user.kycVerified ? 'verified' : 'unverified'}">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
@@ -1747,16 +2287,17 @@
                 });
 
                 // Update pagination
-                updatePagination('users-pagination', data.totalPages, page);
+                updatePagination('users-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading users: ' + error.message);
                 console.error('Error loading users:', error);
             });
         }
 
         // Load trades
         function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
-            let url = `/api/admin/trades?page=${page}`;
+            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (type) url += `&type=${type}`;
@@ -1765,7 +2306,7 @@
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1779,7 +2320,7 @@
                 const tbody = document.getElementById('trades-table-body');
                 tbody.innerHTML = '';
 
-                data.trades.forEach(trade => {
+                data.data.trades.forEach(trade => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${trade._id.substring(0, 8)}</td>
@@ -1813,16 +2354,17 @@
                 });
 
                 // Update pagination
-                updatePagination('trades-pagination', data.totalPages, page);
+                updatePagination('trades-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading trades: ' + error.message);
                 console.error('Error loading trades:', error);
             });
         }
 
         // Load tickets
         function loadTickets(page = 1, search = '', status = '', priority = '') {
-            let url = `/api/admin/tickets?page=${page}`;
+            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (priority) url += `&priority=${priority}`;
@@ -1830,7 +2372,7 @@
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1844,7 +2386,7 @@
                 const tbody = document.getElementById('tickets-table-body');
                 tbody.innerHTML = '';
 
-                data.tickets.forEach(ticket => {
+                data.data.tickets.forEach(ticket => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${ticket._id.substring(0, 8)}</td>
@@ -1856,15 +2398,14 @@
                             </div>
                         </td>
                         <td>${ticket.subject}</td>
-                        <td>${ticket.category}</td>
-                        <td>
-                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
-                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
-                            </span>
-                        </td>
                         <td>
                             <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
                                 ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
+                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
                             </span>
                         </td>
                         <td>${new Date(ticket.createdAt).toLocaleString()}</td>
@@ -1872,7 +2413,6 @@
                             <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
                                     data-id="${ticket._id}" 
                                     data-subject="${ticket.subject}" 
-                                    data-category="${ticket.category}" 
                                     data-status="${ticket.status}" 
                                     data-priority="${ticket.priority}">
                                 <i class="bi bi-eye"></i>
@@ -1883,23 +2423,24 @@
                 });
 
                 // Update pagination
-                updatePagination('tickets-pagination', data.totalPages, page);
+                updatePagination('tickets-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading tickets: ' + error.message);
                 console.error('Error loading tickets:', error);
             });
         }
 
         // Load KYC
         function loadKYC(page = 1, search = '', status = '') {
-            let url = `/api/admin/kyc?page=${page}`;
+            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
 
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1913,7 +2454,7 @@
                 const tbody = document.getElementById('kyc-table-body');
                 tbody.innerHTML = '';
 
-                data.kycRequests.forEach(kyc => {
+                data.data.kycRequests.forEach(kyc => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>
@@ -1944,16 +2485,17 @@
                 });
 
                 // Update pagination
-                updatePagination('kyc-pagination', data.totalPages, page);
+                updatePagination('kyc-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading KYC: ' + error.message);
                 console.error('Error loading KYC:', error);
             });
         }
 
         // Load activity logs
         function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-            let url = `/api/admin/logs?page=${page}`;
+            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (type) url += `&type=${type}`;
             if (date) url += `&date=${date}`;
@@ -1961,7 +2503,7 @@
             fetch(url, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -1975,7 +2517,7 @@
                 const tbody = document.getElementById('logs-table-body');
                 tbody.innerHTML = '';
 
-                data.logs.forEach(log => {
+                data.data.logs.forEach(log => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${log._id.substring(0, 8)}</td>
@@ -1999,9 +2541,10 @@
                 });
 
                 // Update pagination
-                updatePagination('logs-pagination', data.totalPages, page);
+                updatePagination('logs-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading activity logs: ' + error.message);
                 console.error('Error loading activity logs:', error);
             });
         }
@@ -2032,73 +2575,12 @@
             pagination.appendChild(nextLi);
         }
 
-        // Initialize modals
-        function initModals() {
-            // User detail modal
-            const userDetailModal = new bootstrap.Modal(document.getElementById('userDetailModal'));
-            
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-user-btn')) {
-                    e.preventDefault();
-                    const button = e.target.closest('.view-user-btn');
-                    currentUserId = button.getAttribute('data-id');
-                    
-                    // Load user details
-                    loadUserDetails(currentUserId);
-                    
-                    // Show modal
-                    userDetailModal.show();
-                }
-            });
-
-            // Ticket detail modal
-            const ticketDetailModal = new bootstrap.Modal(document.getElementById('ticketDetailModal'));
-            
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-ticket-btn')) {
-                    e.preventDefault();
-                    const button = e.target.closest('.view-ticket-btn');
-                    currentTicketId = button.getAttribute('data-id');
-                    
-                    // Load ticket details
-                    loadTicketDetails(currentTicketId);
-                    
-                    // Show modal
-                    ticketDetailModal.show();
-                }
-            });
-
-            // KYC detail modal
-            const kycDetailModal = new bootstrap.Modal(document.getElementById('kycDetailModal'));
-            
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.view-kyc-btn')) {
-                    e.preventDefault();
-                    const button = e.target.closest('.view-kyc-btn');
-                    currentKycId = button.getAttribute('data-id');
-                    
-                    // Load KYC details
-                    loadKYCDetails(currentKycId);
-                    
-                    // Show modal
-                    kycDetailModal.show();
-                }
-            });
-
-            // Add user modal
-            const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
-            
-            document.getElementById('add-user-btn').addEventListener('click', function() {
-                addUserModal.show();
-            });
-        }
-
         // Load user details
         function loadUserDetails(userId) {
-            fetch(`/api/admin/users/${userId}`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2109,47 +2591,49 @@
                 return response.json();
             })
             .then(data => {
+                const user = data.data.user;
+                
                 // Update avatar
-                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.fullName)}&background=7367f0&color=fff`;
+                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=7367f0&color=fff`;
                 
                 // Update user info
-                document.getElementById('user-detail-name').textContent = data.fullName;
-                document.getElementById('user-detail-email').textContent = data.email || 'Wallet user';
-                document.getElementById('user-detail-wallet').textContent = data.walletAddress || 'Not connected';
-                document.getElementById('user-detail-country').textContent = data.country || 'Not specified';
-                document.getElementById('user-detail-balance').textContent = '$' + data.balance.toFixed(2);
-                document.getElementById('user-detail-lastlogin').textContent = data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'Never';
+                document.getElementById('user-detail-name').textContent = user.fullName;
+                document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
+                document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
+                document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
+                document.getElementById('user-detail-balance').textContent = '$' + user.balance.toFixed(2);
+                document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
                 
                 // Update status badge
                 const statusBadge = document.getElementById('user-detail-status');
-                statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                statusBadge.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
                 statusBadge.className = 'badge ' + (
-                    data.status === 'active' ? 'bg-success' : 
-                    data.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
+                    user.status === 'active' ? 'bg-success' : 
+                    user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
                 );
                 
                 // Update KYC badge
                 const kycBadge = document.getElementById('user-detail-kyc');
-                kycBadge.textContent = data.kycStatus.charAt(0).toUpperCase() + data.kycStatus.slice(1);
+                kycBadge.textContent = user.kycVerified ? 'Verified' : 'Unverified';
                 kycBadge.className = 'badge ' + (
-                    data.kycStatus === 'verified' ? 'bg-success' : 
-                    data.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
+                    user.kycVerified ? 'bg-success' : 'bg-secondary'
                 );
                 
                 // Load user activities
                 updateUserActivities(userId);
             })
             .catch(error => {
+                showError('Error loading user details: ' + error.message);
                 console.error('Error loading user details:', error);
             });
         }
 
         // Update user activities
         function updateUserActivities(userId) {
-            fetch(`/api/admin/users/${userId}/activities`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}/activities`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2163,7 +2647,7 @@
                 const tbody = document.getElementById('user-activity-table');
                 tbody.innerHTML = '';
 
-                data.activities.forEach(activity => {
+                data.data.activities.forEach(activity => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${activity.description}</td>
@@ -2181,10 +2665,10 @@
 
         // Load ticket details
         function loadTicketDetails(ticketId) {
-            fetch(`/api/admin/tickets/${ticketId}`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2195,23 +2679,25 @@
                 return response.json();
             })
             .then(data => {
+                const ticket = data.data.ticket;
+                
                 // Update ticket info
-                document.getElementById('ticket-id').textContent = data._id.substring(0, 8);
-                document.getElementById('ticket-subject').textContent = data.subject;
-                document.getElementById('ticket-category').textContent = data.category;
-                document.getElementById('ticket-description').textContent = data.description;
-                document.getElementById('ticket-date').textContent = new Date(data.createdAt).toLocaleString();
+                document.getElementById('ticket-id').textContent = ticket._id.substring(0, 8);
+                document.getElementById('ticket-subject').textContent = ticket.subject;
+                document.getElementById('ticket-category').textContent = ticket.category;
+                document.getElementById('ticket-description').textContent = ticket.description;
+                document.getElementById('ticket-date').textContent = new Date(ticket.createdAt).toLocaleString();
                 
                 // Update status and priority selects
-                document.getElementById('ticket-status-select').value = data.status;
-                document.getElementById('ticket-priority-select').value = data.priority;
+                document.getElementById('ticket-status-select').value = ticket.status;
+                document.getElementById('ticket-priority-select').value = ticket.priority;
                 
                 // Update attachments
                 const attachmentsContainer = document.getElementById('ticket-attachments');
                 attachmentsContainer.innerHTML = '';
                 
-                if (data.attachments && data.attachments.length > 0) {
-                    data.attachments.forEach(attachment => {
+                if (ticket.attachments && ticket.attachments.length > 0) {
+                    ticket.attachments.forEach(attachment => {
                         const link = document.createElement('a');
                         link.href = attachment.url;
                         link.className = 'btn btn-sm btn-outline-secondary me-2';
@@ -2227,16 +2713,17 @@
                 updateTicketConversation(ticketId);
             })
             .catch(error => {
+                showError('Error loading ticket details: ' + error.message);
                 console.error('Error loading ticket details:', error);
             });
         }
 
         // Update ticket conversation
         function updateTicketConversation(ticketId) {
-            fetch(`/api/admin/tickets/${ticketId}/conversation`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}/conversation`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2250,7 +2737,7 @@
                 const conversationContainer = document.getElementById('ticket-conversation');
                 conversationContainer.innerHTML = '';
 
-                data.messages.forEach(message => {
+                data.data.messages.forEach(message => {
                     const messageDiv = document.createElement('div');
                     messageDiv.className = `chat-message mb-3 ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
                     
@@ -2277,10 +2764,10 @@
 
         // Load KYC details
         function loadKYCDetails(kycId) {
-            fetch(`/api/admin/kyc/${kycId}`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${kycId}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2291,288 +2778,41 @@
                 return response.json();
             })
             .then(data => {
+                const kyc = data.data.kyc;
+                
                 // Update user info
-                document.getElementById('kyc-fullname').textContent = data.user.fullName;
-                document.getElementById('kyc-dob').textContent = data.dateOfBirth ? new Date(data.dateOfBirth).toLocaleDateString() : 'Not provided';
-                document.getElementById('kyc-country').textContent = data.user.country || 'Not provided';
-                document.getElementById('kyc-submitted').textContent = new Date(data.submittedAt).toLocaleString();
-                document.getElementById('kyc-updated').textContent = data.updatedAt ? new Date(data.updatedAt).toLocaleString() : 'Not updated';
+                document.getElementById('kyc-fullname').textContent = kyc.user.fullName;
+                document.getElementById('kyc-dob').textContent = kyc.dateOfBirth ? new Date(kyc.dateOfBirth).toLocaleDateString() : 'Not provided';
+                document.getElementById('kyc-country').textContent = kyc.user.country || 'Not provided';
+                document.getElementById('kyc-submitted').textContent = new Date(kyc.submittedAt).toLocaleString();
+                document.getElementById('kyc-updated').textContent = kyc.updatedAt ? new Date(kyc.updatedAt).toLocaleString() : 'Not updated';
                 
                 // Update status badge
                 const statusBadge = document.getElementById('kyc-current-status');
-                statusBadge.textContent = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                statusBadge.textContent = kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1);
                 statusBadge.className = 'badge ' + (
-                    data.status === 'approved' ? 'bg-success' : 
-                    data.status === 'pending' ? 'bg-warning' : 'bg-danger'
+                    kyc.status === 'approved' ? 'bg-success' : 
+                    kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'
                 );
                 
                 // Update document images
-                document.getElementById('kyc-id-front').src = data.idFront || 'https://via.placeholder.com/400x250?text=ID+Front';
-                document.getElementById('kyc-id-back').src = data.idBack || 'https://via.placeholder.com/400x250?text=ID+Back';
-                document.getElementById('kyc-proof-address').src = data.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
-                document.getElementById('kyc-selfie').src = data.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
+                document.getElementById('kyc-id-front').src = kyc.idFront || 'https://via.placeholder.com/400x250?text=ID+Front';
+                document.getElementById('kyc-id-back').src = kyc.idBack || 'https://via.placeholder.com/400x250?text=ID+Back';
+                document.getElementById('kyc-proof-address').src = kyc.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
+                document.getElementById('kyc-selfie').src = kyc.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
             })
             .catch(error => {
+                showError('Error loading KYC details: ' + error.message);
                 console.error('Error loading KYC details:', error);
-            });
-        }
-
-        // Initialize forms
-        function initForms() {
-            // Broadcast form
-            document.getElementById('broadcast-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const title = document.getElementById('broadcast-title').value;
-                const message = document.getElementById('broadcast-message').value;
-                const type = document.getElementById('broadcast-type').value;
-                const audience = document.getElementById('broadcast-audience').value;
-                
-                fetch('/api/admin/broadcast', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + adminToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        title,
-                        message,
-                        type,
-                        audience
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to send broadcast');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Show success message
-                    alert('Broadcast message has been sent successfully!');
-                    
-                    // Reset form
-                    this.reset();
-                })
-                .catch(error => {
-                    console.error('Error sending broadcast:', error);
-                    alert('Failed to send broadcast: ' + error.message);
-                });
-            });
-
-            // Add user form
-            document.getElementById('save-user-btn').addEventListener('click', function() {
-                const form = document.getElementById('add-user-form');
-                const fullName = document.getElementById('add-user-fullname').value;
-                const email = document.getElementById('add-user-email').value;
-                const password = document.getElementById('add-user-password').value;
-                const country = document.getElementById('add-user-country').value;
-                const wallet = document.getElementById('add-user-wallet').value;
-                const status = document.getElementById('add-user-status').value;
-                
-                fetch('/api/admin/users', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + adminToken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fullName,
-                        email,
-                        password,
-                        country,
-                        walletAddress: wallet,
-                        status
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to add user');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Show success message
-                    alert('User has been added successfully!');
-                    
-                    // Close modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
-                    modal.hide();
-                    
-                    // Reset form
-                    form.reset();
-                    
-                    // Reload users
-                    loadUsers();
-                })
-                .catch(error => {
-                    console.error('Error adding user:', error);
-                    alert('Failed to add user: ' + error.message);
-                });
-            });
-        }
-
-        // Initialize event listeners
-        function initEventListeners() {
-            // Pagination
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.page-link')) {
-                    e.preventDefault();
-                    const page = parseInt(e.target.getAttribute('data-page'));
-                    const paginationId = e.target.closest('.pagination').id;
-                    
-                    switch(paginationId) {
-                        case 'users-pagination':
-                            const userSearch = document.getElementById('user-search').value;
-                            const userStatus = document.getElementById('user-status-filter').value;
-                            const userKYC = document.getElementById('user-kyc-filter').value;
-                            loadUsers(page, userSearch, userStatus, userKYC);
-                            break;
-                        case 'trades-pagination':
-                            const tradeSearch = document.getElementById('trade-search').value;
-                            const tradeStatus = document.getElementById('trade-status-filter').value;
-                            const tradeType = document.getElementById('trade-type-filter').value;
-                            const tradeDate = document.getElementById('trade-date-filter').value;
-                            loadTrades(page, tradeSearch, tradeStatus, tradeType, tradeDate);
-                            break;
-                        case 'tickets-pagination':
-                            const ticketSearch = document.getElementById('ticket-search').value;
-                            const ticketStatus = document.getElementById('ticket-status-filter').value;
-                            const ticketPriority = document.getElementById('ticket-priority-filter').value;
-                            loadTickets(page, ticketSearch, ticketStatus, ticketPriority);
-                            break;
-                        case 'kyc-pagination':
-                            const kycSearch = document.getElementById('kyc-search').value;
-                            const kycStatus = document.getElementById('kyc-status-filter').value;
-                            loadKYC(page, kycSearch, kycStatus);
-                            break;
-                        case 'logs-pagination':
-                            const logSearch = document.getElementById('log-search').value;
-                            const logType = document.getElementById('log-type-filter').value;
-                            const logDate = document.getElementById('log-date-filter').value;
-                            loadActivityLogs(page, logSearch, logType, logDate);
-                            break;
-                    }
-                }
-            });
-
-            // Search and filter
-            document.getElementById('search-users-btn').addEventListener('click', function() {
-                const search = document.getElementById('user-search').value;
-                const status = document.getElementById('user-status-filter').value;
-                const kyc = document.getElementById('user-kyc-filter').value;
-                loadUsers(1, search, status, kyc);
-            });
-
-            document.getElementById('search-trades-btn').addEventListener('click', function() {
-                const search = document.getElementById('trade-search').value;
-                const status = document.getElementById('trade-status-filter').value;
-                const type = document.getElementById('trade-type-filter').value;
-                const date = document.getElementById('trade-date-filter').value;
-                loadTrades(1, search, status, type, date);
-            });
-
-            document.getElementById('search-tickets-btn').addEventListener('click', function() {
-                const search = document.getElementById('ticket-search').value;
-                const status = document.getElementById('ticket-status-filter').value;
-                const priority = document.getElementById('ticket-priority-filter').value;
-                loadTickets(1, search, status, priority);
-            });
-
-            document.getElementById('search-kyc-btn').addEventListener('click', function() {
-                const search = document.getElementById('kyc-search').value;
-                const status = document.getElementById('kyc-status-filter').value;
-                loadKYC(1, search, status);
-            });
-
-            document.getElementById('search-logs-btn').addEventListener('click', function() {
-                const search = document.getElementById('log-search').value;
-                const type = document.getElementById('log-type-filter').value;
-                const date = document.getElementById('log-date-filter').value;
-                loadActivityLogs(1, search, type, date);
-            });
-
-            // View all buttons
-            document.getElementById('view-all-users').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('users-link').click();
-            });
-
-            document.getElementById('view-all-activities').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('logs-link').click();
-            });
-
-            // Ticket actions
-            document.getElementById('assign-ticket-btn').addEventListener('click', function() {
-                assignTicketToMe();
-            });
-
-            document.getElementById('save-ticket-btn').addEventListener('click', function() {
-                updateTicketStatus();
-            });
-
-            document.getElementById('send-reply-btn').addEventListener('click', function() {
-                sendTicketReply();
-            });
-
-            // KYC actions
-            document.getElementById('approve-kyc-btn').addEventListener('click', function() {
-                approveKYC(true);
-            });
-
-            document.getElementById('reject-kyc-btn').addEventListener('click', function() {
-                approveKYC(false);
-            });
-
-            document.getElementById('request-more-info-btn').addEventListener('click', function() {
-                requestMoreKYCInfo();
-            });
-
-            // User actions
-            document.getElementById('message-user-btn').addEventListener('click', function() {
-                alert('This feature will be implemented in the next version');
-            });
-
-            document.getElementById('reset-password-btn').addEventListener('click', function() {
-                resetUserPassword();
-            });
-
-            document.getElementById('suspend-user-btn').addEventListener('click', function() {
-                toggleUserStatus();
-            });
-
-            // Export buttons
-            document.getElementById('export-users-btn').addEventListener('click', function() {
-                exportData('users');
-            });
-
-            document.getElementById('export-trades-btn').addEventListener('click', function() {
-                exportData('trades');
-            });
-
-            document.getElementById('export-tickets-btn').addEventListener('click', function() {
-                exportData('tickets');
-            });
-
-            document.getElementById('export-logs-btn').addEventListener('click', function() {
-                exportData('logs');
-            });
-
-            // Logout
-            document.getElementById('logout-btn').addEventListener('click', function(e) {
-                e.preventDefault();
-                localStorage.removeItem('adminToken');
-                window.location.href = 'login.html';
             });
         }
 
         // Assign ticket to me
         function assignTicketToMe() {
-            fetch(`/api/admin/tickets/${currentTicketId}/assign`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}/assign`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2583,12 +2823,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Ticket has been assigned to you');
+                showSuccess('Ticket has been assigned to you');
                 loadTicketDetails(currentTicketId);
             })
             .catch(error => {
+                showError('Failed to assign ticket: ' + error.message);
                 console.error('Error assigning ticket:', error);
-                alert('Failed to assign ticket: ' + error.message);
             });
         }
 
@@ -2597,10 +2837,10 @@
             const status = document.getElementById('ticket-status-select').value;
             const priority = document.getElementById('ticket-priority-select').value;
             
-            fetch(`/api/admin/tickets/${currentTicketId}`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2615,13 +2855,13 @@
                 return response.json();
             })
             .then(data => {
-                alert('Ticket has been updated successfully');
+                showSuccess('Ticket has been updated successfully');
                 loadTicketDetails(currentTicketId);
                 loadTickets(); // Refresh tickets list
             })
             .catch(error => {
+                showError('Failed to update ticket: ' + error.message);
                 console.error('Error updating ticket:', error);
-                alert('Failed to update ticket: ' + error.message);
             });
         }
 
@@ -2630,14 +2870,14 @@
             const message = document.getElementById('ticket-reply').value;
             
             if (!message.trim()) {
-                alert('Please enter a message');
+                showError('Please enter a message');
                 return;
             }
             
-            fetch(`/api/admin/tickets/${currentTicketId}/reply`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}/reply`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2658,17 +2898,17 @@
                 updateTicketConversation(currentTicketId);
             })
             .catch(error => {
+                showError('Failed to send reply: ' + error.message);
                 console.error('Error sending reply:', error);
-                alert('Failed to send reply: ' + error.message);
             });
         }
 
         // Approve or reject KYC
         function approveKYC(approve) {
-            fetch(`/api/admin/kyc/${currentKycId}/approve`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${currentKycId}/approve`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2682,13 +2922,13 @@
                 return response.json();
             })
             .then(data => {
-                alert(`KYC has been ${approve ? 'approved' : 'rejected'}`);
+                showSuccess(`KYC has been ${approve ? 'approved' : 'rejected'}`);
                 loadKYCDetails(currentKycId);
                 loadKYC(); // Refresh KYC list
             })
             .catch(error => {
+                showError('Failed to update KYC status: ' + error.message);
                 console.error('Error updating KYC status:', error);
-                alert('Failed to update KYC status: ' + error.message);
             });
         }
 
@@ -2700,10 +2940,10 @@
                 return;
             }
             
-            fetch(`/api/admin/kyc/${currentKycId}/request-info`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${currentKycId}/request-info`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2717,12 +2957,12 @@
                 return response.json();
             })
             .then(data => {
-                alert('Request for more information has been sent');
+                showSuccess('Request for more information has been sent');
                 loadKYCDetails(currentKycId);
             })
             .catch(error => {
+                showError('Failed to request more info: ' + error.message);
                 console.error('Error requesting more info:', error);
-                alert('Failed to request more info: ' + error.message);
             });
         }
 
@@ -2734,10 +2974,10 @@
                 return;
             }
             
-            fetch(`/api/admin/users/${currentUserId}/reset-password`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${currentUserId}/reset-password`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2751,11 +2991,11 @@
                 return response.json();
             })
             .then(data => {
-                alert('Password has been reset successfully');
+                showSuccess('Password has been reset successfully');
             })
             .catch(error => {
+                showError('Failed to reset password: ' + error.message);
                 console.error('Error resetting password:', error);
-                alert('Failed to reset password: ' + error.message);
             });
         }
 
@@ -2769,10 +3009,10 @@
                 return;
             }
             
-            fetch(`/api/admin/users/${currentUserId}/status`, {
+            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${currentUserId}/status`, {
                 method: 'PUT',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -2786,13 +3026,13 @@
                 return response.json();
             })
             .then(data => {
-                alert(`User has been ${newStatus === 'active' ? 'activated' : 'suspended'}`);
+                showSuccess(`User has been ${newStatus === 'active' ? 'activated' : 'suspended'}`);
                 loadUserDetails(currentUserId);
                 loadUsers(); // Refresh users list
             })
             .catch(error => {
+                showError('Failed to update user status: ' + error.message);
                 console.error('Error updating user status:', error);
-                alert('Failed to update user status: ' + error.message);
             });
         }
 
@@ -2802,16 +3042,16 @@
             
             switch(type) {
                 case 'users':
-                    endpoint = '/api/admin/users/export';
+                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/export';
                     break;
                 case 'trades':
-                    endpoint = '/api/admin/trades/export';
+                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades/export';
                     break;
                 case 'tickets':
-                    endpoint = '/api/admin/tickets/export';
+                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/export';
                     break;
                 case 'logs':
-                    endpoint = '/api/admin/logs/export';
+                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs/export';
                     break;
                 default:
                     return;
@@ -2820,7 +3060,7 @@
             fetch(endpoint, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken
+                    'Authorization': 'Bearer ' + authToken
                 }
             })
             .then(response => {
@@ -2841,17 +3081,17 @@
                 a.remove();
             })
             .catch(error => {
+                showError(`Failed to export ${type}: ` + error.message);
                 console.error(`Error exporting ${type}:`, error);
-                alert(`Failed to export ${type}: ` + error.message);
             });
         }
 
         // Update user stats
         function updateUserStats() {
-            fetch('/api/admin/stats/users', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/users', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2862,13 +3102,13 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-                document.getElementById('active-users').textContent = data.activeUsers.toLocaleString();
-                document.getElementById('user-growth-rate').textContent = data.growthRate + '%';
+                document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
+                document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.data.growthRate + '%';
                 
                 // Update chart if on dashboard
-                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
-                    updateGrowthChart(data.chartData);
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateGrowthChart(data.data.chartData);
                 }
             })
             .catch(error => {
@@ -2878,10 +3118,10 @@
 
         // Update trade stats
         function updateTradeStats() {
-            fetch('/api/admin/stats/trades', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/trades', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2892,14 +3132,14 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+                document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
+                document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
                 
                 // Update chart if on dashboard
-                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
-                    updateGrowthChart(data.chartData);
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateGrowthChart(data.data.chartData);
                 }
             })
             .catch(error => {
@@ -2909,10 +3149,10 @@
 
         // Update ticket stats
         function updateTicketStats() {
-            fetch('/api/admin/stats/tickets', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/tickets', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2923,7 +3163,7 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                document.getElementById('pending-tickets-count').textContent = data.data.pendingTickets;
                 
                 // Update notifications if needed
                 loadNotifications();
@@ -2935,10 +3175,10 @@
 
         // Update KYC stats
         function updateKycStats() {
-            fetch('/api/admin/stats/kyc', {
+            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/kyc', {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + adminToken,
+                    'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
                 }
             })
@@ -2949,11 +3189,11 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                document.getElementById('pending-kyc-count').textContent = data.data.pendingKYC;
                 
                 // Update user distribution chart if on dashboard
-                if (!document.getElementById('dashboard-content').classList.contains('d-none')) {
-                    updateUserDistributionChart(data.userDistribution);
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateUserDistributionChart(data.data.userDistribution);
                 }
                 
                 // Update notifications if needed
@@ -3079,535 +3319,26 @@
             // Update stats
             updateKycStats();
         }
-        // Global variables
-let currentAdminData = {};
-let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
 
-// DOM Elements
-const loginForm = document.getElementById('admin-login-form');
-const dashboardSection = document.getElementById('dashboard-section');
-const usersSection = document.getElementById('users-section');
-const tradesSection = document.getElementById('trades-section');
-const ticketsSection = document.getElementById('tickets-section');
-const logoutBtn = document.getElementById('logout-btn');
-
-// Check admin authentication on page load
-document.addEventListener('DOMContentLoaded', async () => {
-  if (authToken) {
-    try {
-      const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/verify', {
-        headers: {
-          'Authorization': `Bearer ${authToken}`
+        // Show error message
+        function showError(message) {
+            const errorAlert = document.getElementById('error-alert');
+            document.getElementById('error-message').textContent = message;
+            errorAlert.style.display = 'block';
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 5000);
         }
-      });
-      
-      if (response.ok) {
-        currentAdminData = await response.json();
-        showDashboard();
-        loadDashboardStats();
-      } else {
-        showLogin();
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      showLogin();
-    }
-  } else {
-    showLogin();
-  }
-});
 
-// Admin Login
-if (loginForm) {
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const email = document.getElementById('admin-email').value;
-    const password = document.getElementById('admin-password').value;
-    const rememberMe = document.getElementById('remember-me').checked;
-
-    try {
-      const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
-      
-      if (response.ok) {
-        if (rememberMe) {
-          localStorage.setItem('adminToken', data.token);
-        } else {
-          sessionStorage.setItem('adminToken', data.token);
+        // Show success message
+        function showSuccess(message) {
+            const successAlert = document.getElementById('success-alert');
+            document.getElementById('success-message').textContent = message;
+            successAlert.style.display = 'block';
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 5000);
         }
-        authToken = data.token;
-        currentAdminData = data.data.admin;
-        showDashboard();
-        loadDashboardStats();
-      } else {
-        showError('Login failed: ' + (data.message || 'Invalid credentials'));
-      }
-    } catch (error) {
-      showError('Network error. Please try again.');
-      console.error('Login error:', error);
-    }
-  });
-}
-
-// Logout
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', () => {
-    localStorage.removeItem('adminToken');
-    sessionStorage.removeItem('adminToken');
-    authToken = null;
-    currentAdminData = {};
-    showLogin();
-  });
-}
-
-// Load Dashboard Stats
-async function loadDashboardStats() {
-  try {
-    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/dashboard-stats', {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      updateDashboardUI(data.data);
-    } else {
-      showError('Failed to load dashboard data');
-    }
-  } catch (error) {
-    showError('Network error loading dashboard');
-    console.error('Dashboard error:', error);
-  }
-}
-
-// Load Users
-async function loadUsers(page = 1, search = '') {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?page=${page}&search=${encodeURIComponent(search)}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      renderUsersTable(data.data.users, data.data.total, page);
-    } else {
-      showError('Failed to load users');
-    }
-  } catch (error) {
-    showError('Network error loading users');
-    console.error('Users error:', error);
-  }
-}
-
-// Load Trades
-async function loadTrades(page = 1, filter = 'all') {
-  try {
-    const response = await fetch(`https://your-render-app.onrender.com/api/v1/admin/trades?page=${page}&filter=${filter}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      renderTradesTable(data.data.trades, data.data.total, page);
-    } else {
-      showError('Failed to load trades');
-    }
-  } catch (error) {
-    showError('Network error loading trades');
-    console.error('Trades error:', error);
-  }
-}
-
-// Load Support Tickets
-async function loadTickets(page = 1, status = 'open') {
-  try {
-    const response = await fetch(`https://your-render-app.onrender.com/api/v1/admin/tickets?page=${page}&status=${status}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      renderTicketsTable(data.data.tickets, data.data.total, page);
-    } else {
-      showError('Failed to load tickets');
-    }
-  } catch (error) {
-    showError('Network error loading tickets');
-    console.error('Tickets error:', error);
-  }
-}
-
-// UI Update Functions
-function showLogin() {
-  document.getElementById('login-section').style.display = 'block';
-  document.getElementById('admin-content').style.display = 'none';
-}
-
-function showDashboard() {
-  document.getElementById('login-section').style.display = 'none';
-  document.getElementById('admin-content').style.display = 'block';
-  document.getElementById('admin-name').textContent = currentAdminData.name || 'Admin';
-}
-
-function updateDashboardUI(stats) {
-  document.getElementById('total-users').textContent = stats.totalUsers.toLocaleString();
-  document.getElementById('verified-users').textContent = stats.verifiedUsers.toLocaleString();
-  document.getElementById('total-trades').textContent = stats.totalTrades.toLocaleString();
-  document.getElementById('total-volume').textContent = `$${stats.totalVolume.toLocaleString()}`;
-  document.getElementById('total-profit').textContent = `$${stats.totalProfit.toLocaleString()}`;
-  document.getElementById('open-tickets').textContent = stats.openTickets.toLocaleString();
-}
-
-function renderUsersTable(users, total, currentPage) {
-  const tableBody = document.getElementById('users-table-body');
-  tableBody.innerHTML = '';
-
-  users.forEach(user => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${user._id}</td>
-      <td>${user.firstName} ${user.lastName}</td>
-      <td>${user.email}</td>
-      <td>${user.walletAddress || 'N/A'}</td>
-      <td>${user.country}</td>
-      <td>$${user.balance?.toFixed(2) || '0.00'}</td>
-      <td>${user.kycVerified ? 'Verified' : 'Pending'}</td>
-      <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-      <td>
-        <button class="btn btn-sm btn-primary view-user" data-id="${user._id}">View</button>
-        <button class="btn btn-sm btn-warning edit-user" data-id="${user._id}">Edit</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
-
-  updatePagination('users-pagination', total, currentPage, loadUsers);
-}
-
-function renderTradesTable(trades, total, currentPage) {
-  const tableBody = document.getElementById('trades-table-body');
-  tableBody.innerHTML = '';
-
-  trades.forEach(trade => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${trade._id}</td>
-      <td>${trade.user?.firstName || 'Deleted'} ${trade.user?.lastName || 'User'}</td>
-      <td>${trade.fromCoin} → ${trade.toCoin}</td>
-      <td>$${trade.amount.toFixed(2)}</td>
-      <td>${trade.expectedProfit}%</td>
-      <td>${trade.actualProfit ? trade.actualProfit + '%' : '--'}</td>
-      <td>${trade.status}</td>
-      <td>${new Date(trade.createdAt).toLocaleString()}</td>
-      <td>
-        <button class="btn btn-sm btn-primary view-trade" data-id="${trade._id}">Details</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
-
-  updatePagination('trades-pagination', total, currentPage, loadTrades);
-}
-
-function renderTicketsTable(tickets, total, currentPage) {
-  const tableBody = document.getElementById('tickets-table-body');
-  tableBody.innerHTML = '';
-
-  tickets.forEach(ticket => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${ticket._id}</td>
-      <td>${ticket.user?.firstName || 'Deleted'} ${ticket.user?.lastName || 'User'}</td>
-      <td>${ticket.subject}</td>
-      <td>${ticket.status}</td>
-      <td>${ticket.replies.length}</td>
-      <td>${new Date(ticket.createdAt).toLocaleDateString()}</td>
-      <td>
-        <button class="btn btn-sm btn-primary view-ticket" data-id="${ticket._id}">View</button>
-        <button class="btn btn-sm btn-success resolve-ticket" data-id="${ticket._id}">Resolve</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
-
-  updatePagination('tickets-pagination', total, currentPage, loadTickets);
-}
-
-function updatePagination(elementId, totalItems, currentPage, callback) {
-  const pagination = document.getElementById(elementId);
-  if (!pagination) return;
-
-  const totalPages = Math.ceil(totalItems / 20);
-  pagination.innerHTML = '';
-
-  if (currentPage > 1) {
-    const prevBtn = document.createElement('li');
-    prevBtn.className = 'page-item';
-    prevBtn.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      callback(currentPage - 1);
-    });
-    pagination.appendChild(prevBtn);
-  }
-
-  for (let i = 1; i <= totalPages; i++) {
-    const pageBtn = document.createElement('li');
-    pageBtn.className = `page-item ${i === currentPage ? 'active' : ''}`;
-    pageBtn.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-    pageBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      callback(i);
-    });
-    pagination.appendChild(pageBtn);
-  }
-
-  if (currentPage < totalPages) {
-    const nextBtn = document.createElement('li');
-    nextBtn.className = 'page-item';
-    nextBtn.innerHTML = `<a class="page-link" href="#">Next</a>`;
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      callback(currentPage + 1);
-    });
-    pagination.appendChild(nextBtn);
-  }
-}
-
-function showError(message) {
-  const errorAlert = document.getElementById('error-alert');
-  if (errorAlert) {
-    errorAlert.textContent = message;
-    errorAlert.style.display = 'block';
-    setTimeout(() => {
-      errorAlert.style.display = 'none';
-    }, 5000);
-  } else {
-    alert(message);
-  }
-}
-
-// Navigation
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    const target = link.getAttribute('data-target');
-    
-    document.querySelectorAll('.content-section').forEach(section => {
-      section.style.display = 'none';
-    });
-    
-    document.getElementById(target).style.display = 'block';
-    
-    switch(target) {
-      case 'users-section':
-        loadUsers();
-        break;
-      case 'trades-section':
-        loadTrades();
-        break;
-      case 'tickets-section':
-        loadTickets();
-        break;
-      case 'dashboard-section':
-        loadDashboardStats();
-        break;
-    }
-  });
-});
-
-// Event delegation for dynamic buttons
-document.addEventListener('click', async (e) => {
-  // Handle view user
-  if (e.target.classList.contains('view-user')) {
-    const userId = e.target.getAttribute('data-id');
-    viewUserDetails(userId);
-  }
-  
-  // Handle edit user
-  if (e.target.classList.contains('edit-user')) {
-    const userId = e.target.getAttribute('data-id');
-    editUser(userId);
-  }
-  
-  // Handle view trade
-  if (e.target.classList.contains('view-trade')) {
-    const tradeId = e.target.getAttribute('data-id');
-    viewTradeDetails(tradeId);
-  }
-  
-  // Handle view ticket
-  if (e.target.classList.contains('view-ticket')) {
-    const ticketId = e.target.getAttribute('data-id');
-    viewTicketDetails(ticketId);
-  }
-  
-  // Handle resolve ticket
-  if (e.target.classList.contains('resolve-ticket')) {
-    const ticketId = e.target.getAttribute('data-id');
-    resolveTicket(ticketId);
-  }
-});
-
-// Detailed View Functions
-async function viewUserDetails(userId) {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Show modal with user details
-      showUserModal(data.data.user);
-    } else {
-      showError('Failed to load user details');
-    }
-  } catch (error) {
-    showError('Network error loading user details');
-    console.error('User details error:', error);
-  }
-}
-
-async function editUser(userId) {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Show edit form with user data
-      showEditUserForm(data.data.user);
-    } else {
-      showError('Failed to load user for editing');
-    }
-  } catch (error) {
-    showError('Network error loading user for editing');
-    console.error('Edit user error:', error);
-  }
-}
-
-async function viewTradeDetails(tradeId) {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades/${tradeId}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Show modal with trade details
-      showTradeModal(data.data.trade);
-    } else {
-      showError('Failed to load trade details');
-    }
-  } catch (error) {
-    showError('Network error loading trade details');
-    console.error('Trade details error:', error);
-  }
-}
-
-async function viewTicketDetails(ticketId) {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}`, {
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Show modal with ticket details
-      showTicketModal(data.data.ticket);
-    } else {
-      showError('Failed to load ticket details');
-    }
-  } catch (error) {
-    showError('Network error loading ticket details');
-    console.error('Ticket details error:', error);
-  }
-}
-
-async function resolveTicket(ticketId) {
-  try {
-    const response = await fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}/resolve`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (response.ok) {
-      showSuccess('Ticket resolved successfully');
-      loadTickets();
-    } else {
-      showError('Failed to resolve ticket');
-    }
-  } catch (error) {
-    showError('Network error resolving ticket');
-    console.error('Resolve ticket error:', error);
-  }
-}
-
-function showSuccess(message) {
-  const successAlert = document.getElementById('success-alert');
-  if (successAlert) {
-    successAlert.textContent = message;
-    successAlert.style.display = 'block';
-    setTimeout(() => {
-      successAlert.style.display = 'none';
-    }, 5000);
-  } else {
-    alert(message);
-  }
-}
-
-// Modal display functions (you'll need to implement these based on your UI)
-function showUserModal(user) {
-  // Implement your modal display logic here
-  console.log('Showing user:', user);
-  alert(`User Details:\nName: ${user.firstName} ${user.lastName}\nEmail: ${user.email}\nBalance: $${user.balance}`);
-}
-
-function showEditUserForm(user) {
-  // Implement your edit form display logic here
-  console.log('Editing user:', user);
-  alert(`Edit form for user: ${user.firstName} ${user.lastName}`);
-}
-
-function showTradeModal(trade) {
-  // Implement your modal display logic here
-  console.log('Showing trade:', trade);
-  alert(`Trade Details:\nFrom: ${trade.fromCoin}\nTo: ${trade.toCoin}\nAmount: $${trade.amount}`);
-}
-
-function showTicketModal(ticket) {
-  // Implement your modal display logic here
-  console.log('Showing ticket:', ticket);
-  alert(`Ticket Details:\nSubject: ${ticket.subject}\nStatus: ${ticket.status}`);
-}
     </script>
 </body>
 </html>
