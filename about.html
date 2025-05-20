@@ -840,6 +840,43 @@
         animate();
       });
     });
+    // Load statistics from backend
+async function loadStatistics() {
+  try {
+    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/stats');
+    
+    if (response.ok) {
+      const data = await response.json();
+      
+      // Animate counting up
+      animateValue('total-users', 0, data.data.users, 2000);
+      animateValue('total-trades', 0, data.data.trades, 2000);
+      animateValue('active-traders', 0, data.data.activeTraders, 2000);
+      animateValue('total-volume', 0, data.data.totalVolume, 2000);
+    }
+  } catch (err) {
+    console.error('Failed to load stats:', err);
+  }
+}
+
+// Helper function for counting animation
+function animateValue(id, start, end, duration) {
+  const obj = document.getElementById(id);
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    const value = Math.floor(progress * (end - start) + start);
+    obj.textContent = value.toLocaleString();
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
+// Initialize about page
+window.addEventListener('DOMContentLoaded', loadStatistics);
   </script>
 </body>
 </html>
