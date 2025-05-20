@@ -2166,6 +2166,46 @@
         event.target.style.display = "none";
       }
     }
+    // Check authentication and load user data
+async function checkAuthAndLoadData() {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  
+  if (token) {
+    try {
+      // Get user data
+      const userResponse = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        document.getElementById('user-balance').textContent = `$${userData.data.user.balance.toFixed(2)}`;
+        document.getElementById('login-btn').style.display = 'none';
+        document.getElementById('dashboard-btn').style.display = 'block';
+      } else {
+        // If token is invalid, clear it
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+      }
+    } catch (err) {
+      console.error('Auth check failed:', err);
+    }
+  }
+
+  // Load market data (this uses your existing arbitrage logic)
+  loadMarketData();
+}
+
+// Your existing arbitrage logic function
+function loadMarketData() {
+  // Keep your existing index.html logic here
+  // This should remain unchanged as per your requirements
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', checkAuthAndLoadData);
   </script>
 </body>
 </html>
