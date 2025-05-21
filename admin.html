@@ -1350,7 +1350,7 @@
 
         // Verify token with backend
         function verifyToken() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/verify', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/verify', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -1520,7 +1520,7 @@
                 loginBtn.disabled = true;
                 loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
                 
-                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/login', {
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1568,7 +1568,7 @@
                 const type = document.getElementById('broadcast-type').value;
                 const audience = document.getElementById('broadcast-audience').value;
                 
-                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/broadcast', {
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/broadcast', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + authToken,
@@ -1606,7 +1606,7 @@
                 const registrationStatus = document.getElementById('registration-status').value === 'true';
                 const kycRequirement = document.getElementById('kyc-requirement').value === 'true';
                 
-                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/settings', {
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + authToken,
@@ -1644,7 +1644,7 @@
                 const wallet = document.getElementById('add-user-wallet').value;
                 const status = document.getElementById('add-user-status').value;
                 
-                fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users', {
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/users', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + authToken,
@@ -1845,7 +1845,7 @@
 
         // Load dashboard data
         function loadDashboardStats() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/dashboard-stats', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -1989,7 +1989,7 @@
 
         // Load recent users
         function loadRecentUsers() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?limit=5', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/users?limit=5', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2034,7 +2034,7 @@
 
         // Load recent activities
         function loadRecentActivities() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs?limit=5', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2112,7 +2112,7 @@
 
         // Load notifications
         function loadNotifications() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/notifications', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/notifications', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2158,7 +2158,7 @@
 
         // Load users
         function loadUsers(page = 1, search = '', status = '', kyc = '') {
-            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users?page=${page}`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (kyc) url += `&kyc=${kyc}`;
@@ -2231,7 +2231,7 @@
 
         // Load trades
         function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
-            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades?page=${page}`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (type) url += `&type=${type}`;
@@ -2298,7 +2298,7 @@
 
         // Load tickets
         function loadTickets(page = 1, search = '', status = '', priority = '') {
-            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets?page=${page}`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (priority) url += `&priority=${priority}`;
@@ -2367,7 +2367,7 @@
 
         // Load KYC
         function loadKYC(page = 1, search = '', status = '') {
-            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc?page=${page}`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
 
@@ -2429,7 +2429,7 @@
 
         // Load activity logs
         function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-            let url = `https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs?page=${page}`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (type) url += `&type=${type}`;
             if (date) url += `&date=${date}`;
@@ -2511,7 +2511,7 @@
 
         // Load user details
         function loadUserDetails(userId) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2564,7 +2564,7 @@
 
         // Update user activities
         function updateUserActivities(userId) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${userId}/activities`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}/activities`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2599,7 +2599,7 @@
 
         // Load ticket details
         function loadTicketDetails(ticketId) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2654,7 +2654,7 @@
 
         // Update ticket conversation
         function updateTicketConversation(ticketId) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${ticketId}/conversation`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}/conversation`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2698,7 +2698,7 @@
 
         // Load KYC details
         function loadKYCDetails(kycId) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${kycId}`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${kycId}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2743,7 +2743,7 @@
 
         // Assign ticket to me
         function assignTicketToMe() {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}/assign`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/assign`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2771,7 +2771,7 @@
             const status = document.getElementById('ticket-status-select').value;
             const priority = document.getElementById('ticket-priority-select').value;
             
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2808,7 +2808,7 @@
                 return;
             }
             
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/${currentTicketId}/reply`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/reply`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2839,7 +2839,7 @@
 
         // Approve or reject KYC
         function approveKYC(approve) {
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${currentKycId}/approve`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/approve`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2874,7 +2874,7 @@
                 return;
             }
             
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/kyc/${currentKycId}/request-info`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/request-info`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2908,7 +2908,7 @@
                 return;
             }
             
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${currentUserId}/reset-password`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/reset-password`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2943,7 +2943,7 @@
                 return;
             }
             
-            fetch(`https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/${currentUserId}/status`, {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/status`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2976,16 +2976,16 @@
             
             switch(type) {
                 case 'users':
-                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/users/export';
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
                     break;
                 case 'trades':
-                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/trades/export';
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
                     break;
                 case 'tickets':
-                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/tickets/export';
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
                     break;
                 case 'logs':
-                    endpoint = 'https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/logs/export';
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
                     break;
                 default:
                     return;
@@ -3022,7 +3022,7 @@
 
         // Update user stats
         function updateUserStats() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/users', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/users', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -3052,7 +3052,7 @@
 
         // Update trade stats
         function updateTradeStats() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/trades', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/trades', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -3083,7 +3083,7 @@
 
         // Update ticket stats
         function updateTicketStats() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/tickets', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/tickets', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -3109,7 +3109,7 @@
 
         // Update KYC stats
         function updateKycStats() {
-            fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/admin/stats/kyc', {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/kyc', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
