@@ -941,7 +941,7 @@
     </div>
   </header>
 
-  <div class="user-balance" id="userBalance"></div>
+  <div class="user-balance" id="userBalance" style="display: none;"></div>
 
   <div class="main-content">
     <div class="section crypto-table">
@@ -1135,6 +1135,9 @@
   </div>
 
   <script>
+    // API base URL
+    const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
+    
     // Function to format numbers with proper units and commas
     function formatNumberWithCommas(num) {
       return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1175,12 +1178,12 @@
     }
 
     // User state
-    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    let userBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+    let currentUser = null;
+    let userBalance = 0;
     let allCoinsData = [];
     let allGainersData = [];
     let allTrendingData = [];
-    let coinPrices = JSON.parse(localStorage.getItem('coinPrices')) || {};
+    let coinPrices = {};
     let withdrawalInterval;
     let withdrawalMessages = [];
     let statsInterval;
@@ -1189,16 +1192,11 @@
     let initialCoins = []; // Track initial coins to exclude from "View More"
 
     // Initialize the page
-    document.addEventListener('DOMContentLoaded', () => {
-      // Check if user came from signup or login page
-      const referrer = document.referrer;
-      const fromSignupOrLogin = referrer.includes('signup.html') || referrer.includes('login.html');
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check authentication status
+      await checkAuthStatus();
       
-      if (fromSignupOrLogin) {
-        // Show the balance if user is logged in
-        updateUserDisplay();
-      }
-      
+      // Load market data
       fetchLiveCryptoData();
       fetchTopGainers();
       fetchTrendingCoins();
@@ -1216,6 +1214,87 @@
         video.play().catch(e => console.log('Video play prevented:', e));
       });
     });
+
+    // Check authentication status
+    async function checkAuthStatus() {
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      
+      if (token) {
+        try {
+          const response = await fetch(`${API_BASE_URL}/auth/me`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          
+          if (response.ok) {
+            const userData = await response.json();
+            currentUser = userData.user;
+            userBalance = userData.balance || 0;
+            updateUserDisplay();
+          } else {
+            // If token is invalid, clear it
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
+            currentUser = null;
+            updateUserDisplay();
+          }
+        } catch (error) {
+          console.error('Error checking auth status:', error);
+        }
+      }
+    }
+
+    // Update user display based on auth status
+    function updateUserDisplay() {
+      const userBalanceElement = document.getElementById('userBalance');
+      const navLinks = document.getElementById('navLinks');
+      
+      if (currentUser) {
+        navLinks.innerHTML = `
+          <a href="dashboard.html">Dashboard</a>
+          <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+        `;
+        userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
+        userBalanceElement.style.display = 'block';
+      } else {
+        navLinks.innerHTML = `
+          <a href="signup.html">Sign Up</a>
+          <a href="login.html">Login</a>
+        `;
+        userBalanceElement.style.display = 'none';
+      }
+    }
+
+    // Logout user
+    async function logoutUser() {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (token) {
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
+        
+        // Clear local storage and reset user state
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        currentUser = null;
+        userBalance = 0;
+        
+        // Update UI
+        updateUserDisplay();
+        
+        // Show logout success message
+        alert('You have been logged out successfully');
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    }
 
     // Update prices with random variations within specified profit/loss ranges
     function updatePrices() {
@@ -1287,36 +1366,6 @@
       // Format with commas and 2 decimal places
       volumeElement.textContent = '$' + formatNumberWithCommas(Math.floor(volumeAmount)) + '.' + 
         (volumeAmount % 1).toFixed(2).split('.')[1];
-    }
-
-    // User management functions
-    function updateUserDisplay() {
-      const userBalanceElement = document.getElementById('userBalance');
-      const navLinks = document.getElementById('navLinks');
-      
-      if (currentUser) {
-        navLinks.innerHTML = '<a href="javascript:void(0)" onclick="logoutUser()">Logout</a>';
-        userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
-        userBalanceElement.style.display = 'block';
-        // Make balance clickable to go to dashboard
-        userBalanceElement.onclick = function() {
-          window.location.href = 'dashboard.html';
-        };
-      } else {
-        navLinks.innerHTML = `
-          <a href="signup.html">Sign Up</a>
-          <a href="login.html">Login</a>
-        `;
-        userBalanceElement.style.display = 'none';
-      }
-    }
-
-    function logoutUser() {
-      currentUser = null;
-      userBalance = 0;
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('userBalance');
-      updateUserDisplay();
     }
 
     // Coin detail functionality
@@ -1522,7 +1571,7 @@
     }
 
     // Execute the conversion
-    function executeConversion() {
+    async function executeConversion() {
       const amount = parseFloat(document.getElementById('convertAmount').value);
       const toCoinId = document.getElementById('convertToCoin').value;
       
@@ -1542,26 +1591,46 @@
       const fromPrice = coinPrices[currentConversionCoin]?.currentPrice || (fromCoin.current_price || fromCoin.data.price);
       const toPrice = coinPrices[toCoinId]?.currentPrice || (toCoin.current_price || toCoin.data.price);
       
-      // Calculate profit/loss
-      const isFromProfit = coinPrices[currentConversionCoin]?.isProfit || false;
-      let profitAmount = 0;
-      
-      if (isFromProfit) {
-        const profitPercent = coinPrices[currentConversionCoin]?.changePercent || 0;
-        profitAmount = amount * fromPrice * profitPercent / 100;
-        userBalance += profitAmount;
-        localStorage.setItem('userBalance', userBalance.toString());
-        updateUserDisplay();
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/trades/execute`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            fromCoin: currentConversionCoin,
+            toCoin: toCoinId,
+            amount: amount,
+            fromPrice: fromPrice,
+            toPrice: toPrice
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          userBalance = result.newBalance;
+          
+          // Show success message
+          document.getElementById('profitAmount').textContent = result.profit.toFixed(2);
+          document.getElementById('successText').innerHTML = result.profit > 0 ? 
+            `You've made a profit of $${result.profit.toFixed(2)} on this trade!` :
+            `Trade executed successfully with no immediate profit or loss.`;
+          
+          document.getElementById('successMessage').style.display = 'block';
+          closeModal('conversionModal');
+          
+          // Update user balance display
+          updateUserDisplay();
+        } else {
+          const errorData = await response.json();
+          alert(errorData.message || 'Trade execution failed');
+        }
+      } catch (error) {
+        console.error('Error executing trade:', error);
+        alert('Network error. Please try again.');
       }
-      
-      // Show success message
-      document.getElementById('profitAmount').textContent = profitAmount.toFixed(2);
-      document.getElementById('successText').innerHTML = isFromProfit ? 
-        `You've made a profit of $${profitAmount.toFixed(2)} on this trade!` :
-        `Trade executed successfully with no immediate profit or loss.`;
-      
-      document.getElementById('successMessage').style.display = 'block';
-      closeModal('conversionModal');
     }
 
     function closeSuccess() {
@@ -2166,46 +2235,47 @@
         event.target.style.display = "none";
       }
     }
-    // Check authentication and load user data
-async function checkAuthAndLoadData() {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-  
-  if (token) {
-    try {
-      // Get user data
-      const userResponse = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/users/me', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
 
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        document.getElementById('user-balance').textContent = `$${userData.data.user.balance.toFixed(2)}`;
-        document.getElementById('login-btn').style.display = 'none';
-        document.getElementById('dashboard-btn').style.display = 'block';
-      } else {
-        // If token is invalid, clear it
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
+    // WebSocket connection for real-time updates
+    const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+
+    socket.addEventListener('open', (event) => {
+      console.log('WebSocket connection established');
+      
+      // Authenticate if user is logged in
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      if (token) {
+        socket.send(JSON.stringify({
+          type: 'AUTHENTICATE',
+          token: token
+        }));
       }
-    } catch (err) {
-      console.error('Auth check failed:', err);
-    }
-  }
+    });
 
-  // Load market data (this uses your existing arbitrage logic)
-  loadMarketData();
-}
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data);
+      
+      if (data.type === 'BALANCE_UPDATE') {
+        // Update user balance
+        userBalance = data.balance;
+        updateUserDisplay();
+      } else if (data.type === 'TRADE_UPDATE') {
+        // Show trade notification
+        const profitText = data.profit > 0 ? 
+          `You made a profit of $${data.profit.toFixed(2)}` : 
+          `Trade completed with no profit`;
+        
+        alert(`Trade completed: ${profitText}. New balance: $${data.balance.toFixed(2)}`);
+      }
+    });
 
-// Your existing arbitrage logic function
-function loadMarketData() {
-  // Keep your existing index.html logic here
-  // This should remain unchanged as per your requirements
-}
+    socket.addEventListener('close', (event) => {
+      console.log('WebSocket connection closed');
+    });
 
-// Initialize when page loads
-window.addEventListener('DOMContentLoaded', checkAuthAndLoadData);
+    socket.addEventListener('error', (event) => {
+      console.error('WebSocket error:', event);
+    });
   </script>
 </body>
 </html>
