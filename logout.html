@@ -198,6 +198,16 @@
         video.play().catch(e => console.log('Video play prevented:', e));
       });
       
+         const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+
+// Listen for activity updates
+socket.addEventListener('message', (event) => {
+  const activity = JSON.parse(event.data);
+  if (activity.type === 'USER_ACTIVITY') {
+    showActivityNotification(activity.data);
+  }
+});
+
       // Clear user data from localStorage
       localStorage.removeItem('currentUser');
       localStorage.removeItem('authToken');
