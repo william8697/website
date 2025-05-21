@@ -319,6 +319,109 @@
       left: 0;
       width: 100%;
     }
+
+    /* Ticket history styles */
+    .ticket-history {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .ticket-history h3 {
+      color: #2e7d32;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    .ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .ticket-item {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .ticket-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .ticket-id {
+      font-weight: bold;
+      color: #2e7d32;
+    }
+
+    .ticket-status {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .ticket-status.open {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .ticket-status.pending {
+      background: #fff8e1;
+      color: #ff8f00;
+    }
+
+    .ticket-status.closed {
+      background: #f5f5f5;
+      color: #616161;
+    }
+
+    .ticket-date {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .ticket-subject {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .ticket-message {
+      font-size: 14px;
+      color: #444;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .login-prompt {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .login-prompt a {
+      color: #2e7d32;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .login-prompt a:hover {
+      text-decoration: underline;
+    }
     
     /* Responsive adjustments */
     @media (max-width: 768px) {
@@ -328,6 +431,16 @@
       
       .support-card {
         padding: 20px;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -484,6 +597,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Ticket History Section -->
+    <div class="ticket-history" id="ticket-section">
+      <h3>Your Support Tickets</h3>
+      <div class="ticket-list" id="tickets-container">
+        <!-- Tickets will be loaded here -->
+      </div>
+    </div>
+
+    <div class="login-prompt" id="login-prompt" style="display: none;">
+      <p>Please <a href="login.html">log in</a> to view your support tickets and submit new ones.</p>
+    </div>
   </div>
 
   <footer>
@@ -491,9 +616,9 @@
   </footer>
 
   <script>
-    // Current user data
-    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    const authToken = localStorage.getItem('authToken');
+    // Check authentication status
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const currentUser = token ? JSON.parse(localStorage.getItem('currentUser')) : null;
 
     // DOM Elements
     const supportForm = document.getElementById('supportForm');
@@ -503,6 +628,29 @@
     const fileInput = document.getElementById('supportAttachment');
     const fileNameDisplay = document.getElementById('fileName');
     const startChatBtn = document.getElementById('startChatBtn');
+    const ticketsContainer = document.getElementById('tickets-container');
+    const ticketSection = document.getElementById('ticket-section');
+    const loginPrompt = document.getElementById('login-prompt');
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Ensure video plays on mobile
+      document.querySelectorAll('video').forEach(video => {
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.play().catch(e => console.log('Video play prevented:', e));
+      });
+
+      // Pre-fill user data if logged in
+      if (currentUser) {
+        document.getElementById('supportName').value = currentUser.name || '';
+        document.getElementById('supportEmail').value = currentUser.email || '';
+        loadSupportTickets();
+      } else {
+        ticketSection.style.display = 'none';
+        loginPrompt.style.display = 'block';
+      }
+    });
 
     // Handle file upload display
     fileInput.addEventListener('change', (e) => {
@@ -516,6 +664,12 @@
     // Handle form submission
     supportForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      if (!token) {
+        alert('Please log in to submit a support ticket');
+        window.location.href = 'login.html';
+        return;
+      }
       
       // Show loading state
       submitBtn.disabled = true;
@@ -534,149 +688,136 @@
       
       try {
         // Send to backend
-        const response = await fetch('/api/support/tickets', {
+        const response = await fetch('https://website-backendd-1.onrender.com/api/v1/support', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${authToken}`
+            'Authorization': `Bearer ${token}`
           },
           body: formData
         });
         
         if (!response.ok) {
-          throw new Error(await response.text());
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to submit ticket');
         }
+        
+        const data = await response.json();
         
         // Show success
         supportForm.reset();
         fileNameDisplay.textContent = 'No file chosen';
         successMessage.style.display = 'block';
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = 'none';
+        
+        // Reload tickets
+        loadSupportTickets();
         
       } catch (error) {
         console.error('Error submitting ticket:', error);
-        alert('Error submitting ticket. Please try again.');
+        alert(error.message || 'Error submitting ticket. Please try again.');
+      } finally {
         submitBtn.disabled = false;
         loadingSpinner.style.display = 'none';
       }
     });
 
+    // Load support tickets
+    async function loadSupportTickets() {
+      try {
+        const response = await fetch('https://website-backendd-1.onrender.com/api/v1/support/my-tickets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to load tickets');
+        }
+        
+        const data = await response.json();
+        
+        // Clear existing tickets
+        ticketsContainer.innerHTML = '';
+        
+        if (data.data.tickets.length === 0) {
+          ticketsContainer.innerHTML = '<p>You have no support tickets yet.</p>';
+          return;
+        }
+        
+        // Display tickets
+        data.data.tickets.forEach(ticket => {
+          const ticketElement = document.createElement('div');
+          ticketElement.className = 'ticket-item';
+          ticketElement.innerHTML = `
+            <div class="ticket-header">
+              <span class="ticket-id">#${ticket._id.substring(0, 8)}</span>
+              <span class="ticket-status ${ticket.status.toLowerCase()}">${ticket.status}</span>
+              <span class="ticket-date">${new Date(ticket.createdAt).toLocaleDateString()}</span>
+            </div>
+            <div class="ticket-subject">${ticket.subject}</div>
+            <div class="ticket-message">${ticket.message}</div>
+          `;
+          
+          // Add click handler to view ticket details
+          ticketElement.addEventListener('click', () => {
+            viewTicketDetails(ticket._id);
+          });
+          
+          ticketsContainer.appendChild(ticketElement);
+        });
+        
+      } catch (error) {
+        console.error('Error loading tickets:', error);
+        ticketsContainer.innerHTML = '<p>Error loading support tickets. Please try again later.</p>';
+      }
+    }
+
+    // View ticket details
+    function viewTicketDetails(ticketId) {
+      // In a real implementation, this would open a modal or new page with full ticket details
+      alert(`Viewing details for ticket ${ticketId}\n\nIn a production environment, this would show the full ticket details and conversation history.`);
+    }
+
     // Start live chat
     startChatBtn.addEventListener('click', () => {
-      if (!currentUser) {
+      if (!token) {
         alert('Please log in to use live chat');
+        window.location.href = 'login.html';
         return;
       }
-      alert('Live chat feature would open here in a production environment');
+      
+      // Initialize WebSocket connection for live chat
+      const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+      
+      socket.addEventListener('open', () => {
+        // Authenticate with the server
+        socket.send(JSON.stringify({
+          type: 'AUTHENTICATE',
+          token: token
+        }));
+        
+        // Open chat interface
+        alert('Live chat would open here in production\n\nConnected to support agent.');
+      });
+      
+      socket.addEventListener('message', (event) => {
+        const message = JSON.parse(event.data);
+        // Handle incoming messages
+        console.log('Received message:', message);
+      });
+      
+      socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+        alert('Error connecting to live chat. Please try again later.');
+      });
     });
-
-    // Pre-fill user data if logged in
-    if (currentUser) {
-      document.getElementById('supportName').value = currentUser.name || '';
-      document.getElementById('supportEmail').value = currentUser.email || '';
-    }
 
     // Logout function
     function logoutUser() {
+      localStorage.removeItem('token');
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('authToken');
+      sessionStorage.removeItem('token');
       window.location.href = 'login.html';
     }
-
-    // Ensure video plays on mobile
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('video').forEach(video => {
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-        video.play().catch(e => console.log('Video play prevented:', e));
-      });
-    });
-    // Load support tickets if logged in
-async function loadSupportTickets() {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-  
-  if (!token) {
-    document.getElementById('ticket-section').style.display = 'none';
-    document.getElementById('login-prompt').style.display = 'block';
-    return;
-  }
-
-  try {
-    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/support/my-tickets', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      const ticketsContainer = document.getElementById('tickets-container');
-      ticketsContainer.innerHTML = ''; // Clear existing
-      
-      if (data.data.tickets.length === 0) {
-        ticketsContainer.innerHTML = '<p>You have no support tickets yet.</p>';
-        return;
-      }
-
-      data.data.tickets.forEach(ticket => {
-        const ticketElement = document.createElement('div');
-        ticketElement.className = 'ticket';
-        ticketElement.innerHTML = `
-          <div class="ticket-header">
-            <span class="ticket-id">#${ticket._id}</span>
-            <span class="ticket-status ${ticket.status}">${ticket.status}</span>
-            <span class="ticket-date">${new Date(ticket.createdAt).toLocaleDateString()}</span>
-          </div>
-          <div class="ticket-subject">${ticket.subject}</div>
-          <div class="ticket-message">${ticket.message}</div>
-          ${ticket.replies.length > 0 ? 
-            `<div class="ticket-replies">${ticket.replies.length} replies</div>` : ''}
-        `;
-        ticketsContainer.appendChild(ticketElement);
-      });
-    }
-  } catch (err) {
-    console.error('Failed to load tickets:', err);
-  }
-}
-
-// Handle new ticket submission
-document.getElementById('new-ticket-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  const formData = {
-    subject: document.getElementById('ticket-subject').value,
-    message: document.getElementById('ticket-message').value
-  };
-
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-  try {
-    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/support', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    });
-
-    const data = await response.json();
-    
-    if (response.ok) {
-      alert('Support ticket created successfully!');
-      document.getElementById('new-ticket-form').reset();
-      loadSupportTickets(); // Refresh list
-    } else {
-      alert(data.message || 'Ticket creation failed. Please try again.');
-    }
-  } catch (err) {
-    alert('Network error. Please try again.');
-  }
-});
-
-// Initialize support page
-window.addEventListener('DOMContentLoaded', loadSupportTickets);
   </script>
 </body>
 </html>
