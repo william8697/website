@@ -788,6 +788,26 @@
         closeProfileModal();
       }
     });
+    const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+
+// Listen for activity updates
+socket.addEventListener('message', (event) => {
+  const activity = JSON.parse(event.data);
+  if (activity.type === 'USER_ACTIVITY') {
+    showActivityNotification(activity.data);
+  }
+});
+
+// Send activity when user performs actions
+function trackActivity(action) {
+  socket.send(JSON.stringify({
+    userId: currentUser.id,
+    page: window.location.pathname,
+    action: action,
+    timestamp: new Date()
+  }));
+}
+
 
     // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
@@ -843,7 +863,7 @@
     // Load statistics from backend
 async function loadStatistics() {
   try {
-    const response = await fetch('https://crypto-arbitrage-backendd.onrender.com/api/v1/stats');
+    const response = await fetch('https://website-backendd-1.onrender.com/api/v1/stats');
     
     if (response.ok) {
       const data = await response.json();
