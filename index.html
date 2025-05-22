@@ -720,24 +720,59 @@
       background: #1b5e20;
     }
     
-    .user-balance {
+    /* User balance dropdown styles */
+    .user-balance-container {
       position: fixed;
       top: 20px;
       right: 20px;
+      z-index: 999;
+    }
+    
+    .user-balance {
       background: rgba(46, 125, 50, 0.95);
       color: white;
       padding: 12px 20px;
       border-radius: 6px;
       font-size: 16px;
-      z-index: 999;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       cursor: pointer;
       transition: all 0.3s;
+      position: relative;
     }
     
     .user-balance:hover {
       background: #1b5e20;
       transform: translateY(-2px);
+    }
+    
+    .balance-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 150px;
+      overflow: hidden;
+      display: none;
+      z-index: 1000;
+    }
+    
+    .user-balance:hover .balance-dropdown {
+      display: block;
+    }
+    
+    .balance-dropdown a {
+      display: block;
+      padding: 12px 20px;
+      color: #333;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .balance-dropdown a:hover {
+      background: rgba(46, 125, 50, 0.1);
+      color: #2e7d32;
     }
     
     /* Loading state */
@@ -898,9 +933,12 @@
         gap: 0;
       }
       
-      .user-balance {
+      .user-balance-container {
         top: 10px;
         right: 10px;
+      }
+      
+      .user-balance {
         padding: 8px 15px;
         font-size: 14px;
       }
@@ -992,7 +1030,13 @@
     </div>
   </header>
 
-  <div class="user-balance" id="userBalance" style="display: none;" onclick="window.location.href='dashboard.html'"></div>
+  <div class="user-balance-container" id="userBalanceContainer" style="display: none;">
+    <div class="user-balance" id="userBalance"></div>
+    <div class="balance-dropdown">
+      <a href="deposit.html">Deposit</a>
+      <a href="withdraw.html">Withdraw</a>
+    </div>
+  </div>
 
   <div class="main-content">
     <div class="section crypto-table">
@@ -1292,34 +1336,46 @@
             updateUserDisplay();
           } else {
             // If token is invalid, clear it
-            localStorage.removeItem('token');
-            sessionStorage.removeItem('token');
-            currentUser = null;
-            updateUserDisplay();
+            clearAuthData();
           }
         } catch (error) {
           console.error('Error checking auth status:', error);
+          clearAuthData();
         }
+      } else {
+        updateUserDisplay();
       }
+    }
+
+    // Clear authentication data
+    function clearAuthData() {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      currentUser = null;
+      userBalance = 0;
+      updateUserDisplay();
     }
 
     // Update user display based on auth status
     function updateUserDisplay() {
+      const userBalanceContainer = document.getElementById('userBalanceContainer');
       const userBalanceElement = document.getElementById('userBalance');
       const navLinks = document.getElementById('navLinks');
       
       if (currentUser) {
+        // User is logged in - show balance and logout button
         navLinks.innerHTML = `
           <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
         `;
         userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
-        userBalanceElement.style.display = 'block';
+        userBalanceContainer.style.display = 'block';
       } else {
+        // User is not logged in - show signup/login buttons
         navLinks.innerHTML = `
           <a href="signup.html">Sign Up</a>
           <a href="login.html">Login</a>
         `;
-        userBalanceElement.style.display = 'none';
+        userBalanceContainer.style.display = 'none';
       }
     }
 
@@ -1337,16 +1393,7 @@
           });
         }
         
-        // Clear local storage and reset user state
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-        currentUser = null;
-        userBalance = 0;
-        
-        // Update UI
-        updateUserDisplay();
-        
-        // Show logout success message
+        clearAuthData();
         alert('You have been logged out successfully');
       } catch (error) {
         console.error('Error logging out:', error);
@@ -1355,9 +1402,9 @@
 
     // Update prices with random variations within specified profit/loss ranges
     function updatePrices() {
-      // Maximum loss: -5.33%, Maximum profit: +7.545%
-      const maxLoss = -5.33;
-      const maxProfit = 7.545;
+      // Updated profit/loss ranges: -7.65685% to +15.894154%
+      const maxLoss = -7.65685;
+      const maxProfit = 15.894154;
       
       // Update prices for all coins with random variations
       for (const coinId in coinPrices) {
@@ -1515,19 +1562,21 @@
       const modal = document.getElementById('conversionModal');
       const content = document.getElementById('conversionContent');
       
-      // Get all available coins for the dropdown
-      const allAvailableCoins = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)];
+      // Get all available coins for the dropdown (excluding the current coin)
+      const allAvailableCoins = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)]
+        .filter(c => c.id !== coinId);
+      
+      // Remove duplicates and sort alphabetically
       const uniqueCoins = [];
       const seenIds = new Set();
       
       allAvailableCoins.forEach(c => {
-        if (!seenIds.has(c.id) && c.id !== coinId) {
+        if (!seenIds.has(c.id)) {
           seenIds.add(c.id);
           uniqueCoins.push(c);
         }
       });
       
-      // Sort coins alphabetically
       uniqueCoins.sort((a, b) => a.name.localeCompare(b.name));
       
       // Generate options for the dropdown
@@ -1626,8 +1675,8 @@
       }
       
       document.getElementById('conversionText').innerHTML = `
-        <strong>${amount} ${fromCoin.symbol?.toUpperCase() || fromCoin.name}</strong> = 
-        <strong>${convertedAmount.toFixed(8)} ${toCoin.symbol?.toUpperCase() || toCoin.name}</strong><br><br>
+        <strong>${amount} ${fromCoin.symbol?.toUpperCase() || fromCoin.id.toUpperCase()}</strong> = 
+        <strong>${convertedAmount.toFixed(8)} ${toCoin.symbol?.toUpperCase() || toCoin.id.toUpperCase()}</strong><br><br>
         ${profitText}
       `;
       
@@ -1763,28 +1812,16 @@
             market_cap: 350150000000
           },
           {
-            id: 'ripple',
-            name: 'XRP',
-            symbol: 'xrp',
-            image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731',
-            current_price: 0.52,
-            price_change_percentage_1h_in_currency: 0.25,
-            price_change_percentage_24h_in_currency: 1.55,
-            price_change_percentage_7d_in_currency: 4.35,
-            total_volume: 2154240000,
-            market_cap: 25250000000
-          },
-          {
-            id: 'cardano',
-            name: 'Cardano',
-            symbol: 'ada',
-            image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860',
-            current_price: 0.46,
-            price_change_percentage_1h_in_currency: 0.35,
-            price_change_percentage_24h_in_currency: 2.15,
-            price_change_percentage_7d_in_currency: 6.85,
-            total_volume: 854790000,
-            market_cap: 15150000000
+            id: 'tether',
+            name: 'Tether',
+            symbol: 'usdt',
+            image: 'https://assets.coingecko.com/coins/images/325/large/Tether.png?1668148663',
+            current_price: 1.00,
+            price_change_percentage_1h_in_currency: 0.01,
+            price_change_percentage_24h_in_currency: 0.02,
+            price_change_percentage_7d_in_currency: 0.05,
+            total_volume: 45254790000,
+            market_cap: 83150000000
           },
           {
             id: 'binancecoin',
@@ -1811,16 +1848,28 @@
             market_cap: 18150000000
           },
           {
-            id: 'tether',
-            name: 'Tether',
-            symbol: 'usdt',
-            image: 'https://assets.coingecko.com/coins/images/325/large/Tether.png?1668148663',
-            current_price: 1.00,
-            price_change_percentage_1h_in_currency: 0.01,
-            price_change_percentage_24h_in_currency: 0.02,
-            price_change_percentage_7d_in_currency: 0.05,
-            total_volume: 45254790000,
-            market_cap: 83150000000
+            id: 'ripple',
+            name: 'XRP',
+            symbol: 'xrp',
+            image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png?1605778731',
+            current_price: 0.52,
+            price_change_percentage_1h_in_currency: 0.25,
+            price_change_percentage_24h_in_currency: 1.55,
+            price_change_percentage_7d_in_currency: 4.35,
+            total_volume: 2154240000,
+            market_cap: 25250000000
+          },
+          {
+            id: 'cardano',
+            name: 'Cardano',
+            symbol: 'ada',
+            image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png?1547034860',
+            current_price: 0.46,
+            price_change_percentage_1h_in_currency: 0.35,
+            price_change_percentage_24h_in_currency: 2.15,
+            price_change_percentage_7d_in_currency: 6.85,
+            total_volume: 854790000,
+            market_cap: 15150000000
           }
         ];
         
@@ -1905,12 +1954,20 @@
             price_change_percentage_24h: 24.56
           },
           {
-            id: 'tether',
-            name: 'Tether',
-            symbol: 'usdt',
-            image: 'https://assets.coingecko.com/coins/images/325/large/Tether.png?1668148663',
-            current_price: 1.00,
-            price_change_percentage_24h: 0.02
+            id: 'dogecoin',
+            name: 'Dogecoin',
+            symbol: 'doge',
+            image: 'https://assets.coingecko.com/coins/images/5/large/dogecoin.png?1547792256',
+            current_price: 0.12,
+            price_change_percentage_24h: 12.34
+          },
+          {
+            id: 'shiba-inu',
+            name: 'Shiba Inu',
+            symbol: 'shib',
+            image: 'https://assets.coingecko.com/coins/images/11939/large/shiba.png?1622619446',
+            current_price: 0.000023,
+            price_change_percentage_24h: 8.76
           },
           {
             id: 'solana',
@@ -1927,14 +1984,6 @@
             image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
             current_price: 3025.50,
             price_change_percentage_24h: 5.75
-          },
-          {
-            id: 'bitcoin',
-            name: 'Bitcoin',
-            symbol: 'btc',
-            image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579',
-            current_price: 66300.00,
-            price_change_percentage_24h: 3.45
           }
         ];
         
