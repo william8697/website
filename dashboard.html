@@ -877,6 +877,7 @@
         
         if (!response.ok) {
           window.location.href = 'login.html';
+          return;
         }
         
         const data = await response.json();
@@ -989,22 +990,59 @@
           updateTransactions();
         }
         
-        // Load arbitrage opportunities
-        const arbitrageResponse = await fetch(`${API_BASE_URL}/arbitrage/opportunities`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (arbitrageResponse.ok) {
-          const arbitrageData = await arbitrageResponse.json();
-          arbitrageOpportunities = arbitrageData.opportunities;
+        // Load arbitrage opportunities from index.html data
+        const arbitrageData = await loadArbitrageData();
+        if (arbitrageData) {
+          arbitrageOpportunities = arbitrageData;
           updateArbitrageOpportunities();
         }
         
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         showError('Failed to load some dashboard data. Please refresh the page.');
+      }
+    }
+    
+    // Load arbitrage data from index.html
+    async function loadArbitrageData() {
+      try {
+        // In a real implementation, this would fetch from your API
+        // For demo purposes, we'll use a simulated response
+        return [
+          {
+            _id: 'arb1',
+            pair: 'BTC/USDT',
+            buyExchange: 'Binance',
+            sellExchange: 'Kraken',
+            buyPrice: 51234.56,
+            sellPrice: 51345.78,
+            profit: 0.22,
+            timestamp: new Date().toISOString()
+          },
+          {
+            _id: 'arb2',
+            pair: 'ETH/USDT',
+            buyExchange: 'Coinbase',
+            sellExchange: 'Binance',
+            buyPrice: 2987.34,
+            sellPrice: 3001.45,
+            profit: 0.47,
+            timestamp: new Date().toISOString()
+          },
+          {
+            _id: 'arb3',
+            pair: 'SOL/USDT',
+            buyExchange: 'Kraken',
+            sellExchange: 'FTX',
+            buyPrice: 102.45,
+            sellPrice: 103.12,
+            profit: 0.65,
+            timestamp: new Date().toISOString()
+          }
+        ];
+      } catch (error) {
+        console.error('Error loading arbitrage data:', error);
+        return [];
       }
     }
     
