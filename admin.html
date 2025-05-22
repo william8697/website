@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Load jQuery FIRST -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Then load DataTables -->
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Arbitrage Trading Platform</title>
@@ -343,6 +337,40 @@
             right: 20px;
             z-index: 1100;
             display: none;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -735,6 +763,77 @@
                 </div>
             </div>
 
+            <!-- Transactions Content -->
+            <div id="transactions-section" class="content-section">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Transaction Management</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" id="export-transactions-btn">
+                                <i class="bi bi-download me-1"></i> Export
+                            </button>
+                            <button class="btn btn-sm btn-primary" id="add-transaction-btn">
+                                <i class="bi bi-plus me-1"></i> Add Transaction
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="transaction-search" placeholder="Search transactions...">
+                                    <button class="btn btn-outline-secondary" type="button" id="search-transactions-btn">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <select class="form-select me-2" style="width: 150px;" id="transaction-type-filter">
+                                        <option value="">All Types</option>
+                                        <option value="deposit">Deposit</option>
+                                        <option value="withdrawal">Withdrawal</option>
+                                        <option value="transfer">Transfer</option>
+                                        <option value="fee">Fee</option>
+                                    </select>
+                                    <select class="form-select me-2" style="width: 150px;" id="transaction-status-filter">
+                                        <option value="">All Status</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="failed">Failed</option>
+                                    </select>
+                                    <input type="date" class="form-control" style="width: 150px;" id="transaction-date-filter">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Currency</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactions-table-body">
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3" id="transactions-pagination">
+                                <!-- Will be populated by JavaScript -->
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
             <!-- Support Tickets Content -->
             <div id="support-section" class="content-section">
                 <div class="card">
@@ -987,6 +1086,14 @@
                                     <option value="false">Not Required</option>
                                 </select>
                             </div>
+                            <div class="mb-3">
+                                <label for="trade-fee" class="form-label">Trade Fee (%)</label>
+                                <input type="number" class="form-control" id="trade-fee" min="0" max="10" step="0.1" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="withdrawal-fee" class="form-label">Withdrawal Fee (%)</label>
+                                <input type="number" class="form-control" id="withdrawal-fee" min="0" max="10" step="0.1" required>
+                            </div>
                             <button type="submit" class="btn btn-primary">Save Settings</button>
                         </form>
                     </div>
@@ -1035,7 +1142,10 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Account Balance</label>
-                                    <p id="user-detail-balance">Loading...</p>
+                                    <div class="input-group mb-2">
+                                        <input type="number" class="form-control" id="user-balance-input" value="0">
+                                        <button class="btn btn-outline-secondary" type="button" id="update-balance-btn">Update</button>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Last Login</label>
@@ -1074,6 +1184,122 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form">
+                        <div class="mb-3">
+                            <label for="add-user-fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="add-user-fullname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="add-user-email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="add-user-password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-country" class="form-label">Country</label>
+                            <select class="form-select" id="add-user-country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="CA">Canada</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="JP">Japan</option>
+                                <option value="SG">Singapore</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-wallet" class="form-label">Wallet Address (Optional)</label>
+                            <input type="text" class="form-control" id="add-user-wallet">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-balance" class="form-label">Initial Balance</label>
+                            <input type="number" class="form-control" id="add-user-balance" value="0" min="0" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label for="add-user-status" class="form-label">Account Status</label>
+                            <select class="form-select" id="add-user-status" required>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-user-btn">Save User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal fade" id="addTransactionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Transaction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-transaction-form">
+                        <div class="mb-3">
+                            <label for="transaction-user" class="form-label">User</label>
+                            <select class="form-select" id="transaction-user" required>
+                                <option value="">Select User</option>
+                                <!-- Will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-type" class="form-label">Type</label>
+                            <select class="form-select" id="transaction-type" required>
+                                <option value="deposit">Deposit</option>
+                                <option value="withdrawal">Withdrawal</option>
+                                <option value="transfer">Transfer</option>
+                                <option value="fee">Fee</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-amount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="transaction-amount" min="0" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-currency" class="form-label">Currency</label>
+                            <select class="form-select" id="transaction-currency" required>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                                <option value="GBP">GBP</option>
+                                <option value="BTC">BTC</option>
+                                <option value="ETH">ETH</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="transaction-description" class="form-label">Description</label>
+                            <textarea class="form-control" id="transaction-description" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="save-transaction-btn">Save Transaction</button>
                 </div>
             </div>
         </div>
@@ -1257,60 +1483,6 @@
         </div>
     </div>
 
-    <!-- Add User Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="add-user-form">
-                        <div class="mb-3">
-                            <label for="add-user-fullname" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="add-user-fullname" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="add-user-email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="add-user-email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="add-user-password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="add-user-password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="add-user-country" class="form-label">Country</label>
-                            <select class="form-select" id="add-user-country" required>
-                                <option value="">Select Country</option>
-                                <option value="US">United States</option>
-                                <option value="UK">United Kingdom</option>
-                                <option value="CA">Canada</option>
-                                <!-- More countries would be added here -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="add-user-wallet" class="form-label">Wallet Address (Optional)</label>
-                            <input type="text" class="form-control" id="add-user-wallet">
-                        </div>
-                        <div class="mb-3">
-                            <label for="add-user-status" class="form-label">Account Status</label>
-                            <select class="form-select" id="add-user-status" required>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                                <option value="suspended">Suspended</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="save-user-btn">Save User</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
@@ -1373,11 +1545,76 @@
                 currentAdminData = data.data.admin;
                 showDashboard();
                 loadDashboardStats();
+                loadSettings();
+                connectWebSocket();
             })
             .catch(error => {
                 console.error('Error verifying token:', error);
                 showLogin();
             });
+        }
+
+        // Connect to WebSocket for real-time updates
+        function connectWebSocket() {
+            if (socket) {
+                socket.close();
+            }
+            
+            socket = new WebSocket(`wss://website-backendd-1.onrender.com/api/v1/admin/ws?token=${authToken}`);
+            
+            socket.onopen = function() {
+                console.log('WebSocket connection established');
+            };
+            
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                console.log('WebSocket message received:', data);
+                
+                switch(data.type) {
+                    case 'new_user':
+                        addNewUserNotification(data.user);
+                        break;
+                    case 'new_trade':
+                        addNewTradeNotification(data.trade);
+                        break;
+                    case 'new_ticket':
+                        addNewTicketNotification(data.ticket);
+                        break;
+                    case 'new_kyc':
+                        addNewKycNotification(data.kyc);
+                        break;
+                    case 'user_updated':
+                        if (currentUserId === data.user._id) {
+                            loadUserDetails(currentUserId);
+                        }
+                        break;
+                    case 'ticket_updated':
+                        if (currentTicketId === data.ticket._id) {
+                            loadTicketDetails(currentTicketId);
+                        }
+                        break;
+                    case 'kyc_updated':
+                        if (currentKycId === data.kyc._id) {
+                            loadKYCDetails(currentKycId);
+                        }
+                        break;
+                }
+                
+                // Update dashboard stats if on dashboard
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    loadDashboardStats();
+                }
+            };
+            
+            socket.onclose = function() {
+                console.log('WebSocket connection closed');
+                // Attempt to reconnect after 5 seconds
+                setTimeout(connectWebSocket, 5000);
+            };
+            
+            socket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
         }
 
         // Show login section
@@ -1427,6 +1664,9 @@
                             break;
                         case 'trades-section':
                             loadTrades();
+                            break;
+                        case 'transactions-section':
+                            loadTransactions();
                             break;
                         case 'support-section':
                             loadTickets();
@@ -1509,6 +1749,43 @@
             document.getElementById('add-user-btn').addEventListener('click', function() {
                 addUserModal.show();
             });
+
+            // Add transaction modal
+            const addTransactionModal = new bootstrap.Modal(document.getElementById('addTransactionModal'));
+            
+            document.getElementById('add-transaction-btn').addEventListener('click', function() {
+                // Load users for transaction modal
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/users?limit=100', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load users');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const select = document.getElementById('transaction-user');
+                    select.innerHTML = '<option value="">Select User</option>';
+                    
+                    data.data.users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user._id;
+                        option.textContent = `${user.fullName} (${user.email || user.walletAddress.substring(0, 6) + '...'})`;
+                        select.appendChild(option);
+                    });
+                    
+                    addTransactionModal.show();
+                })
+                .catch(error => {
+                    showError('Failed to load users: ' + error.message);
+                    console.error('Error loading users:', error);
+                });
+            });
         }
 
         // Initialize forms
@@ -1554,6 +1831,8 @@
                     
                     // Load dashboard data
                     loadDashboardStats();
+                    loadSettings();
+                    connectWebSocket();
                 })
                 .catch(error => {
                     showError('Login failed: ' + (error.message || 'Invalid credentials'));
@@ -1611,6 +1890,8 @@
                 const maintenanceMode = document.getElementById('maintenance-mode').value === 'true';
                 const registrationStatus = document.getElementById('registration-status').value === 'true';
                 const kycRequirement = document.getElementById('kyc-requirement').value === 'true';
+                const tradeFee = parseFloat(document.getElementById('trade-fee').value);
+                const withdrawalFee = parseFloat(document.getElementById('withdrawal-fee').value);
                 
                 fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
                     method: 'POST',
@@ -1622,7 +1903,9 @@
                         systemName,
                         maintenanceMode,
                         registrationStatus,
-                        kycRequirement
+                        kycRequirement,
+                        tradeFee,
+                        withdrawalFee
                     })
                 })
                 .then(response => {
@@ -1648,6 +1931,7 @@
                 const password = document.getElementById('add-user-password').value;
                 const country = document.getElementById('add-user-country').value;
                 const wallet = document.getElementById('add-user-wallet').value;
+                const balance = parseFloat(document.getElementById('add-user-balance').value) || 0;
                 const status = document.getElementById('add-user-status').value;
                 
                 fetch('https://website-backendd-1.onrender.com/api/v1/admin/users', {
@@ -1662,6 +1946,7 @@
                         password,
                         country,
                         walletAddress: wallet,
+                        balance,
                         status
                     })
                 })
@@ -1689,6 +1974,89 @@
                     console.error('Error adding user:', error);
                 });
             });
+
+            // Add transaction form
+            document.getElementById('save-transaction-btn').addEventListener('click', function() {
+                const userId = document.getElementById('transaction-user').value;
+                const type = document.getElementById('transaction-type').value;
+                const amount = parseFloat(document.getElementById('transaction-amount').value);
+                const currency = document.getElementById('transaction-currency').value;
+                const description = document.getElementById('transaction-description').value;
+                
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        type,
+                        amount,
+                        currency,
+                        description
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add transaction');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Transaction has been added successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTransactionModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    document.getElementById('add-transaction-form').reset();
+                    
+                    // Reload transactions
+                    loadTransactions();
+                })
+                .catch(error => {
+                    showError('Failed to add transaction: ' + error.message);
+                    console.error('Error adding transaction:', error);
+                });
+            });
+
+            // Update user balance
+            document.getElementById('update-balance-btn').addEventListener('click', function() {
+                const newBalance = parseFloat(document.getElementById('user-balance-input').value);
+                
+                if (isNaN(newBalance)) {
+                    showError('Please enter a valid balance amount');
+                    return;
+                }
+                
+                fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/balance`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        balance: newBalance
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update balance');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('User balance has been updated successfully!');
+                    loadUserDetails(currentUserId);
+                    loadUsers();
+                })
+                .catch(error => {
+                    showError('Failed to update balance: ' + error.message);
+                    console.error('Error updating balance:', error);
+                });
+            });
         }
 
         // Initialize event listeners
@@ -1700,6 +2068,9 @@
                 sessionStorage.removeItem('adminToken');
                 authToken = null;
                 currentAdminData = {};
+                if (socket) {
+                    socket.close();
+                }
                 showLogin();
             });
 
@@ -1728,6 +2099,14 @@
                 const type = document.getElementById('trade-type-filter').value;
                 const date = document.getElementById('trade-date-filter').value;
                 loadTrades(1, search, status, type, date);
+            });
+
+            document.getElementById('search-transactions-btn').addEventListener('click', function() {
+                const search = document.getElementById('transaction-search').value;
+                const type = document.getElementById('transaction-type-filter').value;
+                const status = document.getElementById('transaction-status-filter').value;
+                const date = document.getElementById('transaction-date-filter').value;
+                loadTransactions(1, search, type, status, date);
             });
 
             document.getElementById('search-tickets-btn').addEventListener('click', function() {
@@ -1770,6 +2149,13 @@
                             const tradeType = document.getElementById('trade-type-filter').value;
                             const tradeDate = document.getElementById('trade-date-filter').value;
                             loadTrades(page, tradeSearch, tradeStatus, tradeType, tradeDate);
+                            break;
+                        case 'transactions-pagination':
+                            const transactionSearch = document.getElementById('transaction-search').value;
+                            const transactionType = document.getElementById('transaction-type-filter').value;
+                            const transactionStatus = document.getElementById('transaction-status-filter').value;
+                            const transactionDate = document.getElementById('transaction-date-filter').value;
+                            loadTransactions(page, transactionSearch, transactionType, transactionStatus, transactionDate);
                             break;
                         case 'tickets-pagination':
                             const ticketSearch = document.getElementById('ticket-search').value;
@@ -1820,7 +2206,10 @@
 
             // User actions
             document.getElementById('message-user-btn').addEventListener('click', function() {
-                alert('This feature will be implemented in the next version');
+                const message = prompt('Enter message to send to user:');
+                if (message) {
+                    sendUserMessage(message);
+                }
             });
 
             document.getElementById('reset-password-btn').addEventListener('click', function() {
@@ -1838,6 +2227,10 @@
 
             document.getElementById('export-trades-btn').addEventListener('click', function() {
                 exportData('trades');
+            });
+
+            document.getElementById('export-transactions-btn').addEventListener('click', function() {
+                exportData('transactions');
             });
 
             document.getElementById('export-tickets-btn').addEventListener('click', function() {
@@ -1896,6 +2289,34 @@
             .catch(error => {
                 showError('Error loading dashboard data: ' + error.message);
                 console.error('Error loading dashboard data:', error);
+            });
+        }
+
+        // Load settings
+        function loadSettings() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load settings');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('system-name').value = data.data.systemName;
+                document.getElementById('maintenance-mode').value = data.data.maintenanceMode.toString();
+                document.getElementById('registration-status').value = data.data.registrationStatus.toString();
+                document.getElementById('kyc-requirement').value = data.data.kycRequirement.toString();
+                document.getElementById('trade-fee').value = data.data.tradeFee;
+                document.getElementById('withdrawal-fee').value = data.data.withdrawalFee;
+            })
+            .catch(error => {
+                console.error('Error loading settings:', error);
             });
         }
 
@@ -2206,8 +2627,8 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge ${user.kycVerified ? 'bg-success' : 'bg-secondary'}">
-                                ${user.kycVerified ? 'Verified' : 'Unverified'}
+                            <span class="badge ${user.kycVerified ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
+                                ${user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
                             </span>
                         </td>
                         <td>
@@ -2218,7 +2639,7 @@
                                     data-wallet="${user.walletAddress || ''}" 
                                     data-country="${user.country || ''}" 
                                     data-status="${user.status}" 
-                                    data-kyc="${user.kycVerified ? 'verified' : 'unverified'}">
+                                    data-kyc="${user.kycVerified ? 'verified' : user.kycStatus === 'pending' ? 'pending' : 'unverified'}">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
@@ -2299,6 +2720,69 @@
             .catch(error => {
                 showError('Error loading trades: ' + error.message);
                 console.error('Error loading trades:', error);
+            });
+        }
+
+        // Load transactions
+        function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (type) url += `&type=${type}`;
+            if (status) url += `&status=${status}`;
+            if (date) url += `&date=${date}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load transactions');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('transactions-table-body');
+                tbody.innerHTML = '';
+
+                data.data.transactions.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${transaction._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.fullName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${transaction.user.fullName}</span>
+                            </div>
+                        </td>
+                        <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
+                        <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
+                        <td>${transaction.currency}</td>
+                        <td>
+                            <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(transaction.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('transactions-pagination', data.data.totalPages, page);
+            })
+            .catch(error => {
+                showError('Error loading transactions: ' + error.message);
+                console.error('Error loading transactions:', error);
             });
         }
 
@@ -2541,7 +3025,7 @@
                 document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
                 document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
                 document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
-                document.getElementById('user-detail-balance').textContent = '$' + user.balance.toFixed(2);
+                document.getElementById('user-balance-input').value = user.balance.toFixed(2);
                 document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
                 
                 // Update status badge
@@ -2554,10 +3038,17 @@
                 
                 // Update KYC badge
                 const kycBadge = document.getElementById('user-detail-kyc');
-                kycBadge.textContent = user.kycVerified ? 'Verified' : 'Unverified';
+                kycBadge.textContent = user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
                 kycBadge.className = 'badge ' + (
-                    user.kycVerified ? 'bg-success' : 'bg-secondary'
+                    user.kycVerified ? 'bg-success' : 
+                    user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
                 );
+                
+                // Update suspend button text
+                const suspendBtn = document.getElementById('suspend-user-btn');
+                suspendBtn.textContent = user.status === 'suspended' ? 'Activate Account' : 'Suspend Account';
+                suspendBtn.className = user.status === 'suspended' ? 
+                    'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger';
                 
                 // Load user activities
                 updateUserActivities(userId);
@@ -2631,6 +3122,16 @@
                 // Update status and priority selects
                 document.getElementById('ticket-status-select').value = ticket.status;
                 document.getElementById('ticket-priority-select').value = ticket.priority;
+                
+                // Update assign button if already assigned
+                const assignBtn = document.getElementById('assign-ticket-btn');
+                if (ticket.assignedTo) {
+                    assignBtn.textContent = `Assigned to ${ticket.assignedTo.name || 'admin'}`;
+                    assignBtn.disabled = true;
+                } else {
+                    assignBtn.textContent = 'Assign to Me';
+                    assignBtn.disabled = false;
+                }
                 
                 // Update attachments
                 const attachmentsContainer = document.getElementById('ticket-attachments');
@@ -2906,6 +3407,33 @@
             });
         }
 
+        // Send message to user
+        function sendUserMessage(message) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/message`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Message has been sent to user');
+            })
+            .catch(error => {
+                showError('Failed to send message: ' + error.message);
+                console.error('Error sending message:', error);
+            });
+        }
+
         // Reset user password
         function resetUserPassword() {
             const newPassword = prompt('Enter new password for the user:');
@@ -2987,6 +3515,9 @@
                 case 'trades':
                     endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
                     break;
+                case 'transactions':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
+                    break;
                 case 'tickets':
                     endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
                     break;
@@ -3024,6 +3555,122 @@
                 showError(`Failed to export ${type}: ` + error.message);
                 console.error(`Error exporting ${type}:`, error);
             });
+        }
+
+        // Add new user notification
+        function addNewUserNotification(user) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-plus text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New user registered: ${user.fullName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateUserStats();
+        }
+
+        // Add new trade notification
+        function addNewTradeNotification(trade) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-currency-exchange text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New trade completed: $${trade.amount.toFixed(2)}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTradeStats();
+        }
+
+        // Add new ticket notification
+        function addNewTicketNotification(ticket) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingTicketsCount = document.getElementById('pending-tickets-count');
+            const currentTicketsCount = parseInt(pendingTicketsCount.textContent);
+            pendingTicketsCount.textContent = currentTicketsCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-ticket-perforated text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New support ticket: ${ticket.subject}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTicketStats();
+        }
+
+        // Add new KYC notification
+        function addNewKycNotification(kyc) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingKycCount = document.getElementById('pending-kyc-count');
+            const currentKycCount = parseInt(pendingKycCount.textContent);
+            pendingKycCount.textContent = currentKycCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-check text-info"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New KYC submission: ${kyc.user.fullName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateKycStats();
         }
 
         // Update user stats
@@ -3142,122 +3789,6 @@
             .catch(error => {
                 console.error('Error updating KYC stats:', error);
             });
-        }
-
-        // Add new user notification
-        function addNewUserNotification(user) {
-            const notificationsCount = document.getElementById('notifications-count');
-            const currentCount = parseInt(notificationsCount.textContent);
-            notificationsCount.textContent = currentCount + 1;
-            
-            const notificationsList = document.getElementById('notifications-list');
-            const notification = document.createElement('li');
-            notification.innerHTML = `
-                <a class="dropdown-item" href="#">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <i class="bi bi-person-plus text-primary"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New user registered: ${user.fullName}</p>
-                            <small class="text-muted">Just now</small>
-                        </div>
-                    </div>
-                </a>
-            `;
-            notificationsList.insertBefore(notification, notificationsList.firstChild);
-            
-            // Update stats
-            updateUserStats();
-        }
-
-        // Add new trade notification
-        function addNewTradeNotification(trade) {
-            const notificationsCount = document.getElementById('notifications-count');
-            const currentCount = parseInt(notificationsCount.textContent);
-            notificationsCount.textContent = currentCount + 1;
-            
-            const notificationsList = document.getElementById('notifications-list');
-            const notification = document.createElement('li');
-            notification.innerHTML = `
-                <a class="dropdown-item" href="#">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <i class="bi bi-currency-exchange text-success"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New trade completed: $${trade.amount.toFixed(2)}</p>
-                            <small class="text-muted">Just now</small>
-                        </div>
-                    </div>
-                </a>
-            `;
-            notificationsList.insertBefore(notification, notificationsList.firstChild);
-            
-            // Update stats
-            updateTradeStats();
-        }
-
-        // Add new ticket notification
-        function addNewTicketNotification(ticket) {
-            const notificationsCount = document.getElementById('notifications-count');
-            const currentCount = parseInt(notificationsCount.textContent);
-            notificationsCount.textContent = currentCount + 1;
-            
-            const pendingTicketsCount = document.getElementById('pending-tickets-count');
-            const currentTicketsCount = parseInt(pendingTicketsCount.textContent);
-            pendingTicketsCount.textContent = currentTicketsCount + 1;
-            
-            const notificationsList = document.getElementById('notifications-list');
-            const notification = document.createElement('li');
-            notification.innerHTML = `
-                <a class="dropdown-item" href="#">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <i class="bi bi-ticket-perforated text-warning"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New support ticket: ${ticket.subject}</p>
-                            <small class="text-muted">Just now</small>
-                        </div>
-                    </div>
-                </a>
-            `;
-            notificationsList.insertBefore(notification, notificationsList.firstChild);
-            
-            // Update stats
-            updateTicketStats();
-        }
-
-        // Add new KYC notification
-        function addNewKycNotification(kyc) {
-            const notificationsCount = document.getElementById('notifications-count');
-            const currentCount = parseInt(notificationsCount.textContent);
-            notificationsCount.textContent = currentCount + 1;
-            
-            const pendingKycCount = document.getElementById('pending-kyc-count');
-            const currentKycCount = parseInt(pendingKycCount.textContent);
-            pendingKycCount.textContent = currentKycCount + 1;
-            
-            const notificationsList = document.getElementById('notifications-list');
-            const notification = document.createElement('li');
-            notification.innerHTML = `
-                <a class="dropdown-item" href="#">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <i class="bi bi-shield-check text-info"></i>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New KYC submission: ${kyc.user.fullName}</p>
-                            <small class="text-muted">Just now</small>
-                        </div>
-                    </div>
-                </a>
-            `;
-            notificationsList.insertBefore(notification, notificationsList.firstChild);
-            
-            // Update stats
-            updateKycStats();
         }
 
         // Show error message
