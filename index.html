@@ -1035,6 +1035,8 @@
     <div class="balance-dropdown">
       <a href="deposit.html">Deposit</a>
       <a href="withdraw.html">Withdraw</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="settings.html">Settings</a>
     </div>
   </div>
 
@@ -1319,10 +1321,10 @@
 
     // Check authentication status
     async function checkAuthStatus() {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      
-      if (token) {
-        try {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        
+        if (token) {
           const response = await fetch(`${API_BASE_URL}/auth/me`, {
             headers: {
               'Authorization': `Bearer ${token}`
@@ -1338,12 +1340,12 @@
             // If token is invalid, clear it
             clearAuthData();
           }
-        } catch (error) {
-          console.error('Error checking auth status:', error);
-          clearAuthData();
+        } else {
+          updateUserDisplay();
         }
-      } else {
-        updateUserDisplay();
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+        clearAuthData();
       }
     }
 
@@ -1365,6 +1367,7 @@
       if (currentUser) {
         // User is logged in - show balance and logout button
         navLinks.innerHTML = `
+          <a href="portfolio.html">Portfolio</a>
           <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
         `;
         userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
@@ -1397,6 +1400,7 @@
         alert('You have been logged out successfully');
       } catch (error) {
         console.error('Error logging out:', error);
+        alert('Error logging out. Please try again.');
       }
     }
 
