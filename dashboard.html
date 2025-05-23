@@ -547,6 +547,54 @@
       animation: fadeInOut 3s ease-in-out;
     }
     
+    /* Login prompt styles */
+    .login-prompt {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .login-prompt h2 {
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+    
+    .login-prompt p {
+      margin-bottom: 20px;
+      color: #555;
+    }
+    
+    .login-prompt-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .login-prompt-btn {
+      padding: 10px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .login-prompt-btn-primary {
+      background: #2e7d32;
+      color: white;
+      border: none;
+    }
+    
+    .login-prompt-btn-outline {
+      background: transparent;
+      border: 1px solid #2e7d32;
+      color: #2e7d32;
+    }
+    
     @keyframes fadeInOut {
       0% { opacity: 0; top: 0; }
       10% { opacity: 1; top: 20px; }
@@ -567,6 +615,11 @@
       .form-row {
         flex-direction: column;
         gap: 0;
+      }
+      
+      .login-prompt-buttons {
+        flex-direction: column;
+        align-items: center;
       }
     }
   </style>
@@ -589,81 +642,94 @@
       </video>
       <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
     </div>
-    <div class="nav">
+    <div class="nav" id="navLinks">
       <a href="index.html">Home</a>
       <a href="account.html">Settings</a>
       <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
     </div>
   </header>
 
-  <div class="dashboard-header">
-    <h2>Your Trading Dashboard</h2>
-    <p>Monitor your portfolio and trading activity</p>
-  </div>
-
-  <div class="dashboard-grid">
-    <!-- Account Overview Card -->
-    <div class="dashboard-card">
-      <div class="section-header">
-        <h3>Account Overview</h3>
-      </div>
-      <div class="balance-display" id="totalBalance" onclick="showDepositModal()">$0.00</div>
-      
-      <div class="balance-grid" id="balanceGrid">
-        <!-- Balances will be loaded here -->
-      </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="showDepositModal()">Deposit Funds</button>
-        <button class="btn btn-outline" onclick="showWithdrawModal()">Withdraw</button>
-      </div>
-    </div>
-
-    <!-- Active Trades Card -->
-    <div class="dashboard-card">
-      <div class="section-header">
-        <h3>Active Trades</h3>
-        <a class="view-more" onclick="showMoreTrades()">View More</a>
-      </div>
-      <ul class="activity-list" id="activeTradesList">
-        <li class="activity-item">
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            Loading active trades...
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Recent Transactions Card -->
-    <div class="dashboard-card">
-      <div class="section-header">
-        <h3>Recent Transactions</h3>
-        <a class="view-more" onclick="showMoreTransactions()">View More</a>
-      </div>
-      <ul class="activity-list" id="recentTransactionsList">
-        <li class="activity-item">
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            Loading transactions...
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Arbitrage Opportunities Card -->
-    <div class="dashboard-card">
-      <div class="section-header">
-        <h3>Arbitrage Opportunities</h3>
-        <a class="view-more" onclick="showMoreArbitrage()">View More</a>
-      </div>
-      <div id="arbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
-        Loading opportunities...
-      </div>
+  <!-- Login Prompt (shown when not logged in) -->
+  <div class="login-prompt" id="loginPrompt">
+    <h2>Welcome to Your Dashboard</h2>
+    <p>Please log in to access your trading dashboard and portfolio management tools.</p>
+    <div class="login-prompt-buttons">
+      <a href="login.html" class="login-prompt-btn login-prompt-btn-primary">Login</a>
+      <a href="register.html" class="login-prompt-btn login-prompt-btn-outline">Register</a>
     </div>
   </div>
 
-  <div class="live-chart">
-    <h2>BTC/USDT Live Market Chart</h2>
-    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=light"></iframe>
+  <!-- Dashboard Content (shown when logged in) -->
+  <div id="dashboardContent">
+    <div class="dashboard-header">
+      <h2>Your Trading Dashboard</h2>
+      <p>Monitor your portfolio and trading activity</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Account Overview Card -->
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h3>Account Overview</h3>
+        </div>
+        <div class="balance-display" id="totalBalance" onclick="showDepositModal()">$0.00</div>
+        
+        <div class="balance-grid" id="balanceGrid">
+          <!-- Balances will be loaded here -->
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-primary" onclick="showDepositModal()">Deposit Funds</button>
+          <button class="btn btn-outline" onclick="showWithdrawModal()">Withdraw</button>
+        </div>
+      </div>
+
+      <!-- Active Trades Card -->
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h3>Active Trades</h3>
+          <a class="view-more" onclick="showMoreTrades()">View More</a>
+        </div>
+        <ul class="activity-list" id="activeTradesList">
+          <li class="activity-item">
+            <div style="text-align: center; color: #666; padding: 1rem;">
+              Loading active trades...
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Recent Transactions Card -->
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h3>Recent Transactions</h3>
+          <a class="view-more" onclick="showMoreTransactions()">View More</a>
+        </div>
+        <ul class="activity-list" id="recentTransactionsList">
+          <li class="activity-item">
+            <div style="text-align: center; color: #666; padding: 1rem;">
+              Loading transactions...
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Arbitrage Opportunities Card -->
+      <div class="dashboard-card">
+        <div class="section-header">
+          <h3>Arbitrage Opportunities</h3>
+          <a class="view-more" onclick="showMoreArbitrage()">View More</a>
+        </div>
+        <div id="arbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
+          Loading opportunities...
+        </div>
+      </div>
+    </div>
+
+    <div class="live-chart">
+      <h2>BTC/USDT Live Market Chart</h2>
+      <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=light"></iframe>
+    </div>
   </div>
 
   <footer>
@@ -853,14 +919,12 @@
       // Check authentication
       await checkAuth();
       
-      // Initialize WebSocket connection
-      initWebSocket();
-      
-      // Load user data
-      await loadUserData();
-      
-      // Load dashboard data
-      await loadDashboardData();
+      // Initialize WebSocket connection if logged in
+      if (currentUser) {
+        initWebSocket();
+        await loadUserData();
+        await loadDashboardData();
+      }
       
       // Ensure video plays on mobile
       const videos = document.querySelectorAll('video');
@@ -875,7 +939,7 @@
     async function checkAuth() {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       if (!token) {
-        window.location.href = 'login.html';
+        showLoginPrompt();
         return;
       }
       
@@ -887,16 +951,39 @@
         });
         
         if (!response.ok) {
-          window.location.href = 'login.html';
+          showLoginPrompt();
           return;
         }
         
         const data = await response.json();
         currentUser = data.user;
+        showDashboardContent();
       } catch (error) {
         console.error('Auth check failed:', error);
-        window.location.href = 'login.html';
+        showLoginPrompt();
       }
+    }
+    
+    // Show login prompt and hide dashboard content
+    function showLoginPrompt() {
+      document.getElementById('loginPrompt').style.display = 'block';
+      document.getElementById('dashboardContent').style.display = 'none';
+      document.getElementById('navLinks').innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+      `;
+    }
+    
+    // Show dashboard content and hide login prompt
+    function showDashboardContent() {
+      document.getElementById('loginPrompt').style.display = 'none';
+      document.getElementById('dashboardContent').style.display = 'block';
+      document.getElementById('navLinks').innerHTML = `
+        <a href="index.html">Home</a>
+        <a href="account.html">Settings</a>
+        <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+      `;
     }
     
     // Initialize WebSocket connection
@@ -1299,6 +1386,11 @@
     
     // Execute arbitrage trade
     async function executeArbitrage(opportunityId) {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
+      
       if (userBalance < 100) {
         showError('Minimum Balance Required', 'You need at least $100 in your account to perform arbitrage trading.');
         return;
@@ -1332,6 +1424,11 @@
     
     // Show deposit modal
     async function showDepositModal() {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
+      
       try {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         const response = await fetch(`${API_BASE_URL}/wallet/deposit-address`, {
@@ -1440,6 +1537,10 @@
     
     // Show withdraw modal
     function showWithdrawModal() {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
       document.getElementById('withdrawModal').style.display = 'block';
       updateAddressNote();
     }
@@ -1539,16 +1640,28 @@
     
     // Show more trades modal
     function showMoreTrades() {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
       document.getElementById('moreTradesModal').style.display = 'block';
     }
     
     // Show more transactions modal
     function showMoreTransactions() {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
       document.getElementById('moreTransactionsModal').style.display = 'block';
     }
     
     // Show more arbitrage modal
     function showMoreArbitrage() {
+      if (!currentUser) {
+        showError('Please log in to perform this action');
+        return;
+      }
       document.getElementById('moreArbitrageModal').style.display = 'block';
     }
     
@@ -1604,9 +1717,10 @@
       // Clear auth tokens
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
+      currentUser = null;
       
-      // Redirect to login
-      window.location.href = 'login.html';
+      // Show login prompt and hide dashboard content
+      showLoginPrompt();
     }
   </script>
 </body>
