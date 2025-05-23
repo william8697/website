@@ -585,7 +585,7 @@
           </select>
 
           <label for="password">Password</label>
-          <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8">
+          <input type="password" id="password" name="password" required placeholder="Create a password" minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" title="Must contain at least 8 characters, one uppercase, one number, and one special character">
 
           <label for="confirmPassword">Confirm Password</label>
           <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password" minlength="8">
@@ -722,8 +722,10 @@
         return;
       }
       
-      if (password.length < 8) {
-        errorMessage.textContent = 'Password must be at least 8 characters';
+      // Enhanced password validation
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      if (!passwordRegex.test(password)) {
+        errorMessage.textContent = 'Password must contain at least 8 characters, one uppercase letter, one number, and one special character';
         errorMessage.style.display = 'block';
         return;
       }
