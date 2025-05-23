@@ -410,20 +410,20 @@
         
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="userEmail" value="user@example.com" readonly>
+          <input type="email" id="userEmail" readonly>
         </div>
         
         <div class="form-group">
           <label>Account Status</label>
           <div style="display: flex; align-items: center; gap: 10px;">
-            <span class="status status-success">Verified</span>
-            <span style="font-size: 0.9rem; color: #666;">Last login: <span id="lastLogin">Today at 14:30</span></span>
+            <span class="status" id="accountStatus">Verified</span>
+            <span style="font-size: 0.9rem; color: #666;">Last login: <span id="lastLogin"></span></span>
           </div>
         </div>
         
         <div class="form-group">
           <label>Account Creation Date</label>
-          <input type="text" id="accountCreated" value="May 15, 2025" readonly>
+          <input type="text" id="accountCreated" readonly>
         </div>
         
         <div class="security-notice">
@@ -441,8 +441,8 @@
         <h3>KYC Verification</h3>
         
         <div class="kyc-status">
-          <span class="status status-warning">Pending Verification</span>
-          <span style="font-size: 0.9rem; color: #666;">Complete KYC for full access</span>
+          <span class="status" id="kycStatusDisplay">Pending Verification</span>
+          <span style="font-size: 0.9rem; color: #666;" id="kycStatusText">Complete KYC for full access</span>
         </div>
         
         <div class="form-group">
@@ -605,7 +605,7 @@
         
         <div class="form-group">
           <label>
-            <input type="checkbox" id="emailNotifications" checked> Email Notifications
+            <input type="checkbox" id="emailNotifications"> Email Notifications
           </label>
         </div>
         
@@ -633,7 +633,7 @@
         <div class="form-group">
           <label>API Key</label>
           <div style="display: flex; gap: 10px;">
-            <input type="text" id="apiKey" value="sk_live_***********" readonly>
+            <input type="text" id="apiKey" readonly>
             <button class="btn btn-outline" onclick="regenerateApiKey()">Regenerate</button>
           </div>
           <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">
@@ -756,12 +756,29 @@
           document.getElementById('userEmail').value = user.email;
           document.getElementById('accountCreated').value = new Date(user.createdAt).toLocaleDateString();
           
+          // Update account status
+          const accountStatusElement = document.getElementById('accountStatus');
+          accountStatusElement.textContent = user.isVerified ? 'Verified' : 'Unverified';
+          accountStatusElement.className = user.isVerified ? 'status status-success' : 'status status-warning';
+          
           // Update KYC status
-          updateKYCStatus(user.kycStatus);
+          updateKYCStatus(user.kycStatus || 'unverified');
           
           // Update last login
           if (user.lastLogin) {
             document.getElementById('lastLogin').textContent = new Date(user.lastLogin).toLocaleString();
+          }
+          
+          // Populate KYC fields if they exist
+          if (user.kycDetails) {
+            document.getElementById('kycName').value = user.kycDetails.fullName || '';
+            document.getElementById('kycDob').value = user.kycDetails.dob || '';
+            document.getElementById('kycCountry').value = user.kycDetails.country || '';
+            document.getElementById('kycAddress1').value = user.kycDetails.address || '';
+            document.getElementById('kycCity').value = user.kycDetails.city || '';
+            document.getElementById('kycPostalCode').value = user.kycDetails.postalCode || '';
+            document.getElementById('kycIdType').value = user.kycDetails.idType || '';
+            document.getElementById('kycIdNumber').value = user.kycDetails.idNumber || '';
           }
         } else {
           showError('Failed to load user data');
@@ -793,6 +810,11 @@
           document.getElementById('smsNotifications').checked = settings.smsNotifications || false;
           document.getElementById('twoFactorAuth').checked = settings.twoFactorAuth || false;
           
+          // Update API key if exists
+          if (settings.apiKey) {
+            document.getElementById('apiKey').value = settings.apiKey;
+          }
+          
           // Apply theme if set
           if (settings.theme === 'dark') {
             document.body.style.backgroundColor = '#121212';
@@ -806,21 +828,25 @@
 
     // Update KYC status display
     function updateKYCStatus(status) {
-      const kycStatusElement = document.querySelector('.kyc-status .status');
+      const kycStatusElement = document.getElementById('kycStatusDisplay');
+      const kycStatusTextElement = document.getElementById('kycStatusText');
       
       if (status === 'verified') {
         kycStatusElement.textContent = 'Verified';
         kycStatusElement.className = 'status status-success';
-        document.querySelector('.kyc-status span:last-child').textContent = 'Your account is fully verified';
+        kycStatusTextElement.textContent = 'Your account is fully verified';
       } else if (status === 'pending') {
         kycStatusElement.textContent = 'Pending Verification';
         kycStatusElement.className = 'status status-warning';
+        kycStatusTextElement.textContent = 'Verification in progress';
       } else if (status === 'rejected') {
         kycStatusElement.textContent = 'Verification Rejected';
         kycStatusElement.className = 'status status-danger';
+        kycStatusTextElement.textContent = 'Please correct and resubmit your documents';
       } else {
         kycStatusElement.textContent = 'Not Verified';
         kycStatusElement.className = 'status status-warning';
+        kycStatusTextElement.textContent = 'Complete KYC for full access';
       }
     }
 
@@ -830,6 +856,15 @@
       const preview = document.getElementById(previewId);
       
       if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          showError('File size exceeds 5MB limit');
+          input.value = '';
+          return;
+        }
+        
         const reader = new FileReader();
         
         reader.onload = function(e) {
@@ -837,7 +872,7 @@
           preview.style.display = 'block';
         }
         
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(file);
       }
     }
 
@@ -847,6 +882,8 @@
       const dob = document.getElementById('kycDob').value;
       const country = document.getElementById('kycCountry').value;
       const address1 = document.getElementById('kycAddress1').value;
+      const city = document.getElementById('kycCity').value;
+      const postalCode = document.getElementById('kycPostalCode').value;
       const idType = document.getElementById('kycIdType').value;
       const idNumber = document.getElementById('kycIdNumber').value;
       const idFront = document.getElementById('kycIdFront').files[0];
@@ -854,7 +891,7 @@
       const selfie = document.getElementById('kycSelfie').files[0];
       
       // Basic validation
-      if (!name || !dob || !country || !address1 || !idType || !idNumber || !idFront || !selfie) {
+      if (!name || !dob || !country || !address1 || !city || !postalCode || !idType || !idNumber || !idFront || !selfie) {
         showError('Please fill in all required fields and upload all required documents');
         return;
       }
@@ -867,6 +904,11 @@
         formData.append('dob', dob);
         formData.append('country', country);
         formData.append('address', address1);
+        if (document.getElementById('kycAddress2').value) {
+          formData.append('address2', document.getElementById('kycAddress2').value);
+        }
+        formData.append('city', city);
+        formData.append('postalCode', postalCode);
         formData.append('idType', idType);
         formData.append('idNumber', idNumber);
         formData.append('idFront', idFront);
