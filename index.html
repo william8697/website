@@ -847,6 +847,53 @@
       10%, 30%, 50%, 70%, 90% { transform: translate(-50%, -50%) translateX(-5px); }
       20%, 40%, 60%, 80% { transform: translate(-50%, -50%) translateX(5px); }
     }
+
+    /* Buy/Sell buttons */
+    .trade-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .buy-btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+    
+    .sell-btn {
+      background-color: #c62828;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+      font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      flex: 1;
+    }
+    
+    .buy-btn:hover {
+      background-color: #1b5e20;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
+    
+    .sell-btn:hover {
+      background-color: #b71c1c;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    }
     
     /* Responsive adjustments */
     @media (max-width: 1200px) {
@@ -1035,8 +1082,6 @@
     <div class="balance-dropdown">
       <a href="deposit.html">Deposit</a>
       <a href="withdraw.html">Withdraw</a>
-      <a href="portfolio.html">Portfolio</a>
-      <a href="settings.html">Settings</a>
     </div>
   </div>
 
@@ -1051,16 +1096,17 @@
           <thead>
             <tr>
               <th>Coin</th>
-              <th>Price (USDT)</th>
+              <th>Price (USD)</th>
               <th>1H %</th>
               <th>24H %</th>
               <th>7D %</th>
               <th>24H Volume</th>
               <th>Market Cap</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="mainCryptoTable">
-            <tr><td colspan="7" class="loading"><div class="loading-spinner"></div> Loading market data...</td></tr>
+            <tr><td colspan="8" class="loading"><div class="loading-spinner"></div> Loading market data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -1082,7 +1128,7 @@
     </div>
 
     <div class="live-chart">
-      <h2>BTC/USDT Live Market Chart</h2>
+      <h2>BTC/USD Live Market Chart</h2>
       <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_1&symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=light"></iframe>
     </div>
 
@@ -1180,12 +1226,13 @@
           <thead>
             <tr>
               <th>Coin</th>
-              <th>Price (USDT)</th>
+              <th>Price (USD)</th>
               <th>1H %</th>
               <th>24H %</th>
               <th>7D %</th>
               <th>24H Volume</th>
               <th>Market Cap</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -1367,7 +1414,6 @@
       if (currentUser) {
         // User is logged in - show balance and logout button
         navLinks.innerHTML = `
-          <a href="portfolio.html">Portfolio</a>
           <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
         `;
         userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
@@ -1545,82 +1591,48 @@
             <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_coin_detail&symbol=BINANCE:${coin.symbol?.toUpperCase() || coin.id.toUpperCase()}USDT&interval=D&hidesidetoolbar=1&theme=light"></iframe>
           </div>
           
-          <button class="convert-btn" onclick="showConversionForm('${coinId}')">Convert ${coin.name}</button>
+          <div class="trade-buttons">
+            <button class="buy-btn" onclick="showTradeForm('${coinId}', 'buy')">Buy</button>
+            <button class="sell-btn" onclick="showTradeForm('${coinId}', 'sell')">Sell</button>
+          </div>
         </div>
       `;
       
       modal.style.display = 'block';
     }
 
-    // Show conversion form
-    function showConversionForm(coinId) {
+    // Show trade form (buy/sell)
+    function showTradeForm(coinId, action) {
       if (!currentUser) {
         document.getElementById('loginPrompt').style.display = 'block';
         return;
       }
       
-      currentConversionCoin = coinId;
       const coin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === coinId);
       const coinPrice = coinPrices[coinId]?.currentPrice || (coin.current_price || coin.data.price);
       
       const modal = document.getElementById('conversionModal');
       const content = document.getElementById('conversionContent');
       
-      // Get all available coins for the dropdown (excluding the current coin)
-      const allAvailableCoins = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)]
-        .filter(c => c.id !== coinId);
-      
-      // Remove duplicates and sort alphabetically
-      const uniqueCoins = [];
-      const seenIds = new Set();
-      
-      allAvailableCoins.forEach(c => {
-        if (!seenIds.has(c.id)) {
-          seenIds.add(c.id);
-          uniqueCoins.push(c);
-        }
-      });
-      
-      uniqueCoins.sort((a, b) => a.name.localeCompare(b.name));
-      
-      // Generate options for the dropdown
-      const options = uniqueCoins.map(c => 
-        `<option value="${c.id}">${c.name} (${c.symbol?.toUpperCase() || c.id.toUpperCase()})</option>`
-      ).join('');
-      
       content.innerHTML = `
-        <h2>Convert ${coin.name}</h2>
+        <h2>${action === 'buy' ? 'Buy' : 'Sell'} ${coin.name}</h2>
         <div class="conversion-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label>From</label>
-              <input type="text" value="${coin.name} (${coin.symbol?.toUpperCase() || coin.id.toUpperCase()})" readonly>
-            </div>
-            <div class="form-group">
-              <label>Amount</label>
-              <input type="number" id="convertAmount" placeholder="Enter amount" min="0.00000001" step="0.00000001">
-            </div>
+          <div class="form-group">
+            <label>Amount (USD)</label>
+            <input type="number" id="tradeAmount" placeholder="Enter amount in USD" min="0.01" step="0.01">
           </div>
           
-          <div class="form-row">
-            <div class="form-group">
-              <label>To</label>
-              <select id="convertToCoin">
-                ${options}
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Current Price</label>
-              <input type="text" value="$${coinPrice.toFixed(2)}" readonly>
-            </div>
+          <div class="form-group">
+            <label>Current Price</label>
+            <input type="text" value="$${coinPrice.toFixed(2)} per ${coin.symbol?.toUpperCase() || coin.id.toUpperCase()}" readonly>
           </div>
           
-          <button class="convert-btn" onclick="calculateConversion()">Calculate Conversion</button>
+          <button class="${action === 'buy' ? 'buy-btn' : 'sell-btn'}" onclick="executeTrade('${coinId}', '${action}')">
+            ${action === 'buy' ? 'Buy' : 'Sell'} ${coin.name}
+          </button>
           
-          <div class="conversion-result" id="conversionResult">
-            <h3>Conversion Result</h3>
-            <p id="conversionText"></p>
-            <button class="convert-btn" onclick="executeConversion()">Execute Trade</button>
+          <div class="conversion-result" id="tradeResult">
+            <p id="tradeResultText"></p>
           </div>
         </div>
       `;
@@ -1628,107 +1640,30 @@
       modal.style.display = 'block';
     }
 
-    // Calculate conversion
-    function calculateConversion() {
-      const amount = parseFloat(document.getElementById('convertAmount').value);
-      const toCoinId = document.getElementById('convertToCoin').value;
+    // Execute trade (buy/sell)
+    async function executeTrade(coinId, action) {
+      const amount = parseFloat(document.getElementById('tradeAmount').value);
       
       if (isNaN(amount) || amount <= 0) {
         alert('Please enter a valid amount');
         return;
       }
       
-      const fromCoin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === currentConversionCoin);
-      const toCoin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === toCoinId);
-      
-      if (!fromCoin || !toCoin) {
-        alert('Error: Could not find coin data');
-        return;
-      }
-      
-      const fromPrice = coinPrices[currentConversionCoin]?.currentPrice || (fromCoin.current_price || fromCoin.data.price);
-      const toPrice = coinPrices[toCoinId]?.currentPrice || (toCoin.current_price || toCoin.data.price);
-      
-      // Check if amount is less than $100 equivalent
-      const usdAmount = amount * fromPrice;
-      if (usdAmount < 100) {
-        document.getElementById('insufficientFundsPopup').style.display = 'block';
-        return;
-      }
-      
-      // Calculate conversion
-      const convertedAmount = (amount * fromPrice) / toPrice;
-      
-      // Calculate profit/loss (based on the price difference)
-      const isFromProfit = coinPrices[currentConversionCoin]?.isProfit || false;
-      const isToProfit = coinPrices[toCoinId]?.isProfit || false;
-      
-      let profitText = '';
-      if (isFromProfit && !isToProfit) {
-        // Selling a coin that's at profit to buy one at loss - good trade
-        const profitPercent = coinPrices[currentConversionCoin]?.changePercent || 0;
-        const profitAmount = (amount * fromPrice * profitPercent / 100).toFixed(2);
-        profitText = `This trade will realize a profit of $${profitAmount} (${profitPercent.toFixed(2)}%).`;
-      } else if (!isFromProfit && isToProfit) {
-        // Selling a coin at loss to buy one at profit - bad trade
-        const lossPercent = Math.abs(coinPrices[currentConversionCoin]?.changePercent || 0);
-        const lossAmount = (amount * fromPrice * lossPercent / 100).toFixed(2);
-        profitText = `Warning: This trade will realize a loss of $${lossAmount} (${lossPercent.toFixed(2)}%).`;
-      } else {
-        profitText = `This is a neutral trade with no immediate profit or loss.`;
-      }
-      
-      document.getElementById('conversionText').innerHTML = `
-        <strong>${amount} ${fromCoin.symbol?.toUpperCase() || fromCoin.id.toUpperCase()}</strong> = 
-        <strong>${convertedAmount.toFixed(8)} ${toCoin.symbol?.toUpperCase() || toCoin.id.toUpperCase()}</strong><br><br>
-        ${profitText}
-      `;
-      
-      document.getElementById('conversionResult').style.display = 'block';
-    }
-
-    // Execute the conversion
-    async function executeConversion() {
-      const amount = parseFloat(document.getElementById('convertAmount').value);
-      const toCoinId = document.getElementById('convertToCoin').value;
-      
-      if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid amount');
-        return;
-      }
-      
-      const fromCoin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === currentConversionCoin);
-      const toCoin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === toCoinId);
-      
-      if (!fromCoin || !toCoin) {
-        alert('Error: Could not find coin data');
-        return;
-      }
-      
-      const fromPrice = coinPrices[currentConversionCoin]?.currentPrice || (fromCoin.current_price || fromCoin.data.price);
-      const toPrice = coinPrices[toCoinId]?.currentPrice || (toCoin.current_price || toCoin.data.price);
-      
-      // Check if amount is less than $100 equivalent
-      const usdAmount = amount * fromPrice;
-      if (usdAmount < 100) {
-        document.getElementById('insufficientFundsPopup').style.display = 'block';
-        return;
-      }
+      const coin = [...allCoinsData, ...allGainersData, ...allTrendingData.map(c => c.item)].find(c => c.id === coinId);
+      const coinPrice = coinPrices[coinId]?.currentPrice || (coin.current_price || coin.data.price);
       
       try {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/trades/execute`, {
+        const response = await fetch(`${API_BASE_URL}/trades/${action}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
-            fromCoin: currentConversionCoin,
-            toCoin: toCoinId,
+            coinId: coinId,
             amount: amount,
-            fromPrice: fromPrice,
-            toPrice: toPrice
+            price: coinPrice
           })
         });
         
@@ -1738,9 +1673,8 @@
           
           // Show success message
           document.getElementById('profitAmount').textContent = result.profit.toFixed(2);
-          document.getElementById('successText').innerHTML = result.profit > 0 ? 
-            `You've made a profit of $${result.profit.toFixed(2)} on this trade!` :
-            `Trade executed successfully with no immediate profit or loss.`;
+          document.getElementById('successText').innerHTML = 
+            `Trade executed successfully! ${result.profit > 0 ? `You made a profit of $${result.profit.toFixed(2)}` : ''}`;
           
           document.getElementById('successMessage').style.display = 'block';
           closeModal('conversionModal');
@@ -1749,11 +1683,13 @@
           updateUserDisplay();
         } else {
           const errorData = await response.json();
-          alert(errorData.message || 'Trade execution failed');
+          document.getElementById('tradeResultText').textContent = errorData.message || 'Trade execution failed';
+          document.getElementById('tradeResult').style.display = 'block';
         }
       } catch (error) {
         console.error('Error executing trade:', error);
-        alert('Network error. Please try again.');
+        document.getElementById('tradeResultText').textContent = 'Network error. Please try again.';
+        document.getElementById('tradeResult').style.display = 'block';
       }
     }
 
@@ -1918,6 +1854,10 @@
           <td class="${coin.price_change_percentage_7d_in_currency >= 0 ? 'positive' : 'negative'}">${coin.price_change_percentage_7d_in_currency?.toFixed(2) || "0"}%</td>
           <td>${formatVolume(coin.total_volume)}</td>
           <td>${formatMarketCap(coin.market_cap)}</td>
+          <td>
+            <button class="buy-btn" style="padding: 5px 10px; font-size: 12px;" onclick="event.stopPropagation(); showTradeForm('${coin.id}', 'buy')">Buy</button>
+            <button class="sell-btn" style="padding: 5px 10px; font-size: 12px;" onclick="event.stopPropagation(); showTradeForm('${coin.id}', 'sell')">Sell</button>
+          </td>
         `;
         
         tr.addEventListener('click', () => showCoinDetail(coin));
@@ -2197,6 +2137,10 @@
           <td class="${coin.price_change_percentage_7d_in_currency >= 0 ? 'positive' : 'negative'}">${coin.price_change_percentage_7d_in_currency?.toFixed(2) || "0"}%</td>
           <td>${formatVolume(coin.total_volume)}</td>
           <td>${formatMarketCap(coin.market_cap)}</td>
+          <td>
+            <button class="buy-btn" style="padding: 5px 10px; font-size: 12px;" onclick="event.stopPropagation(); showTradeForm('${coin.id}', 'buy')">Buy</button>
+            <button class="sell-btn" style="padding: 5px 10px; font-size: 12px;" onclick="event.stopPropagation(); showTradeForm('${coin.id}', 'sell')">Sell</button>
+          </td>
         `;
         
         tr.addEventListener('click', () => {
