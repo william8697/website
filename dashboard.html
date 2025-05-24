@@ -41,12 +41,13 @@
       object-fit: cover;
     }
     
+    /* Optimized Header for Mobile */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(12, 12, 12, 0.85);
-      padding: 10px 20px;
+      padding: 8px 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: relative;
       z-index: 1;
@@ -58,13 +59,13 @@
     }
     
     .logo-title video {
-      width: 50px;
-      height: 50px;
-      margin-right: 15px;
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
     }
     
     .logo-title h1 {
-      font-size: 28px;
+      font-size: 18px;
       font-weight: bold;
       color: #2e7d32;
       cursor: pointer;
@@ -72,14 +73,15 @@
     
     .nav {
       display: flex;
-      gap: 15px;
+      gap: 8px;
     }
     
     .nav a {
       color: #2e7d32;
       text-decoration: none;
       font-weight: bold;
-      padding: 5px 10px;
+      font-size: 14px;
+      padding: 5px 8px;
       border-radius: 4px;
       transition: background 0.3s;
     }
@@ -89,9 +91,9 @@
     }
     
     .section {
-      padding: 20px;
+      padding: 15px;
       background: rgba(255, 255, 255, 0.8);
-      margin: 15px;
+      margin: 10px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: relative;
@@ -107,17 +109,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
     
     .section-header h2 {
       color: #2e7d32;
+      font-size: 18px;
     }
     
     .view-more {
       color: #2e7d32;
       text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
     }
     
@@ -128,8 +131,8 @@
     
     li { 
       background: rgba(249, 249, 249, 0.7); 
-      margin: 10px 0; 
-      padding: 15px; 
+      margin: 8px 0; 
+      padding: 12px; 
       border-radius: 8px; 
       display: flex;
       justify-content: space-between;
@@ -149,13 +152,14 @@
     
     img { 
       vertical-align: middle; 
-      margin-right: 10px;
-      width: 24px;
-      height: 24px;
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
     }
     
     .price-change {
       font-weight: bold;
+      font-size: 14px;
     }
     
     .positive {
@@ -169,17 +173,18 @@
     .crypto-table {
       background: rgba(255, 255, 255, 0.8);
       border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
+      padding: 12px;
+      margin-bottom: 15px;
     }
     
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 14px;
     }
     
     th, td {
-      padding: 12px 8px;
+      padding: 10px 6px;
       text-align: left;
       border-bottom: 1px solid rgba(224, 224, 224, 0.7);
       cursor: pointer;
@@ -196,14 +201,14 @@
     
     .gainers-trending {
       display: flex;
-      justify-content: space-between;
-      gap: 15px;
+      flex-direction: column;
+      gap: 12px;
     }
     
     .gainers, .trending {
-      flex: 1;
+      width: 100%;
       background: rgba(249, 249, 249, 0.7);
-      padding: 15px;
+      padding: 12px;
       border-radius: 6px;
       transition: background 0.3s;
     }
@@ -217,27 +222,28 @@
       justify-content: space-between;
       align-items: center;
       color: #2e7d32;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      font-size: 16px;
     }
     
     .testimonials {
       text-align: center;
-      padding: 30px 15px;
+      padding: 20px 12px;
       background: rgba(255, 255, 255, 0.8);
     }
     
     .testimonial-container {
       display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 10px 20px;
+      flex-direction: column;
+      gap: 15px;
+      padding: 8px 15px;
     }
     
     .testimonial-box {
       background: rgba(249, 249, 249, 0.7);
-      padding: 20px;
-      flex: 1;
-      border-radius: 10px;
+      padding: 15px;
+      width: 100%;
+      border-radius: 8px;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       transition: background 0.3s;
@@ -249,24 +255,25 @@
     
     .testimonial-box img {
       border-radius: 50%;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
     }
     
     .stats-box {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       background: rgba(46, 125, 50, 0.8);
       color: white;
-      padding: 20px;
-      font-size: 18px;
+      padding: 15px;
+      font-size: 16px;
       border-radius: 8px;
-      margin: 15px;
+      margin: 12px;
+      gap: 10px;
     }
     
     .stats-box .number {
       color: #fff;
-      font-size: 22px;
+      font-size: 18px;
       font-weight: bold;
     }
     
@@ -274,8 +281,8 @@
       text-align: center;
       background: rgba(3, 8, 3, 0.9);
       color: #fff;
-      padding: 15px;
-      font-size: 14px;
+      padding: 12px;
+      font-size: 13px;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -284,16 +291,16 @@
     
     .live-chart {
       background: rgba(255, 255, 255, 0.8);
-      padding: 20px;
+      padding: 15px;
       text-align: center;
       border-radius: 8px;
-      margin: 15px;
+      margin: 12px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     iframe {
       width: 100%;
-      height: 400px;
+      height: 300px;
       border: none;
       border-radius: 8px;
     }
@@ -301,31 +308,31 @@
     /* Dashboard specific styles */
     .dashboard-header {
       text-align: center;
-      padding: 20px;
-      margin: 15px;
+      padding: 15px;
+      margin: 12px;
       background: rgba(255, 255, 255, 0.8);
       border-radius: 8px;
     }
     
     .dashboard-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 15px;
-      margin: 15px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 12px;
       padding-bottom: 60px; /* Add padding to prevent footer overlap */
     }
     
     .dashboard-card {
       background: rgba(255, 255, 255, 0.8);
-      padding: 20px;
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .balance-display {
-      font-size: 2rem;
+      font-size: 1.5rem;
       text-align: center;
-      margin: 15px 0;
+      margin: 12px 0;
       font-weight: bold;
       cursor: pointer;
       transition: transform 0.2s;
@@ -337,14 +344,14 @@
     
     .balance-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin: 15px 0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0;
     }
     
     .balance-item {
       background: rgba(46, 125, 50, 0.1);
-      padding: 10px;
+      padding: 8px;
       border-radius: 8px;
       text-align: center;
       cursor: pointer;
@@ -358,37 +365,39 @@
     .balance-amount {
       font-weight: bold;
       margin-top: 5px;
+      font-size: 14px;
     }
     
     .stat-item {
       background: rgba(46, 125, 50, 0.1);
-      padding: 10px;
+      padding: 8px;
       border-radius: 8px;
       text-align: center;
     }
     
     .stat-label {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       color: #666;
     }
     
     .stat-value {
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: bold;
     }
     
     .btn-group {
       display: flex;
-      gap: 10px;
-      margin-top: 15px;
+      gap: 8px;
+      margin-top: 12px;
     }
     
     .btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border-radius: 4px;
       text-align: center;
       font-weight: bold;
+      font-size: 14px;
       cursor: pointer;
       transition: background 0.3s;
     }
@@ -410,8 +419,9 @@
     }
     
     .activity-item {
-      padding: 10px 0;
+      padding: 8px 0;
       border-bottom: 1px solid rgba(0,0,0,0.1);
+      font-size: 14px;
     }
     
     .activity-item:last-child {
@@ -420,9 +430,9 @@
     
     .status {
       display: inline-block;
-      padding: 2px 8px;
+      padding: 2px 6px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: bold;
     }
     
@@ -451,42 +461,45 @@
     
     .modal-content {
       background: rgba(255,255,255,0.95);
-      margin: 5% auto;
-      padding: 20px;
+      margin: 10% auto;
+      padding: 15px;
       border-radius: 8px;
-      width: 80%;
-      max-width: 600px;
+      width: 90%;
+      max-width: 500px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
     
     .close-modal {
       float: right;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
       cursor: pointer;
       color: #2e7d32;
     }
     
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
     
     .form-group label {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
+      font-size: 14px;
     }
     
     .form-group input, .form-group select {
       width: 100%;
-      padding: 10px;
+      padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px;
+      font-size: 14px;
     }
     
     .form-row {
       display: flex;
-      gap: 15px;
+      flex-direction: column;
+      gap: 12px;
     }
     
     .form-row .form-group {
@@ -497,90 +510,99 @@
     .deposit-processing {
       display: none;
       text-align: center;
-      padding: 20px;
+      padding: 15px;
     }
     
     .deposit-processing h3 {
       color: #2e7d32;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      font-size: 16px;
     }
     
     .deposit-timer {
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: bold;
       color: #2e7d32;
-      margin: 15px 0;
+      margin: 12px 0;
     }
     
     .deposit-instructions {
       background: rgba(46, 125, 50, 0.1);
-      padding: 15px;
+      padding: 12px;
       border-radius: 8px;
-      margin: 15px 0;
+      margin: 12px 0;
       text-align: left;
+      font-size: 14px;
     }
     
     .deposit-instructions ol {
       padding-left: 20px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     
     .deposit-instructions li {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       background: transparent;
       padding: 0;
+      font-size: 13px;
     }
     
     /* Error message */
     .error-message {
       position: fixed;
-      top: 20px;
+      top: 15px;
       left: 50%;
       transform: translateX(-50%);
       background-color: #c62828;
       color: white;
-      padding: 10px 20px;
+      padding: 8px 15px;
       border-radius: 4px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       z-index: 1001;
       display: none;
       animation: fadeInOut 3s ease-in-out;
+      font-size: 14px;
+      max-width: 90%;
+      text-align: center;
     }
     
     /* Login prompt styles */
     .login-prompt {
       display: none;
       text-align: center;
-      padding: 40px 20px;
+      padding: 30px 15px;
       background: rgba(255, 255, 255, 0.9);
-      margin: 20px;
+      margin: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
     .login-prompt h2 {
       color: #2e7d32;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+      font-size: 18px;
     }
     
     .login-prompt p {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       color: #555;
+      font-size: 14px;
     }
     
     .login-prompt-buttons {
       display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
     }
     
     .login-prompt-btn {
-      padding: 10px 20px;
+      padding: 10px;
       border-radius: 4px;
       text-decoration: none;
       font-weight: bold;
       cursor: pointer;
+      font-size: 14px;
     }
     
     .login-prompt-btn-primary {
@@ -595,20 +617,20 @@
       color: #2e7d32;
     }
     
-    /* Coin Conversion Styles */
+    /* Enhanced Coin Conversion Styles */
     .conversion-container {
       background: rgba(255, 255, 255, 0.9);
-      padding: 20px;
+      padding: 15px;
       border-radius: 8px;
-      margin: 15px;
+      margin: 12px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .conversion-form {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 20px;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 15px;
     }
     
     .conversion-input-group {
@@ -617,9 +639,10 @@
     }
     
     .conversion-input-group label {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: bold;
       color: #2e7d32;
+      font-size: 14px;
     }
     
     .conversion-input {
@@ -629,34 +652,38 @@
     
     .conversion-input input {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border: 1px solid #ddd;
       border-radius: 4px 0 0 4px;
       border-right: none;
+      font-size: 14px;
     }
     
     .conversion-input select {
-      width: 100px;
-      padding: 10px;
+      width: 80px;
+      padding: 8px;
       border: 1px solid #ddd;
       border-radius: 0 4px 4px 0;
       background: white;
+      font-size: 14px;
     }
     
     .conversion-actions {
-      grid-column: span 2;
+      grid-column: span 1;
       display: flex;
-      gap: 15px;
+      flex-direction: column;
+      gap: 10px;
     }
     
     .conversion-btn {
       flex: 1;
-      padding: 12px;
+      padding: 10px;
       border: none;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
       transition: opacity 0.3s;
+      font-size: 14px;
     }
     
     .conversion-btn:hover {
@@ -674,54 +701,158 @@
     }
     
     .conversion-result {
-      margin-top: 20px;
-      padding: 15px;
+      margin-top: 15px;
+      padding: 12px;
       background: rgba(46, 125, 50, 0.1);
       border-radius: 8px;
       text-align: center;
-      font-size: 1.1rem;
+      font-size: 14px;
     }
     
     .conversion-rate {
-      margin-top: 15px;
-      font-size: 0.9rem;
+      margin-top: 10px;
+      font-size: 13px;
       color: #666;
+    }
+    
+    /* Conversion Rate Display */
+    .rate-display {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      padding: 10px;
+      background: rgba(46, 125, 50, 0.05);
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    /* Conversion History */
+    .conversion-history {
+      margin-top: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .history-item {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    /* Quick Convert Buttons */
+    .quick-convert {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+    
+    .quick-btn {
+      padding: 5px 10px;
+      background: rgba(46, 125, 50, 0.1);
+      border: 1px solid #2e7d32;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    
+    .quick-btn:hover {
+      background: rgba(46, 125, 50, 0.2);
     }
     
     @keyframes fadeInOut {
       0% { opacity: 0; top: 0; }
-      10% { opacity: 1; top: 20px; }
-      90% { opacity: 1; top: 20px; }
+      10% { opacity: 1; top: 15px; }
+      90% { opacity: 1; top: 15px; }
       100% { opacity: 0; top: 0; }
     }
     
+    /* Success Message */
+    .success-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      z-index: 1002;
+      text-align: center;
+      max-width: 90%;
+    }
+    
+    .success-message h3 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+    
+    .success-message button {
+      margin-top: 15px;
+      padding: 8px 15px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
     /* Responsive adjustments */
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
+      header {
+        padding: 10px 20px;
+      }
+      
+      .logo-title h1 {
+        font-size: 22px;
+      }
+      
+      .nav {
+        gap: 15px;
+      }
+      
+      .nav a {
+        font-size: 16px;
+        padding: 5px 10px;
+      }
+      
       .dashboard-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
       
-      .btn-group {
-        flex-direction: column;
-      }
-      
-      .form-row {
-        flex-direction: column;
-        gap: 0;
-      }
-      
-      .login-prompt-buttons {
-        flex-direction: column;
-        align-items: center;
+      .gainers-trending {
+        flex-direction: row;
       }
       
       .conversion-form {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
       }
       
       .conversion-actions {
-        grid-column: span 1;
-        flex-direction: column;
+        flex-direction: row;
+      }
+      
+      .form-row {
+        flex-direction: row;
+      }
+      
+      .login-prompt-buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       }
     }
   </style>
@@ -737,6 +868,7 @@
   <!-- Error Message -->
   <div class="error-message" id="errorMessage"></div>
 
+  <!-- Optimized Header -->
   <header>
     <div class="logo-title">
       <video autoplay muted loop>
@@ -768,10 +900,10 @@
       <p>Monitor your portfolio and trading activity</p>
     </div>
 
-    <!-- Coin Conversion Section -->
+    <!-- Enhanced Coin Conversion Section -->
     <div class="conversion-container" id="coinConversionSection">
-      <h2>Coin Conversion</h2>
-      <p>Convert between different cryptocurrencies instantly</p>
+      <h2>Instant Coin Conversion</h2>
+      <p>Convert between cryptocurrencies with real-time rates</p>
       
       <div class="conversion-form">
         <div class="conversion-input-group">
@@ -779,12 +911,7 @@
           <div class="conversion-input">
             <input type="number" id="fromAmount" placeholder="Amount" min="0" step="0.00000001">
             <select id="fromCurrency">
-              <option value="BTC">BTC</option>
-              <option value="ETH">ETH</option>
-              <option value="USDT">USDT</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="JPY">JPY</option>
+              <!-- Options will be loaded from backend -->
             </select>
           </div>
         </div>
@@ -794,25 +921,39 @@
           <div class="conversion-input">
             <input type="number" id="toAmount" placeholder="Amount" min="0" step="0.00000001" readonly>
             <select id="toCurrency">
-              <option value="USDT">USDT</option>
-              <option value="BTC">BTC</option>
-              <option value="ETH">ETH</option>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="JPY">JPY</option>
+              <!-- Options will be loaded from backend -->
             </select>
           </div>
         </div>
         
+        <div class="rate-display" id="rateDisplay" style="display: none;">
+          <span id="rateText"></span>
+          <span id="inverseRateText"></span>
+        </div>
+        
+        <div class="quick-convert">
+          <div class="quick-btn" onclick="setQuickConvert('BTC', 'USDT')">BTC → USDT</div>
+          <div class="quick-btn" onclick="setQuickConvert('ETH', 'BTC')">ETH → BTC</div>
+          <div class="quick-btn" onclick="setQuickConvert('USDT', 'BTC')">USDT → BTC</div>
+          <div class="quick-btn" onclick="setQuickConvert('USDT', 'ETH')">USDT → ETH</div>
+        </div>
+        
         <div class="conversion-actions">
-          <button class="conversion-btn btn-buy" onclick="executeConversion('buy')">Buy</button>
-          <button class="conversion-btn btn-sell" onclick="executeConversion('sell')">Sell</button>
+          <button class="conversion-btn btn-buy" onclick="executeConversion('buy')">Convert Now</button>
+          <button class="conversion-btn btn-sell" onclick="executeConversion('sell')">Reverse</button>
         </div>
       </div>
       
       <div class="conversion-result" id="conversionResult" style="display: none;">
         <div id="conversionText"></div>
         <div class="conversion-rate" id="conversionRate"></div>
+      </div>
+      
+      <div class="conversion-history" id="conversionHistory">
+        <h3>Recent Conversions</h3>
+        <div id="historyList">
+          <!-- Conversion history will be loaded here -->
+        </div>
       </div>
     </div>
 
@@ -829,7 +970,7 @@
         </div>
         
         <div class="btn-group">
-          <button class="btn btn-primary" onclick="showDepositModal()">Deposit Funds</button>
+          <button class="btn btn-primary" onclick="showDepositModal()">Deposit</button>
           <button class="btn btn-outline" onclick="showWithdrawModal()">Withdraw</button>
         </div>
       </div>
@@ -838,14 +979,10 @@
       <div class="dashboard-card">
         <div class="section-header">
           <h3>Active Trades</h3>
-          <a class="view-more" onclick="showMoreTrades()">View More</a>
+          <a class="view-more" onclick="showMoreTrades()">View All</a>
         </div>
         <ul class="activity-list" id="activeTradesList">
-          <li class="activity-item">
-            <div style="text-align: center; color: #666; padding: 1rem;">
-              Loading active trades...
-            </div>
-          </li>
+          <!-- Active trades will be loaded here -->
         </ul>
       </div>
 
@@ -853,25 +990,21 @@
       <div class="dashboard-card">
         <div class="section-header">
           <h3>Recent Transactions</h3>
-          <a class="view-more" onclick="showMoreTransactions()">View More</a>
+          <a class="view-more" onclick="showMoreTransactions()">View All</a>
         </div>
         <ul class="activity-list" id="recentTransactionsList">
-          <li class="activity-item">
-            <div style="text-align: center; color: #666; padding: 1rem;">
-              Loading transactions...
-            </div>
-          </li>
+          <!-- Transactions will be loaded here -->
         </ul>
       </div>
 
-      <!-- Arbitrage Opportunities Card -->
+      <!-- Market Data Card -->
       <div class="dashboard-card">
         <div class="section-header">
-          <h3>Arbitrage Opportunities</h3>
-          <a class="view-more" onclick="showMoreArbitrage()">View More</a>
+          <h3>Market Overview</h3>
+          <a class="view-more" onclick="showMarketDetails()">Details</a>
         </div>
-        <div id="arbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
-          Loading opportunities...
+        <div id="marketOverview">
+          <!-- Market data will be loaded here -->
         </div>
       </div>
     </div>
@@ -895,10 +1028,8 @@
       <div class="deposit-form" id="depositForm">
         <div class="form-group">
           <label>Deposit Method</label>
-          <select id="depositMethod">
-            <option value="btc">Bitcoin (BTC)</option>
-            <option value="eth">Ethereum (ETH)</option>
-            <option value="usdt">Tether (USDT)</option>
+          <select id="depositMethod" onchange="updateDepositAddressNote(this.value)">
+            <!-- Options will be loaded from backend -->
           </select>
         </div>
         
@@ -908,9 +1039,7 @@
             <input type="text" id="depositAddress" readonly>
             <button onclick="copyToClipboard('depositAddress')" style="padding: 5px 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy</button>
           </div>
-          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;" id="depositAddressNote">
-            Send only BTC to this address. Sending other assets may result in permanent loss.
-          </p>
+          <p style="font-size: 0.8rem; color: #666; margin-top: 5px;" id="depositAddressNote"></p>
         </div>
         
         <div class="form-group">
@@ -961,16 +1090,7 @@
         <div class="form-group">
           <label>Withdrawal Method</label>
           <select id="withdrawMethod" onchange="updateAddressNote()">
-            <option value="btc">Bitcoin (BTC)</option>
-            <option value="eth">Ethereum (ETH)</option>
-            <option value="usdt">Tether (USDT)</option>
-            <option value="xrp">XRP (XRP)</option>
-            <option value="bnb">BNB (BNB)</option>
-            <option value="sol">Solana (SOL)</option>
-            <option value="usdc">USD Coin (USDC)</option>
-            <option value="doge">Dogecoin (DOGE)</option>
-            <option value="ada">Cardano (ADA)</option>
-            <option value="trx">TRON (TRX)</option>
+            <!-- Options will be loaded from backend -->
           </select>
         </div>
         
@@ -984,7 +1104,7 @@
         
         <div class="form-row">
           <div class="form-group">
-            <label>Amount to Withdraw (USD)</label>
+            <label>Amount to Withdraw</label>
             <input type="number" id="withdrawAmount" placeholder="Enter amount" min="0" step="0.01">
           </div>
           <div class="form-group">
@@ -1006,11 +1126,7 @@
       <span class="close-modal" onclick="closeModal('moreTradesModal')">&times;</span>
       <h2>All Active Trades</h2>
       <ul class="activity-list" id="allTradesList">
-        <li class="activity-item">
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            Loading trades...
-          </div>
-        </li>
+        <!-- All trades will be loaded here -->
       </ul>
     </div>
   </div>
@@ -1021,22 +1137,18 @@
       <span class="close-modal" onclick="closeModal('moreTransactionsModal')">&times;</span>
       <h2>All Transactions</h2>
       <ul class="activity-list" id="allTransactionsList">
-        <li class="activity-item">
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            Loading transactions...
-          </div>
-        </li>
+        <!-- All transactions will be loaded here -->
       </ul>
     </div>
   </div>
 
-  <!-- More Arbitrage Modal -->
-  <div id="moreArbitrageModal" class="modal">
+  <!-- Market Details Modal -->
+  <div id="marketDetailsModal" class="modal">
     <div class="modal-content">
-      <span class="close-modal" onclick="closeModal('moreArbitrageModal')">&times;</span>
-      <h2>All Arbitrage Opportunities</h2>
-      <div id="allArbitrageOpportunities" style="text-align: center; color: #666; padding: 1rem;">
-        Loading opportunities...
+      <span class="close-modal" onclick="closeModal('marketDetailsModal')">&times;</span>
+      <h2>Market Details</h2>
+      <div id="marketDetailsContent">
+        <!-- Market details will be loaded here -->
       </div>
     </div>
   </div>
@@ -1059,7 +1171,8 @@
     let userBalances = {};
     let activeTrades = [];
     let recentTransactions = [];
-    let arbitrageOpportunities = [];
+    let conversionHistory = [];
+    let marketData = {};
     let depositTimerInterval;
     let depositTimeRemaining = 120; // 2 minutes in seconds
     let socket = null;
@@ -1078,6 +1191,8 @@
         await loadDashboardData();
         await loadAvailableCoins();
         await loadConversionRates();
+        await loadConversionHistory();
+        await loadMarketData();
         
         // Setup conversion form event listeners
         setupConversionForm();
@@ -1105,6 +1220,14 @@
       toCurrency.addEventListener('change', updateConversion);
     }
     
+    // Set quick convert pairs
+    function setQuickConvert(from, to) {
+      document.getElementById('fromCurrency').value = from;
+      document.getElementById('toCurrency').value = to;
+      document.getElementById('fromAmount').focus();
+      updateConversion();
+    }
+    
     // Update conversion calculation
     async function updateConversion() {
       const fromAmount = parseFloat(document.getElementById('fromAmount').value);
@@ -1113,6 +1236,7 @@
       
       if (!fromAmount || fromAmount <= 0 || isNaN(fromAmount)) {
         document.getElementById('conversionResult').style.display = 'none';
+        document.getElementById('rateDisplay').style.display = 'none';
         return;
       }
       
@@ -1129,6 +1253,14 @@
           `${fromAmount} ${fromCurrency} = ${toAmount.toFixed(8)} ${toCurrency}`;
         document.getElementById('conversionRate').textContent = 
           `1 ${fromCurrency} = ${rate.toFixed(8)} ${toCurrency}`;
+          
+        // Show rate display
+        document.getElementById('rateDisplay').style.display = 'flex';
+        document.getElementById('rateText').textContent = `1 ${fromCurrency} = ${rate.toFixed(8)} ${toCurrency}`;
+        
+        // Calculate and show inverse rate
+        const inverseRate = 1 / rate;
+        document.getElementById('inverseRateText').textContent = `1 ${toCurrency} = ${inverseRate.toFixed(8)} ${fromCurrency}`;
       } catch (error) {
         console.error('Error updating conversion:', error);
         showError('Failed to calculate conversion. Please try again.');
@@ -1216,15 +1348,17 @@
         
         const data = await response.json();
         showSuccessMessage('Conversion Successful', 
-          `You have successfully ${action === 'buy' ? 'bought' : 'sold'} ${data.toAmount.toFixed(8)} ${toCurrency} for ${fromAmount} ${fromCurrency}`);
+          `You have successfully converted ${fromAmount} ${fromCurrency} to ${data.toAmount.toFixed(8)} ${toCurrency}`);
         
-        // Refresh user balances
+        // Refresh user balances and history
         await loadUserData();
+        await loadConversionHistory();
         
         // Reset form
         document.getElementById('fromAmount').value = '';
         document.getElementById('toAmount').value = '';
         document.getElementById('conversionResult').style.display = 'none';
+        document.getElementById('rateDisplay').style.display = 'none';
       } catch (error) {
         console.error('Error executing conversion:', error);
         showError(error.message || 'Failed to execute conversion');
@@ -1251,13 +1385,18 @@
         // Update dropdowns
         const fromCurrency = document.getElementById('fromCurrency');
         const toCurrency = document.getElementById('toCurrency');
+        const depositMethod = document.getElementById('depositMethod');
+        const withdrawMethod = document.getElementById('withdrawMethod');
         
-        // Clear existing options except the first one
-        while (fromCurrency.options.length > 1) fromCurrency.remove(1);
-        while (toCurrency.options.length > 1) toCurrency.remove(1);
+        // Clear existing options
+        fromCurrency.innerHTML = '';
+        toCurrency.innerHTML = '';
+        depositMethod.innerHTML = '';
+        withdrawMethod.innerHTML = '';
         
         // Add new options
         availableCoins.forEach(coin => {
+          // Conversion dropdowns
           const option1 = document.createElement('option');
           option1.value = coin.symbol;
           option1.textContent = coin.symbol;
@@ -1267,7 +1406,22 @@
           option2.value = coin.symbol;
           option2.textContent = coin.symbol;
           toCurrency.appendChild(option2);
+          
+          // Deposit/withdraw dropdowns
+          const option3 = document.createElement('option');
+          option3.value = coin.symbol.toLowerCase();
+          option3.textContent = `${coin.name} (${coin.symbol})`;
+          depositMethod.appendChild(option3);
+          
+          const option4 = document.createElement('option');
+          option4.value = coin.symbol.toLowerCase();
+          option4.textContent = `${coin.name} (${coin.symbol})`;
+          withdrawMethod.appendChild(option4);
         });
+        
+        // Set default values
+        document.getElementById('fromCurrency').value = 'BTC';
+        document.getElementById('toCurrency').value = 'USDT';
       } catch (error) {
         console.error('Error loading available coins:', error);
         showError('Failed to load available coins. Please refresh the page.');
@@ -1293,6 +1447,180 @@
       } catch (error) {
         console.error('Error loading conversion rates:', error);
         showError('Failed to load conversion rates. Please refresh the page.');
+      }
+    }
+    
+    // Load conversion history
+    async function loadConversionHistory() {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/exchange/history`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch conversion history');
+        }
+        
+        const data = await response.json();
+        conversionHistory = data.history;
+        updateConversionHistory();
+      } catch (error) {
+        console.error('Error loading conversion history:', error);
+      }
+    }
+    
+    // Update conversion history display
+    function updateConversionHistory() {
+      const historyList = document.getElementById('historyList');
+      historyList.innerHTML = '';
+      
+      if (conversionHistory.length === 0) {
+        historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">No conversion history yet</div>';
+        return;
+      }
+      
+      conversionHistory.slice(0, 5).forEach(conversion => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        
+        const profitColor = conversion.status === 'completed' ? '#2e7d32' : '#ffa000';
+        
+        item.innerHTML = `
+          <div>
+            <strong>${conversion.fromAmount} ${conversion.fromCurrency} → ${conversion.toAmount} ${conversion.toCurrency}</strong>
+            <div style="font-size: 0.8rem; color: #666;">
+              ${new Date(conversion.timestamp).toLocaleString()}
+              <span style="color: ${profitColor}; font-weight: bold;">${conversion.status}</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.9rem;">Rate: 1 ${conversion.fromCurrency} = ${conversion.rate} ${conversion.toCurrency}</div>
+          </div>
+        `;
+        
+        historyList.appendChild(item);
+      });
+    }
+    
+    // Load market data
+    async function loadMarketData() {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/market/data`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch market data');
+        }
+        
+        const data = await response.json();
+        marketData = data;
+        updateMarketOverview();
+      } catch (error) {
+        console.error('Error loading market data:', error);
+      }
+    }
+    
+    // Update market overview display
+    function updateMarketOverview() {
+      const marketOverview = document.getElementById('marketOverview');
+      
+      if (!marketData || !marketData.topGainers || marketData.topGainers.length === 0) {
+        marketOverview.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">Loading market data...</div>';
+        return;
+      }
+      
+      let html = '<div class="gainers-trending">';
+      
+      // Top Gainers
+      html += '<div class="gainers">';
+      html += '<h3>Top Gainers <span style="color: #2e7d32;">↑</span></h3>';
+      marketData.topGainers.slice(0, 3).forEach(coin => {
+        html += `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding: 8px; background: rgba(46, 125, 50, 0.1); border-radius: 4px;">
+            <div>${coin.symbol}</div>
+            <div style="color: #2e7d32; font-weight: bold;">+${coin.changePercent.toFixed(2)}%</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      
+      // Top Losers
+      html += '<div class="trending">';
+      html += '<h3>Top Losers <span style="color: #c62828;">↓</span></h3>';
+      marketData.topLosers.slice(0, 3).forEach(coin => {
+        html += `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; padding: 8px; background: rgba(198, 40, 40, 0.1); border-radius: 4px;">
+            <div>${coin.symbol}</div>
+            <div style="color: #c62828; font-weight: bold;">${coin.changePercent.toFixed(2)}%</div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      
+      html += '</div>';
+      marketOverview.innerHTML = html;
+    }
+    
+    // Show market details
+    async function showMarketDetails() {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/market/detailed`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch market details');
+        }
+        
+        const data = await response.json();
+        
+        let html = '<div style="max-height: 60vh; overflow-y: auto;">';
+        html += '<h3 style="margin-bottom: 15px;">Market Overview</h3>';
+        
+        // Market summary
+        html += '<div style="margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">';
+        html += `<p><strong>Total Market Cap:</strong> $${data.marketCap.toLocaleString()}</p>`;
+        html += `<p><strong>24h Volume:</strong> $${data.volume.toLocaleString()}</p>`;
+        html += `<p><strong>BTC Dominance:</strong> ${data.btcDominance.toFixed(2)}%</p>`;
+        html += '</div>';
+        
+        // Top Coins
+        html += '<h3 style="margin-bottom: 15px;">Top Cryptocurrencies</h3>';
+        html += '<table style="width: 100%; border-collapse: collapse;">';
+        html += '<thead><tr><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Coin</th><th style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">Price</th><th style="text-align: right; padding: 8px; border-bottom: 1px solid #ddd;">24h Change</th></tr></thead>';
+        html += '<tbody>';
+        
+        data.topCoins.forEach(coin => {
+          const changeColor = coin.change24h >= 0 ? '#2e7d32' : '#c62828';
+          const changeSign = coin.change24h >= 0 ? '+' : '';
+          
+          html += `
+            <tr style="border-bottom: 1px solid #eee;">
+              <td style="padding: 8px;">${coin.name} (${coin.symbol})</td>
+              <td style="text-align: right; padding: 8px;">$${coin.price.toLocaleString()}</td>
+              <td style="text-align: right; padding: 8px; color: ${changeColor}">${changeSign}${coin.change24h.toFixed(2)}%</td>
+            </tr>
+          `;
+        });
+        
+        html += '</tbody></table>';
+        html += '</div>';
+        
+        document.getElementById('marketDetailsContent').innerHTML = html;
+        document.getElementById('marketDetailsModal').style.display = 'block';
+      } catch (error) {
+        console.error('Error showing market details:', error);
+        showError('Failed to load market details. Please try again.');
       }
     }
     
@@ -1386,8 +1714,11 @@
         case 'TRANSACTION_UPDATE':
           addNewTransaction(message.data);
           break;
-        case 'ARBITRAGE_OPPORTUNITY':
-          addArbitrageOpportunity(message.data);
+        case 'CONVERSION_UPDATE':
+          addConversionToHistory(message.data);
+          break;
+        case 'MARKET_UPDATE':
+          updateMarketData(message.data);
           break;
         case 'CONVERSION_RATE_UPDATE':
           updateConversionRate(message.data);
@@ -1410,6 +1741,18 @@
           (rateData.from === toCurrency && rateData.to === fromCurrency)) {
         updateConversion();
       }
+    }
+    
+    // Add new conversion to history
+    function addConversionToHistory(conversion) {
+      conversionHistory.unshift(conversion);
+      updateConversionHistory();
+    }
+    
+    // Update market data from WebSocket
+    function updateMarketData(data) {
+      marketData = data;
+      updateMarketOverview();
     }
     
     // Load user data
@@ -1468,24 +1811,6 @@
           recentTransactions = transactionsData.transactions;
           updateTransactions();
         }
-        
-        // Load arbitrage opportunities
-        const arbitrageResponse = await fetch(`${API_BASE_URL}/arbitrage/opportunities`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (arbitrageResponse.ok) {
-          const arbitrageData = await arbitrageResponse.json();
-          arbitrageOpportunities = arbitrageData.opportunities.map(opp => {
-            // Ensure pairs have slashes for proper display
-            opp.pair = opp.pair.replace(/([A-Z]+)([A-Z]+)/, '$1/$2');
-            return opp;
-          });
-          updateArbitrageOpportunities();
-        }
-        
       } catch (error) {
         console.error('Error loading dashboard data:', error);
         showError('Failed to load some dashboard data. Please refresh the page.');
@@ -1526,14 +1851,6 @@
       updateTransactions();
     }
     
-    // Add new arbitrage opportunity from WebSocket
-    function addArbitrageOpportunity(opportunity) {
-      // Ensure pair has slash for proper display
-      opportunity.pair = opportunity.pair.replace(/([A-Z]+)([A-Z]+)/, '$1/$2');
-      arbitrageOpportunities.unshift(opportunity);
-      updateArbitrageOpportunities();
-    }
-    
     // Update UI elements
     function updateUI() {
       document.getElementById('totalBalance').textContent = `$${userBalance.toFixed(2)}`;
@@ -1547,10 +1864,9 @@
         { code: 'usd', name: 'USD', icon: '$' },
         { code: 'btc', name: 'BTC', icon: '₿' },
         { code: 'eth', name: 'ETH', icon: 'Ξ' },
-        { code: 'bnb', name: 'BNB', icon: '' },
         { code: 'usdt', name: 'USDT', icon: '' },
-        { code: 'eur', name: 'EUR', icon: '€' },
-        { code: 'jpy', name: 'JPY', icon: '¥' }
+        { code: 'bnb', name: 'BNB', icon: '' },
+        { code: 'sol', name: 'SOL', icon: '' }
       ];
       
       currencies.forEach(currency => {
@@ -1700,112 +2016,6 @@
       return li;
     }
     
-    // Update arbitrage opportunities
-    function updateArbitrageOpportunities() {
-      const container = document.getElementById('arbitrageOpportunities');
-      const allContainer = document.getElementById('allArbitrageOpportunities');
-      
-      if (arbitrageOpportunities.length === 0) {
-        container.innerHTML = `
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            No arbitrage opportunities available
-          </div>
-        `;
-        allContainer.innerHTML = `
-          <div style="text-align: center; color: #666; padding: 1rem;">
-            No arbitrage opportunities available
-          </div>
-        `;
-        return;
-      }
-      
-      container.innerHTML = '';
-      allContainer.innerHTML = '';
-      
-      arbitrageOpportunities.slice(0, 2).forEach(opp => {
-        const oppElement = createOpportunityElement(opp);
-        container.appendChild(oppElement);
-      });
-      
-      arbitrageOpportunities.forEach(opp => {
-        const oppElement = createOpportunityElement(opp);
-        allContainer.appendChild(oppElement);
-      });
-    }
-    
-    // Create arbitrage opportunity element
-    function createOpportunityElement(opp) {
-      const oppElement = document.createElement('div');
-      oppElement.style.marginBottom = '1rem';
-      oppElement.style.padding = '1rem';
-      oppElement.style.background = 'rgba(46, 125, 50, 0.1)';
-      oppElement.style.borderRadius = '8px';
-      
-      oppElement.innerHTML = `
-        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-          <div style="font-weight: bold;">${opp.pair}</div>
-          <div style="color: #2e7d32; font-weight: bold;">+${opp.profit.toFixed(2)}%</div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.9rem;">
-          <div>
-            <div style="font-weight: bold;">Buy at ${opp.buyExchange}</div>
-            <div style="color: #666;">$${opp.buyPrice.toFixed(2)}</div>
-          </div>
-          <div>
-            <div style="font-weight: bold;">Sell at ${opp.sellExchange}</div>
-            <div style="color: #666;">$${opp.sellPrice.toFixed(2)}</div>
-          </div>
-        </div>
-        <button onclick="executeArbitrage('${opp._id}')" 
-          style="width: 100%; margin-top: 0.75rem; padding: 0.5rem; 
-          background: #2e7d32; color: white; border: none; 
-          border-radius: 4px; cursor: pointer;"
-          ${userBalance < 100 ? 'disabled style="background: #cccccc;"' : ''}>
-          ${userBalance < 100 ? 'Minimum $100 required' : 'Execute Trade'}
-        </button>
-      `;
-      
-      return oppElement;
-    }
-    
-    // Execute arbitrage trade
-    async function executeArbitrage(opportunityId) {
-      if (!currentUser) {
-        showError('Please log in to perform this action');
-        return;
-      }
-      
-      if (userBalance < 100) {
-        showError('Minimum Balance Required', 'You need at least $100 in your account to perform arbitrage trading.');
-        return;
-      }
-      
-      try {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/arbitrage/execute`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ opportunityId })
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to execute arbitrage');
-        }
-        
-        const data = await response.json();
-        showSuccessMessage('Trade Executed', `Arbitrage trade submitted successfully! Expected profit: $${data.expectedProfit.toFixed(2)}`);
-        
-        // The actual trade will be updated via WebSocket when completed
-      } catch (error) {
-        console.error('Error executing arbitrage:', error);
-        showError(error.message || 'Failed to execute arbitrage trade');
-      }
-    }
-    
     // Show deposit modal
     async function showDepositModal() {
       if (!currentUser) {
@@ -1844,19 +2054,10 @@
     function updateDepositAddressNote(method) {
       const note = document.getElementById('depositAddressNote');
       
-      switch(method) {
-        case 'btc':
-          note.textContent = 'Send only BTC to this address. Sending other assets may result in permanent loss.';
-          break;
-        case 'eth':
-          note.textContent = 'Send only ETH to this address (ERC20). Sending other assets may result in permanent loss.';
-          break;
-        case 'usdt':
-          note.textContent = 'Send only USDT to this address (TRC20 or ERC20). Sending other assets may result in permanent loss.';
-          break;
-        default:
-          note.textContent = 'Send only the selected cryptocurrency to this address.';
-      }
+      const coin = availableCoins.find(c => c.symbol.toLowerCase() === method);
+      if (!coin) return;
+      
+      note.textContent = `Send only ${coin.symbol} to this address (${coin.network || 'default'} network). Sending other assets may result in permanent loss.`;
     }
     
     // Initiate deposit process
@@ -1934,25 +2135,10 @@
       const method = document.getElementById('withdrawMethod').value;
       const note = document.getElementById('addressNote');
       
-      switch(method) {
-        case 'btc':
-          note.textContent = 'Ensure this is a valid BTC address';
-          break;
-        case 'eth':
-          note.textContent = 'Ensure this is a valid ETH address (ERC20)';
-          break;
-        case 'usdt':
-          note.textContent = 'Ensure this is a valid USDT address (TRC20 or ERC20)';
-          break;
-        case 'xrp':
-          note.textContent = 'Ensure this is a valid XRP address with destination tag if required';
-          break;
-        case 'sol':
-          note.textContent = 'Ensure this is a valid SOL address';
-          break;
-        default:
-          note.textContent = 'Ensure this is a valid address for the selected cryptocurrency';
-      }
+      const coin = availableCoins.find(c => c.symbol.toLowerCase() === method);
+      if (!coin) return;
+      
+      note.textContent = `Ensure this is a valid ${coin.symbol} address (${coin.network || 'default'} network)`;
     }
     
     // Submit withdrawal request
@@ -2038,15 +2224,6 @@
         return;
       }
       document.getElementById('moreTransactionsModal').style.display = 'block';
-    }
-    
-    // Show more arbitrage modal
-    function showMoreArbitrage() {
-      if (!currentUser) {
-        showError('Please log in to perform this action');
-        return;
-      }
-      document.getElementById('moreArbitrageModal').style.display = 'block';
     }
     
     // Show error message
