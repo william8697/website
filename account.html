@@ -46,7 +46,7 @@
       justify-content: space-between;
       align-items: center;
       background: rgba(12, 12, 12, 0.85);
-      padding: 10px 20px;
+      padding: 8px 15px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: relative;
       z-index: 1;
@@ -58,34 +58,71 @@
     }
     
     .logo-title video {
-      width: 50px;
-      height: 50px;
-      margin-right: 15px;
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
     }
     
     .logo-title h1 {
-      font-size: 28px;
+      font-size: 20px;
       font-weight: bold;
       color: #2e7d32;
       cursor: pointer;
+      white-space: nowrap;
     }
     
     .nav {
       display: flex;
-      gap: 15px;
+      gap: 8px;
     }
     
     .nav a {
       color: #2e7d32;
       text-decoration: none;
       font-weight: bold;
-      padding: 5px 10px;
+      padding: 5px 8px;
       border-radius: 4px;
       transition: background 0.3s;
+      font-size: 14px;
+      white-space: nowrap;
     }
     
     .nav a:hover {
       background: rgba(232, 245, 233, 0.7);
+    }
+    
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #2e7d32;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: rgba(12, 12, 12, 0.95);
+      width: 200px;
+      padding: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 100;
+    }
+    
+    .mobile-nav a {
+      display: block;
+      color: #2e7d32;
+      text-decoration: none;
+      padding: 8px 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+    }
+    
+    .mobile-nav a:hover {
+      background: rgba(232, 245, 233, 0.3);
     }
     
     .section {
@@ -116,7 +153,7 @@
     
     .settings-container {
       max-width: 1000px;
-      margin: 20px auto;
+      margin: 15px auto;
       padding: 0 15px 60px;
     }
     
@@ -128,7 +165,7 @@
     
     .settings-card {
       background: rgba(255, 255, 255, 0.8);
-      padding: 25px;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       transition: transform 0.3s;
@@ -140,35 +177,38 @@
     
     .settings-card h3 {
       color: #2e7d32;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(46, 125, 50, 0.3);
+      font-size: 18px;
     }
     
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
     
     .form-group label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       font-weight: bold;
       color: #333;
+      font-size: 14px;
     }
     
     .form-group input, 
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border: 1px solid #ddd;
       border-radius: 4px;
       background: rgba(255, 255, 255, 0.9);
+      font-size: 14px;
     }
     
     .form-row {
       display: flex;
-      gap: 15px;
+      gap: 10px;
     }
     
     .form-row .form-group {
@@ -176,12 +216,13 @@
     }
     
     .btn {
-      padding: 12px 20px;
+      padding: 10px 15px;
       border-radius: 4px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
       border: none;
+      font-size: 14px;
     }
     
     .btn-primary {
@@ -214,17 +255,18 @@
     
     .security-notice {
       background: rgba(46, 125, 50, 0.1);
-      padding: 15px;
+      padding: 12px;
       border-radius: 6px;
-      margin: 20px 0;
+      margin: 15px 0;
       border-left: 4px solid #2e7d32;
+      font-size: 14px;
     }
     
     .status {
       display: inline-block;
-      padding: 3px 10px;
+      padding: 3px 8px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 12px;
       font-weight: bold;
     }
     
@@ -246,17 +288,18 @@
     .kyc-status {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 15px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
     
     .document-upload {
       border: 2px dashed #ddd;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
       border-radius: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       cursor: pointer;
+      font-size: 14px;
     }
     
     .document-upload:hover {
@@ -266,7 +309,7 @@
     .document-preview {
       max-width: 100%;
       max-height: 200px;
-      margin-top: 10px;
+      margin-top: 8px;
       display: none;
     }
     
@@ -285,17 +328,17 @@
     
     .modal-content {
       background: rgba(255,255,255,0.95);
-      margin: 5% auto;
-      padding: 20px;
+      margin: 10% auto;
+      padding: 15px;
       border-radius: 8px;
-      width: 80%;
+      width: 90%;
       max-width: 500px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
     
     .close-modal {
       float: right;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
       cursor: pointer;
       color: #2e7d32;
@@ -308,53 +351,60 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.2);
       z-index: 1001;
       text-align: center;
       display: none;
-      max-width: 400px;
+      max-width: 350px;
+      width: 90%;
     }
     
     .success-message h3 {
       color: #2e7d32;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+      font-size: 18px;
     }
     
     .success-message p {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+      font-size: 14px;
     }
     
     .success-message button {
-      padding: 10px 20px;
+      padding: 8px 15px;
       background: #2e7d32;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 14px;
     }
     
     /* Error message */
     .error-message {
       position: fixed;
-      top: 20px;
+      top: 15px;
       left: 50%;
       transform: translateX(-50%);
       background-color: #c62828;
       color: white;
-      padding: 10px 20px;
+      padding: 8px 15px;
       border-radius: 4px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       z-index: 1001;
       display: none;
       animation: fadeInOut 3s ease-in-out;
+      font-size: 14px;
+      max-width: 90%;
+      text-align: center;
     }
     
     @keyframes fadeInOut {
       0% { opacity: 0; top: 0; }
-      10% { opacity: 1; top: 20px; }
-      90% { opacity: 1; top: 20px; }
+      10% { opacity: 1; top: 15px; }
+      90% { opacity: 1; top: 15px; }
       100% { opacity: 0; top: 0; }
     }
     
@@ -371,6 +421,48 @@
       
       .settings-container {
         padding: 0 10px;
+        margin-top: 10px;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .menu-toggle {
+        display: block;
+      }
+      
+      .mobile-nav.show {
+        display: block;
+      }
+      
+      .section {
+        padding: 15px;
+        margin: 10px;
+      }
+      
+      .settings-card {
+        padding: 15px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .logo-title h1 {
+        font-size: 16px;
+      }
+      
+      .logo-title video {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+      }
+      
+      header {
+        padding: 6px 10px;
+      }
+      
+      .settings-card h3 {
+        font-size: 16px;
       }
     }
   </style>
@@ -394,6 +486,14 @@
       <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
     </div>
     <div class="nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="index.html">Home</a>
+      <a href="account.html">Account</a>
+      <a href="settings.html" style="background: rgba(232, 245, 233, 0.3);">Settings</a>
+      <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+    </div>
+    <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    <div class="mobile-nav" id="mobileNav">
       <a href="dashboard.html">Dashboard</a>
       <a href="index.html">Home</a>
       <a href="account.html">Account</a>
@@ -713,6 +813,12 @@
         video.play().catch(e => console.log('Video play prevented:', e));
       });
     });
+
+    // Toggle mobile menu
+    function toggleMobileMenu() {
+      const mobileNav = document.getElementById('mobileNav');
+      mobileNav.classList.toggle('show');
+    }
 
     // Check authentication status
     async function checkAuth() {
