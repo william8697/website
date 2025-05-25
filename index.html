@@ -1639,6 +1639,9 @@
       // Check authentication status
       await checkAuthStatus();
       
+      // Check for new signup from URL parameters
+      checkForNewSignup();
+      
       // Load market data
       fetchLiveCryptoData();
       fetchTopGainers();
@@ -1657,6 +1660,26 @@
         video.play().catch(e => console.log('Video play prevented:', e));
       });
     });
+
+    // Check for new signup from URL parameters
+    function checkForNewSignup() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const newSignup = urlParams.get('newSignup');
+      const registeredEmail = urlParams.get('email');
+      
+      if (newSignup === 'true' && registeredEmail) {
+        // Show welcome message for new signup
+        document.getElementById('welcomeAlert').style.display = 'flex';
+        document.getElementById('loginAlert').style.display = 'none';
+        document.getElementById('welcomeUsername').textContent = registeredEmail.split('@')[0];
+        
+        // Remove the parameters from URL without reloading
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Force check auth status again
+        setTimeout(checkAuthStatus, 1000);
+      }
+    }
 
     // Check authentication status
     async function checkAuthStatus() {
@@ -1686,6 +1709,9 @@
             const portfolioChange = calculatePortfolioChange();
             document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
             document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+            
+            // Connect to WebSocket with authentication
+            connectWebSocket(token);
           } else {
             // If token is invalid, clear it
             clearAuthData();
@@ -1697,6 +1723,62 @@
         console.error('Error checking auth status:', error);
         clearAuthData();
       }
+    }
+    
+    // Connect to WebSocket with authentication
+    function connectWebSocket(token) {
+      if (window.socket) {
+        window.socket.close();
+      }
+      
+      window.socket = new WebSocket('wss://website-backendd-1.onrender.com');
+      
+      socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection established');
+        
+        // Authenticate if user is logged in
+        if (token) {
+          socket.send(JSON.stringify({
+            type: 'AUTHENTICATE',
+            token: token
+          }));
+        }
+      });
+
+      socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        
+        if (data.type === 'BALANCE_UPDATE') {
+          // Update user balance
+          userBalance = data.balance;
+          updateUserDisplay();
+        } else if (data.type === 'TRADE_UPDATE') {
+          // Show trade notification
+          const profitText = data.profit > 0 ? 
+            `You made a profit of $${data.profit.toFixed(2)}` : 
+            `Trade completed with no profit`;
+          
+          alert(`Trade completed: ${profitText}. New balance: $${data.balance.toFixed(2)}`);
+        } else if (data.type === 'PORTFOLIO_UPDATE') {
+          // Update portfolio
+          userPortfolio = data.portfolio || [];
+          
+          // Update portfolio change
+          const portfolioChange = calculatePortfolioChange();
+          document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
+          document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+        }
+      });
+
+      socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed');
+        // Attempt to reconnect after 5 seconds
+        setTimeout(() => connectWebSocket(token), 5000);
+      });
+
+      socket.addEventListener('error', (event) => {
+        console.error('WebSocket error:', event);
+      });
     }
     
     // Calculate portfolio change percentage
@@ -1733,6 +1815,12 @@
       // Hide welcome alert for logged out users
       document.getElementById('welcomeAlert').style.display = 'none';
       document.getElementById('loginAlert').style.display = 'flex';
+      
+      // Close WebSocket connection if exists
+      if (window.socket) {
+        window.socket.close();
+        window.socket = null;
+      }
     }
 
     // Update user display based on auth status
@@ -2796,55 +2884,6 @@
         event.target.style.display = "none";
       }
     }
-
-    // WebSocket connection for real-time updates
-    const socket = new WebSocket('wss://website-backendd-1.onrender.com');
-
-    socket.addEventListener('open', (event) => {
-      console.log('WebSocket connection established');
-      
-      // Authenticate if user is logged in
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (token) {
-        socket.send(JSON.stringify({
-          type: 'AUTHENTICATE',
-          token: token
-        }));
-      }
-    });
-
-    socket.addEventListener('message', (event) => {
-      const data = JSON.parse(event.data);
-      
-      if (data.type === 'BALANCE_UPDATE') {
-        // Update user balance
-        userBalance = data.balance;
-        updateUserDisplay();
-      } else if (data.type === 'TRADE_UPDATE') {
-        // Show trade notification
-        const profitText = data.profit > 0 ? 
-          `You made a profit of $${data.profit.toFixed(2)}` : 
-          `Trade completed with no profit`;
-        
-        alert(`Trade completed: ${profitText}. New balance: $${data.balance.toFixed(2)}`);
-      } else if (data.type === 'PORTFOLIO_UPDATE') {
-        // Update portfolio
-        userPortfolio = data.portfolio || [];
-        
-        // Update portfolio change
-        const portfolioChange = calculatePortfolioChange();
-        document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
-        document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
-      }
-    });
-
-    socket.addEventListener('close', (event) => {
-      console.log('WebSocket connection closed');
-    });
-
-    socket.addEventListener('error', (event) => {
-      console.error('WebSocket error:', event);
-    });
   </script>
 </body>
 </html>
