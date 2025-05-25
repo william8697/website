@@ -746,6 +746,7 @@
     }
     
     .balance-dropdown {
+      display: none;
       position: absolute;
       top: 100%;
       right: 0;
@@ -754,7 +755,6 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       width: 200px;
       overflow: hidden;
-      display: none;
       z-index: 1000;
     }
     
@@ -1276,16 +1276,11 @@
       <h1 onclick="window.location.href='index.html'">Crypto Trading Market</h1>
     </div>
     <div class="nav" id="navLinks">
-      <a href="signup.html" id="signupLink">Sign Up</a>
-      <a href="login.html" id="loginLink">Login</a>
       <a href="javascript:void(0)" id="logoutLink" style="display: none;" onclick="logoutUser()">Logout</a>
       <div class="user-profile" id="userProfile" style="display: none;">
         <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()"></div>
         <div class="user-menu" id="userMenu">
-          <a href="portfolio.html">Portfolio</a>
-          <a href="deposit.html">Deposit Funds</a>
-          <a href="withdraw.html">Withdraw</a>
-          <a href="settings.html">Settings</a>
+          <a href="dashboard.html">Dashboard</a>
           <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
         </div>
       </div>
@@ -1293,13 +1288,7 @@
   </header>
 
   <div class="user-balance-container" id="userBalanceContainer" style="display: none;">
-    <div class="user-balance" id="userBalance"></div>
-    <div class="balance-dropdown">
-      <a href="javascript:void(0)" onclick="showPortfolio()">Portfolio</a>
-      <a href="deposit.html">Deposit</a>
-      <a href="withdraw.html">Withdraw</a>
-      <a href="settings.html">Settings</a>
-    </div>
+    <div class="user-balance" id="userBalance" onclick="window.location.href='dashboard.html'"></div>
   </div>
 
   <div class="main-content">
@@ -1827,16 +1816,12 @@
     function updateUserDisplay() {
       const userBalanceContainer = document.getElementById('userBalanceContainer');
       const userBalanceElement = document.getElementById('userBalance');
-      const signupLink = document.getElementById('signupLink');
-      const loginLink = document.getElementById('loginLink');
       const logoutLink = document.getElementById('logoutLink');
       const userProfile = document.getElementById('userProfile');
       const userAvatar = document.getElementById('userAvatar');
       
       if (currentUser) {
         // User is logged in - show profile and logout button
-        signupLink.style.display = 'none';
-        loginLink.style.display = 'none';
         logoutLink.style.display = 'block';
         userProfile.style.display = 'flex';
         
@@ -1849,9 +1834,7 @@
         userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
         userBalanceContainer.style.display = 'block';
       } else {
-        // User is not logged in - show signup/login buttons
-        signupLink.style.display = 'block';
-        loginLink.style.display = 'block';
+        // User is not logged in - hide balance and profile
         logoutLink.style.display = 'none';
         userProfile.style.display = 'none';
         
