@@ -2281,3 +2281,69 @@
   </script>
 </body>
 </html>
+    
+    // Show more transactions modal
+    function showMoreTransactions() {
+      document.getElementById('moreTransactionsModal').style.display = 'block';
+    }
+    
+    // Show error message
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Show success message
+    function showSuccessMessage(title, text) {
+      document.getElementById('successTitle').textContent = title;
+      document.getElementById('successText').textContent = text;
+      document.getElementById('successMessage').style.display = 'block';
+    }
+    
+    // Close success message
+    function closeSuccess() {
+      document.getElementById('successMessage').style.display = 'none';
+    }
+    
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+    
+    // Copy to clipboard
+    function copyToClipboard(elementId) {
+      const element = document.getElementById(elementId);
+      element.select();
+      document.execCommand('copy');
+      
+      // Show tooltip
+      const originalText = element.value;
+      element.value = 'Copied!';
+      setTimeout(() => {
+        element.value = originalText;
+      }, 2000);
+    }
+    
+    // Logout user
+    function logoutUser() {
+      // Close WebSocket connection
+      if (socket) {
+        socket.close();
+      }
+      
+      // Clear auth tokens
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      currentUser = null;
+      
+      // Show login prompt and hide dashboard content
+      showLoginPrompt();
+    }
+  </script>
+</body>
+</html>
