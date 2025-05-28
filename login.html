@@ -847,25 +847,35 @@
     }
 
     // WebSocket connection for real-time updates
-    const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+    function connectWebSocket() {
+  const token = localStorage.getItem('authToken');
+  const socket = new WebSocket(`wss://website-backendd-1.onrender.com?token=${token}`);
 
-    socket.addEventListener('open', (event) => {
-      console.log('WebSocket connection established');
-    });
+  socket.onopen = () => {
+    console.log('WebSocket connected');
+  };
 
-    socket.addEventListener('message', (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'USER_ACTIVITY') {
-        console.log('User activity update:', data);
-      }
-    });
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+    // Auto-reconnect after 5s
+    setTimeout(connectWebSocket, 5000);
+  };
 
-    socket.addEventListener('close', (event) => {
-      console.log('WebSocket connection closed');
-    });
+  socket.onclose = () => {
+    console.log('WebSocket disconnected');
+    setTimeout(connectWebSocket, 5000); // Reconnect
+  };
 
-    socket.addEventListener('error', (event) => {
-      console.error('WebSocket error:', event);
+  socket.onmessage = (event) => {
+    console.log('Message from server:', event.data);
+    // Handle real-time updates (e.g., notifications)
+  };
+
+  return socket;
+}
+
+// Initialize WebSocket when user logs in
+const socket = connectWebSocket();
     });
   </script>
 </body>
