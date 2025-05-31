@@ -722,10 +722,8 @@
     
     /* User balance dropdown styles */
     .user-balance-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
+      position: relative;
+      display: inline-block;
     }
     
     .user-balance {
@@ -1278,16 +1276,15 @@
     <div class="nav" id="navLinks">
       <a href="signup.html" id="signupLink">Sign Up</a>
       <a href="login.html" id="loginLink">Login</a>
+      <div class="user-balance-container" id="userBalanceContainer" style="display: none;">
+        <div class="user-balance" id="userBalance" onclick="window.location.href='dashboard.html'"></div>
+      </div>
       <a href="javascript:void(0)" id="logoutLink" style="display: none;" onclick="logoutUser()">Logout</a>
       <div class="user-profile" id="userProfile" style="display: none;">
         <div class="user-avatar" id="userAvatar" onclick="toggleUserMenu()"></div>
       </div>
     </div>
   </header>
-
-  <div class="user-balance-container" id="userBalanceContainer" style="display: none;">
-    <div class="user-balance" id="userBalance" onclick="window.location.href='dashboard.html'"></div>
-  </div>
 
   <div class="main-content">
     <!-- New Alert Section -->
@@ -1826,6 +1823,7 @@
         loginLink.style.display = 'none';
         logoutLink.style.display = 'block';
         userProfile.style.display = 'flex';
+        userBalanceContainer.style.display = 'block';
         
         // Set user avatar with initials
         const initials = currentUser.username ? 
@@ -1834,14 +1832,12 @@
         userAvatar.textContent = initials;
         
         userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
-        userBalanceContainer.style.display = 'block';
       } else {
         // User is not logged in - show signup/login buttons
         signupLink.style.display = 'block';
         loginLink.style.display = 'block';
         logoutLink.style.display = 'none';
         userProfile.style.display = 'none';
-        
         userBalanceContainer.style.display = 'none';
       }
     }
