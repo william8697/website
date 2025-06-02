@@ -313,6 +313,44 @@
       display: none;
     }
     
+    /* Auth required message */
+    .auth-required-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 120px);
+      padding: 20px;
+    }
+    
+    .auth-required {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(2px);
+    }
+    
+    .auth-required h2 {
+      color: #2e7d32;
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+    
+    .auth-required p {
+      color: #333;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    
     /* Modal styles */
     .modal {
       display: none;
@@ -444,6 +482,15 @@
       .settings-card {
         padding: 15px;
       }
+      
+      .auth-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .auth-buttons .btn {
+        width: 100%;
+      }
     }
     
     @media (max-width: 480px) {
@@ -463,6 +510,10 @@
       
       .settings-card h3 {
         font-size: 16px;
+      }
+      
+      .auth-required {
+        padding: 20px;
       }
     }
   </style>
@@ -490,7 +541,7 @@
       <a href="index.html">Home</a>
       <a href="account.html">Account</a>
       <a href="settings.html" style="background: rgba(232, 245, 233, 0.3);">Settings</a>
-      <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+      <a href="javascript:void(0)" id="authButton" onclick="handleAuthAction()">Login</a>
     </div>
     <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
     <div class="mobile-nav" id="mobileNav">
@@ -498,11 +549,12 @@
       <a href="index.html">Home</a>
       <a href="account.html">Account</a>
       <a href="settings.html" style="background: rgba(232, 245, 233, 0.3);">Settings</a>
-      <a href="javascript:void(0)" onclick="logoutUser()">Logout</a>
+      <a href="javascript:void(0)" id="mobileAuthButton" onclick="handleAuthAction()">Login</a>
     </div>
   </header>
 
-  <div class="settings-container">
+  <!-- Main Content - Will be shown only when authenticated -->
+  <div class="settings-container" id="settingsContent" style="display: none;">
     <div class="settings-grid">
       <!-- Account Settings Card -->
       <div class="settings-card">
@@ -760,6 +812,18 @@
     </div>
   </div>
 
+  <!-- Authentication Required Message - Shown when not logged in -->
+  <div class="auth-required-container" id="authRequiredMessage">
+    <div class="auth-required">
+      <h2>Authentication Required</h2>
+      <p>To access your account settings, please sign in to your Crypto Trading Market account. If you don't have an account yet, you can create one in just a few minutes.</p>
+      <div class="auth-buttons">
+        <button class="btn btn-primary" onclick="window.location.href='login.html'">Login</button>
+        <button class="btn btn-outline" onclick="window.location.href='signup.html'">Create Account</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     © 2025 Crypto Trading Market. All Rights Reserved
   </footer>
@@ -802,8 +866,6 @@
     // Initialize the page
     document.addEventListener('DOMContentLoaded', async () => {
       await checkAuth();
-      await loadUserData();
-      await loadUserSettings();
       
       // Ensure video plays on mobile
       const videos = document.querySelectorAll('video');
@@ -820,11 +882,27 @@
       mobileNav.classList.toggle('show');
     }
 
+    // Handle auth button action
+    function handleAuthAction() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        logoutUser();
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+
     // Check authentication status
     async function checkAuth() {
       const token = localStorage.getItem('token');
+      
+      // Update auth buttons based on login status
+      updateAuthButtons(!!token);
+      
       if (!token) {
-        window.location.href = 'login.html';
+        // Show auth required message and hide settings content
+        document.getElementById('authRequiredMessage').style.display = 'flex';
+        document.getElementById('settingsContent').style.display = 'none';
         return;
       }
       
@@ -835,12 +913,38 @@
           }
         });
         
-        if (!response.ok) {
-          window.location.href = 'login.html';
+        if (response.ok) {
+          // User is authenticated, show settings content
+          document.getElementById('authRequiredMessage').style.display = 'none';
+          document.getElementById('settingsContent').style.display = 'block';
+          
+          // Load user data and settings
+          await loadUserData();
+          await loadUserSettings();
+        } else {
+          // Invalid token, show auth required
+          localStorage.removeItem('token');
+          document.getElementById('authRequiredMessage').style.display = 'flex';
+          document.getElementById('settingsContent').style.display = 'none';
+          updateAuthButtons(false);
         }
       } catch (error) {
         console.error('Auth check failed:', error);
-        window.location.href = 'login.html';
+        // Network error, still show auth required
+        document.getElementById('authRequiredMessage').style.display = 'flex';
+        document.getElementById('settingsContent').style.display = 'none';
+        updateAuthButtons(false);
+      }
+    }
+
+    // Update auth buttons based on login status
+    function updateAuthButtons(isLoggedIn) {
+      if (isLoggedIn) {
+        document.getElementById('authButton').textContent = 'Logout';
+        document.getElementById('mobileAuthButton').textContent = 'Logout';
+      } else {
+        document.getElementById('authButton').textContent = 'Login';
+        document.getElementById('mobileAuthButton').textContent = 'Login';
       }
     }
 
@@ -1248,26 +1352,31 @@
     async function logoutUser() {
       try {
         const token = localStorage.getItem('token');
-        await fetch(`${API_BASE_URL}/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        if (token) {
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
         
         // Clear local storage
         localStorage.removeItem('token');
         
-        showSuccessMessage('Logged Out', 'You have been successfully logged out. Redirecting to login page...');
+        // Update UI
+        updateAuthButtons(false);
+        document.getElementById('authRequiredMessage').style.display = 'flex';
+        document.getElementById('settingsContent').style.display = 'none';
         
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 2000);
+        showSuccessMessage('Logged Out', 'You have been successfully logged out.');
       } catch (error) {
         console.error('Logout error:', error);
         // Still proceed with logout even if API call fails
         localStorage.removeItem('token');
-        window.location.href = 'login.html';
+        updateAuthButtons(false);
+        document.getElementById('authRequiredMessage').style.display = 'flex';
+        document.getElementById('settingsContent').style.display = 'none';
       }
     }
 
