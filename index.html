@@ -1671,7 +1671,7 @@
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         
         if (token) {
-          const response = await fetch(`${API_BASE_URL}/auth/me`, {
+          const response = await fetch(`${API_BASE_URL}/auth/status`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
