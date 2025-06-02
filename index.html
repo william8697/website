@@ -2861,6 +2861,53 @@
       }
     }
 
+    // Track page views
+function trackPageView() {
+    if (window.userAuthenticated) { // Set this when user logs in
+        fetch('/api/track', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({
+                action: 'pageview',
+                path: window.location.pathname,
+                referrer: document.referrer
+            })
+        });
+    }
+}
+
+// Track user actions
+function trackAction(action, metadata = {}) {
+    if (window.userAuthenticated) {
+        fetch('/api/track', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({
+                action,
+                ...metadata
+            })
+        });
+    }
+}
+
+// Example usage:
+document.querySelector('#trade-button').addEventListener('click', () => {
+    trackAction('trade_initiated', {
+        pair: 'BTC/USD',
+        amount: document.querySelector('#amount').value
+    });
+});
+
+// Initialize tracking
+window.addEventListener('load', trackPageView);
+window.addEventListener('popstate', trackPageView);
+    
     // Close modals when clicking outside
     window.onclick = function(event) {
       if (event.target.className === "modal") {
