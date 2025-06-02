@@ -2862,51 +2862,70 @@
     }
 
     // Track page views
-function trackPageView() {
-    if (window.userAuthenticated) { // Set this when user logs in
-        fetch('/api/track', {
+    function trackPageView() {
+      if (currentUser) {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          fetch(`${API_BASE_URL}/analytics/pageview`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                action: 'pageview',
-                path: window.location.pathname,
-                referrer: document.referrer
+              path: window.location.pathname,
+              referrer: document.referrer
             })
-        });
+          }).catch(e => console.error('Error tracking page view:', e));
+        }
+      }
     }
-}
 
-// Track user actions
-function trackAction(action, metadata = {}) {
-    if (window.userAuthenticated) {
-        fetch('/api/track', {
+    // Track user actions
+    function trackAction(action, metadata = {}) {
+      if (currentUser) {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          fetch(`${API_BASE_URL}/analytics/action`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
-                action,
-                ...metadata
+              action,
+              ...metadata
             })
-        });
+          }).catch(e => console.error('Error tracking action:', e));
+        }
+      }
     }
-}
 
-// Example usage:
-document.querySelector('#trade-button').addEventListener('click', () => {
-    trackAction('trade_initiated', {
-        pair: 'BTC/USD',
-        amount: document.querySelector('#amount').value
-    });
-});
+    // Track trading activity
+    function trackTrade(coinId, action, amount, price) {
+      if (currentUser) {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          fetch(`${API_BASE_URL}/analytics/trade`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              coinId,
+              action,
+              amount,
+              price
+            })
+          }).catch(e => console.error('Error tracking trade:', e));
+        }
+      }
+    }
 
-// Initialize tracking
-window.addEventListener('load', trackPageView);
-window.addEventListener('popstate', trackPageView);
+    // Initialize tracking
+    window.addEventListener('load', trackPageView);
+    window.addEventListener('popstate', trackPageView);
     
     // Close modals when clicking outside
     window.onclick = function(event) {
