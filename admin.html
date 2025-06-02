@@ -2244,54 +2244,43 @@
         }
 
         // Load dashboard data
-        function loadDashboardStats() {
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load dashboard stats');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Update stats
-                document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
-                document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
-                document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
-                document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
-                document.getElementById('user-growth-rate').textContent = data.data.userGrowthRate + '%';
-                document.getElementById('verified-growth-rate').textContent = data.data.verifiedGrowthRate + '%';
-                document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
-                document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
-
-                // Initialize charts if not already initialized
-                if (!growthChart) {
-                    initCharts();
-                }
-
-                // Update charts
-                updateGrowthChart(data.data.growthData);
-                updateUserDistributionChart(data.data.userDistribution);
-
-                // Load recent users
-                loadRecentUsers();
-
-                // Load recent activities
-                loadRecentActivities();
-
-                // Load notifications
-                loadNotifications();
-            })
-            .catch(error => {
-                showError('Error loading dashboard data: ' + error.message);
-                console.error('Error loading dashboard data:', error);
-            });
+     function loadDashboardStats() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load dashboard stats');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Update stats
+        document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
+        document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
+        document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
+        document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
+        document.getElementById('user-growth-rate').textContent = data.data.userGrowthRate + '%';
+        document.getElementById('verified-growth-rate').textContent = data.data.verifiedGrowthRate + '%';
+        document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
+        document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
+
+        // Load recent data
+        return Promise.all([
+            loadRecentUsers(),
+            loadRecentActivities(),
+            loadNotifications()
+        ]);
+    })
+    .catch(error => {
+        showError('Error loading dashboard data: ' + error.message);
+        console.error('Error loading dashboard data:', error);
+    });
+}
 
         // Load settings
         function loadSettings() {
@@ -2417,48 +2406,48 @@
 
         // Load recent users
         function loadRecentUsers() {
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/users?limit=5', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load recent users');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('recent-users-body');
-                tbody.innerHTML = '';
-
-                data.data.users.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${user.email || 'Wallet user'}</td>
-                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                        <td>
-                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                            </span>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading recent users:', error);
-            });
+    return fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-users', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load recent users');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('recent-users-body');
+        tbody.innerHTML = '';
+
+        data.data.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${user.fullName}</span>
+                    </div>
+                </td>
+                <td>${user.email || 'Wallet user'}</td>
+                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                <td>
+                    <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                        ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                    </span>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading recent users:', error);
+    });
+}
 
         // Load recent activities
         function loadRecentActivities() {
