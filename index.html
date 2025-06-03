@@ -1808,40 +1808,37 @@
     }
 
     // Update user display based on auth status
-    function updateUserDisplay() {
-      const userBalanceContainer = document.getElementById('userBalanceContainer');
-      const userBalanceElement = document.getElementById('userBalance');
-      const signupLink = document.getElementById('signupLink');
-      const loginLink = document.getElementById('loginLink');
-      const logoutLink = document.getElementById('logoutLink');
-      const userProfile = document.getElementById('userProfile');
-      const userAvatar = document.getElementById('userAvatar');
-      
-      if (currentUser) {
-        // User is logged in - show profile and logout button
-        signupLink.style.display = 'none';
-        loginLink.style.display = 'none';
-        logoutLink.style.display = 'block';
-        userProfile.style.display = 'flex';
-        userBalanceContainer.style.display = 'block';
-        
-        // Set user avatar with initials
-        const initials = currentUser.username ? 
-          currentUser.username.charAt(0).toUpperCase() :
-          currentUser.email.charAt(0).toUpperCase();
-        userAvatar.textContent = initials;
-        
-        userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
-      } else {
-        // User is not logged in - show signup/login buttons
-        signupLink.style.display = 'block';
-        loginLink.style.display = 'block';
-        logoutLink.style.display = 'none';
-        userProfile.style.display = 'none';
-        userBalanceContainer.style.display = 'none';
-      }
-    }
+   function updateUserDisplay() {
+  const userBalanceContainer = document.getElementById('userBalanceContainer');
+  const userBalanceElement = document.getElementById('userBalance');
+  const signupLink = document.getElementById('signupLink');
+  const loginLink = document.getElementById('loginLink');
+  const logoutLink = document.getElementById('logoutLink');
+  const userProfile = document.getElementById('userProfile');
+  const userAvatar = document.getElementById('userAvatar');
+  
+  if (currentUser) {
+    signupLink.style.display = 'none';
+    loginLink.style.display = 'none';
+    logoutLink.style.display = 'block';
+    userProfile.style.display = 'flex';
+    userBalanceContainer.style.display = 'block';
     
+    // Use firstName if available, otherwise use first letter of email
+    const initials = currentUser.firstName ? 
+      currentUser.firstName.charAt(0).toUpperCase() :
+      currentUser.email.charAt(0).toUpperCase();
+    userAvatar.textContent = initials;
+    
+    userBalanceElement.textContent = `Balance: $${userBalance.toFixed(2)}`;
+  } else {
+    signupLink.style.display = 'block';
+    loginLink.style.display = 'block';
+    logoutLink.style.display = 'none';
+    userProfile.style.display = 'none';
+    userBalanceContainer.style.display = 'none';
+  }
+}
     // Toggle user menu
     function toggleUserMenu() {
       const userMenu = document.getElementById('userMenu');
