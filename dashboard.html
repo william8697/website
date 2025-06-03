@@ -1163,8 +1163,7 @@
 
   <script>
     // API configuration
-    const API_BASE_URL = 'https://your-backend-api.com/api/v1';
-    const WEBSOCKET_URL = 'wss://your-backend-api.com';
+    const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
     
     // User state
     let currentUser = null;
@@ -1176,7 +1175,6 @@
     let marketData = {};
     let depositTimerInterval;
     let depositTimeRemaining = 120; // 2 minutes in seconds
-    let socket = null;
     let availableCoins = [];
     let conversionRates = {};
     
@@ -1185,9 +1183,7 @@
       // Check authentication
       await checkAuth();
       
-      // Initialize WebSocket connection if logged in
       if (currentUser) {
-        initWebSocket();
         await loadUserData();
         await loadDashboardData();
         await loadAvailableCoins();
@@ -1681,86 +1677,6 @@
       `;
     }
     
-    // Initialize WebSocket connection
-    function initWebSocket() {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (!token) return;
-      
-      socket = new WebSocket(`${WEBSOCKET_URL}?token=${token}`);
-      
-      socket.addEventListener('open', () => {
-        console.log('WebSocket connected');
-      });
-      
-      socket.addEventListener('message', (event) => {
-        const message = JSON.parse(event.data);
-        handleWebSocketMessage(message);
-      });
-      
-      socket.addEventListener('close', () => {
-        console.log('WebSocket disconnected');
-        // Attempt to reconnect after 5 seconds
-        setTimeout(initWebSocket, 5000);
-      });
-      
-      socket.addEventListener('error', (error) => {
-        console.error('WebSocket error:', error);
-      });
-    }
-    
-    // Handle WebSocket messages
-    function handleWebSocketMessage(message) {
-      switch(message.type) {
-        case 'BALANCE_UPDATE':
-          updateUserBalance(message.data);
-          break;
-        case 'TRADE_UPDATE':
-          updateTradeStatus(message.data);
-          break;
-        case 'TRANSACTION_UPDATE':
-          addNewTransaction(message.data);
-          break;
-        case 'CONVERSION_UPDATE':
-          addConversionToHistory(message.data);
-          break;
-        case 'MARKET_UPDATE':
-          updateMarketData(message.data);
-          break;
-        case 'CONVERSION_RATE_UPDATE':
-          updateConversionRate(message.data);
-          break;
-        default:
-          console.log('Unknown message type:', message.type);
-      }
-    }
-    
-    // Update conversion rate from WebSocket
-    function updateConversionRate(rateData) {
-      const pair = `${rateData.from}_${rateData.to}`;
-      conversionRates[pair] = rateData.rate;
-      
-      // If this affects the current conversion, update it
-      const fromCurrency = document.getElementById('fromCurrency').value;
-      const toCurrency = document.getElementById('toCurrency').value;
-      
-      if ((rateData.from === fromCurrency && rateData.to === toCurrency) ||
-          (rateData.from === toCurrency && rateData.to === fromCurrency)) {
-        updateConversion();
-      }
-    }
-    
-    // Add new conversion to history
-    function addConversionToHistory(conversion) {
-      conversionHistory.unshift(conversion);
-      updateConversionHistory();
-    }
-    
-    // Update market data from WebSocket
-    function updateMarketData(data) {
-      marketData = data;
-      updateMarketOverview();
-    }
-    
     // Load user data
     async function loadUserData() {
       try {
@@ -1828,40 +1744,6 @@
         updateActiveTrades();
         updateTransactions();
       }
-    }
-    
-    // Update user balance from WebSocket
-    function updateUserBalance(balanceData) {
-      userBalance = balanceData.total;
-      userBalances = balanceData.currencies;
-      updateUI();
-      
-      // Show notification if this was from a deposit
-      if (balanceData.source === 'deposit') {
-        showSuccessMessage('Deposit Received', `Your deposit of $${balanceData.amount.toFixed(2)} has been credited to your account.`);
-      }
-    }
-    
-    // Update trade status from WebSocket
-    function updateTradeStatus(tradeData) {
-      const index = activeTrades.findIndex(t => t._id === tradeData._id);
-      if (index !== -1) {
-        activeTrades[index] = tradeData;
-      } else {
-        activeTrades.unshift(tradeData);
-      }
-      
-      updateActiveTrades();
-      
-      if (tradeData.status === 'completed') {
-        showSuccessMessage('Trade Completed', `Your trade has completed with a profit of $${tradeData.profit.toFixed(2)}.`);
-      }
-    }
-    
-    // Add new transaction from WebSocket
-    function addNewTransaction(transaction) {
-      recentTransactions.unshift(transaction);
-      updateTransactions();
     }
     
     // Update UI elements
@@ -2266,11 +2148,6 @@
     
     // Logout user
     function logoutUser() {
-      // Close WebSocket connection
-      if (socket) {
-        socket.close();
-      }
-      
       // Clear auth tokens
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
