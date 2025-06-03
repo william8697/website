@@ -525,7 +525,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
       if (token) {
-        window.location.href = 'index.html';
+        window.location.href = 'dashboard.html';
       }
     });
 
@@ -537,7 +537,7 @@
     const formError = document.getElementById('formError');
     const formSuccess = document.getElementById('formSuccess');
     
-    // API base URL - update this to your backend URL
+    // API base URL
     const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
     
     // Show/hide sections
@@ -845,7 +845,8 @@
         }
       });
     }
-  // WebSocket connection for real-time updates
+
+    // WebSocket connection for real-time updates
     const socket = new WebSocket('wss://website-backendd-1.onrender.com');
 
     socket.addEventListener('open', (event) => {
