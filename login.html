@@ -525,7 +525,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
       if (token) {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'index.html';
       }
     });
 
@@ -761,9 +761,9 @@
         walletSuccess.textContent = 'Wallet verified! Logging you in...';
         walletSuccess.style.display = 'block';
         
-        // Redirect to dashboard page
+        // Redirect to index page
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "index.html";
         }, 1500);
         
       } catch (error) {
@@ -820,9 +820,9 @@
         formSuccess.textContent = 'Login successful! Redirecting...';
         formSuccess.style.display = 'block';
         
-        // Redirect to dashboard page
+        // Redirect to index page
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "index.html";
         }, 1500);
         
       } catch (error) {
