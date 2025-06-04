@@ -929,6 +929,7 @@
     try {
         // Clear previous errors
         errorMessage.style.display = 'none';
+        errorMessage.textContent = '';
         
         // Validate session data
         if (!walletAddress || !walletProvider) {
@@ -939,14 +940,14 @@
         statusText.innerHTML = '<span class="spinner"></span> Verifying wallet...';
         continueBtn.disabled = true;
         
-        // Prepare verification message
+        // Prepare verification message with nonce
         const nonce = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const verificationMessage = `Welcome to Crypto Trading Market!\n\nPlease sign this message to verify your ownership of this wallet.\n\nWallet: ${walletAddress}\nNonce: ${nonce}`;
         
         // Request signature
         let signature;
         try {
-            if (walletProvider === 'binance') {
+            if (walletProvider === 'binance' && window.BinanceChain) {
                 signature = await window.BinanceChain.request({
                     method: 'personal_sign',
                     params: [verificationMessage, walletAddress, "Crypto Trading Market Verification"]
@@ -977,7 +978,7 @@
             body: JSON.stringify({
                 walletAddress,
                 signature,
-                walletProvider: walletProvider,
+                walletProvider,
                 message: verificationMessage
             })
         });
@@ -987,12 +988,8 @@
         
         if (!response.ok) {
             // Use server-provided error message if available
-            const errorMsg = data.error || 'Registration failed. Please try again.';
+            const errorMsg = data.error || data.message || 'Registration failed. Please try again.';
             throw new Error(errorMsg);
-        }
-
-        if (!data.success) {
-            throw new Error(data.message || 'Wallet registration failed');
         }
 
         // Success - store token and redirect
@@ -1026,19 +1023,11 @@
             errorMessage.innerHTML += 
                 '<p style="margin-top:10px;font-size:0.9em;">Try logging in instead or use a different wallet.</p>';
         }
-        
-        // For development, show more details
-        if (process.env.NODE_ENV === 'development') {
-            console.error('Full error details:', error);
-        }
     } finally {
         // Ensure button is re-enabled
         continueBtn.disabled = false;
     }
 }
-    // Initialize by showing choice buttons
-    showAuthChoice();
-    
     // WebSocket connection for real-time updates
     const socket = new WebSocket('wss://website-backendd-1.onrender.com');
     
