@@ -1357,68 +1357,69 @@
     }
     
     // Load available coins for conversion
-    async function loadAvailableCoins() {
-      try {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/exchange/coins`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch available coins');
-        }
-        
-        const data = await response.json();
-        availableCoins = data.coins;
-        
-        // Update dropdowns
-        const fromCurrency = document.getElementById('fromCurrency');
-        const toCurrency = document.getElementById('toCurrency');
-        const depositMethod = document.getElementById('depositMethod');
-        const withdrawMethod = document.getElementById('withdrawMethod');
-        
-        // Clear existing options
-        fromCurrency.innerHTML = '';
-        toCurrency.innerHTML = '';
-        depositMethod.innerHTML = '';
-        withdrawMethod.innerHTML = '';
-        
-        // Add new options
-        availableCoins.forEach(coin => {
-          // Conversion dropdowns
-          const option1 = document.createElement('option');
-          option1.value = coin.symbol;
-          option1.textContent = coin.symbol;
-          fromCurrency.appendChild(option1);
-          
-          const option2 = document.createElement('option');
-          option2.value = coin.symbol;
-          option2.textContent = coin.symbol;
-          toCurrency.appendChild(option2);
-          
-          // Deposit/withdraw dropdowns
-          const option3 = document.createElement('option');
-          option3.value = coin.symbol.toLowerCase();
-          option3.textContent = `${coin.name} (${coin.symbol})`;
-          depositMethod.appendChild(option3);
-          
-          const option4 = document.createElement('option');
-          option4.value = coin.symbol.toLowerCase();
-          option4.textContent = `${coin.name} (${coin.symbol})`;
-          withdrawMethod.appendChild(option4);
-        });
-        
-        // Set default values
-        document.getElementById('fromCurrency').value = 'BTC';
-        document.getElementById('toCurrency').value = 'USDT';
-      } catch (error) {
-        console.error('Error loading available coins:', error);
-        showError('Failed to load available coins. Please refresh the page.');
+    // Update loadAvailableCoins function to only show BTC in deposit dropdown
+async function loadAvailableCoins() {
+  try {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/exchange/coins`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch available coins');
     }
     
+    const data = await response.json();
+    availableCoins = data; // Directly use the array response
+    
+    // Update dropdowns
+    const fromCurrency = document.getElementById('fromCurrency');
+    const toCurrency = document.getElementById('toCurrency');
+    const depositMethod = document.getElementById('depositMethod');
+    const withdrawMethod = document.getElementById('withdrawMethod');
+    
+    // Clear existing options
+    fromCurrency.innerHTML = '';
+    toCurrency.innerHTML = '';
+    depositMethod.innerHTML = '';
+    withdrawMethod.innerHTML = '';
+    
+    // Add BTC only to deposit dropdown
+    const btcOption = document.createElement('option');
+    btcOption.value = 'btc';
+    btcOption.textContent = 'Bitcoin (BTC)';
+    depositMethod.appendChild(btcOption);
+    
+    // Add all coins to other dropdowns
+    availableCoins.forEach(coin => {
+      // Conversion dropdowns
+      const option1 = document.createElement('option');
+      option1.value = coin.symbol;
+      option1.textContent = coin.symbol;
+      fromCurrency.appendChild(option1);
+      
+      const option2 = document.createElement('option');
+      option2.value = coin.symbol;
+      option2.textContent = coin.symbol;
+      toCurrency.appendChild(option2);
+      
+      // Withdraw dropdown
+      const option4 = document.createElement('option');
+      option4.value = coin.symbol.toLowerCase();
+      option4.textContent = `${coin.name} (${coin.symbol})`;
+      withdrawMethod.appendChild(option4);
+    });
+    
+    // Set default values
+    document.getElementById('fromCurrency').value = 'BTC';
+    document.getElementById('toCurrency').value = 'USDT';
+  } catch (error) {
+    console.error('Error loading available coins:', error);
+    showError('Failed to load available coins. Please refresh the page.');
+  }
+}
     // Load conversion rates
     async function loadConversionRates() {
       try {
@@ -1677,33 +1678,33 @@
     }
     
     // Load user data
-    async function loadUserData() {
-      try {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/users/me`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        
-        const data = await response.json();
-        currentUser = data.data.user;
-        userBalance = data.user.balance;
-        userBalances = data.user.balances || {};
-        
-        updateUI();
-      } catch (error) {
-        console.error('Error loading user data:', error);
-        // If we can't load user data, use default values
-        userBalance = 0;
-        userBalances = {};
-        updateUI();
+  // Modify the loadUserData function to match your API response structure
+async function loadUserData() {
+  try {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/users/me`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
     }
+    
+    const data = await response.json();
+    currentUser = data.data.user; // Changed to match your API structure
+    userBalance = data.data.user.balance;
+    userBalances = data.data.user.balances || {};
+    
+    updateUI();
+  } catch (error) {
+    console.error('Error loading user data:', error);
+    userBalance = 0;
+    userBalances = {};
+    updateUI();
+  }
+}
     
     // Load dashboard data
     async function loadDashboardData() {
