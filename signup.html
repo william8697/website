@@ -918,80 +918,96 @@
       }
     }
 
-    async function proceedAfterWalletConnect() {
-      const modal = document.getElementById('walletModal');
-      const walletAddress = sessionStorage.getItem('walletAddress');
-      const walletProvider = sessionStorage.getItem('walletProvider');
-      
-      if (!walletAddress || !walletProvider) {
-        document.getElementById('errorMessage').textContent = 'Wallet connection failed. Please try again.';
-        document.getElementById('errorMessage').style.display = 'block';
+   async function proceedAfterWalletConnect() {
+    const modal = document.getElementById('walletModal');
+    const walletAddress = sessionStorage.getItem('walletAddress');
+    const walletProvider = sessionStorage.getItem('walletProvider');
+    
+    if (!walletAddress || !walletProvider) {
+        showError('Wallet connection failed. Please try again.');
         closeWalletModal();
         return;
-      }
-      
-      try {
+    }
+    
+    try {
+        // Show loading state
+        document.getElementById('statusText').innerHTML = '<span class="spinner"></span> Verifying wallet...';
+        document.getElementById('continueBtn').disabled = true;
+        
         // Request user to sign a message for verification
         const message = `Please sign this message to verify your ${walletProvider} wallet for registration.`;
         let signature;
         
-        if (walletProvider === 'binance') {
-          signature = await window.BinanceChain.request({
-            method: 'personal_sign',
-            params: [message, walletAddress]
-          });
-        } else {
-          signature = await window.ethereum.request({
-            method: 'personal_sign',
-            params: [message, walletAddress]
-          });
+        try {
+            if (walletProvider === 'binance') {
+                signature = await window.BinanceChain.request({
+                    method: 'personal_sign',
+                    params: [message, walletAddress]
+                });
+            } else {
+                signature = await window.ethereum.request({
+                    method: 'personal_sign',
+                    params: [message, walletAddress, ""]
+                });
+            }
+        } catch (signError) {
+            console.error('Signature error:', signError);
+            showError('User denied message signature');
+            return;
         }
         
-        // Show loading state
+        // Update status
         document.getElementById('statusText').innerHTML = '<span class="spinner"></span> Registering wallet...';
-        document.getElementById('continueBtn').disabled = true;
         
         // Send to backend
         const response = await fetch('https://website-backendd-1.onrender.com/api/v1/auth/wallet-signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            walletAddress,
-            signature,
-            walletProvider,
-            message
-          })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                walletAddress,
+                signature,
+                walletProvider,
+                message
+            })
         });
 
         const data = await response.json();
         
-        if (response.ok) {
-          // Success - store token and redirect
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('wallet', walletAddress);
-          
-          closeWalletModal();
-          document.getElementById('successMessage').textContent = 'Wallet registered successfully!';
-          document.getElementById('successMessage').style.display = 'block';
-          
-          setTimeout(() => {
-            window.location.href = "dashboard.html";
-          }, 1500);
-        } else {
-          throw new Error(data.message || 'Wallet registration failed');
+        if (!response.ok) {
+            throw new Error(data.error || 'Wallet registration failed');
         }
-      } catch (error) {
-        console.error('Wallet registration error:', error);
-        document.getElementById('statusText').innerHTML = `❌ ${error.message || 'Registration failed'}`;
-        document.getElementById('continueBtn').disabled = false;
-      }
-    }
 
-    function closeWalletModal() {
-      document.getElementById('walletModal').style.display = 'none';
+        if (!data.success) {
+            throw new Error(data.error || 'Registration unsuccessful');
+        }
+        
+        // Success - store token and redirect
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('wallet', walletAddress);
+        
+        closeWalletModal();
+        document.getElementById('successMessage').textContent = 'Wallet registered successfully!';
+        document.getElementById('successMessage').style.display = 'block';
+        
+        setTimeout(() => {
+            window.location.href = "dashboard.html";
+        }, 1500);
+    } catch (error) {
+        console.error('Wallet registration error:', error);
+        showError(error.message || 'Wallet registration failed');
+        document.getElementById('continueBtn').disabled = false;
     }
+}
+
+function showError(message) {
+    const statusText = document.getElementById('statusText');
+    statusText.innerHTML = `❌ ${message}`;
+    const errorMessage = document.getElementById('errorMessage');
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+}
 
     // Initialize by showing choice buttons
     showAuthChoice();
