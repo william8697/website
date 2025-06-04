@@ -2155,6 +2155,25 @@
       // Show login prompt and hide dashboard content
       showLoginPrompt();
     }
+    // Auth check for all pages
+(async function checkAuth() {
+  try {
+    const response = await fetch('/api/v1/auth/status');
+    const data = await response.json();
+    
+    if (!data.isAuthenticated && !window.location.pathname.includes('login.html')) {
+      window.location.href = 'login.html';
+    }
+    
+    // Optional: Update UI with user data
+    if (data.isAuthenticated) {
+      console.log('Logged in as:', data.user.email || data.user.walletAddress);
+    }
+  } catch (error) {
+    console.error('Auth check failed:', error);
+    window.location.href = 'login.html';
+  }
+})();
   </script>
 </body>
 </html>
