@@ -41,7 +41,6 @@
       object-fit: cover;
     }
     
-    /* Optimized Header for Mobile */
     header {
       display: flex;
       justify-content: space-between;
@@ -305,7 +304,6 @@
       border-radius: 8px;
     }
     
-    /* Dashboard specific styles */
     .dashboard-header {
       text-align: center;
       padding: 15px;
@@ -319,7 +317,7 @@
       grid-template-columns: 1fr;
       gap: 12px;
       margin: 12px;
-      padding-bottom: 60px; /* Add padding to prevent footer overlap */
+      padding-bottom: 60px;
     }
     
     .dashboard-card {
@@ -446,7 +444,6 @@
       color: #ffa000;
     }
     
-    /* Modal styles */
     .modal {
       display: none;
       position: fixed;
@@ -506,7 +503,6 @@
       flex: 1;
     }
     
-    /* Deposit processing styles */
     .deposit-processing {
       display: none;
       text-align: center;
@@ -547,7 +543,6 @@
       font-size: 13px;
     }
     
-    /* Error message */
     .error-message {
       position: fixed;
       top: 15px;
@@ -566,7 +561,6 @@
       text-align: center;
     }
     
-    /* Login prompt styles */
     .login-prompt {
       display: none;
       text-align: center;
@@ -617,7 +611,6 @@
       color: #2e7d32;
     }
     
-    /* Enhanced Coin Conversion Styles */
     .conversion-container {
       background: rgba(255, 255, 255, 0.9);
       padding: 15px;
@@ -715,7 +708,6 @@
       color: #666;
     }
     
-    /* Conversion Rate Display */
     .rate-display {
       display: flex;
       justify-content: space-between;
@@ -726,7 +718,6 @@
       font-size: 13px;
     }
     
-    /* Conversion History */
     .conversion-history {
       margin-top: 15px;
       max-height: 200px;
@@ -745,7 +736,6 @@
       border-bottom: none;
     }
     
-    /* Quick Convert Buttons */
     .quick-convert {
       display: flex;
       gap: 8px;
@@ -774,7 +764,6 @@
       100% { opacity: 0; top: 0; }
     }
     
-    /* Success Message */
     .success-message {
       display: none;
       position: fixed;
@@ -805,7 +794,6 @@
       cursor: pointer;
     }
     
-    /* Responsive adjustments */
     @media (min-width: 768px) {
       header {
         padding: 10px 20px;
@@ -1182,7 +1170,6 @@
 
     // Initialize the page
     document.addEventListener('DOMContentLoaded', async () => {
-      // Check authentication
       await checkAuth();
       
       if (currentUser) {
@@ -1193,8 +1180,6 @@
         await loadConversionHistory();
         await fetchCoinData();
         setupPriceUpdates();
-        
-        // Setup conversion form event listeners
         setupConversionForm();
       }
       
@@ -1320,7 +1305,6 @@
       const toAmount = document.getElementById('toAmount');
       const toCurrency = document.getElementById('toCurrency');
       
-      // When from amount or currency changes, update the to amount
       fromAmount.addEventListener('input', updateConversion);
       fromCurrency.addEventListener('change', updateConversion);
       toCurrency.addEventListener('change', updateConversion);
@@ -1489,7 +1473,7 @@
         }
         
         const data = await response.json();
-        availableCoins = data; // Directly use the array response
+        availableCoins = data;
         
         // Update dropdowns
         const fromCurrency = document.getElementById('fromCurrency');
@@ -1619,7 +1603,6 @@
     async function checkAuth() {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
-      // If no token, show login prompt
       if (!token) {
         showLoginPrompt();
         return;
@@ -1642,13 +1625,7 @@
         showDashboardContent();
       } catch (error) {
         console.error('Auth check failed:', error);
-        // Even if verification fails, proceed with the token we have
-        // This allows the user to continue using the dashboard while we try to verify in the background
-        currentUser = { email: 'user@example.com' }; // Default user object
-        showDashboardContent();
-        
-        // Continue trying to verify in the background
-        setTimeout(checkAuth, 5000);
+        showLoginPrompt();
       }
     }
     
@@ -1736,7 +1713,6 @@
         }
       } catch (error) {
         console.error('Error loading dashboard data:', error);
-        // Use empty arrays if we can't load data
         activeTrades = [];
         recentTransactions = [];
         updateActiveTrades();
@@ -1962,7 +1938,6 @@
       depositTimerInterval = setInterval(updateDepositTimer, 1000);
       
       // In a real app, this would call your Node.js backend to monitor the deposit
-      // For demo, we'll simulate a deposit confirmation after 2 minutes
       setTimeout(() => {
         completeDeposit(amount, method);
       }, 120000); // 2 minutes
@@ -1988,15 +1963,12 @@
     function completeDeposit(amount, method) {
       clearInterval(depositTimerInterval);
       
-      // In a real app, this would verify the deposit with your Node.js backend
-      // For demo, we'll just show a success message
       if (amount > 0) {
         showSuccessMessage('Deposit Submitted', `Your ${method.toUpperCase()} deposit request has been received. Your balance will update once the transaction is confirmed on the blockchain.`);
       } else {
         showSuccessMessage('Deposit Address Ready', `You can now send ${method.toUpperCase()} to the provided address. Your balance will update automatically once received.`);
       }
       
-      // Close modal
       closeModal('depositModal');
     }
     
@@ -2051,7 +2023,6 @@
         return;
       }
       
-      // Added caution message
       const confirmMessage = `You are about to withdraw $${amount.toFixed(2)} via ${method.toUpperCase()} to address: ${address}\n\n` +
                             `IMPORTANT: Please ensure you have selected the correct withdrawal method (${method.toUpperCase()}) and are sending to a compatible ${method.toUpperCase()} wallet address.\n\n` +
                             `Sending to the wrong address will result in permanent loss of funds.\n\n` +
@@ -2084,7 +2055,6 @@
         const data = await response.json();
         showSuccessMessage('Withdrawal Submitted', `Your withdrawal request for $${amount.toFixed(2)} has been submitted and is being processed. Transaction ID: ${data.txId}`);
         
-        // The actual balance update will come via WebSocket
         closeModal('withdrawModal');
       } catch (error) {
         console.error('Withdrawal error:', error);
@@ -2107,16 +2077,16 @@
       try {
         document.getElementById('marketDetailsModal').style.display = 'block';
         const content = document.getElementById('marketDetailsContent');
+        content.innerHTML = '<div style="text-align: center; padding: 20px;">Loading market details...</div>';
         
-        // Create a table with all coin data
         let html = '<div style="max-height: 60vh; overflow-y: auto;">';
         html += '<h3 style="margin-bottom: 15px;">Market Overview</h3>';
         
-        // Market summary
         html += '<div style="margin-bottom: 20px; padding: 15px; background: #f5f5f5; border-radius: 8px;">';
+        html += '<p><strong>Showing simulated prices with fluctuations (-7.65% to +15.89%)</strong></p>';
         html += '</div>';
         
-        // All Coins
+        html += '<h3 style="margin-bottom: 15px;">Cryptocurrencies (30+)</h3>';
         html += '<table style="width: 100%; border-collapse: collapse;">';
         html += '<thead><tr>';
         html += '<th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">Coin</th>';
@@ -2185,7 +2155,6 @@
       element.select();
       document.execCommand('copy');
       
-      // Show tooltip
       const originalText = element.value;
       element.value = 'Copied!';
       setTimeout(() => {
@@ -2195,12 +2164,9 @@
     
     // Logout user
     function logoutUser() {
-      // Clear auth tokens
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
       currentUser = null;
-      
-      // Show login prompt and hide dashboard content
       showLoginPrompt();
     }
   </script>
