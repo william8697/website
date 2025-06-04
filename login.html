@@ -33,16 +33,6 @@
       background-color: var(--dark-bg);
     }
     
-    .background-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-    
     nav {
       display: flex;
       justify-content: space-between;
@@ -100,7 +90,6 @@
       max-width: 450px;
       padding: 2.5rem;
       margin: 2rem 0;
-      backdrop-filter: blur(5px);
     }
     
     .login-header {
@@ -144,11 +133,7 @@
     }
     
     .wallet-choice:hover {
-      background-color: #2b6c1d;
-    }
-      
-    button:hover {
-      background-color: #115217;
+      background-color: #1a7fd8;
     }
     
     .normal-choice {
@@ -208,7 +193,7 @@
     .submit-btn {
       width: 100%;
       padding: 0.875rem;
-      background-color: #148a1e;
+      background-color: var(--primary-green);
       color: white;
       border: none;
       border-radius: 8px;
@@ -219,7 +204,7 @@
     }
     
     .submit-btn:hover {
-      background-color: #148a1e;
+      background-color: #3e8e41;
     }
     
     .wallet-buttons {
@@ -264,7 +249,7 @@
     }
     
     .binance-btn {
-      background-color: #5d584c;
+      background-color: #f0b90b;
       color: #1e2026;
     }
     
@@ -463,7 +448,7 @@
         </button>
         
         <div class="wallet-instructions" id="walletInstructions"></div>
-        <div class="wallet-address" id="walletAddress"></div>
+        <div class="wallet-address" id="walletAddressDisplay"></div>
         <div class="status-message error-message" id="walletError"></div>
         <div class="status-message success-message" id="walletSuccess"></div>
         
@@ -506,13 +491,13 @@
   </main>
 
   <!-- Wallet connection modal -->
-  <div id="walletModal" style="display: none;">
+  <div id="walletModal">
     <div>
       <h3 id="modalTitle">Connect Wallet</h3>
       <div id="walletStatus">
         <span id="statusText">Connecting to wallet...</span>
       </div>
-      <div id="walletAddress" style="display: none;"></div>
+      <div id="walletAddress"></div>
       <button id="continueBtn" onclick="proceedAfterWalletConnect()">Continue</button>
       <button id="cancelBtn" onclick="closeWalletModal()">Cancel</button>
     </div>
@@ -521,26 +506,64 @@
   <script src="https://cdn.jsdelivr.net/npm/@metamask/onboarding@1.0.1/dist/metamask-onboarding.bundle.js"></script>
   
   <script>
-    // Modified token check to only redirect if coming from index.html
-    document.addEventListener('DOMContentLoaded', () => {
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      const referrer = document.referrer;
+    // Authentication state management
+    class AuthManager {
+      static getToken() {
+        return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      }
       
-      // Only redirect if we have a token AND we're coming from index.html
-      if (token && referrer.includes('index.html')) {
-        window.location.href = 'index.html';
+      static setToken(token, remember) {
+        if (remember) {
+          localStorage.setItem('authToken', token);
+        } else {
+          sessionStorage.setItem('authToken', token);
+        }
+      }
+      
+      static clearToken() {
+        localStorage.removeItem('authToken');
+        sessionStorage.removeItem('authToken');
+      }
+      
+      static isAuthenticated() {
+        return !!this.getToken();
+      }
+      
+      static getUserData() {
+        const user = localStorage.getItem('user') || sessionStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
+      }
+      
+      static setUserData(user, remember) {
+        if (remember) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('user', JSON.stringify(user));
+        }
+      }
+    }
+
+    // Check authentication state on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      // If user is already authenticated, redirect to index
+      if (AuthManager.isAuthenticated()) {
+        const referrer = document.referrer;
+        // Only redirect if not coming from index (to avoid loops)
+        if (!referrer.includes('index.html')) {
+          window.location.href = 'index.html';
+        }
       }
     });
 
     // DOM elements
     const walletInstructions = document.getElementById('walletInstructions');
-    const walletAddress = document.getElementById('walletAddress');
+    const walletAddressDisplay = document.getElementById('walletAddressDisplay');
     const walletError = document.getElementById('walletError');
     const walletSuccess = document.getElementById('walletSuccess');
     const formError = document.getElementById('formError');
     const formSuccess = document.getElementById('formSuccess');
     
-    // API base URL
+    // API configuration
     const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
     
     // Show/hide sections
@@ -567,7 +590,7 @@
     
     function clearMessages() {
       walletInstructions.style.display = 'none';
-      walletAddress.style.display = 'none';
+      walletAddressDisplay.style.display = 'none';
       walletError.style.display = 'none';
       walletSuccess.style.display = 'none';
       formError.style.display = 'none';
@@ -623,9 +646,9 @@
         walletAddress.style.display = 'block';
         continueBtn.style.display = 'block';
 
-        // Store wallet info
-        localStorage.setItem('connectedWallet', walletType);
-        localStorage.setItem('walletAddress', accounts[0]);
+        // Store wallet info temporarily
+        sessionStorage.setItem('connectingWallet', walletType);
+        sessionStorage.setItem('connectingAddress', accounts[0]);
 
       } catch (error) {
         statusText.innerHTML = error.message || 'Connection failed';
@@ -696,8 +719,8 @@
     function proceedAfterWalletConnect() {
       closeWalletModal();
       
-      // Get the connected wallet address
-      const walletAddress = localStorage.getItem('walletAddress');
+      // Get the connecting wallet address
+      const walletAddress = sessionStorage.getItem('connectingAddress');
       
       if (walletAddress) {
         // Verify the wallet with backend
@@ -745,7 +768,7 @@
           body: JSON.stringify({
             walletAddress: address,
             signature,
-            walletType: localStorage.getItem('connectedWallet') || 'metamask'
+            walletType: sessionStorage.getItem('connectingWallet') || 'metamask'
           })
         });
         
@@ -756,23 +779,31 @@
         
         const { token, user } = await verifyResponse.json();
         
-        // Store the token and user data
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        // Store the token and user data (always remember wallet users)
+        AuthManager.setToken(token, true);
+        AuthManager.setUserData(user, true);
+        
+        // Clear temporary connection data
+        sessionStorage.removeItem('connectingWallet');
+        sessionStorage.removeItem('connectingAddress');
         
         // Successful verification
         walletSuccess.textContent = 'Wallet verified! Logging you in...';
         walletSuccess.style.display = 'block';
         
-        // Redirect to dashboard page
+        // Redirect to index page
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "index.html";
         }, 1500);
         
       } catch (error) {
         console.error('Wallet verification error:', error);
         walletError.textContent = error.message || 'Error verifying wallet';
         walletError.style.display = 'block';
+        
+        // Clear temporary connection data on error
+        sessionStorage.removeItem('connectingWallet');
+        sessionStorage.removeItem('connectingAddress');
       }
     }
     
@@ -809,23 +840,17 @@
         
         const { token, user } = await response.json();
         
-        // Store the token based on remember me preference
-        if (rememberMe) {
-          localStorage.setItem('authToken', token);
-        } else {
-          sessionStorage.setItem('authToken', token);
-        }
-        
-        // Store user data
-        localStorage.setItem('user', JSON.stringify(user));
+        // Store the token and user data based on remember me preference
+        AuthManager.setToken(token, rememberMe);
+        AuthManager.setUserData(user, rememberMe);
         
         // Successful login
         formSuccess.textContent = 'Login successful! Redirecting...';
         formSuccess.style.display = 'block';
         
-        // Redirect to dashboard page
+        // Redirect to index page
         setTimeout(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "index.html";
         }, 1500);
         
       } catch (error) {
@@ -842,34 +867,60 @@
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
-          walletAddress.style.display = 'none';
-          walletError.textContent = 'Wallet disconnected';
-          walletError.style.display = 'block';
+          // Wallet disconnected
+          if (AuthManager.isAuthenticated()) {
+            // If user was logged in with wallet, log them out
+            AuthManager.clearToken();
+            walletAddressDisplay.style.display = 'none';
+            walletError.textContent = 'Wallet disconnected. Please log in again.';
+            walletError.style.display = 'block';
+          }
         }
+      });
+      
+      // Also listen for chain changes
+      window.ethereum.on('chainChanged', () => {
+        window.location.reload();
       });
     }
 
     // WebSocket connection for real-time updates
-    const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+    function setupWebSocket() {
+      const socket = new WebSocket('wss://website-backendd-1.onrender.com');
 
-    socket.addEventListener('open', (event) => {
-      console.log('WebSocket connection established');
-    });
+      socket.addEventListener('open', (event) => {
+        console.log('WebSocket connection established');
+        // Authenticate if user is logged in
+        if (AuthManager.isAuthenticated()) {
+          socket.send(JSON.stringify({
+            type: 'AUTHENTICATE',
+            token: AuthManager.getToken()
+          }));
+        }
+      });
 
-    socket.addEventListener('message', (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === 'USER_ACTIVITY') {
-        console.log('User activity update:', data);
-      }
-    });
+      socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        if (data.type === 'AUTH_ERROR') {
+          // Token is invalid, log user out
+          AuthManager.clearToken();
+          window.location.reload();
+        }
+      });
 
-    socket.addEventListener('close', (event) => {
-      console.log('WebSocket connection closed');
-    });
+      socket.addEventListener('close', (event) => {
+        console.log('WebSocket connection closed');
+        // Attempt to reconnect after delay
+        setTimeout(setupWebSocket, 5000);
+      });
 
-    socket.addEventListener('error', (event) => {
-      console.error('WebSocket error:', event);
-    });
+      socket.addEventListener('error', (event) => {
+        console.error('WebSocket error:', event);
+      });
+    }
+
+    // Initialize WebSocket connection
+    setupWebSocket();
   </script>
 </body>
 </html>
