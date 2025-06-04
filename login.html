@@ -521,10 +521,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@metamask/onboarding@1.0.1/dist/metamask-onboarding.bundle.js"></script>
   
   <script>
-    // Check if user is already logged in
+    // Modified token check to only redirect if coming from index.html
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-      if (token) {
+      const referrer = document.referrer;
+      
+      // Only redirect if we have a token AND we're coming from index.html
+      if (token && referrer.includes('index.html')) {
         window.location.href = 'index.html';
       }
     });
