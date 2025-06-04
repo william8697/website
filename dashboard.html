@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+           <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -1943,7 +1943,7 @@
     function updateDepositAddressNote(method) {
       const note = document.getElementById('depositAddressNote');
       
-      const coin = availableCoins.find(c => c.symbol.toLowerCase() === method);
+     const coin = availableCoins?.find(c => c.symbol.toLowerCase() === method) || {};
       if (!coin) return;
       
       note.textContent = `Send only ${coin.symbol} to this address (${coin.network || 'default'} network). Sending other assets may result in permanent loss.`;
