@@ -1183,7 +1183,6 @@
   await checkAuth();
   
   if (currentUser) {
-    setupWebSocket();  // Add this line
     await loadUserData();
     await loadDashboardData();
     await loadAvailableCoins();
