@@ -1691,7 +1691,7 @@
         }
         
         const data = await response.json();
-        currentUser = data.user;
+        currentUser = data.data.user;
         userBalance = data.user.balance;
         userBalances = data.user.balances || {};
         
