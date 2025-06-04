@@ -1176,7 +1176,32 @@
     let depositTimeRemaining = 120; // 2 minutes in seconds
     let availableCoins = [];
     let conversionRates = {};
-    
+
+    function setupWebSocket() {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (!token) return;
+
+  const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+  const wsUrl = `${wsProtocol}${window.location.host}/api/v1/ws`;
+  
+  const socket = new WebSocket(wsUrl);
+
+  socket.onopen = () => {
+    socket.send(JSON.stringify({ type: 'auth', token }));
+  };
+
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'balance_update') {
+      userBalance = data.balance;
+      updateUI();
+    }
+  };
+
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+}
     // Initialize the page
     document.addEventListener('DOMContentLoaded', async () => {
   // Check authentication
