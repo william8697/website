@@ -886,38 +886,30 @@
 
     // WebSocket connection for real-time updates
     function setupWebSocket() {
-      const socket = new WebSocket('wss://website-backendd-1.onrender.com');
+  const token = AuthManager.getToken();
+  const socket = new WebSocket(`wss://website-backendd-1.onrender.com?token=${token}`);
 
-      socket.addEventListener('open', (event) => {
-        console.log('WebSocket connection established');
-        // Authenticate if user is logged in
-        if (AuthManager.isAuthenticated()) {
-          socket.send(JSON.stringify({
-            type: 'AUTHENTICATE',
-            token: AuthManager.getToken()
-          }));
-        }
-      });
+  socket.addEventListener('open', () => {
+    console.log('WebSocket connection established');
+  });
 
-      socket.addEventListener('message', (event) => {
-        const data = JSON.parse(event.data);
-        if (data.type === 'AUTH_ERROR') {
-          // Token is invalid, log user out
-          AuthManager.clearToken();
-          window.location.reload();
-        }
-      });
-
-      socket.addEventListener('close', (event) => {
-        console.log('WebSocket connection closed');
-        // Attempt to reconnect after delay
-        setTimeout(setupWebSocket, 5000);
-      });
-
-      socket.addEventListener('error', (event) => {
-        console.error('WebSocket error:', event);
-      });
+  socket.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+    if (data.type === 'AUTH_ERROR') {
+      AuthManager.clearToken();
+      window.location.reload();
     }
+  });
+
+  socket.addEventListener('close', () => {
+    console.log('WebSocket connection closed');
+    setTimeout(setupWebSocket, 5000);
+  });
+
+  socket.addEventListener('error', (event) => {
+    console.error('WebSocket error:', event);
+  });
+}
 
     // Initialize WebSocket connection
     setupWebSocket();
