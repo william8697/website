@@ -1176,23 +1176,26 @@
     let depositTimeRemaining = 120; // 2 minutes in seconds
     let availableCoins = [];
     let conversionRates = {};
+    // WebSocket connection
+let socket;
     
     // Initialize the page
     document.addEventListener('DOMContentLoaded', async () => {
-      // Check authentication
-      await checkAuth();
-      
-      if (currentUser) {
-        await loadUserData();
-        await loadDashboardData();
-        await loadAvailableCoins();
-        await loadConversionRates();
-        await loadConversionHistory();
-        await loadMarketData();
-        
-        // Setup conversion form event listeners
-        setupConversionForm();
-      }
+  // Check authentication
+  await checkAuth();
+  
+  if (currentUser) {
+    setupWebSocket();  // Add this line
+    await loadUserData();
+    await loadDashboardData();
+    await loadAvailableCoins();
+    await loadConversionRates();
+    await loadConversionHistory();
+    await loadMarketData();
+    
+    // Setup conversion form event listeners
+    setupConversionForm();
+  }
       
       // Ensure video plays on mobile
       const videos = document.querySelectorAll('video');
@@ -2156,6 +2159,56 @@ async function loadUserData() {
       // Show login prompt and hide dashboard content
       showLoginPrompt();
     }
+    // WebSocket setup for real-time updates
+function setupWebSocket() {
+  const wsUrl = API_BASE_URL.replace('http', 'ws') + '/ws';
+  socket = new WebSocket(wsUrl);
+  
+  socket.onopen = () => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    socket.send(JSON.stringify({ type: 'auth', token }));
+    console.log('WebSocket connected');
+  };
+  
+  socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('WebSocket message:', data);
+    
+    switch(data.type) {
+      case 'balance_update':
+        userBalance = data.balance;
+        userBalances = data.balances || {};
+        updateUI();
+        break;
+        
+      case 'new_trade':
+        activeTrades.unshift(data.trade);
+        updateActiveTrades();
+        break;
+        
+      case 'new_transaction':
+        recentTransactions.unshift(data.transaction);
+        updateTransactions();
+        break;
+        
+      case 'price_update':
+        // Update conversion rates if needed
+        if (data.pair in conversionRates) {
+          conversionRates[data.pair] = data.rate;
+        }
+        break;
+    }
+  };
+  
+  socket.onclose = () => {
+    console.log('WebSocket disconnected - attempting to reconnect...');
+    setTimeout(setupWebSocket, 5000); // Reconnect after 5 seconds
+  };
+  
+  socket.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+}
   </script>
 </body>
 </html>
