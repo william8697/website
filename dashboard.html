@@ -1156,7 +1156,14 @@
     // User state
     let currentUser = null;
     let userBalance = 0;
-    let userBalances = {};
+    let userBalances = {
+      usd: 0,
+      btc: 0,
+      eth: 0,
+      usdt: 0,
+      bnb: 0,
+      sol: 0
+    };
     let activeTrades = [];
     let recentTransactions = [];
     let conversionHistory = [];
@@ -1399,60 +1406,82 @@
     }
     
     // Execute conversion (buy or sell)
-async function executeConversion(action) {
-  const fromAmount = parseFloat(document.getElementById('fromAmount').value);
-  const fromCurrency = document.getElementById('fromCurrency').value;
-  const toCurrency = document.getElementById('toCurrency').value;
-  
-  if (!fromAmount || fromAmount <= 0 || isNaN(fromAmount)) {
-    showError('Please enter a valid amount to convert');
-    return;
-  }
+    async function executeConversion(action) {
+      const fromAmount = parseFloat(document.getElementById('fromAmount').value);
+      const fromCurrency = document.getElementById('fromCurrency').value;
+      const toCurrency = document.getElementById('toCurrency').value;
+      
+      if (!fromAmount || fromAmount <= 0 || isNaN(fromAmount)) {
+        showError('Please enter a valid amount to convert');
+        return;
+      }
 
-  try {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const response = await fetch(`${API_BASE_URL}/exchange/convert`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        fromCurrency,
-        toCurrency,
-        amount: fromAmount,
-        action
-      })
-    });
-    
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Conversion failed');
+      // Check if user has sufficient balance
+      const fromBalance = userBalances[fromCurrency.toLowerCase()] || 0;
+      if (fromBalance < fromAmount) {
+        showError(`Insufficient ${fromCurrency} balance`);
+        return;
+      }
+
+      // Check minimum conversion amount ($10 equivalent)
+      const minAmount = 10;
+      const fromPrice = coinPrices[fromCurrency] || await getConversionRate(fromCurrency, 'USD');
+      if (fromAmount * fromPrice < minAmount) {
+        showError(`Minimum conversion amount is $${minAmount} equivalent`);
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await fetch(`${API_BASE_URL}/exchange/convert`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            fromCurrency,
+            toCurrency,
+            amount: fromAmount,
+            action
+          })
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Conversion failed');
+        }
+
+        const { data } = await response.json();
+        
+        if (!data) {
+          throw new Error('Invalid conversion response');
+        }
+
+        showSuccessMessage('Conversion Successful', 
+          `Converted ${fromAmount} ${fromCurrency} to ${data.convertedAmount?.toFixed(8) || '0'} ${toCurrency}`);
+        
+        // Update local balances immediately
+        userBalances[fromCurrency.toLowerCase()] -= fromAmount;
+        userBalances[toCurrency.toLowerCase()] += parseFloat(data.convertedAmount);
+        userBalance = Object.keys(userBalances).reduce((total, currency) => {
+          const price = coinPrices[currency.toUpperCase()] || 1;
+          return total + (userBalances[currency] * price);
+        }, 0);
+        
+        updateUI();
+        await loadConversionHistory();
+        
+        // Reset form
+        document.getElementById('fromAmount').value = '';
+        document.getElementById('toAmount').value = '';
+        document.getElementById('conversionResult').style.display = 'none';
+        document.getElementById('rateDisplay').style.display = 'none';
+      } catch (error) {
+        console.error('Conversion error:', error);
+        showError(error.message || 'Failed to execute conversion');
+      }
     }
-
-    const { data } = await response.json();
-    
-    if (!data) {
-      throw new Error('Invalid conversion response');
-    }
-
-    showSuccessMessage('Conversion Successful', 
-      `Converted ${fromAmount} ${fromCurrency} to ${data.convertedAmount?.toFixed(8) || '0'} ${toCurrency}`);
-    
-    // Refresh user balances and history
-    await loadUserData();
-    await loadConversionHistory();
-    
-    // Reset form
-    document.getElementById('fromAmount').value = '';
-    document.getElementById('toAmount').value = '';
-    document.getElementById('conversionResult').style.display = 'none';
-    document.getElementById('rateDisplay').style.display = 'none';
-  } catch (error) {
-    console.error('Conversion error:', error);
-    showError(error.message || 'Failed to execute conversion');
-  }
-}
     
     // Load available coins for conversion
     async function loadAvailableCoins() {
@@ -1555,7 +1584,7 @@ async function executeConversion(action) {
         }
         
         const data = await response.json();
-        conversionHistory = data.history;
+        conversionHistory = data.history || [];
         updateConversionHistory();
       } catch (error) {
         console.error('Error loading conversion history:', error);
@@ -1665,14 +1694,28 @@ async function executeConversion(action) {
         
         const data = await response.json();
         currentUser = data.user;
-        userBalance = data.balance;
-        userBalances = data.balances || {};
+        userBalance = data.balance || 0;
+        userBalances = data.balances || {
+          usd: 0,
+          btc: 0,
+          eth: 0,
+          usdt: 0,
+          bnb: 0,
+          sol: 0
+        };
         
         updateUI();
       } catch (error) {
         console.error('Error loading user data:', error);
         userBalance = 0;
-        userBalances = {};
+        userBalances = {
+          usd: 0,
+          btc: 0,
+          eth: 0,
+          usdt: 0,
+          bnb: 0,
+          sol: 0
+        };
         updateUI();
       }
     }
@@ -1691,7 +1734,7 @@ async function executeConversion(action) {
         
         if (tradesResponse.ok) {
           const tradesData = await tradesResponse.json();
-          activeTrades = tradesData.trades;
+          activeTrades = tradesData.trades || [];
           updateActiveTrades();
         }
         
@@ -1704,7 +1747,7 @@ async function executeConversion(action) {
         
         if (transactionsResponse.ok) {
           const transactionsData = await transactionsResponse.json();
-          recentTransactions = transactionsData.transactions;
+          recentTransactions = transactionsData.transactions || [];
           updateTransactions();
         }
       } catch (error) {
@@ -1739,16 +1782,12 @@ async function executeConversion(action) {
         balanceItem.className = 'balance-item';
         balanceItem.onclick = showDepositModal;
         
-        let amount;
-        if (currency.code === 'usd') {
-          amount = userBalance.toFixed(2);
-        } else {
-          amount = userBalances[currency.code]?.toFixed(6) || '0.000000';
-        }
+        const amount = userBalances[currency.code] || 0;
+        const displayAmount = currency.code === 'usd' ? amount.toFixed(2) : amount.toFixed(6);
         
         balanceItem.innerHTML = `
           <div class="stat-label">${currency.name}</div>
-          <div class="balance-amount">${currency.icon}${amount}</div>
+          <div class="balance-amount">${currency.icon}${displayAmount}</div>
         `;
         balanceGrid.appendChild(balanceItem);
       });
@@ -2162,4 +2201,4 @@ async function executeConversion(action) {
     }
   </script>
 </body>
-</html>   
+</html>
