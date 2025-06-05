@@ -1213,6 +1213,8 @@
           coinPrices[coin.symbol] = coin.current_price;
         });
         
+        // Apply initial simulated fluctuations
+        applyPriceFluctuations();
         updateMarketOverview();
       } catch (error) {
         console.error('Error fetching coin data:', error);
@@ -1220,7 +1222,31 @@
       }
     }
 
-    // Update market overview with real prices
+    // Apply simulated price fluctuations (-7.65% to +15.89%)
+    function applyPriceFluctuations() {
+      coinData.forEach(coin => {
+        const fluctuation = (Math.random() * 0.2354) - 0.0765; // -7.65% to +15.89%
+        const originalPrice = coin.current_price;
+        const newPrice = originalPrice * (1 + fluctuation);
+        
+        // Store both real and simulated prices
+        coin.simulatedPrice = newPrice;
+        coin.simulatedChange = fluctuation * 100;
+        coinPrices[coin.symbol] = newPrice;
+      });
+    }
+
+    // Update prices every 30 seconds
+    function setupPriceUpdates() {
+      applyPriceFluctuations();
+      updateMarketOverview();
+      setInterval(() => {
+        applyPriceFluctuations();
+        updateMarketOverview();
+      }, 30000); // 30 seconds
+    }
+
+    // Update market overview with simulated prices
     function updateMarketOverview() {
       const marketOverview = document.getElementById('marketOverview');
       
@@ -1229,8 +1255,8 @@
         return;
       }
       
-      // Sort by price change for gainers/losers
-      const sortedByChange = [...coinData].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
+      // Sort by simulated change for gainers/losers
+      const sortedByChange = [...coinData].sort((a, b) => b.simulatedChange - a.simulatedChange);
       const topGainers = sortedByChange.slice(0, 5);
       const topLosers = sortedByChange.slice(-5).reverse();
       
@@ -1246,7 +1272,7 @@
               <img src="${coin.image}" alt="${coin.symbol}" width="16" height="16">
               ${coin.symbol}
             </div>
-            <div style="color: #2e7d32; font-weight: bold;">${coin.price_change_percentage_24h.toFixed(2)}%</div>
+            <div style="color: #2e7d32; font-weight: bold;">+${coin.simulatedChange.toFixed(2)}%</div>
           </div>
         `;
       });
@@ -1262,7 +1288,7 @@
               <img src="${coin.image}" alt="${coin.symbol}" width="16" height="16">
               ${coin.symbol}
             </div>
-            <div style="color: #c62828; font-weight: bold;">${coin.price_change_percentage_24h.toFixed(2)}%</div>
+            <div style="color: #c62828; font-weight: bold;">${coin.simulatedChange.toFixed(2)}%</div>
           </div>
         `;
       });
@@ -1305,7 +1331,16 @@
       }
       
       try {
-        const rate = await getConversionRate(fromCurrency, toCurrency);
+        // Calculate conversion using simulated prices
+        const fromPrice = coinPrices[fromCurrency] || await getConversionRate(fromCurrency, toCurrency);
+        const toPrice = coinPrices[toCurrency] || await getConversionRate(toCurrency, 'USD');
+        
+        if (!fromPrice || !toPrice) {
+          throw new Error('Could not get conversion rates');
+        }
+        
+        // Calculate rate based on simulated prices
+        const rate = fromPrice / toPrice;
         const toAmount = fromAmount * rate;
         
         document.getElementById('toAmount').value = toAmount.toFixed(8);
@@ -2056,8 +2091,8 @@
         html += '<tbody>';
         
         coinData.forEach(coin => {
-          const changeColor = coin.price_change_percentage_24h >= 0 ? '#2e7d32' : '#c62828';
-          const changeSign = coin.price_change_percentage_24h >= 0 ? '+' : '';
+          const changeColor = coin.simulatedChange >= 0 ? '#2e7d32' : '#c62828';
+          const changeSign = coin.simulatedChange >= 0 ? '+' : '';
           
           html += `
             <tr style="border-bottom: 1px solid #eee;">
@@ -2065,8 +2100,8 @@
                 <img src="${coin.image}" alt="${coin.symbol}" width="20" height="20" style="margin-right: 8px;">
                 ${coin.name} (${coin.symbol})
               </td>
-              <td style="text-align: right; padding: 8px;">$${coin.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-              <td style="text-align: right; padding: 8px; color: ${changeColor}">${changeSign}${coin.price_change_percentage_24h.toFixed(2)}%</td>
+              <td style="text-align: right; padding: 8px;">$${coin.simulatedPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+              <td style="text-align: right; padding: 8px; color: ${changeColor}">${changeSign}${coin.simulatedChange.toFixed(2)}%</td>
             </tr>
           `;
         });
