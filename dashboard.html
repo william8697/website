@@ -1567,14 +1567,13 @@
     }
     
     // Update conversion history display
-    function updateConversionHistory() {
-      const historyList = document.getElementById('historyList');
-      historyList.innerHTML = '';
-      
-      if (conversionHistory.length === 0) {
-        historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">No conversion history yet</div>';
-        return;
-      }
+const updateConversionHistory = () => {
+  const historyList = document.getElementById('historyList');
+  
+  if (!conversionHistory || conversionHistory.length === 0) {
+    historyList.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">No conversion history yet</div>';
+    return;
+  }
       
       conversionHistory.slice(0, 5).forEach(conversion => {
         const item = document.createElement('div');
@@ -1669,7 +1668,7 @@
         
         const data = await response.json();
         currentUser = data.user;
-        userBalance = data.balance;
+        userBalance = data.balance || 0;  // Default to 0 if undefined
         userBalances = data.balances || {};
         
         updateUI();
@@ -1759,18 +1758,15 @@
     }
     
     // Update active trades list
-    function updateActiveTrades() {
-      const list = document.getElementById('activeTradesList');
-      const allList = document.getElementById('allTradesList');
-      
-      if (activeTrades.length === 0) {
-        list.innerHTML = `
-          <li class="activity-item">
-            <div style="text-align: center; color: #666; padding: 1rem;">
-              No active trades
-            </div>
-          </li>
-        `;
+   const updateActiveTrades = () => {
+  const list = document.getElementById('activeTradesList');
+  const allList = document.getElementById('allTradesList');
+  
+  if (!activeTrades || activeTrades.length === 0) {
+    list.innerHTML = `<li class="activity-item"><div style="text-align: center; color: #666; padding: 1rem;">No active trades</div></li>`;
+    allList.innerHTML = list.innerHTML;
+    return;
+  }
         allList.innerHTML = `
           <li class="activity-item">
             <div style="text-align: center; color: #666; padding: 1rem;">
