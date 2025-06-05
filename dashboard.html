@@ -1399,64 +1399,60 @@
     }
     
     // Execute conversion (buy or sell)
-    async function executeConversion(action) {
-      const fromAmount = parseFloat(document.getElementById('fromAmount').value);
-      const fromCurrency = document.getElementById('fromCurrency').value;
-      const toCurrency = document.getElementById('toCurrency').value;
-      
-      if (!fromAmount || fromAmount <= 0 || isNaN(fromAmount)) {
-        showError('Please enter a valid amount to convert');
-        return;
-      }
-      
-      // Check if user has sufficient balance
-      if (action === 'sell') {
-        const availableBalance = userBalances[fromCurrency.toLowerCase()] || 0;
-        if (fromAmount > availableBalance) {
-          showError(`Insufficient ${fromCurrency} balance`);
-          return;
-        }
-      }
-      
-      try {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await fetch(`${API_BASE_URL}/exchange/convert`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            fromCurrency,
-            toCurrency,
-            amount: fromAmount,
-            action
-          })
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Conversion failed');
-        }
-        
-        const data = await response.json();
-        showSuccessMessage('Conversion Successful', 
-          `You have successfully converted ${fromAmount} ${fromCurrency} to ${data.toAmount.toFixed(8)} ${toCurrency}`);
-        
-        // Refresh user balances and history
-        await loadUserData();
-        await loadConversionHistory();
-        
-        // Reset form
-        document.getElementById('fromAmount').value = '';
-        document.getElementById('toAmount').value = '';
-        document.getElementById('conversionResult').style.display = 'none';
-        document.getElementById('rateDisplay').style.display = 'none';
-      } catch (error) {
-        console.error('Error executing conversion:', error);
-        showError(error.message || 'Failed to execute conversion');
-      }
+async function executeConversion(action) {
+  const fromAmount = parseFloat(document.getElementById('fromAmount').value);
+  const fromCurrency = document.getElementById('fromCurrency').value;
+  const toCurrency = document.getElementById('toCurrency').value;
+  
+  if (!fromAmount || fromAmount <= 0 || isNaN(fromAmount)) {
+    showError('Please enter a valid amount to convert');
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/exchange/convert`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fromCurrency,
+        toCurrency,
+        amount: fromAmount,
+        action
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Conversion failed');
     }
+
+    const { data } = await response.json();
+    
+    if (!data) {
+      throw new Error('Invalid conversion response');
+    }
+
+    showSuccessMessage('Conversion Successful', 
+      `Converted ${fromAmount} ${fromCurrency} to ${data.convertedAmount?.toFixed(8) || '0'} ${toCurrency}`);
+    
+    // Refresh user balances and history
+    await loadUserData();
+    await loadConversionHistory();
+    
+    // Reset form
+    document.getElementById('fromAmount').value = '';
+    document.getElementById('toAmount').value = '';
+    document.getElementById('conversionResult').style.display = 'none';
+    document.getElementById('rateDisplay').style.display = 'none';
+  } catch (error) {
+    console.error('Conversion error:', error);
+    showError(error.message || 'Failed to execute conversion');
+  }
+}
     
     // Load available coins for conversion
     async function loadAvailableCoins() {
