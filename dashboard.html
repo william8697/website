@@ -1441,7 +1441,7 @@
         
         const data = await response.json();
         showSuccessMessage('Conversion Successful', 
-         `You have successfully converted ${fromAmount} ${fromCurrency} to ${data.data?.convertedAmount?.toFixed(8) || '0'} ${toCurrency}`
+          `You have successfully converted ${fromAmount} ${fromCurrency} to ${data.toAmount.toFixed(8)} ${toCurrency}`);
         
         // Refresh user balances and history
         await loadUserData();
@@ -1537,7 +1537,7 @@
         }
         
         const data = await response.json();
-        conversionRates = data.data?.rates || {};
+        conversionRates = data.rates;
       } catch (error) {
         console.error('Error loading conversion rates:', error);
         showError('Failed to load conversion rates. Please refresh the page.');
@@ -1559,7 +1559,7 @@
         }
         
         const data = await response.json();
-       conversionHistory = data.data?.history || [];
+        conversionHistory = data.history;
         updateConversionHistory();
       } catch (error) {
         console.error('Error loading conversion history:', error);
@@ -1669,8 +1669,8 @@
         
         const data = await response.json();
         currentUser = data.user;
-        userBalance = data.user.balance || 0;
-userBalances = data.user.balances || {};
+        userBalance = data.balance;
+        userBalances = data.balances || {};
         
         updateUI();
       } catch (error) {
@@ -1695,7 +1695,7 @@ userBalances = data.user.balances || {};
         
         if (tradesResponse.ok) {
           const tradesData = await tradesResponse.json();
-         activeTrades = tradesData.data?.trades || [];
+          activeTrades = tradesData.trades;
           updateActiveTrades();
         }
         
@@ -2166,4 +2166,4 @@ userBalances = data.user.balances || {};
     }
   </script>
 </body>
-</html>
+</html>   
