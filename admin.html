@@ -2908,60 +2908,61 @@
         }
 
         // Load activity logs
-        function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (type) url += `&type=${type}`;
-            if (date) url += `&date=${date}`;
+     // Frontend - Update the loadActivityLogs function
+function loadActivityLogs(page = 1, search = '', type = '', date = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (type) url += `&action=${type}`;
+    if (date) url += `&date=${date}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load activity logs');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('logs-table-body');
-                tbody.innerHTML = '';
-
-                data.data.logs.forEach(log => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${log._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${log.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${log.description}</td>
-                        <td>
-                            <span class="badge ${log.type === 'trade' ? 'bg-success' : log.type === 'login' ? 'bg-primary' : 'bg-secondary'}">
-                                ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
-                            </span>
-                        </td>
-                        <td>${log.ipAddress}</td>
-                        <td>${new Date(log.timestamp).toLocaleString()}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('logs-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading activity logs: ' + error.message);
-                console.error('Error loading activity logs:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load activity logs');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('logs-table-body');
+        tbody.innerHTML = '';
+
+        data.data.logs.forEach(log => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log._id.substring(0, 8)}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user.fullName)}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${log.user.fullName}</span>
+                    </div>
+                </td>
+                <td>${log.activity}</td>
+                <td>
+                    <span class="badge ${log.type === 'trade' ? 'bg-success' : log.type === 'login' ? 'bg-primary' : 'bg-secondary'}">
+                        ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
+                    </span>
+                </td>
+                <td>${log.ipAddress}</td>
+                <td>${new Date(log.timestamp).toLocaleString()}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('logs-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        showError('Error loading activity logs: ' + error.message);
+        console.error('Error loading activity logs:', error);
+    });
+}
 
         // Update pagination
         function updatePagination(elementId, totalPages, currentPage) {
