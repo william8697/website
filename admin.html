@@ -2695,71 +2695,100 @@ function loadRecentActivities() {
     });
 }
         // Load trades
-        function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (type) url += `&type=${type}`;
-            if (date) url += `&date=${date}`;
+       function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (type) url += `&type=${type}`;
+    if (date) url += `&date=${date}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load trades');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('trades-table-body');
-                tbody.innerHTML = '';
-
-                data.data.trades.forEach(trade => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${trade._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${trade.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge ${trade.type === 'arbitrage' ? 'bg-primary' : 'bg-info'}">
-                                ${trade.type.charAt(0).toUpperCase() + trade.type.slice(1)}
-                            </span>
-                        </td>
-                        <td>$${trade.amount.toFixed(2)}</td>
-                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit.toFixed(2)}</td>
-                        <td>
-                            <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                                ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>${new Date(trade.createdAt).toLocaleString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('trades-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading trades: ' + error.message);
-                console.error('Error loading trades:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load trades');
+        }
+        return response.json();
+    })
+    .then(response => {
+        const tbody = document.getElementById('trades-table-body');
+        tbody.innerHTML = '';
+
+        // Verify response structure
+        if (!response.data || !Array.isArray(response.data.trades)) {
+            throw new Error('Invalid trades data structure');
+        }
+
+        response.data.trades.forEach(trade => {
+            // Safely handle all properties with fallbacks
+            const tradeId = trade._id ? trade._id.substring(0, 8) : 'N/A';
+            const userName = trade.user?.fullName || 
+                           (trade.user?.firstName && trade.user?.lastName 
+                            ? `${trade.user.firstName} ${trade.user.lastName}` 
+                            : 'Unknown User');
+            const tradeType = trade.type || 'normal';
+            const amount = typeof trade.amount === 'number' ? trade.amount.toFixed(2) : '0.00';
+            const profit = typeof trade.profit === 'number' ? trade.profit.toFixed(2) : '0.00';
+            const tradeStatus = trade.status || 'pending';
+            const tradeDate = trade.createdAt ? new Date(trade.createdAt).toLocaleString() : 'N/A';
+
+            // Determine badge classes
+            const typeClass = tradeType === 'arbitrage' ? 'bg-primary' : 'bg-info';
+            const statusClass = 
+                tradeStatus === 'completed' ? 'bg-success' :
+                tradeStatus === 'pending' ? 'bg-warning' : 'bg-danger';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${tradeId}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${userName}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge ${typeClass}">
+                        ${tradeType.charAt(0).toUpperCase() + tradeType.slice(1)}
+                    </span>
+                </td>
+                <td>$${amount}</td>
+                <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${profit}</td>
+                <td>
+                    <span class="badge ${statusClass}">
+                        ${tradeStatus.charAt(0).toUpperCase() + tradeStatus.slice(1)}
+                    </span>
+                </td>
+                <td>${tradeDate}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('trades-pagination', response.data.totalPages, page);
+    })
+    .catch(error => {
+        console.error('Error loading trades:', error);
+        document.getElementById('trades-table-body').innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center text-danger">
+                    Failed to load trades. Please try again.
+                </td>
+            </tr>
+        `;
+    });
+}
 
         // Load transactions
         function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
