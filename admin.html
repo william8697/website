@@ -2449,8 +2449,8 @@
     });
 }
 
-  function loadRecentActivities() {
-    fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs', {
+function loadRecentActivities() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + authToken,
@@ -2467,32 +2467,44 @@
         const activityFeed = document.getElementById('activity-feed');
         activityFeed.innerHTML = '';
 
-        // Your backend returns logs in response.data.logs array
+        // Verify the response structure matches exactly
+        if (!response.data || !Array.isArray(response.data.logs)) {
+            throw new Error('Invalid response structure from server');
+        }
+
         response.data.logs.forEach(log => {
             const activityItem = document.createElement('div');
             activityItem.className = 'activity-item';
 
-            let iconClass = '';
-            let iconBg = '';
-            let activityText = log.action;
+            // Default values for safety
+            const action = log.action || 'unknown_action';
+            const userName = log.userId?.firstName 
+                ? `${log.userId.firstName} ${log.userId.lastName || ''}` 
+                : 'System';
+            const timestamp = log.createdAt ? new Date(log.createdAt).toLocaleString() : '';
+
+            // Determine icon based on action type
+            let iconClass = 'bi-activity';
+            let iconBg = 'secondary';
             
-            // Match exact action types from your backend
-            if (log.action.includes('login')) {
+            if (action.includes('login')) {
                 iconClass = 'bi-box-arrow-in-right';
                 iconBg = 'primary';
-            } else if (log.action.includes('trade')) {
+            } else if (action.includes('trade')) {
                 iconClass = 'bi-currency-exchange';
                 iconBg = 'success';
-            } else if (log.action.includes('withdrawal')) {
+            } else if (action.includes('withdrawal')) {
                 iconClass = 'bi-cash-stack';
                 iconBg = 'warning';
-            } else if (log.action.includes('deposit')) {
+            } else if (action.includes('deposit')) {
                 iconClass = 'bi-wallet2';
                 iconBg = 'info';
-            } else {
-                iconClass = 'bi-activity';
-                iconBg = 'secondary';
             }
+
+            // Safely format the action text
+            const actionText = typeof action === 'string' 
+                ? action.replace(/_/g, ' ')
+                : 'System activity';
 
             activityItem.innerHTML = `
                 <div class="d-flex justify-content-between">
@@ -2503,11 +2515,11 @@
                             </span>
                         </div>
                         <div>
-                            <h6 class="mb-0">${log.action.replace(/_/g, ' ')}</h6>
-                            <p class="mb-0">${log.userId?.firstName || 'System'} ${log.userId?.lastName || ''}</p>
+                            <h6 class="mb-0">${actionText}</h6>
+                            <p class="mb-0">${userName}</p>
                         </div>
                     </div>
-                    <span class="activity-time">${new Date(log.createdAt).toLocaleString()}</span>
+                    <span class="activity-time">${timestamp}</span>
                 </div>
             `;
             activityFeed.appendChild(activityItem);
@@ -2515,10 +2527,9 @@
     })
     .catch(error => {
         console.error('Error loading recent activities:', error);
-        // Optional: Display error to user
         document.getElementById('activity-feed').innerHTML = `
             <div class="alert alert-danger">
-                Failed to load activities: ${error.message}
+                Failed to load activities. Please try again later.
             </div>
         `;
     });
