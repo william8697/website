@@ -2449,7 +2449,7 @@
     });
 }
 
-       function loadRecentActivities() {
+     function loadRecentActivities() {
     fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-activities', {
         method: 'GET',
         headers: {
@@ -2467,30 +2467,31 @@
         const activityFeed = document.getElementById('activity-feed');
         activityFeed.innerHTML = '';
 
+        // Your backend returns activities in data.data array
         data.data.forEach(activity => {
             const activityItem = document.createElement('div');
             activityItem.className = 'activity-item';
 
             let iconClass = '';
             let iconBg = '';
-            let activityText = activity.description;
-
-            switch(activity.type) {
-                case 'login':
-                    iconClass = 'bi-box-arrow-in-right';
+            
+            // Match the exact structure from your backend
+            switch(activity.action) {
+                case 'user_signup':
+                    iconClass = 'bi-person-plus';
                     iconBg = 'primary';
                     break;
-                case 'trade':
+                case 'trade_executed':
                     iconClass = 'bi-currency-exchange';
                     iconBg = 'success';
                     break;
-                case 'withdrawal':
-                    iconClass = 'bi-cash-stack';
-                    iconBg = 'warning';
-                    break;
-                case 'deposit':
-                    iconClass = 'bi-wallet2';
+                case 'kyc_submitted':
+                    iconClass = 'bi-shield-check';
                     iconBg = 'info';
+                    break;
+                case 'support_ticket_created':
+                    iconClass = 'bi-ticket-perforated';
+                    iconBg = 'warning';
                     break;
                 default:
                     iconClass = 'bi-activity';
@@ -2506,11 +2507,11 @@
                             </span>
                         </div>
                         <div>
-                            <h6 class="mb-0">${activityText}</h6>
-                            <p class="mb-0">${activity.user?.fullName || 'System'}</p>
+                            <h6 class="mb-0">${activity.action.replace(/_/g, ' ')}</h6>
+                            <p class="mb-0">${activity.userId?.firstName || 'System'} ${activity.userId?.lastName || ''}</p>
                         </div>
                     </div>
-                    <span class="activity-time">${new Date(activity.timestamp).toLocaleString()}</span>
+                    <span class="activity-time">${new Date(activity.createdAt).toLocaleString()}</span>
                 </div>
             `;
             activityFeed.appendChild(activityItem);
