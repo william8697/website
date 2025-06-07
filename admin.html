@@ -2923,9 +2923,7 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         }
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to load activity logs');
-        }
+        if (!response.ok) throw new Error('Failed to load activity logs');
         return response.json();
     })
     .then(data => {
@@ -2938,24 +2936,33 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
                 <td>${log._id.substring(0, 8)}</td>
                 <td>
                     <div class="d-flex align-items-center">
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user.fullName)}&background=7367f0&color=fff" 
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user?.fullName || 'System')}&background=7367f0&color=fff" 
                              alt="User" class="user-avatar">
-                        <span>${log.user.fullName}</span>
+                        <span>${log.user?.fullName || 'System'}</span>
                     </div>
                 </td>
                 <td>${log.activity}</td>
                 <td>
-                    <span class="badge ${log.type === 'trade' ? 'bg-success' : log.type === 'login' ? 'bg-primary' : 'bg-secondary'}">
+                    <span class="badge ${log.type === 'trade' ? 'bg-success' : 
+                                      log.type === 'login' ? 'bg-primary' : 
+                                      log.type === 'withdrawal' ? 'bg-warning' : 'bg-secondary'}">
                         ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
                     </span>
                 </td>
-                <td>${log.ipAddress}</td>
+                <td>
+                    <div class="device-info">
+                        <span class="badge bg-info">${log.device?.type || 'Desktop'}</span>
+                        <small class="text-muted">${log.device?.os || 'Unknown OS'}</small>
+                    </div>
+                </td>
+                <td>
+                    ${log.location?.country || 'Unknown'}${log.location?.city ? `, ${log.location.city}` : ''}
+                </td>
                 <td>${new Date(log.timestamp).toLocaleString()}</td>
             `;
             tbody.appendChild(row);
         });
 
-        // Update pagination
         updatePagination('logs-pagination', data.data.totalPages, page);
     })
     .catch(error => {
