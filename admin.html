@@ -2449,8 +2449,8 @@
     });
 }
 
-     function loadRecentActivities() {
-    fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-activities', {
+  function loadRecentActivities() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + authToken,
@@ -2463,39 +2463,35 @@
         }
         return response.json();
     })
-    .then(data => {
+    .then(response => {
         const activityFeed = document.getElementById('activity-feed');
         activityFeed.innerHTML = '';
 
-        // Your backend returns activities in data.data array
-        data.data.forEach(activity => {
+        // Your backend returns logs in response.data.logs array
+        response.data.logs.forEach(log => {
             const activityItem = document.createElement('div');
             activityItem.className = 'activity-item';
 
             let iconClass = '';
             let iconBg = '';
+            let activityText = log.action;
             
-            // Match the exact structure from your backend
-            switch(activity.action) {
-                case 'user_signup':
-                    iconClass = 'bi-person-plus';
-                    iconBg = 'primary';
-                    break;
-                case 'trade_executed':
-                    iconClass = 'bi-currency-exchange';
-                    iconBg = 'success';
-                    break;
-                case 'kyc_submitted':
-                    iconClass = 'bi-shield-check';
-                    iconBg = 'info';
-                    break;
-                case 'support_ticket_created':
-                    iconClass = 'bi-ticket-perforated';
-                    iconBg = 'warning';
-                    break;
-                default:
-                    iconClass = 'bi-activity';
-                    iconBg = 'secondary';
+            // Match exact action types from your backend
+            if (log.action.includes('login')) {
+                iconClass = 'bi-box-arrow-in-right';
+                iconBg = 'primary';
+            } else if (log.action.includes('trade')) {
+                iconClass = 'bi-currency-exchange';
+                iconBg = 'success';
+            } else if (log.action.includes('withdrawal')) {
+                iconClass = 'bi-cash-stack';
+                iconBg = 'warning';
+            } else if (log.action.includes('deposit')) {
+                iconClass = 'bi-wallet2';
+                iconBg = 'info';
+            } else {
+                iconClass = 'bi-activity';
+                iconBg = 'secondary';
             }
 
             activityItem.innerHTML = `
@@ -2507,11 +2503,11 @@
                             </span>
                         </div>
                         <div>
-                            <h6 class="mb-0">${activity.action.replace(/_/g, ' ')}</h6>
-                            <p class="mb-0">${activity.userId?.firstName || 'System'} ${activity.userId?.lastName || ''}</p>
+                            <h6 class="mb-0">${log.action.replace(/_/g, ' ')}</h6>
+                            <p class="mb-0">${log.userId?.firstName || 'System'} ${log.userId?.lastName || ''}</p>
                         </div>
                     </div>
-                    <span class="activity-time">${new Date(activity.createdAt).toLocaleString()}</span>
+                    <span class="activity-time">${new Date(log.createdAt).toLocaleString()}</span>
                 </div>
             `;
             activityFeed.appendChild(activityItem);
@@ -2519,6 +2515,12 @@
     })
     .catch(error => {
         console.error('Error loading recent activities:', error);
+        // Optional: Display error to user
+        document.getElementById('activity-feed').innerHTML = `
+            <div class="alert alert-danger">
+                Failed to load activities: ${error.message}
+            </div>
+        `;
     });
 }
         // Load notifications
