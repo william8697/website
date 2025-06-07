@@ -2776,74 +2776,76 @@
             });
         }
 
-        // Load tickets
-        function loadTickets(page = 1, search = '', status = '', priority = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (priority) url += `&priority=${priority}`;
+  // Load tickets
+function loadTickets(page = 1, search = '', status = '', priority = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (priority) url += `&priority=${priority}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load tickets');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('tickets-table-body');
-                tbody.innerHTML = '';
-
-                data.data.tickets.forEach(ticket => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${ticket._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${ticket.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${ticket.subject}</td>
-                        <td>
-                            <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
-                                ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
-                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
-                            </span>
-                        </td>
-                        <td>${new Date(ticket.createdAt).toLocaleString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
-                                    data-id="${ticket._id}" 
-                                    data-subject="${ticket.subject}" 
-                                    data-status="${ticket.status}" 
-                                    data-priority="${ticket.priority}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('tickets-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading tickets: ' + error.message);
-                console.error('Error loading tickets:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load tickets');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('tickets-table-body');
+        if (!tbody) return;
+        
+        tbody.innerHTML = '';
+
+        data.data.tickets.forEach(ticket => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${ticket._id ? ticket._id.substring(0, 8) : ''}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user?.fullName || 'User')}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${ticket.user?.fullName || 'Unknown User'}</span>
+                    </div>
+                </td>
+                <td>${ticket.subject || 'No subject'}</td>
+                <td>
+                    <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
+                        ${ticket.status ? ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1) : 'Unknown'}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
+                        ${ticket.priority ? ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1) : 'Low'}
+                    </span>
+                </td>
+                <td>${ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : 'Unknown date'}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
+                            data-id="${ticket._id}" 
+                            data-subject="${ticket.subject}" 
+                            data-status="${ticket.status}" 
+                            data-priority="${ticket.priority}">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('tickets-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        showError('Error loading tickets: ' + error.message);
+        console.error('Error loading tickets:', error);
+    });
+}
 
         // Load KYC
         function loadKYC(page = 1, search = '', status = '') {
@@ -3495,58 +3497,59 @@
         }
 
         // Export data
-        function exportData(type) {
-            let endpoint = '';
-            
-            switch(type) {
-                case 'users':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
-                    break;
-                case 'trades':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
-                    break;
-                case 'transactions':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
-                    break;
-                case 'tickets':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
-                    break;
-                case 'logs':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
-                    break;
-                default:
-                    return;
-            }
-            
-            fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to export data');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                // Create download link
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            })
-            .catch(error => {
-                showError(`Failed to export ${type}: ` + error.message);
-                console.error(`Error exporting ${type}:`, error);
-            });
+function exportData(type) {
+    let endpoint = '';
+    
+    switch(type) {
+        case 'users':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
+            break;
+        case 'trades':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
+            break;
+        case 'transactions':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
+            break;
+        case 'tickets':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
+            break;
+        case 'logs':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
+            break;
+        default:
+            showError('Invalid export type');
+            return;
+    }
+    
+    fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
-
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to export data');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    })
+    .catch(error => {
+        showError(`Failed to export ${type}: ` + error.message);
+        console.error(`Error exporting ${type}:`, error);
+    });
+}
         // Add new user notification
         function addNewUserNotification(user) {
             const notificationsCount = document.getElementById('notifications-count');
@@ -3781,15 +3784,21 @@
             });
         }
 
-        // Show error message
-        function showError(message) {
-            const errorAlert = document.getElementById('error-alert');
-            document.getElementById('error-message').textContent = message;
-            errorAlert.style.display = 'block';
-            setTimeout(() => {
-                errorAlert.style.display = 'none';
-            }, 5000);
-        }
+       // Show error message
+function showError(message) {
+    const errorAlert = document.getElementById('error-alert');
+    const errorMessage = document.getElementById('error-message');
+    
+    if (errorAlert && errorMessage) {
+        errorMessage.textContent = message;
+        errorAlert.style.display = 'block';
+        setTimeout(() => {
+            errorAlert.style.display = 'none';
+        }, 5000);
+    } else {
+        console.error('Error elements not found:', message);
+    }
+}
 
         // Show success message
         function showSuccess(message) {
