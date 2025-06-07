@@ -2449,84 +2449,77 @@
     });
 }
 
-        // Load recent activities
-        function loadRecentActivities() {
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load recent activities');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const activityFeed = document.getElementById('activity-feed');
-                activityFeed.innerHTML = '';
-
-                data.data.logs.forEach(log => {
-                    const activityItem = document.createElement('div');
-                    activityItem.className = 'activity-item';
-
-                    let iconClass = '';
-                    let iconBg = '';
-                    let activityText = '';
-
-                    switch(log.type) {
-                        case 'login':
-                            iconClass = 'bi-box-arrow-in-right';
-                            iconBg = 'primary';
-                            activityText = `User ${log.user.fullName} logged in`;
-                            break;
-                        case 'trade':
-                            iconClass = 'bi-currency-exchange';
-                            iconBg = 'success';
-                            activityText = `User ${log.user.fullName} completed a trade`;
-                            break;
-                        case 'withdrawal':
-                            iconClass = 'bi-cash-stack';
-                            iconBg = 'warning';
-                            activityText = `User ${log.user.fullName} requested a withdrawal`;
-                            break;
-                        case 'deposit':
-                            iconClass = 'bi-wallet2';
-                            iconBg = 'info';
-                            activityText = `User ${log.user.fullName} made a deposit`;
-                            break;
-                        default:
-                            iconClass = 'bi-activity';
-                            iconBg = 'secondary';
-                            activityText = log.description;
-                    }
-
-                    activityItem.innerHTML = `
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="avatar me-3">
-                                    <span class="avatar-initial rounded-circle bg-label-${iconBg}">
-                                        <i class="bi ${iconClass}"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">${activityText}</h6>
-                                    <p class="mb-0">${log.description}</p>
-                                </div>
-                            </div>
-                            <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
-                        </div>
-                    `;
-                    activityFeed.appendChild(activityItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading recent activities:', error);
-            });
+       function loadRecentActivities() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-activities', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load recent activities');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const activityFeed = document.getElementById('activity-feed');
+        activityFeed.innerHTML = '';
 
+        data.data.forEach(activity => {
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+
+            let iconClass = '';
+            let iconBg = '';
+            let activityText = activity.description;
+
+            switch(activity.type) {
+                case 'login':
+                    iconClass = 'bi-box-arrow-in-right';
+                    iconBg = 'primary';
+                    break;
+                case 'trade':
+                    iconClass = 'bi-currency-exchange';
+                    iconBg = 'success';
+                    break;
+                case 'withdrawal':
+                    iconClass = 'bi-cash-stack';
+                    iconBg = 'warning';
+                    break;
+                case 'deposit':
+                    iconClass = 'bi-wallet2';
+                    iconBg = 'info';
+                    break;
+                default:
+                    iconClass = 'bi-activity';
+                    iconBg = 'secondary';
+            }
+
+            activityItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                <i class="bi ${iconClass}"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${activityText}</h6>
+                            <p class="mb-0">${activity.user?.fullName || 'System'}</p>
+                        </div>
+                    </div>
+                    <span class="activity-time">${new Date(activity.timestamp).toLocaleString()}</span>
+                </div>
+            `;
+            activityFeed.appendChild(activityItem);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading recent activities:', error);
+    });
+}
         // Load notifications
         function loadNotifications() {
             fetch('https://website-backendd-1.onrender.com/api/v1/admin/notifications', {
