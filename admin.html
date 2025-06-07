@@ -1484,8 +1484,11 @@
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script>
         // Global variables
         let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
@@ -1625,7 +1628,7 @@
         function showDashboard() {
             document.getElementById('login-section').style.display = 'none';
             document.getElementById('admin-content').style.display = 'block';
-            document.getElementById('admin-name').textContent = currentAdminData.email || 'Admin';
+            document.getElementById('admin-name').textContent = currentAdminData.name || 'Admin';
         }
 
         // Initialize navigation
@@ -1773,7 +1776,7 @@
                     data.data.users.forEach(user => {
                         const option = document.createElement('option');
                         option.value = user._id;
-                        option.textContent = `${user.firstName} ${user.lastName} (${user.email || user.walletAddress?.substring(0, 6) + '...'})`;
+                        option.textContent = `${user.fullName} (${user.email || user.walletAddress.substring(0, 6) + '...'})`;
                         select.appendChild(option);
                     });
                     
@@ -1857,7 +1860,12 @@
                         'Authorization': 'Bearer ' + authToken,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ title, message, type, audience })
+                    body: JSON.stringify({
+                        title,
+                        message,
+                        type,
+                        audience
+                    })
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -1887,7 +1895,7 @@
                 const withdrawalFee = parseFloat(document.getElementById('withdrawal-fee').value);
                 
                 fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + authToken,
                         'Content-Type': 'application/json'
@@ -1919,12 +1927,11 @@
             // Add user form
             document.getElementById('save-user-btn').addEventListener('click', function() {
                 const form = document.getElementById('add-user-form');
-                const firstName = document.getElementById('add-user-fullname').value.split(' ')[0];
-                const lastName = document.getElementById('add-user-fullname').value.split(' ').slice(1).join(' ');
+                const fullName = document.getElementById('add-user-fullname').value;
                 const email = document.getElementById('add-user-email').value;
                 const password = document.getElementById('add-user-password').value;
                 const country = document.getElementById('add-user-country').value;
-                const walletAddress = document.getElementById('add-user-wallet').value;
+                const wallet = document.getElementById('add-user-wallet').value;
                 const balance = parseFloat(document.getElementById('add-user-balance').value) || 0;
                 const status = document.getElementById('add-user-status').value;
                 
@@ -1935,12 +1942,11 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        firstName,
-                        lastName,
+                        fullName,
                         email,
                         password,
                         country,
-                        walletAddress,
+                        walletAddress: wallet,
                         balance,
                         status
                     })
@@ -1972,7 +1978,6 @@
 
             // Add transaction form
             document.getElementById('save-transaction-btn').addEventListener('click', function() {
-                const form = document.getElementById('add-transaction-form');
                 const userId = document.getElementById('transaction-user').value;
                 const type = document.getElementById('transaction-type').value;
                 const amount = parseFloat(document.getElementById('transaction-amount').value);
@@ -2007,7 +2012,7 @@
                     modal.hide();
                     
                     // Reset form
-                    form.reset();
+                    document.getElementById('add-transaction-form').reset();
                     
                     // Reload transactions
                     loadTransactions();
@@ -2239,8 +2244,47 @@
         }
 
         // Load dashboard data
-        function loadDashboardStats() {
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
+     function loadDashboardStats() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load dashboard stats');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Update stats
+        document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
+        document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
+        document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
+        document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
+        document.getElementById('user-growth-rate').textContent = data.data.userGrowthRate + '%';
+        document.getElementById('verified-growth-rate').textContent = data.data.verifiedGrowthRate + '%';
+        document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
+        document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
+
+        // Load recent data
+        return Promise.all([
+            loadRecentUsers(),
+            loadRecentActivities(),
+            loadNotifications()
+        ]);
+    })
+    .catch(error => {
+        showError('Error loading dashboard data: ' + error.message);
+        console.error('Error loading dashboard data:', error);
+    });
+}
+
+        // Load settings
+        function loadSettings() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -2249,39 +2293,20 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to load dashboard stats');
+                    throw new Error('Failed to load settings');
                 }
                 return response.json();
             })
             .then(data => {
-                // Update stats
-                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-                document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
-                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-                document.getElementById('user-growth-rate').textContent = data.userGrowthRate + '%';
-                document.getElementById('verified-growth-rate').textContent = data.verifiedGrowthRate + '%';
-                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
-
-                // Initialize charts if not already initialized
-                if (!growthChart) {
-                    initCharts();
-                }
-
-                // Update charts
-                updateGrowthChart(data.chartData);
-                updateUserDistributionChart(data.userDistribution);
-
-                // Load recent data
-                return Promise.all([
-                    loadRecentUsers(),
-                    loadRecentActivities(),
-                    loadNotifications()
-                ]);
+                document.getElementById('system-name').value = data.data.systemName;
+                document.getElementById('maintenance-mode').value = data.data.maintenanceMode.toString();
+                document.getElementById('registration-status').value = data.data.registrationStatus.toString();
+                document.getElementById('kyc-requirement').value = data.data.kycRequirement.toString();
+                document.getElementById('trade-fee').value = data.data.tradeFee;
+                document.getElementById('withdrawal-fee').value = data.data.withdrawalFee;
             })
             .catch(error => {
-                console.error('Error loading dashboard data:', error);
+                console.error('Error loading settings:', error);
             });
         }
 
@@ -2381,49 +2406,50 @@
 
         // Load recent users
         function loadRecentUsers() {
-            return fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-users', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load recent users');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('recent-users-body');
-                tbody.innerHTML = '';
-
-                data.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=${user.kycStatus === 'approved' ? '28c76f' : '00cfe8'}&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${user.firstName} ${user.lastName}</span>
-                            </div>
-                        </td>
-                        <td>${user.email || 'Wallet user'}</td>
-                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                        <td>
-                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                            </span>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading recent users:', error);
-            });
+    return fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-users', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load recent users');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('recent-users-body');
+        tbody.innerHTML = '';
 
+        data.data.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${user.fullName}</span>
+                    </div>
+                </td>
+                <td>${user.email || 'Wallet user'}</td>
+                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                <td>
+                    <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                        ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                    </span>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading recent users:', error);
+    });
+}
+
+        // Load recent activities
         function loadRecentActivities() {
             fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
                 method: 'GET',
@@ -2442,26 +2468,39 @@
                 const activityFeed = document.getElementById('activity-feed');
                 activityFeed.innerHTML = '';
 
-                data.forEach(log => {
+                data.data.logs.forEach(log => {
                     const activityItem = document.createElement('div');
-                    activityItem.className = 'activity-item mb-3';
+                    activityItem.className = 'activity-item';
 
-                    // Determine icon based on action type
-                    let iconClass = 'bi-activity';
-                    let iconBg = 'secondary';
-                    
-                    if (log.action.includes('login')) {
-                        iconClass = 'bi-box-arrow-in-right';
-                        iconBg = 'primary';
-                    } else if (log.action.includes('trade')) {
-                        iconClass = 'bi-currency-exchange';
-                        iconBg = 'success';
-                    } else if (log.action.includes('withdrawal')) {
-                        iconClass = 'bi-cash-stack';
-                        iconBg = 'warning';
-                    } else if (log.action.includes('deposit')) {
-                        iconClass = 'bi-wallet2';
-                        iconBg = 'info';
+                    let iconClass = '';
+                    let iconBg = '';
+                    let activityText = '';
+
+                    switch(log.type) {
+                        case 'login':
+                            iconClass = 'bi-box-arrow-in-right';
+                            iconBg = 'primary';
+                            activityText = `User ${log.user.fullName} logged in`;
+                            break;
+                        case 'trade':
+                            iconClass = 'bi-currency-exchange';
+                            iconBg = 'success';
+                            activityText = `User ${log.user.fullName} completed a trade`;
+                            break;
+                        case 'withdrawal':
+                            iconClass = 'bi-cash-stack';
+                            iconBg = 'warning';
+                            activityText = `User ${log.user.fullName} requested a withdrawal`;
+                            break;
+                        case 'deposit':
+                            iconClass = 'bi-wallet2';
+                            iconBg = 'info';
+                            activityText = `User ${log.user.fullName} made a deposit`;
+                            break;
+                        default:
+                            iconClass = 'bi-activity';
+                            iconBg = 'secondary';
+                            activityText = log.description;
                     }
 
                     activityItem.innerHTML = `
@@ -2473,11 +2512,11 @@
                                     </span>
                                 </div>
                                 <div>
-                                    <h6 class="mb-0">${log.action.replace(/_/g, ' ')}</h6>
-                                    <p class="mb-0">${log.userId?.email || 'System'}</p>
+                                    <h6 class="mb-0">${activityText}</h6>
+                                    <p class="mb-0">${log.description}</p>
                                 </div>
                             </div>
-                            <span class="activity-time">${new Date(log.createdAt).toLocaleString()}</span>
+                            <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
                         </div>
                     `;
                     activityFeed.appendChild(activityItem);
@@ -2504,14 +2543,14 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('notifications-count').textContent = data.unreadCount;
-                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
-                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                document.getElementById('notifications-count').textContent = data.data.unreadCount;
+                document.getElementById('pending-tickets-count').textContent = data.data.pendingTickets;
+                document.getElementById('pending-kyc-count').textContent = data.data.pendingKYC;
 
                 const notificationsList = document.getElementById('notifications-list');
                 notificationsList.innerHTML = '';
 
-                data.notifications.forEach(notification => {
+                data.data.notifications.forEach(notification => {
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <a class="dropdown-item" href="#">
@@ -2536,10 +2575,10 @@
 
         // Load users
         function loadUsers(page = 1, search = '', status = '', kyc = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
-            if (kyc) url += `&kycStatus=${kyc}`;
+            if (kyc) url += `&kyc=${kyc}`;
 
             fetch(url, {
                 method: 'GET',
@@ -2558,19 +2597,19 @@
                 const tbody = document.getElementById('users-table-body');
                 tbody.innerHTML = '';
 
-                data.users.forEach(user => {
+                data.data.users.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${user._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${user.firstName} ${user.lastName}</span>
+                                <span>${user.fullName}</span>
                             </div>
                         </td>
                         <td>${user.email || 'Wallet user'}</td>
-                        <td>${user.walletAddress ? `${user.walletAddress.substring(0, 6)}...${user.walletAddress.slice(-4)}` : 'N/A'}</td>
+                        <td>${user.walletAddress ? user.walletAddress.substring(0, 6) + '...' + user.walletAddress.substring(user.walletAddress.length - 4) : 'N/A'}</td>
                         <td>$${user.balance.toFixed(2)}</td>
                         <td>
                             <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
@@ -2578,13 +2617,19 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge ${user.kycStatus === 'approved' ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
-                                ${user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
+                            <span class="badge ${user.kycVerified ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
+                                ${user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
                             </span>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary view-user-btn" 
-                                    data-id="${user._id}">
+                                    data-id="${user._id}" 
+                                    data-name="${user.fullName}" 
+                                    data-email="${user.email || ''}" 
+                                    data-wallet="${user.walletAddress || ''}" 
+                                    data-country="${user.country || ''}" 
+                                    data-status="${user.status}" 
+                                    data-kyc="${user.kycVerified ? 'verified' : user.kycStatus === 'pending' ? 'pending' : 'unverified'}">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
@@ -2593,23 +2638,17 @@
                 });
 
                 // Update pagination
-                updatePagination('users-pagination', data.totalPages, page);
+                updatePagination('users-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading users: ' + error.message);
                 console.error('Error loading users:', error);
-                document.getElementById('users-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="8" class="text-center text-danger">
-                            Failed to load users. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
         // Load trades
         function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (type) url += `&type=${type}`;
@@ -2632,20 +2671,24 @@
                 const tbody = document.getElementById('trades-table-body');
                 tbody.innerHTML = '';
 
-                data.trades.forEach(trade => {
+                data.data.trades.forEach(trade => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${trade._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.firstName + ' ' + trade.user.lastName)}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.fullName)}&background=7367f0&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${trade.user.firstName} ${trade.user.lastName}</span>
+                                <span>${trade.user.fullName}</span>
                             </div>
                         </td>
-                        <td>${trade.fromCoin}/${trade.toCoin}</td>
+                        <td>
+                            <span class="badge ${trade.type === 'arbitrage' ? 'bg-primary' : 'bg-info'}">
+                                ${trade.type.charAt(0).toUpperCase() + trade.type.slice(1)}
+                            </span>
+                        </td>
                         <td>$${trade.amount.toFixed(2)}</td>
-                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit?.toFixed(2) || '0.00'}</td>
+                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit.toFixed(2)}</td>
                         <td>
                             <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
                                 ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
@@ -2662,23 +2705,17 @@
                 });
 
                 // Update pagination
-                updatePagination('trades-pagination', data.totalPages, page);
+                updatePagination('trades-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading trades: ' + error.message);
                 console.error('Error loading trades:', error);
-                document.getElementById('trades-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="8" class="text-center text-danger">
-                            Failed to load trades. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
         // Load transactions
         function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (type) url += `&type=${type}`;
             if (status) url += `&status=${status}`;
@@ -2701,19 +2738,20 @@
                 const tbody = document.getElementById('transactions-table-body');
                 tbody.innerHTML = '';
 
-                data.transactions.forEach(transaction => {
+                data.data.transactions.forEach(transaction => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${transaction._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.firstName + ' ' + transaction.user.lastName)}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.fullName)}&background=7367f0&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${transaction.user.firstName} ${transaction.user.lastName}</span>
+                                <span>${transaction.user.fullName}</span>
                             </div>
                         </td>
                         <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
                         <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
+                        <td>${transaction.currency}</td>
                         <td>
                             <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
                                 ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
@@ -2730,23 +2768,17 @@
                 });
 
                 // Update pagination
-                updatePagination('transactions-pagination', data.totalPages, page);
+                updatePagination('transactions-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading transactions: ' + error.message);
                 console.error('Error loading transactions:', error);
-                document.getElementById('transactions-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center text-danger">
-                            Failed to load transactions. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
         // Load tickets
         function loadTickets(page = 1, search = '', status = '', priority = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
             if (priority) url += `&priority=${priority}`;
@@ -2768,15 +2800,15 @@
                 const tbody = document.getElementById('tickets-table-body');
                 tbody.innerHTML = '';
 
-                data.tickets.forEach(ticket => {
+                data.data.tickets.forEach(ticket => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${ticket._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user?.firstName + ' ' + ticket.user?.lastName || 'Support')}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user.fullName)}&background=7367f0&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${ticket.user?.firstName + ' ' + ticket.user?.lastName || ticket.email}</span>
+                                <span>${ticket.user.fullName}</span>
                             </div>
                         </td>
                         <td>${ticket.subject}</td>
@@ -2786,14 +2818,17 @@
                             </span>
                         </td>
                         <td>
-                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-info'}">
+                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
                                 ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
                             </span>
                         </td>
                         <td>${new Date(ticket.createdAt).toLocaleString()}</td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
-                                    data-id="${ticket._id}">
+                                    data-id="${ticket._id}" 
+                                    data-subject="${ticket.subject}" 
+                                    data-status="${ticket.status}" 
+                                    data-priority="${ticket.priority}">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
@@ -2802,23 +2837,17 @@
                 });
 
                 // Update pagination
-                updatePagination('tickets-pagination', data.totalPages, page);
+                updatePagination('tickets-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading tickets: ' + error.message);
                 console.error('Error loading tickets:', error);
-                document.getElementById('tickets-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center text-danger">
-                            Failed to load tickets. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
         // Load KYC
         function loadKYC(page = 1, search = '', status = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (status) url += `&status=${status}`;
 
@@ -2839,14 +2868,14 @@
                 const tbody = document.getElementById('kyc-table-body');
                 tbody.innerHTML = '';
 
-                data.kycRequests.forEach(kyc => {
+                data.data.kycRequests.forEach(kyc => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.user.firstName + ' ' + kyc.user.lastName)}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.user.fullName)}&background=7367f0&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${kyc.user.firstName} ${kyc.user.lastName}</span>
+                                <span>${kyc.user.fullName}</span>
                             </div>
                         </td>
                         <td>${kyc.documentType}</td>
@@ -2858,7 +2887,10 @@
                         </td>
                         <td>
                             <button class="btn btn-sm btn-outline-primary view-kyc-btn" 
-                                    data-id="${kyc._id}">
+                                    data-id="${kyc._id}" 
+                                    data-name="${kyc.user.fullName}" 
+                                    data-country="${kyc.user.country}" 
+                                    data-status="${kyc.status}">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </td>
@@ -2867,23 +2899,17 @@
                 });
 
                 // Update pagination
-                updatePagination('kyc-pagination', data.totalPages, page);
+                updatePagination('kyc-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading KYC: ' + error.message);
                 console.error('Error loading KYC:', error);
-                document.getElementById('kyc-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center text-danger">
-                            Failed to load KYC requests. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
         // Load activity logs
         function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=10`;
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}`;
             if (search) url += `&search=${encodeURIComponent(search)}`;
             if (type) url += `&type=${type}`;
             if (date) url += `&date=${date}`;
@@ -2905,37 +2931,35 @@
                 const tbody = document.getElementById('logs-table-body');
                 tbody.innerHTML = '';
 
-                data.logs.forEach(log => {
+                data.data.logs.forEach(log => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${log._id.substring(0, 8)}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user?.firstName + ' ' + log.user?.lastName || 'System')}&background=7367f0&color=fff" 
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user.fullName)}&background=7367f0&color=fff" 
                                      alt="User" class="user-avatar">
-                                <span>${log.user?.firstName + ' ' + log.user?.lastName || 'System'}</span>
+                                <span>${log.user.fullName}</span>
                             </div>
                         </td>
-                        <td>${log.action.replace(/_/g, ' ')}</td>
-                        <td>${log.type || 'system'}</td>
+                        <td>${log.description}</td>
+                        <td>
+                            <span class="badge ${log.type === 'trade' ? 'bg-success' : log.type === 'login' ? 'bg-primary' : 'bg-secondary'}">
+                                ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
+                            </span>
+                        </td>
                         <td>${log.ipAddress}</td>
-                        <td>${new Date(log.createdAt).toLocaleString()}</td>
+                        <td>${new Date(log.timestamp).toLocaleString()}</td>
                     `;
                     tbody.appendChild(row);
                 });
 
                 // Update pagination
-                updatePagination('logs-pagination', data.totalPages, page);
+                updatePagination('logs-pagination', data.data.totalPages, page);
             })
             .catch(error => {
+                showError('Error loading activity logs: ' + error.message);
                 console.error('Error loading activity logs:', error);
-                document.getElementById('logs-table-body').innerHTML = `
-                    <tr>
-                        <td colspan="6" class="text-center text-danger">
-                            Failed to load activity logs. Please try again.
-                        </td>
-                    </tr>
-                `;
             });
         }
 
@@ -2951,41 +2975,10 @@
             pagination.appendChild(prevLi);
 
             // Page numbers
-            const startPage = Math.max(1, currentPage - 2);
-            const endPage = Math.min(totalPages, currentPage + 2);
-
-            if (startPage > 1) {
-                const li = document.createElement('li');
-                li.className = 'page-item';
-                li.innerHTML = `<a class="page-link" href="#" data-page="1">1</a>`;
-                pagination.appendChild(li);
-                
-                if (startPage > 2) {
-                    const ellipsis = document.createElement('li');
-                    ellipsis.className = 'page-item disabled';
-                    ellipsis.innerHTML = `<span class="page-link">...</span>`;
-                    pagination.appendChild(ellipsis);
-                }
-            }
-
-            for (let i = startPage; i <= endPage; i++) {
+            for (let i = 1; i <= totalPages; i++) {
                 const li = document.createElement('li');
                 li.className = `page-item ${i === currentPage ? 'active' : ''}`;
                 li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-                pagination.appendChild(li);
-            }
-
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    const ellipsis = document.createElement('li');
-                    ellipsis.className = 'page-item disabled';
-                    ellipsis.innerHTML = `<span class="page-link">...</span>`;
-                    pagination.appendChild(ellipsis);
-                }
-                
-                const li = document.createElement('li');
-                li.className = 'page-item';
-                li.innerHTML = `<a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>`;
                 pagination.appendChild(li);
             }
 
@@ -3012,13 +3005,13 @@
                 return response.json();
             })
             .then(data => {
-                const user = data.user;
+                const user = data.data.user;
                 
                 // Update avatar
-                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff`;
+                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=7367f0&color=fff`;
                 
                 // Update user info
-                document.getElementById('user-detail-name').textContent = `${user.firstName} ${user.lastName}`;
+                document.getElementById('user-detail-name').textContent = user.fullName;
                 document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
                 document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
                 document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
@@ -3035,9 +3028,9 @@
                 
                 // Update KYC badge
                 const kycBadge = document.getElementById('user-detail-kyc');
-                kycBadge.textContent = user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
+                kycBadge.textContent = user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
                 kycBadge.className = 'badge ' + (
-                    user.kycStatus === 'approved' ? 'bg-success' : 
+                    user.kycVerified ? 'bg-success' : 
                     user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
                 );
                 
@@ -3051,6 +3044,7 @@
                 updateUserActivities(userId);
             })
             .catch(error => {
+                showError('Error loading user details: ' + error.message);
                 console.error('Error loading user details:', error);
             });
         }
@@ -3074,13 +3068,13 @@
                 const tbody = document.getElementById('user-activity-table');
                 tbody.innerHTML = '';
 
-                data.activities.forEach(activity => {
+                data.data.activities.forEach(activity => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${activity.action.replace(/_/g, ' ')}</td>
-                        <td>${activity.type || 'system'}</td>
+                        <td>${activity.description}</td>
+                        <td>${activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}</td>
                         <td>${activity.ipAddress}</td>
-                        <td>${new Date(activity.createdAt).toLocaleString()}</td>
+                        <td>${new Date(activity.timestamp).toLocaleString()}</td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -3106,18 +3100,18 @@
                 return response.json();
             })
             .then(data => {
-                const ticket = data.ticket;
+                const ticket = data.data.ticket;
                 
                 // Update ticket info
                 document.getElementById('ticket-id').textContent = ticket._id.substring(0, 8);
                 document.getElementById('ticket-subject').textContent = ticket.subject;
-                document.getElementById('ticket-category').textContent = ticket.category || 'General';
-                document.getElementById('ticket-description').textContent = ticket.message;
+                document.getElementById('ticket-category').textContent = ticket.category;
+                document.getElementById('ticket-description').textContent = ticket.description;
                 document.getElementById('ticket-date').textContent = new Date(ticket.createdAt).toLocaleString();
                 
-                // Update status select
+                // Update status and priority selects
                 document.getElementById('ticket-status-select').value = ticket.status;
-                document.getElementById('ticket-priority-select').value = ticket.priority || 'medium';
+                document.getElementById('ticket-priority-select').value = ticket.priority;
                 
                 // Update assign button if already assigned
                 const assignBtn = document.getElementById('assign-ticket-btn');
@@ -3136,10 +3130,10 @@
                 if (ticket.attachments && ticket.attachments.length > 0) {
                     ticket.attachments.forEach(attachment => {
                         const link = document.createElement('a');
-                        link.href = attachment;
+                        link.href = attachment.url;
                         link.className = 'btn btn-sm btn-outline-secondary me-2';
                         link.target = '_blank';
-                        link.innerHTML = `<i class="bi bi-file-earmark-text me-1"></i> Attachment`;
+                        link.innerHTML = `<i class="bi bi-file-earmark-text me-1"></i> ${attachment.name}`;
                         attachmentsContainer.appendChild(link);
                     });
                 } else {
@@ -3150,6 +3144,7 @@
                 updateTicketConversation(ticketId);
             })
             .catch(error => {
+                showError('Error loading ticket details: ' + error.message);
                 console.error('Error loading ticket details:', error);
             });
         }
@@ -3173,17 +3168,17 @@
                 const conversationContainer = document.getElementById('ticket-conversation');
                 conversationContainer.innerHTML = '';
 
-                data.messages.forEach(message => {
+                data.data.messages.forEach(message => {
                     const messageDiv = document.createElement('div');
-                    messageDiv.className = `chat-message mb-3 ${message.isAdmin ? 'admin-message' : 'user-message'}`;
+                    messageDiv.className = `chat-message mb-3 ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
                     
                     messageDiv.innerHTML = `
                         <div class="d-flex justify-content-between mb-1">
-                            <strong>${message.isAdmin ? 'You' : message.user?.firstName || 'User'}</strong>
-                            <small class="text-muted">${new Date(message.createdAt).toLocaleString()}</small>
+                            <strong>${message.sender === 'admin' ? 'You' : message.userName}</strong>
+                            <small class="text-muted">${new Date(message.timestamp).toLocaleString()}</small>
                         </div>
-                        <div class="p-3 ${message.isAdmin ? 'bg-primary text-white rounded' : 'bg-light rounded'}">
-                            <p class="mb-0">${message.message}</p>
+                        <div class="p-3 ${message.sender === 'admin' ? 'bg-primary text-white rounded' : 'bg-light rounded'}">
+                            <p class="mb-0">${message.content}</p>
                         </div>
                     `;
                     
@@ -3214,10 +3209,10 @@
                 return response.json();
             })
             .then(data => {
-                const kyc = data.kyc;
+                const kyc = data.data.kyc;
                 
                 // Update user info
-                document.getElementById('kyc-fullname').textContent = `${kyc.user.firstName} ${kyc.user.lastName}`;
+                document.getElementById('kyc-fullname').textContent = kyc.user.fullName;
                 document.getElementById('kyc-dob').textContent = kyc.dateOfBirth ? new Date(kyc.dateOfBirth).toLocaleDateString() : 'Not provided';
                 document.getElementById('kyc-country').textContent = kyc.user.country || 'Not provided';
                 document.getElementById('kyc-submitted').textContent = new Date(kyc.submittedAt).toLocaleString();
@@ -3232,12 +3227,13 @@
                 );
                 
                 // Update document images
-                document.getElementById('kyc-id-front').src = kyc.idFrontImage || 'https://via.placeholder.com/400x250?text=ID+Front';
-                document.getElementById('kyc-id-back').src = kyc.idBackImage || 'https://via.placeholder.com/400x250?text=ID+Back';
+                document.getElementById('kyc-id-front').src = kyc.idFront || 'https://via.placeholder.com/400x250?text=ID+Front';
+                document.getElementById('kyc-id-back').src = kyc.idBack || 'https://via.placeholder.com/400x250?text=ID+Back';
                 document.getElementById('kyc-proof-address').src = kyc.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
                 document.getElementById('kyc-selfie').src = kyc.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
             })
             .catch(error => {
+                showError('Error loading KYC details: ' + error.message);
                 console.error('Error loading KYC details:', error);
             });
         }
@@ -3249,10 +3245,7 @@
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    adminId: currentAdminData._id
-                })
+                }
             })
             .then(response => {
                 if (!response.ok) {
@@ -3319,8 +3312,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    message,
-                    isAdmin: true
+                    message
                 })
             })
             .then(response => {
@@ -3550,7 +3542,7 @@
                 a.remove();
             })
             .catch(error => {
-                showError(`Failed to export ${type}: ${error.message}`);
+                showError(`Failed to export ${type}: ` + error.message);
                 console.error(`Error exporting ${type}:`, error);
             });
         }
@@ -3570,7 +3562,7 @@
                             <i class="bi bi-person-plus text-primary"></i>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New user registered: ${user.firstName} ${user.lastName}</p>
+                            <p class="mb-0">New user registered: ${user.fullName}</p>
                             <small class="text-muted">Just now</small>
                         </div>
                     </div>
@@ -3659,7 +3651,7 @@
                             <i class="bi bi-shield-check text-info"></i>
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <p class="mb-0">New KYC submission: ${kyc.user.firstName} ${kyc.user.lastName}</p>
+                            <p class="mb-0">New KYC submission: ${kyc.user.fullName}</p>
                             <small class="text-muted">Just now</small>
                         </div>
                     </div>
@@ -3687,13 +3679,13 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-                document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
-                document.getElementById('user-growth-rate').textContent = data.growthRate + '%';
+                document.getElementById('total-users').textContent = data.data.totalUsers.toLocaleString();
+                document.getElementById('verified-users').textContent = data.data.verifiedUsers.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.data.growthRate + '%';
                 
                 // Update chart if on dashboard
                 if (document.getElementById('dashboard-section').style.display === 'block') {
-                    updateGrowthChart(data.chartData);
+                    updateGrowthChart(data.data.chartData);
                 }
             })
             .catch(error => {
@@ -3717,14 +3709,14 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+                document.getElementById('total-trades').textContent = data.data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.data.totalVolume.toLocaleString();
+                document.getElementById('trade-growth-rate').textContent = data.data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
                 
                 // Update chart if on dashboard
                 if (document.getElementById('dashboard-section').style.display === 'block') {
-                    updateGrowthChart(data.chartData);
+                    updateGrowthChart(data.data.chartData);
                 }
             })
             .catch(error => {
@@ -3748,7 +3740,7 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                document.getElementById('pending-tickets-count').textContent = data.data.pendingTickets;
                 
                 // Update notifications if needed
                 loadNotifications();
@@ -3774,11 +3766,11 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                document.getElementById('pending-kyc-count').textContent = data.data.pendingKYC;
                 
                 // Update user distribution chart if on dashboard
                 if (document.getElementById('dashboard-section').style.display === 'block') {
-                    updateUserDistributionChart(data.userDistribution);
+                    updateUserDistributionChart(data.data.userDistribution);
                 }
                 
                 // Update notifications if needed
@@ -3792,29 +3784,21 @@
         // Show error message
         function showError(message) {
             const errorAlert = document.getElementById('error-alert');
-            if (errorAlert) {
-                document.getElementById('error-message').textContent = message;
-                errorAlert.style.display = 'block';
-                setTimeout(() => {
-                    errorAlert.style.display = 'none';
-                }, 5000);
-            } else {
-                console.error('Error message:', message);
-            }
+            document.getElementById('error-message').textContent = message;
+            errorAlert.style.display = 'block';
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 5000);
         }
 
         // Show success message
         function showSuccess(message) {
             const successAlert = document.getElementById('success-alert');
-            if (successAlert) {
-                document.getElementById('success-message').textContent = message;
-                successAlert.style.display = 'block';
-                setTimeout(() => {
-                    successAlert.style.display = 'none';
-                }, 5000);
-            } else {
-                console.log('Success message:', message);
-            }
+            document.getElementById('success-message').textContent = message;
+            successAlert.style.display = 'block';
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 5000);
         }
     </script>
 </body>
