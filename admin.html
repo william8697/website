@@ -2582,77 +2582,118 @@ function loadRecentActivities() {
 
         // Load users
         function loadUsers(page = 1, search = '', status = '', kyc = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (kyc) url += `&kyc=${kyc}`;
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (kyc) url += `&kycStatus=${kyc}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load users');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('users-table-body');
-                tbody.innerHTML = '';
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load users');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
 
-                data.data.users.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${user.email || 'Wallet user'}</td>
-                        <td>${user.walletAddress ? user.walletAddress.substring(0, 6) + '...' + user.walletAddress.substring(user.walletAddress.length - 4) : 'N/A'}</td>
-                        <td>$${user.balance.toFixed(2)}</td>
-                        <td>
-                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge ${user.kycVerified ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
-                                ${user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary view-user-btn" 
-                                    data-id="${user._id}" 
-                                    data-name="${user.fullName}" 
-                                    data-email="${user.email || ''}" 
-                                    data-wallet="${user.walletAddress || ''}" 
-                                    data-country="${user.country || ''}" 
-                                    data-status="${user.status}" 
-                                    data-kyc="${user.kycVerified ? 'verified' : user.kycStatus === 'pending' ? 'pending' : 'unverified'}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('users-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading users: ' + error.message);
-                console.error('Error loading users:', error);
-            });
+        // Verify data structure
+        if (!data.data || !Array.isArray(data.data.users)) {
+            throw new Error('Invalid users data structure');
         }
 
+        data.data.users.forEach(user => {
+            // Safely handle all properties with fallbacks
+            const userId = user._id ? user._id.substring(0, 8) : 'N/A';
+            const fullName = user.firstName && user.lastName 
+                ? `${user.firstName} ${user.lastName}`
+                : user.email || user.walletAddress || 'Unknown User';
+            const email = user.email || 'Wallet user';
+            const walletAddress = user.walletAddress 
+                ? `${user.walletAddress.substring(0, 6)}...${user.walletAddress.slice(-4)}` 
+                : 'N/A';
+            const balance = typeof user.balance === 'number' 
+                ? `$${user.balance.toFixed(2)}` 
+                : '$0.00';
+            const status = user.status || 'active';
+            const kycStatus = user.kycStatus || 'not_submitted';
+
+            // Safely capitalize status (with fallback)
+            const statusText = typeof status === 'string' && status.length > 0
+                ? status.charAt(0).toUpperCase() + status.slice(1)
+                : 'Active';
+
+            // Determine badge class for status
+            let statusClass = 'bg-secondary';
+            if (status === 'active') statusClass = 'bg-success';
+            if (status === 'suspended') statusClass = 'bg-danger';
+
+            // Determine badge class for KYC
+            let kycClass = 'bg-secondary';
+            if (kycStatus === 'approved') kycClass = 'bg-success';
+            if (kycStatus === 'pending') kycClass = 'bg-warning';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${userId}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${fullName}</span>
+                    </div>
+                </td>
+                <td>${email}</td>
+                <td>${walletAddress}</td>
+                <td>${balance}</td>
+                <td>
+                    <span class="badge ${statusClass}">
+                        ${statusText}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge ${kycClass}">
+                        ${kycStatus === 'approved' ? 'Verified' : 
+                          kycStatus === 'pending' ? 'Pending' : 'Unverified'}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-user-btn" 
+                            data-id="${user._id}" 
+                            data-name="${fullName}" 
+                            data-email="${email}" 
+                            data-wallet="${user.walletAddress || ''}" 
+                            data-country="${user.country || ''}" 
+                            data-status="${status}" 
+                            data-kyc="${kycStatus}">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('users-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        console.error('Error loading users:', error);
+        document.getElementById('users-table-body').innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center text-danger">
+                    Failed to load users. Please try again.
+                </td>
+            </tr>
+        `;
+    });
+}
         // Load trades
         function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
             let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
