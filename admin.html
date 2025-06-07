@@ -1486,274 +1486,1062 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-<script>
-    // Global variables
-    let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
-    let currentAdminData = {};
-    let currentUserId = '';
-    let currentTicketId = '';
-    let currentKycId = '';
-    let socket = null;
-    let growthChart = null;
-    let userDistributionChart = null;
+    <script>
+        // Global variables
+        let authToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
+        let currentAdminData = {};
+        let currentUserId = '';
+        let currentTicketId = '';
+        let currentKycId = '';
+        let socket = null;
+        let growthChart = null;
+        let userDistributionChart = null;
 
-    // Initialize the admin dashboard
-    document.addEventListener('DOMContentLoaded', function() {
-        // Check if admin is logged in
-        checkAuthStatus();
-        
-        // Initialize event listeners
-        initEventListeners();
-        
-        // Initialize navigation
-        initNavigation();
-        
-        // Initialize modals
-        initModals();
-        
-        // Initialize forms
-        initForms();
-    });
-
-    // Check authentication status
-    function checkAuthStatus() {
-        if (authToken) {
-            verifyToken();
-        } else {
-            showLogin();
-        }
-    }
-
-    // Verify token with backend
-    function verifyToken() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/verify', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Token verification failed');
-            }
-            return response.json();
-        })
-        .then(data => {
-            currentAdminData = data.data.admin;
-            showDashboard();
-            loadDashboardStats();
-            loadSettings();
-            connectWebSocket();
-        })
-        .catch(error => {
-            console.error('Error verifying token:', error);
-            showLogin();
+        // Initialize the admin dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if admin is logged in
+            checkAuthStatus();
+            
+            // Initialize event listeners
+            initEventListeners();
+            
+            // Initialize navigation
+            initNavigation();
+            
+            // Initialize modals
+            initModals();
+            
+            // Initialize forms
+            initForms();
         });
-    }
 
-    // Connect to WebSocket for real-time updates
-    function connectWebSocket() {
-        if (socket) {
-            socket.close();
+        // Check authentication status
+        function checkAuthStatus() {
+            if (authToken) {
+                verifyToken();
+            } else {
+                showLogin();
+            }
         }
-        
-        socket = new WebSocket(`wss://website-backendd-1.onrender.com/api/v1/admin/ws?token=${authToken}`);
-        
-        socket.onopen = function() {
-            console.log('WebSocket connection established');
-        };
-        
-        socket.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            console.log('WebSocket message received:', data);
-            
-            switch(data.type) {
-                case 'new_user':
-                    addNewUserNotification(data.user);
-                    break;
-                case 'new_trade':
-                    addNewTradeNotification(data.trade);
-                    break;
-                case 'new_ticket':
-                    addNewTicketNotification(data.ticket);
-                    break;
-                case 'new_kyc':
-                    addNewKycNotification(data.kyc);
-                    break;
-                case 'user_updated':
-                    if (currentUserId === data.user._id) {
-                        loadUserDetails(currentUserId);
-                    }
-                    break;
-                case 'ticket_updated':
-                    if (currentTicketId === data.ticket._id) {
-                        loadTicketDetails(currentTicketId);
-                    }
-                    break;
-                case 'kyc_updated':
-                    if (currentKycId === data.kyc._id) {
-                        loadKYCDetails(currentKycId);
-                    }
-                    break;
-            }
-            
-            // Update dashboard stats if on dashboard
-            if (document.getElementById('dashboard-section').style.display === 'block') {
+
+        // Verify token with backend
+        function verifyToken() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/verify', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Token verification failed');
+                }
+                return response.json();
+            })
+            .then(data => {
+                currentAdminData = data.data.admin;
+                showDashboard();
                 loadDashboardStats();
+                loadSettings();
+                connectWebSocket();
+            })
+            .catch(error => {
+                console.error('Error verifying token:', error);
+                showLogin();
+            });
+        }
+
+        // Connect to WebSocket for real-time updates
+        function connectWebSocket() {
+            if (socket) {
+                socket.close();
             }
-        };
-        
-        socket.onclose = function() {
-            console.log('WebSocket connection closed');
-            // Attempt to reconnect after 5 seconds
-            setTimeout(connectWebSocket, 5000);
-        };
-        
-        socket.onerror = function(error) {
-            console.error('WebSocket error:', error);
-        };
-    }
-
-    // Show login section
-    function showLogin() {
-        document.getElementById('login-section').style.display = 'flex';
-        document.getElementById('admin-content').style.display = 'none';
-    }
-
-    // Show dashboard
-    function showDashboard() {
-        document.getElementById('login-section').style.display = 'none';
-        document.getElementById('admin-content').style.display = 'block';
-        document.getElementById('admin-name').textContent = currentAdminData.email || 'Admin';
-    }
-
-    // Initialize navigation
-    function initNavigation() {
-        const navLinks = document.querySelectorAll('.sidebar-menu a');
-        
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
+            
+            socket = new WebSocket(`wss://website-backendd-1.onrender.com/api/v1/admin/ws?token=${authToken}`);
+            
+            socket.onopen = function() {
+                console.log('WebSocket connection established');
+            };
+            
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                console.log('WebSocket message received:', data);
                 
-                // Remove active class from all links
-                navLinks.forEach(navLink => navLink.classList.remove('active'));
-                
-                // Add active class to clicked link
-                this.classList.add('active');
-                
-                // Hide all content sections
-                document.querySelectorAll('.content-section').forEach(section => {
-                    section.style.display = 'none';
-                });
-                
-                // Show the corresponding content section
-                const targetId = this.getAttribute('data-target');
-                document.getElementById(targetId).style.display = 'block';
-                
-                // Update page title
-                const pageTitle = this.querySelector('span').textContent;
-                document.getElementById('page-title').textContent = pageTitle;
-
-                // Load data for the section
-                switch(targetId) {
-                    case 'users-section':
-                        loadUsers();
+                switch(data.type) {
+                    case 'new_user':
+                        addNewUserNotification(data.user);
                         break;
-                    case 'trades-section':
-                        loadTrades();
+                    case 'new_trade':
+                        addNewTradeNotification(data.trade);
                         break;
-                    case 'transactions-section':
-                        loadTransactions();
+                    case 'new_ticket':
+                        addNewTicketNotification(data.ticket);
                         break;
-                    case 'support-section':
-                        loadTickets();
+                    case 'new_kyc':
+                        addNewKycNotification(data.kyc);
                         break;
-                    case 'kyc-section':
-                        loadKYC();
+                    case 'user_updated':
+                        if (currentUserId === data.user._id) {
+                            loadUserDetails(currentUserId);
+                        }
                         break;
-                    case 'logs-section':
-                        loadActivityLogs();
+                    case 'ticket_updated':
+                        if (currentTicketId === data.ticket._id) {
+                            loadTicketDetails(currentTicketId);
+                        }
                         break;
-                    case 'dashboard-section':
-                        loadDashboardStats();
+                    case 'kyc_updated':
+                        if (currentKycId === data.kyc._id) {
+                            loadKYCDetails(currentKycId);
+                        }
                         break;
                 }
+                
+                // Update dashboard stats if on dashboard
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    loadDashboardStats();
+                }
+            };
+            
+            socket.onclose = function() {
+                console.log('WebSocket connection closed');
+                // Attempt to reconnect after 5 seconds
+                setTimeout(connectWebSocket, 5000);
+            };
+            
+            socket.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        // Show login section
+        function showLogin() {
+            document.getElementById('login-section').style.display = 'flex';
+            document.getElementById('admin-content').style.display = 'none';
+        }
+
+        // Show dashboard
+        function showDashboard() {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('admin-content').style.display = 'block';
+            document.getElementById('admin-name').textContent = currentAdminData.email || 'Admin';
+        }
+
+        // Initialize navigation
+        function initNavigation() {
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(navLink => navLink.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Hide all content sections
+                    document.querySelectorAll('.content-section').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show the corresponding content section
+                    const targetId = this.getAttribute('data-target');
+                    document.getElementById(targetId).style.display = 'block';
+                    
+                    // Update page title
+                    const pageTitle = this.querySelector('span').textContent;
+                    document.getElementById('page-title').textContent = pageTitle;
+
+                    // Load data for the section
+                    switch(targetId) {
+                        case 'users-section':
+                            loadUsers();
+                            break;
+                        case 'trades-section':
+                            loadTrades();
+                            break;
+                        case 'transactions-section':
+                            loadTransactions();
+                            break;
+                        case 'support-section':
+                            loadTickets();
+                            break;
+                        case 'kyc-section':
+                            loadKYC();
+                            break;
+                        case 'logs-section':
+                            loadActivityLogs();
+                            break;
+                        case 'dashboard-section':
+                            loadDashboardStats();
+                            break;
+                    }
+                });
             });
-        });
 
-        // Toggle sidebar on mobile
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-    }
+            // Toggle sidebar on mobile
+            document.getElementById('sidebarToggle').addEventListener('click', function() {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+        }
 
-    // Initialize modals
-    function initModals() {
-        // User detail modal
-        const userDetailModal = new bootstrap.Modal(document.getElementById('userDetailModal'));
-        
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.view-user-btn')) {
+        // Initialize modals
+        function initModals() {
+            // User detail modal
+            const userDetailModal = new bootstrap.Modal(document.getElementById('userDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-user-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-user-btn');
+                    currentUserId = button.getAttribute('data-id');
+                    
+                    // Load user details
+                    loadUserDetails(currentUserId);
+                    
+                    // Show modal
+                    userDetailModal.show();
+                }
+            });
+
+            // Ticket detail modal
+            const ticketDetailModal = new bootstrap.Modal(document.getElementById('ticketDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-ticket-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-ticket-btn');
+                    currentTicketId = button.getAttribute('data-id');
+                    
+                    // Load ticket details
+                    loadTicketDetails(currentTicketId);
+                    
+                    // Show modal
+                    ticketDetailModal.show();
+                }
+            });
+
+            // KYC detail modal
+            const kycDetailModal = new bootstrap.Modal(document.getElementById('kycDetailModal'));
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.view-kyc-btn')) {
+                    e.preventDefault();
+                    const button = e.target.closest('.view-kyc-btn');
+                    currentKycId = button.getAttribute('data-id');
+                    
+                    // Load KYC details
+                    loadKYCDetails(currentKycId);
+                    
+                    // Show modal
+                    kycDetailModal.show();
+                }
+            });
+
+            // Add user modal
+            const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
+            
+            document.getElementById('add-user-btn').addEventListener('click', function() {
+                addUserModal.show();
+            });
+
+            // Add transaction modal
+            const addTransactionModal = new bootstrap.Modal(document.getElementById('addTransactionModal'));
+            
+            document.getElementById('add-transaction-btn').addEventListener('click', function() {
+                // Load users for transaction modal
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/users?limit=100', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load users');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const select = document.getElementById('transaction-user');
+                    select.innerHTML = '<option value="">Select User</option>';
+                    
+                    data.data.users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user._id;
+                        option.textContent = `${user.firstName} ${user.lastName} (${user.email || user.walletAddress?.substring(0, 6) + '...'})`;
+                        select.appendChild(option);
+                    });
+                    
+                    addTransactionModal.show();
+                })
+                .catch(error => {
+                    showError('Failed to load users: ' + error.message);
+                    console.error('Error loading users:', error);
+                });
+            });
+        }
+
+        // Initialize forms
+        function initForms() {
+            // Admin login form
+            document.getElementById('admin-login-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const button = e.target.closest('.view-user-btn');
-                currentUserId = button.getAttribute('data-id');
                 
-                // Load user details
-                loadUserDetails(currentUserId);
+                const email = document.getElementById('admin-email').value;
+                const password = document.getElementById('admin-password').value;
+                const rememberMe = document.getElementById('remember-me').checked;
                 
-                // Show modal
-                userDetailModal.show();
-            }
-        });
+                // Show loading state on button
+                const loginBtn = document.getElementById('login-btn');
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
+                
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Login failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Store token based on remember me selection
+                    if (rememberMe) {
+                        localStorage.setItem('adminToken', data.token);
+                    } else {
+                        sessionStorage.setItem('adminToken', data.token);
+                    }
+                    authToken = data.token;
+                    currentAdminData = data.data.admin;
+                    
+                    // Show dashboard
+                    showDashboard();
+                    
+                    // Load dashboard data
+                    loadDashboardStats();
+                    loadSettings();
+                    connectWebSocket();
+                })
+                .catch(error => {
+                    showError('Login failed: ' + (error.message || 'Invalid credentials'));
+                    console.error('Login error:', error);
+                })
+                .finally(() => {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                });
+            });
 
-        // Ticket detail modal
-        const ticketDetailModal = new bootstrap.Modal(document.getElementById('ticketDetailModal'));
-        
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.view-ticket-btn')) {
+            // Broadcast form
+            document.getElementById('broadcast-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const button = e.target.closest('.view-ticket-btn');
-                currentTicketId = button.getAttribute('data-id');
                 
-                // Load ticket details
-                loadTicketDetails(currentTicketId);
+                const title = document.getElementById('broadcast-title').value;
+                const message = document.getElementById('broadcast-message').value;
+                const type = document.getElementById('broadcast-type').value;
+                const audience = document.getElementById('broadcast-audience').value;
                 
-                // Show modal
-                ticketDetailModal.show();
-            }
-        });
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/broadcast', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, message, type, audience })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to send broadcast');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Broadcast message has been sent successfully!');
+                    this.reset();
+                })
+                .catch(error => {
+                    showError('Failed to send broadcast: ' + error.message);
+                    console.error('Error sending broadcast:', error);
+                });
+            });
 
-        // KYC detail modal
-        const kycDetailModal = new bootstrap.Modal(document.getElementById('kycDetailModal'));
-        
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.view-kyc-btn')) {
+            // Settings form
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
                 e.preventDefault();
-                const button = e.target.closest('.view-kyc-btn');
-                currentKycId = button.getAttribute('data-id');
                 
-                // Load KYC details
-                loadKYCDetails(currentKycId);
+                const systemName = document.getElementById('system-name').value;
+                const maintenanceMode = document.getElementById('maintenance-mode').value === 'true';
+                const registrationStatus = document.getElementById('registration-status').value === 'true';
+                const kycRequirement = document.getElementById('kyc-requirement').value === 'true';
+                const tradeFee = parseFloat(document.getElementById('trade-fee').value);
+                const withdrawalFee = parseFloat(document.getElementById('withdrawal-fee').value);
                 
-                // Show modal
-                kycDetailModal.show();
-            }
-        });
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        systemName,
+                        maintenanceMode,
+                        registrationStatus,
+                        kycRequirement,
+                        tradeFee,
+                        withdrawalFee
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to save settings');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Settings have been saved successfully!');
+                })
+                .catch(error => {
+                    showError('Failed to save settings: ' + error.message);
+                    console.error('Error saving settings:', error);
+                });
+            });
 
-        // Add user modal
-        const addUserModal = new bootstrap.Modal(document.getElementById('addUserModal'));
-        
-        document.getElementById('add-user-btn').addEventListener('click', function() {
-            addUserModal.show();
-        });
+            // Add user form
+            document.getElementById('save-user-btn').addEventListener('click', function() {
+                const form = document.getElementById('add-user-form');
+                const firstName = document.getElementById('add-user-fullname').value.split(' ')[0];
+                const lastName = document.getElementById('add-user-fullname').value.split(' ').slice(1).join(' ');
+                const email = document.getElementById('add-user-email').value;
+                const password = document.getElementById('add-user-password').value;
+                const country = document.getElementById('add-user-country').value;
+                const walletAddress = document.getElementById('add-user-wallet').value;
+                const balance = parseFloat(document.getElementById('add-user-balance').value) || 0;
+                const status = document.getElementById('add-user-status').value;
+                
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/users', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        password,
+                        country,
+                        walletAddress,
+                        balance,
+                        status
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add user');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('User has been added successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Reload users
+                    loadUsers();
+                })
+                .catch(error => {
+                    showError('Failed to add user: ' + error.message);
+                    console.error('Error adding user:', error);
+                });
+            });
 
-        // Add transaction modal
-        const addTransactionModal = new bootstrap.Modal(document.getElementById('addTransactionModal'));
-        
-        document.getElementById('add-transaction-btn').addEventListener('click', function() {
-            // Load users for transaction modal
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/users?limit=100', {
+            // Add transaction form
+            document.getElementById('save-transaction-btn').addEventListener('click', function() {
+                const form = document.getElementById('add-transaction-form');
+                const userId = document.getElementById('transaction-user').value;
+                const type = document.getElementById('transaction-type').value;
+                const amount = parseFloat(document.getElementById('transaction-amount').value);
+                const currency = document.getElementById('transaction-currency').value;
+                const description = document.getElementById('transaction-description').value;
+                
+                fetch('https://website-backendd-1.onrender.com/api/v1/admin/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId,
+                        type,
+                        amount,
+                        currency,
+                        description
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add transaction');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('Transaction has been added successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTransactionModal'));
+                    modal.hide();
+                    
+                    // Reset form
+                    form.reset();
+                    
+                    // Reload transactions
+                    loadTransactions();
+                })
+                .catch(error => {
+                    showError('Failed to add transaction: ' + error.message);
+                    console.error('Error adding transaction:', error);
+                });
+            });
+
+            // Update user balance
+            document.getElementById('update-balance-btn').addEventListener('click', function() {
+                const newBalance = parseFloat(document.getElementById('user-balance-input').value);
+                
+                if (isNaN(newBalance)) {
+                    showError('Please enter a valid balance amount');
+                    return;
+                }
+                
+                fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/balance`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': 'Bearer ' + authToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        balance: newBalance
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update balance');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showSuccess('User balance has been updated successfully!');
+                    loadUserDetails(currentUserId);
+                    loadUsers();
+                })
+                .catch(error => {
+                    showError('Failed to update balance: ' + error.message);
+                    console.error('Error updating balance:', error);
+                });
+            });
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminToken');
+                authToken = null;
+                currentAdminData = {};
+                if (socket) {
+                    socket.close();
+                }
+                showLogin();
+            });
+
+            // View all buttons
+            document.getElementById('view-all-users').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('users-link').click();
+            });
+
+            document.getElementById('view-all-activities').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('logs-link').click();
+            });
+
+            // Search and filter buttons
+            document.getElementById('search-users-btn').addEventListener('click', function() {
+                const search = document.getElementById('user-search').value;
+                const status = document.getElementById('user-status-filter').value;
+                const kyc = document.getElementById('user-kyc-filter').value;
+                loadUsers(1, search, status, kyc);
+            });
+
+            document.getElementById('search-trades-btn').addEventListener('click', function() {
+                const search = document.getElementById('trade-search').value;
+                const status = document.getElementById('trade-status-filter').value;
+                const type = document.getElementById('trade-type-filter').value;
+                const date = document.getElementById('trade-date-filter').value;
+                loadTrades(1, search, status, type, date);
+            });
+
+            document.getElementById('search-transactions-btn').addEventListener('click', function() {
+                const search = document.getElementById('transaction-search').value;
+                const type = document.getElementById('transaction-type-filter').value;
+                const status = document.getElementById('transaction-status-filter').value;
+                const date = document.getElementById('transaction-date-filter').value;
+                loadTransactions(1, search, type, status, date);
+            });
+
+            document.getElementById('search-tickets-btn').addEventListener('click', function() {
+                const search = document.getElementById('ticket-search').value;
+                const status = document.getElementById('ticket-status-filter').value;
+                const priority = document.getElementById('ticket-priority-filter').value;
+                loadTickets(1, search, status, priority);
+            });
+
+            document.getElementById('search-kyc-btn').addEventListener('click', function() {
+                const search = document.getElementById('kyc-search').value;
+                const status = document.getElementById('kyc-status-filter').value;
+                loadKYC(1, search, status);
+            });
+
+            document.getElementById('search-logs-btn').addEventListener('click', function() {
+                const search = document.getElementById('log-search').value;
+                const type = document.getElementById('log-type-filter').value;
+                const date = document.getElementById('log-date-filter').value;
+                loadActivityLogs(1, search, type, date);
+            });
+
+            // Pagination
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.page-link')) {
+                    e.preventDefault();
+                    const page = parseInt(e.target.getAttribute('data-page'));
+                    const paginationId = e.target.closest('.pagination').id;
+                    
+                    switch(paginationId) {
+                        case 'users-pagination':
+                            const userSearch = document.getElementById('user-search').value;
+                            const userStatus = document.getElementById('user-status-filter').value;
+                            const userKYC = document.getElementById('user-kyc-filter').value;
+                            loadUsers(page, userSearch, userStatus, userKYC);
+                            break;
+                        case 'trades-pagination':
+                            const tradeSearch = document.getElementById('trade-search').value;
+                            const tradeStatus = document.getElementById('trade-status-filter').value;
+                            const tradeType = document.getElementById('trade-type-filter').value;
+                            const tradeDate = document.getElementById('trade-date-filter').value;
+                            loadTrades(page, tradeSearch, tradeStatus, tradeType, tradeDate);
+                            break;
+                        case 'transactions-pagination':
+                            const transactionSearch = document.getElementById('transaction-search').value;
+                            const transactionType = document.getElementById('transaction-type-filter').value;
+                            const transactionStatus = document.getElementById('transaction-status-filter').value;
+                            const transactionDate = document.getElementById('transaction-date-filter').value;
+                            loadTransactions(page, transactionSearch, transactionType, transactionStatus, transactionDate);
+                            break;
+                        case 'tickets-pagination':
+                            const ticketSearch = document.getElementById('ticket-search').value;
+                            const ticketStatus = document.getElementById('ticket-status-filter').value;
+                            const ticketPriority = document.getElementById('ticket-priority-filter').value;
+                            loadTickets(page, ticketSearch, ticketStatus, ticketPriority);
+                            break;
+                        case 'kyc-pagination':
+                            const kycSearch = document.getElementById('kyc-search').value;
+                            const kycStatus = document.getElementById('kyc-status-filter').value;
+                            loadKYC(page, kycSearch, kycStatus);
+                            break;
+                        case 'logs-pagination':
+                            const logSearch = document.getElementById('log-search').value;
+                            const logType = document.getElementById('log-type-filter').value;
+                            const logDate = document.getElementById('log-date-filter').value;
+                            loadActivityLogs(page, logSearch, logType, logDate);
+                            break;
+                    }
+                }
+            });
+
+            // Ticket actions
+            document.getElementById('assign-ticket-btn').addEventListener('click', function() {
+                assignTicketToMe();
+            });
+
+            document.getElementById('save-ticket-btn').addEventListener('click', function() {
+                updateTicketStatus();
+            });
+
+            document.getElementById('send-reply-btn').addEventListener('click', function() {
+                sendTicketReply();
+            });
+
+            // KYC actions
+            document.getElementById('approve-kyc-btn').addEventListener('click', function() {
+                approveKYC(true);
+            });
+
+            document.getElementById('reject-kyc-btn').addEventListener('click', function() {
+                approveKYC(false);
+            });
+
+            document.getElementById('request-more-info-btn').addEventListener('click', function() {
+                requestMoreKYCInfo();
+            });
+
+            // User actions
+            document.getElementById('message-user-btn').addEventListener('click', function() {
+                const message = prompt('Enter message to send to user:');
+                if (message) {
+                    sendUserMessage(message);
+                }
+            });
+
+            document.getElementById('reset-password-btn').addEventListener('click', function() {
+                resetUserPassword();
+            });
+
+            document.getElementById('suspend-user-btn').addEventListener('click', function() {
+                toggleUserStatus();
+            });
+
+            // Export buttons
+            document.getElementById('export-users-btn').addEventListener('click', function() {
+                exportData('users');
+            });
+
+            document.getElementById('export-trades-btn').addEventListener('click', function() {
+                exportData('trades');
+            });
+
+            document.getElementById('export-transactions-btn').addEventListener('click', function() {
+                exportData('transactions');
+            });
+
+            document.getElementById('export-tickets-btn').addEventListener('click', function() {
+                exportData('tickets');
+            });
+
+            document.getElementById('export-logs-btn').addEventListener('click', function() {
+                exportData('logs');
+            });
+        }
+
+        // Load dashboard data
+        function loadDashboardStats() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load dashboard stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update stats
+                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
+                document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
+                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.userGrowthRate + '%';
+                document.getElementById('verified-growth-rate').textContent = data.verifiedGrowthRate + '%';
+                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+
+                // Initialize charts if not already initialized
+                if (!growthChart) {
+                    initCharts();
+                }
+
+                // Update charts
+                updateGrowthChart(data.chartData);
+                updateUserDistributionChart(data.userDistribution);
+
+                // Load recent data
+                return Promise.all([
+                    loadRecentUsers(),
+                    loadRecentActivities(),
+                    loadNotifications()
+                ]);
+            })
+            .catch(error => {
+                console.error('Error loading dashboard data:', error);
+            });
+        }
+
+        // Initialize charts
+        function initCharts() {
+            // Platform Growth Chart
+            const growthCtx = document.getElementById('growthChart').getContext('2d');
+            growthChart = new Chart(growthCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'New Users',
+                            data: [],
+                            borderColor: '#7367f0',
+                            backgroundColor: 'rgba(115, 103, 240, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Total Trades',
+                            data: [],
+                            borderColor: '#28c76f',
+                            backgroundColor: 'rgba(40, 199, 111, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // User Distribution Chart
+            const userDistCtx = document.getElementById('userDistributionChart').getContext('2d');
+            userDistributionChart = new Chart(userDistCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Verified', 'Pending KYC', 'Unverified', 'Suspended'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [
+                            '#28c76f',
+                            '#ff9f43',
+                            '#00cfe8',
+                            '#ea5455'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Update growth chart
+        function updateGrowthChart(data) {
+            growthChart.data.labels = data.labels;
+            growthChart.data.datasets[0].data = data.users;
+            growthChart.data.datasets[1].data = data.trades;
+            growthChart.update();
+        }
+
+        // Update user distribution chart
+        function updateUserDistributionChart(data) {
+            userDistributionChart.data.datasets[0].data = [
+                data.verified,
+                data.pending,
+                data.unverified,
+                data.suspended
+            ];
+            userDistributionChart.update();
+        }
+
+        // Load recent users
+        function loadRecentUsers() {
+            return fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load recent users');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('recent-users-body');
+                tbody.innerHTML = '';
+
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=${user.kycStatus === 'approved' ? '28c76f' : '00cfe8'}&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${user.firstName} ${user.lastName}</span>
+                            </div>
+                        </td>
+                        <td>${user.email || 'Wallet user'}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading recent users:', error);
+            });
+        }
+
+        function loadRecentActivities() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load recent activities');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const activityFeed = document.getElementById('activity-feed');
+                activityFeed.innerHTML = '';
+
+                data.forEach(log => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item mb-3';
+
+                    // Determine icon based on action type
+                    let iconClass = 'bi-activity';
+                    let iconBg = 'secondary';
+                    
+                    if (log.action.includes('login')) {
+                        iconClass = 'bi-box-arrow-in-right';
+                        iconBg = 'primary';
+                    } else if (log.action.includes('trade')) {
+                        iconClass = 'bi-currency-exchange';
+                        iconBg = 'success';
+                    } else if (log.action.includes('withdrawal')) {
+                        iconClass = 'bi-cash-stack';
+                        iconBg = 'warning';
+                    } else if (log.action.includes('deposit')) {
+                        iconClass = 'bi-wallet2';
+                        iconBg = 'info';
+                    }
+
+                    activityItem.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <div class="avatar me-3">
+                                    <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                        <i class="bi ${iconClass}"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">${log.action.replace(/_/g, ' ')}</h6>
+                                    <p class="mb-0">${log.userId?.email || 'System'}</p>
+                                </div>
+                            </div>
+                            <span class="activity-time">${new Date(log.createdAt).toLocaleString()}</span>
+                        </div>
+                    `;
+                    activityFeed.appendChild(activityItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading recent activities:', error);
+            });
+        }
+
+        // Load notifications
+        function loadNotifications() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/notifications', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load notifications');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('notifications-count').textContent = data.unreadCount;
+                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+
+                const notificationsList = document.getElementById('notifications-list');
+                notificationsList.innerHTML = '';
+
+                data.notifications.forEach(notification => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi ${notification.icon} ${notification.type === 'trade' ? 'text-success' : notification.type === 'user' ? 'text-primary' : 'text-warning'}"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <p class="mb-0">${notification.title}</p>
+                                    <small class="text-muted">${new Date(notification.timestamp).toLocaleString()}</small>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    notificationsList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading notifications:', error);
+            });
+        }
+
+        // Load users
+        function loadUsers(page = 1, search = '', status = '', kyc = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (kyc) url += `&kycStatus=${kyc}`;
+
+            fetch(url, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + authToken,
@@ -1767,1997 +2555,1267 @@
                 return response.json();
             })
             .then(data => {
-                const select = document.getElementById('transaction-user');
-                select.innerHTML = '<option value="">Select User</option>';
-                
-                data.data.users.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user._id;
-                    option.textContent = `${user.firstName} ${user.lastName} (${user.email || user.walletAddress?.substring(0, 6) + '...'})`;
-                    select.appendChild(option);
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '';
+
+                data.users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${user.firstName} ${user.lastName}</span>
+                            </div>
+                        </td>
+                        <td>${user.email || 'Wallet user'}</td>
+                        <td>${user.walletAddress ? `${user.walletAddress.substring(0, 6)}...${user.walletAddress.slice(-4)}` : 'N/A'}</td>
+                        <td>$${user.balance.toFixed(2)}</td>
+                        <td>
+                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
+                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${user.kycStatus === 'approved' ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
+                                ${user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-user-btn" 
+                                    data-id="${user._id}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-                
-                addTransactionModal.show();
+
+                // Update pagination
+                updatePagination('users-pagination', data.totalPages, page);
             })
             .catch(error => {
-                showError('Failed to load users: ' + error.message);
                 console.error('Error loading users:', error);
-            });
-        });
-    }
-
-    // Initialize forms
-    function initForms() {
-        // Admin login form
-        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('admin-email').value;
-            const password = document.getElementById('admin-password').value;
-            const rememberMe = document.getElementById('remember-me').checked;
-            
-            // Show loading state on button
-            const loginBtn = document.getElementById('login-btn');
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Logging in...';
-            
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, password })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Login failed');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Store token based on remember me selection
-                if (rememberMe) {
-                    localStorage.setItem('adminToken', data.token);
-                } else {
-                    sessionStorage.setItem('adminToken', data.token);
-                }
-                authToken = data.token;
-                currentAdminData = data.data.admin;
-                
-                // Show dashboard
-                showDashboard();
-                
-                // Load dashboard data
-                loadDashboardStats();
-                loadSettings();
-                connectWebSocket();
-            })
-            .catch(error => {
-                showError('Login failed: ' + (error.message || 'Invalid credentials'));
-                console.error('Login error:', error);
-            })
-            .finally(() => {
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Login';
-            });
-        });
-
-        // Broadcast form
-        document.getElementById('broadcast-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const message = document.getElementById('broadcast-message').value;
-            
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/broadcast', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to send broadcast');
-                }
-                return response.json();
-            })
-            .then(data => {
-                showSuccess('Broadcast message has been sent successfully!');
-                this.reset();
-            })
-            .catch(error => {
-                showError('Failed to send broadcast: ' + error.message);
-                console.error('Error sending broadcast:', error);
-            });
-        });
-
-        // Settings form
-        document.getElementById('settings-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const maintenanceMode = document.getElementById('maintenance-mode').checked;
-            const registrationStatus = document.getElementById('registration-status').checked;
-            const kycRequirement = document.getElementById('kyc-requirement').checked;
-            const tradeFee = parseFloat(document.getElementById('trade-fee').value);
-            const withdrawalFee = parseFloat(document.getElementById('withdrawal-fee').value);
-            
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    maintenanceMode,
-                    registrationStatus,
-                    kycRequirement,
-                    tradeFee,
-                    withdrawalFee
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to save settings');
-                }
-                return response.json();
-            })
-            .then(data => {
-                showSuccess('Settings have been saved successfully!');
-            })
-            .catch(error => {
-                showError('Failed to save settings: ' + error.message);
-                console.error('Error saving settings:', error);
-            });
-        });
-
-        // Add user form
-        document.getElementById('add-user-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('add-user-email').value;
-            const password = document.getElementById('add-user-password').value;
-            const firstName = document.getElementById('add-user-firstname').value;
-            const lastName = document.getElementById('add-user-lastname').value;
-            const country = document.getElementById('add-user-country').value;
-            const walletAddress = document.getElementById('add-user-wallet').value;
-            const balance = parseFloat(document.getElementById('add-user-balance').value) || 0;
-            
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/users', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    password,
-                    firstName,
-                    lastName,
-                    country,
-                    walletAddress,
-                    balance
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to add user');
-                }
-                return response.json();
-            })
-            .then(data => {
-                showSuccess('User has been added successfully!');
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
-                modal.hide();
-                
-                // Reset form
-                this.reset();
-                
-                // Reload users
-                loadUsers();
-            })
-            .catch(error => {
-                showError('Failed to add user: ' + error.message);
-                console.error('Error adding user:', error);
-            });
-        });
-
-        // Add transaction form
-        document.getElementById('add-transaction-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const userId = document.getElementById('transaction-user').value;
-            const type = document.getElementById('transaction-type').value;
-            const amount = parseFloat(document.getElementById('transaction-amount').value);
-            const currency = document.getElementById('transaction-currency').value;
-            
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/transactions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    userId,
-                    type,
-                    amount,
-                    currency
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to add transaction');
-                }
-                return response.json();
-            })
-            .then(data => {
-                showSuccess('Transaction has been added successfully!');
-                
-                // Close modal
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addTransactionModal'));
-                modal.hide();
-                
-                // Reset form
-                this.reset();
-                
-                // Reload transactions
-                loadTransactions();
-            })
-            .catch(error => {
-                showError('Failed to add transaction: ' + error.message);
-                console.error('Error adding transaction:', error);
-            });
-        });
-
-        // Update user balance
-        document.getElementById('update-balance-btn').addEventListener('click', function() {
-            const newBalance = parseFloat(document.getElementById('user-balance-input').value);
-            
-            if (isNaN(newBalance)) {
-                showError('Please enter a valid balance amount');
-                return;
-            }
-            
-            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/balance`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    balance: newBalance
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to update balance');
-                }
-                return response.json();
-            })
-            .then(data => {
-                showSuccess('User balance has been updated successfully!');
-                loadUserDetails(currentUserId);
-                loadUsers();
-            })
-            .catch(error => {
-                showError('Failed to update balance: ' + error.message);
-                console.error('Error updating balance:', error);
-            });
-        });
-    }
-
-    // Initialize event listeners
-    function initEventListeners() {
-        // Logout button
-        document.getElementById('logout-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            localStorage.removeItem('adminToken');
-            sessionStorage.removeItem('adminToken');
-            authToken = null;
-            currentAdminData = {};
-            if (socket) {
-                socket.close();
-            }
-            showLogin();
-        });
-
-        // View all buttons
-        document.getElementById('view-all-users').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('users-link').click();
-        });
-
-        document.getElementById('view-all-activities').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('logs-link').click();
-        });
-
-        // Search and filter buttons
-        document.getElementById('search-users-btn').addEventListener('click', function() {
-            const search = document.getElementById('user-search').value;
-            const status = document.getElementById('user-status-filter').value;
-            const kyc = document.getElementById('user-kyc-filter').value;
-            loadUsers(1, search, status, kyc);
-        });
-
-        document.getElementById('search-trades-btn').addEventListener('click', function() {
-            const search = document.getElementById('trade-search').value;
-            const status = document.getElementById('trade-status-filter').value;
-            loadTrades(1, search, status);
-        });
-
-        document.getElementById('search-transactions-btn').addEventListener('click', function() {
-            const search = document.getElementById('transaction-search').value;
-            const type = document.getElementById('transaction-type-filter').value;
-            const status = document.getElementById('transaction-status-filter').value;
-            loadTransactions(1, search, type, status);
-        });
-
-        document.getElementById('search-tickets-btn').addEventListener('click', function() {
-            const search = document.getElementById('ticket-search').value;
-            const status = document.getElementById('ticket-status-filter').value;
-            loadTickets(1, search, status);
-        });
-
-        document.getElementById('search-kyc-btn').addEventListener('click', function() {
-            const search = document.getElementById('kyc-search').value;
-            const status = document.getElementById('kyc-status-filter').value;
-            loadKYC(1, search, status);
-        });
-
-        document.getElementById('search-logs-btn').addEventListener('click', function() {
-            const search = document.getElementById('log-search').value;
-            const type = document.getElementById('log-type-filter').value;
-            loadActivityLogs(1, search, type);
-        });
-
-        // Pagination
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.page-link')) {
-                e.preventDefault();
-                const page = parseInt(e.target.getAttribute('data-page'));
-                const paginationId = e.target.closest('.pagination').id;
-                
-                switch(paginationId) {
-                    case 'users-pagination':
-                        const userSearch = document.getElementById('user-search').value;
-                        const userStatus = document.getElementById('user-status-filter').value;
-                        const userKYC = document.getElementById('user-kyc-filter').value;
-                        loadUsers(page, userSearch, userStatus, userKYC);
-                        break;
-                    case 'trades-pagination':
-                        const tradeSearch = document.getElementById('trade-search').value;
-                        const tradeStatus = document.getElementById('trade-status-filter').value;
-                        loadTrades(page, tradeSearch, tradeStatus);
-                        break;
-                    case 'transactions-pagination':
-                        const transactionSearch = document.getElementById('transaction-search').value;
-                        const transactionType = document.getElementById('transaction-type-filter').value;
-                        const transactionStatus = document.getElementById('transaction-status-filter').value;
-                        loadTransactions(page, transactionSearch, transactionType, transactionStatus);
-                        break;
-                    case 'tickets-pagination':
-                        const ticketSearch = document.getElementById('ticket-search').value;
-                        const ticketStatus = document.getElementById('ticket-status-filter').value;
-                        loadTickets(page, ticketSearch, ticketStatus);
-                        break;
-                    case 'kyc-pagination':
-                        const kycSearch = document.getElementById('kyc-search').value;
-                        const kycStatus = document.getElementById('kyc-status-filter').value;
-                        loadKYC(page, kycSearch, kycStatus);
-                        break;
-                    case 'logs-pagination':
-                        const logSearch = document.getElementById('log-search').value;
-                        const logType = document.getElementById('log-type-filter').value;
-                        loadActivityLogs(page, logSearch, logType);
-                        break;
-                }
-            }
-        });
-
-        // Ticket actions
-        document.getElementById('assign-ticket-btn').addEventListener('click', function() {
-            assignTicketToMe();
-        });
-
-        document.getElementById('save-ticket-btn').addEventListener('click', function() {
-            updateTicketStatus();
-        });
-
-        document.getElementById('send-reply-btn').addEventListener('click', function() {
-            sendTicketReply();
-        });
-
-        // KYC actions
-        document.getElementById('approve-kyc-btn').addEventListener('click', function() {
-            approveKYC(true);
-        });
-
-        document.getElementById('reject-kyc-btn').addEventListener('click', function() {
-            approveKYC(false);
-        });
-
-        document.getElementById('request-more-info-btn').addEventListener('click', function() {
-            requestMoreKYCInfo();
-        });
-
-        // User actions
-        document.getElementById('message-user-btn').addEventListener('click', function() {
-            const message = prompt('Enter message to send to user:');
-            if (message) {
-                sendUserMessage(message);
-            }
-        });
-
-        document.getElementById('reset-password-btn').addEventListener('click', function() {
-            resetUserPassword();
-        });
-
-        document.getElementById('suspend-user-btn').addEventListener('click', function() {
-            toggleUserStatus();
-        });
-
-        // Export buttons
-        document.getElementById('export-users-btn').addEventListener('click', function() {
-            exportData('users');
-        });
-
-        document.getElementById('export-trades-btn').addEventListener('click', function() {
-            exportData('trades');
-        });
-
-        document.getElementById('export-transactions-btn').addEventListener('click', function() {
-            exportData('transactions');
-        });
-
-        document.getElementById('export-tickets-btn').addEventListener('click', function() {
-            exportData('tickets');
-        });
-
-        document.getElementById('export-logs-btn').addEventListener('click', function() {
-            exportData('logs');
-        });
-    }
-
-    // Load dashboard data
-    function loadDashboardStats() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load dashboard stats');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Update stats
-            document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-            document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
-            document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-            document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-            document.getElementById('user-growth-rate').textContent = data.userGrowthRate + '%';
-            document.getElementById('verified-growth-rate').textContent = data.verifiedGrowthRate + '%';
-            document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-            document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
-
-            // Load recent data
-            return Promise.all([
-                loadRecentUsers(),
-                loadRecentActivities(),
-                loadNotifications()
-            ]);
-        })
-        .catch(error => {
-            console.error('Error loading dashboard data:', error);
-        });
-    }
-
-    // Load settings
-    function loadSettings() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/settings', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load settings');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('maintenance-mode').checked = data.maintenanceMode;
-            document.getElementById('registration-status').checked = data.registrationStatus;
-            document.getElementById('kyc-requirement').checked = data.kycRequirement;
-            document.getElementById('trade-fee').value = data.tradeFee;
-            document.getElementById('withdrawal-fee').value = data.withdrawalFee;
-        })
-        .catch(error => {
-            console.error('Error loading settings:', error);
-        });
-    }
-
-    // Initialize charts
-    function initCharts() {
-        // Platform Growth Chart
-        const growthCtx = document.getElementById('growthChart').getContext('2d');
-        growthChart = new Chart(growthCtx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [
-                    {
-                        label: 'New Users',
-                        data: [],
-                        borderColor: '#7367f0',
-                        backgroundColor: 'rgba(115, 103, 240, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    },
-                    {
-                        label: 'Total Trades',
-                        data: [],
-                        borderColor: '#28c76f',
-                        backgroundColor: 'rgba(40, 199, 111, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // User Distribution Chart
-        const userDistCtx = document.getElementById('userDistributionChart').getContext('2d');
-        userDistributionChart = new Chart(userDistCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Verified', 'Pending KYC', 'Unverified', 'Suspended'],
-                datasets: [{
-                    data: [0, 0, 0, 0],
-                    backgroundColor: [
-                        '#28c76f',
-                        '#ff9f43',
-                        '#00cfe8',
-                        '#ea5455'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                    }
-                },
-                cutout: '70%'
-            }
-        });
-    }
-
-    // Update growth chart
-    function updateGrowthChart(data) {
-        growthChart.data.labels = data.labels;
-        growthChart.data.datasets[0].data = data.users;
-        growthChart.data.datasets[1].data = data.trades;
-        growthChart.update();
-    }
-
-    // Update user distribution chart
-    function updateUserDistributionChart(data) {
-        userDistributionChart.data.datasets[0].data = [
-            data.verified,
-            data.pending,
-            data.unverified,
-            data.suspended
-        ];
-        userDistributionChart.update();
-    }
-
-    // Load recent users
-    function loadRecentUsers() {
-        return fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-users', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load recent users');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('recent-users-body');
-            tbody.innerHTML = '';
-
-            data.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=${user.kycStatus === 'approved' ? '28c76f' : '00cfe8'}&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${user.firstName} ${user.lastName}</span>
-                        </div>
-                    </td>
-                    <td>${user.email || 'Wallet user'}</td>
-                    <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td>
-                        <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                            ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                        </span>
-                    </td>
+                document.getElementById('users-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center text-danger">
+                            Failed to load users. Please try again.
+                        </td>
+                    </tr>
                 `;
-                tbody.appendChild(row);
             });
-        })
-        .catch(error => {
-            console.error('Error loading recent users:', error);
-        });
-    }
-
-    function loadRecentActivities() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load recent activities');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const activityFeed = document.getElementById('activity-feed');
-            activityFeed.innerHTML = '';
-
-            data.forEach(log => {
-                const activityItem = document.createElement('div');
-                activityItem.className = 'activity-item mb-3';
-
-                // Determine icon based on action type
-                let iconClass = 'bi-activity';
-                let iconBg = 'secondary';
-                
-                if (log.action.includes('login')) {
-                    iconClass = 'bi-box-arrow-in-right';
-                    iconBg = 'primary';
-                } else if (log.action.includes('trade')) {
-                    iconClass = 'bi-currency-exchange';
-                    iconBg = 'success';
-                } else if (log.action.includes('withdrawal')) {
-                    iconClass = 'bi-cash-stack';
-                    iconBg = 'warning';
-                } else if (log.action.includes('deposit')) {
-                    iconClass = 'bi-wallet2';
-                    iconBg = 'info';
-                }
-
-                activityItem.innerHTML = `
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex">
-                            <div class="avatar me-3">
-                                <span class="avatar-initial rounded-circle bg-label-${iconBg}">
-                                    <i class="bi ${iconClass}"></i>
-                                </span>
-                            </div>
-                            <div>
-                                <h6 class="mb-0">${log.action.replace(/_/g, ' ')}</h6>
-                                <p class="mb-0">${log.userId?.email || 'System'}</p>
-                            </div>
-                        </div>
-                        <span class="activity-time">${new Date(log.createdAt).toLocaleString()}</span>
-                    </div>
-                `;
-                activityFeed.appendChild(activityItem);
-            });
-        })
-        .catch(error => {
-            console.error('Error loading recent activities:', error);
-        });
-    }
-
-    // Load notifications
-    function loadNotifications() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/notifications', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load notifications');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('notifications-count').textContent = data.unreadCount;
-            document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
-            document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
-
-            const notificationsList = document.getElementById('notifications-list');
-            notificationsList.innerHTML = '';
-
-            data.notifications.forEach(notification => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <a class="dropdown-item" href="#">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <i class="bi ${notification.icon} ${notification.type === 'trade' ? 'text-success' : notification.type === 'user' ? 'text-primary' : 'text-warning'}"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <p class="mb-0">${notification.title}</p>
-                                <small class="text-muted">${new Date(notification.timestamp).toLocaleString()}</small>
-                            </div>
-                        </div>
-                    </a>
-                `;
-                notificationsList.appendChild(li);
-            });
-        })
-        .catch(error => {
-            console.error('Error loading notifications:', error);
-        });
-    }
-
-    // Load users
-    function loadUsers(page = 1, search = '', status = '', kyc = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (status) url += `&status=${status}`;
-        if (kyc) url += `&kycStatus=${kyc}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load users');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('users-table-body');
-            tbody.innerHTML = '';
-
-            data.users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user._id.substring(0, 8)}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${user.firstName} ${user.lastName}</span>
-                        </div>
-                    </td>
-                    <td>${user.email || 'Wallet user'}</td>
-                    <td>${user.walletAddress ? `${user.walletAddress.substring(0, 6)}...${user.walletAddress.slice(-4)}` : 'N/A'}</td>
-                    <td>$${user.balance.toFixed(2)}</td>
-                    <td>
-                        <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                            ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge ${user.kycStatus === 'approved' ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
-                            ${user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary view-user-btn" 
-                                data-id="${user._id}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('users-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading users:', error);
-            document.getElementById('users-table-body').innerHTML = `
-                <tr>
-                    <td colspan="8" class="text-center text-danger">
-                        Failed to load users. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Load trades
-    function loadTrades(page = 1, search = '', status = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (status) url += `&status=${status}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load trades');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('trades-table-body');
-            tbody.innerHTML = '';
-
-            data.trades.forEach(trade => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${trade._id.substring(0, 8)}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.firstName + ' ' + trade.user.lastName)}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${trade.user.firstName} ${trade.user.lastName}</span>
-                        </div>
-                    </td>
-                    <td>${trade.fromCoin}/${trade.toCoin}</td>
-                    <td>$${trade.amount.toFixed(2)}</td>
-                    <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit?.toFixed(2) || '0.00'}</td>
-                    <td>
-                        <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                            ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>${new Date(trade.createdAt).toLocaleString()}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('trades-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading trades:', error);
-            document.getElementById('trades-table-body').innerHTML = `
-                <tr>
-                    <td colspan="8" class="text-center text-danger">
-                        Failed to load trades. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Load transactions
-    function loadTransactions(page = 1, search = '', type = '', status = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (type) url += `&type=${type}`;
-        if (status) url += `&status=${status}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load transactions');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('transactions-table-body');
-            tbody.innerHTML = '';
-
-            data.transactions.forEach(transaction => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${transaction._id.substring(0, 8)}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.firstName + ' ' + transaction.user.lastName)}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${transaction.user.firstName} ${transaction.user.lastName}</span>
-                        </div>
-                    </td>
-                    <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
-                    <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
-                    <td>
-                        <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                            ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>${new Date(transaction.createdAt).toLocaleString()}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('transactions-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading transactions:', error);
-            document.getElementById('transactions-table-body').innerHTML = `
-                <tr>
-                    <td colspan="7" class="text-center text-danger">
-                        Failed to load transactions. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Load tickets
-    function loadTickets(page = 1, search = '', status = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (status) url += `&status=${status}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load tickets');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('tickets-table-body');
-            tbody.innerHTML = '';
-
-            data.tickets.forEach(ticket => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${ticket._id.substring(0, 8)}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user?.firstName + ' ' + ticket.user?.lastName || 'Support')}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${ticket.user?.firstName + ' ' + ticket.user?.lastName || ticket.email}</span>
-                        </div>
-                    </td>
-                    <td>${ticket.subject}</td>
-                    <td>
-                        <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
-                            ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>${new Date(ticket.createdAt).toLocaleString()}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
-                                data-id="${ticket._id}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('tickets-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading tickets:', error);
-            document.getElementById('tickets-table-body').innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center text-danger">
-                        Failed to load tickets. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Load KYC
-    function loadKYC(page = 1, search = '', status = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (status) url += `&status=${status}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load KYC');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('kyc-table-body');
-            tbody.innerHTML = '';
-
-            data.kycRequests.forEach(kyc => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.user.firstName + ' ' + kyc.user.lastName)}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${kyc.user.firstName} ${kyc.user.lastName}</span>
-                        </div>
-                    </td>
-                    <td>${kyc.documentType}</td>
-                    <td>${new Date(kyc.submittedAt).toLocaleDateString()}</td>
-                    <td>
-                        <span class="badge ${kyc.status === 'approved' ? 'bg-success' : kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                            ${kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1)}
-                        </span>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary view-kyc-btn" 
-                                data-id="${kyc._id}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('kyc-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading KYC:', error);
-            document.getElementById('kyc-table-body').innerHTML = `
-                <tr>
-                    <td colspan="5" class="text-center text-danger">
-                        Failed to load KYC requests. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Load activity logs
-    function loadActivityLogs(page = 1, search = '', type = '') {
-        let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=10`;
-        if (search) url += `&search=${encodeURIComponent(search)}`;
-        if (type) url += `&type=${type}`;
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load activity logs');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('logs-table-body');
-            tbody.innerHTML = '';
-
-            data.logs.forEach(log => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${log._id.substring(0, 8)}</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user?.firstName + ' ' + log.user?.lastName || 'System')}&background=7367f0&color=fff" 
-                                 alt="User" class="user-avatar">
-                            <span>${log.user?.firstName + ' ' + log.user?.lastName || 'System'}</span>
-                        </div>
-                    </td>
-                    <td>${log.action.replace(/_/g, ' ')}</td>
-                    <td>${log.ipAddress}</td>
-                    <td>${new Date(log.createdAt).toLocaleString()}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Update pagination
-            updatePagination('logs-pagination', data.totalPages, page);
-        })
-        .catch(error => {
-            console.error('Error loading activity logs:', error);
-            document.getElementById('logs-table-body').innerHTML = `
-                <tr>
-                    <td colspan="5" class="text-center text-danger">
-                        Failed to load activity logs. Please try again.
-                    </td>
-                </tr>
-            `;
-        });
-    }
-
-    // Update pagination
-    function updatePagination(elementId, totalPages, currentPage) {
-        const pagination = document.getElementById(elementId);
-        pagination.innerHTML = '';
-
-        // Previous button
-        const prevLi = document.createElement('li');
-        prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
-        prevLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>`;
-        pagination.appendChild(prevLi);
-
-        // Page numbers
-        for (let i = 1; i <= totalPages; i++) {
-            const li = document.createElement('li');
-            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
-            li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
-            pagination.appendChild(li);
         }
 
-        // Next button
-        const nextLi = document.createElement('li');
-        nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
-        nextLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>`;
-        pagination.appendChild(nextLi);
-    }
+        // Load trades
+        function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (type) url += `&type=${type}`;
+            if (date) url += `&date=${date}`;
 
-    // Load user details
-    function loadUserDetails(userId) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load user details');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const user = data.user;
-            
-            // Update avatar
-            document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff`;
-            
-            // Update user info
-            document.getElementById('user-detail-name').textContent = `${user.firstName} ${user.lastName}`;
-            document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
-            document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
-            document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
-            document.getElementById('user-balance-input').value = user.balance.toFixed(2);
-            document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
-            
-            // Update status badge
-            const statusBadge = document.getElementById('user-detail-status');
-            statusBadge.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
-            statusBadge.className = 'badge ' + (
-                user.status === 'active' ? 'bg-success' : 
-                user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
-            );
-            
-            // Update KYC badge
-            const kycBadge = document.getElementById('user-detail-kyc');
-            kycBadge.textContent = user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
-            kycBadge.className = 'badge ' + (
-                user.kycStatus === 'approved' ? 'bg-success' : 
-                user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
-            );
-            
-            // Update suspend button text
-            const suspendBtn = document.getElementById('suspend-user-btn');
-            suspendBtn.textContent = user.status === 'suspended' ? 'Activate Account' : 'Suspend Account';
-            suspendBtn.className = user.status === 'suspended' ? 
-                'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger';
-            
-            // Load user activities
-            updateUserActivities(userId);
-        })
-        .catch(error => {
-            console.error('Error loading user details:', error);
-        });
-    }
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load trades');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('trades-table-body');
+                tbody.innerHTML = '';
 
-    // Update user activities
-    function updateUserActivities(userId) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}/activities`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load user activities');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.getElementById('user-activity-table');
-            tbody.innerHTML = '';
-
-            data.activities.forEach(activity => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${activity.action.replace(/_/g, ' ')}</td>
-                    <td>${activity.ipAddress}</td>
-                    <td>${new Date(activity.createdAt).toLocaleString()}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error('Error loading user activities:', error);
-        });
-    }
-
-    // Load ticket details
-    function loadTicketDetails(ticketId) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load ticket details');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const ticket = data.ticket;
-            
-            // Update ticket info
-            document.getElementById('ticket-id').textContent = ticket._id.substring(0, 8);
-            document.getElementById('ticket-subject').textContent = ticket.subject;
-            document.getElementById('ticket-description').textContent = ticket.message;
-            document.getElementById('ticket-date').textContent = new Date(ticket.createdAt).toLocaleString();
-            
-            // Update status select
-            document.getElementById('ticket-status-select').value = ticket.status;
-            
-            // Update assign button if already assigned
-            const assignBtn = document.getElementById('assign-ticket-btn');
-            if (ticket.assignedTo) {
-                assignBtn.textContent = `Assigned to ${ticket.assignedTo.name || 'admin'}`;
-                assignBtn.disabled = true;
-            } else {
-                assignBtn.textContent = 'Assign to Me';
-                assignBtn.disabled = false;
-            }
-            
-            // Update attachments
-            const attachmentsContainer = document.getElementById('ticket-attachments');
-            attachmentsContainer.innerHTML = '';
-            
-            if (ticket.attachments && ticket.attachments.length > 0) {
-                ticket.attachments.forEach(attachment => {
-                    const link = document.createElement('a');
-                    link.href = attachment;
-                    link.className = 'btn btn-sm btn-outline-secondary me-2';
-                    link.target = '_blank';
-                    link.innerHTML = `<i class="bi bi-file-earmark-text me-1"></i> Attachment`;
-                    attachmentsContainer.appendChild(link);
+                data.trades.forEach(trade => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${trade._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.firstName + ' ' + trade.user.lastName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${trade.user.firstName} ${trade.user.lastName}</span>
+                            </div>
+                        </td>
+                        <td>${trade.fromCoin}/${trade.toCoin}</td>
+                        <td>$${trade.amount.toFixed(2)}</td>
+                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit?.toFixed(2) || '0.00'}</td>
+                        <td>
+                            <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(trade.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-            } else {
-                attachmentsContainer.innerHTML = '<p>No attachments</p>';
-            }
-            
-            // Update conversation
-            updateTicketConversation(ticketId);
-        })
-        .catch(error => {
-            console.error('Error loading ticket details:', error);
-        });
-    }
 
-    // Update ticket conversation
-    function updateTicketConversation(ticketId) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}/conversation`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load ticket conversation');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const conversationContainer = document.getElementById('ticket-conversation');
-            conversationContainer.innerHTML = '';
-
-            data.messages.forEach(message => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message mb-3 ${message.isAdmin ? 'admin-message' : 'user-message'}`;
-                
-                messageDiv.innerHTML = `
-                    <div class="d-flex justify-content-between mb-1">
-                        <strong>${message.isAdmin ? 'You' : message.user?.firstName || 'User'}</strong>
-                        <small class="text-muted">${new Date(message.createdAt).toLocaleString()}</small>
-                    </div>
-                    <div class="p-3 ${message.isAdmin ? 'bg-primary text-white rounded' : 'bg-light rounded'}">
-                        <p class="mb-0">${message.message}</p>
-                    </div>
+                // Update pagination
+                updatePagination('trades-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading trades:', error);
+                document.getElementById('trades-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center text-danger">
+                            Failed to load trades. Please try again.
+                        </td>
+                    </tr>
                 `;
-                
-                conversationContainer.appendChild(messageDiv);
             });
-            
-            // Scroll to bottom
-            conversationContainer.scrollTop = conversationContainer.scrollHeight;
-        })
-        .catch(error => {
-            console.error('Error loading ticket conversation:', error);
-        });
-    }
-
-    // Load KYC details
-    function loadKYCDetails(kycId) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${kycId}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to load KYC details');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const kyc = data.kyc;
-            
-            // Update user info
-            document.getElementById('kyc-fullname').textContent = `${kyc.user.firstName} ${kyc.user.lastName}`;
-            document.getElementById('kyc-country').textContent = kyc.user.country || 'Not provided';
-            document.getElementById('kyc-submitted').textContent = new Date(kyc.submittedAt).toLocaleString();
-            
-            // Update status badge
-            const statusBadge = document.getElementById('kyc-current-status');
-            statusBadge.textContent = kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1);
-            statusBadge.className = 'badge ' + (
-                kyc.status === 'approved' ? 'bg-success' : 
-                kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'
-            );
-            
-            // Update document images
-            document.getElementById('kyc-id-front').src = kyc.kycDocuments[0]?.frontImage || 'https://via.placeholder.com/400x250?text=ID+Front';
-            document.getElementById('kyc-id-back').src = kyc.kycDocuments[0]?.backImage || 'https://via.placeholder.com/400x250?text=ID+Back';
-            document.getElementById('kyc-selfie').src = kyc.kycDocuments[0]?.selfie || 'https://via.placeholder.com/400x250?text=Selfie';
-        })
-        .catch(error => {
-            console.error('Error loading KYC details:', error);
-        });
-    }
-
-    // Assign ticket to me
-    function assignTicketToMe() {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/assign`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                adminId: currentAdminData._id
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to assign ticket');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess('Ticket has been assigned to you');
-            loadTicketDetails(currentTicketId);
-        })
-        .catch(error => {
-            console.error('Error assigning ticket:', error);
-        });
-    }
-
-    // Update ticket status
-    function updateTicketStatus() {
-        const status = document.getElementById('ticket-status-select').value;
-        
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                status
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update ticket');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess('Ticket has been updated successfully');
-            loadTicketDetails(currentTicketId);
-            loadTickets(); // Refresh tickets list
-        })
-        .catch(error => {
-            console.error('Error updating ticket:', error);
-        });
-    }
-
-    // Send ticket reply
-    function sendTicketReply() {
-        const message = document.getElementById('ticket-reply').value;
-        
-        if (!message.trim()) {
-            showError('Please enter a message');
-            return;
         }
-        
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/reply`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message,
-                isAdmin: true
+
+        // Load transactions
+        function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (type) url += `&type=${type}`;
+            if (status) url += `&status=${status}`;
+            if (date) url += `&date=${date}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to send reply');
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load transactions');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('transactions-table-body');
+                tbody.innerHTML = '';
+
+                data.transactions.forEach(transaction => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${transaction._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.firstName + ' ' + transaction.user.lastName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${transaction.user.firstName} ${transaction.user.lastName}</span>
+                            </div>
+                        </td>
+                        <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
+                        <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
+                        <td>
+                            <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(transaction.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('transactions-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading transactions:', error);
+                document.getElementById('transactions-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            Failed to load transactions. Please try again.
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Load tickets
+        function loadTickets(page = 1, search = '', status = '', priority = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+            if (priority) url += `&priority=${priority}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load tickets');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('tickets-table-body');
+                tbody.innerHTML = '';
+
+                data.tickets.forEach(ticket => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${ticket._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user?.firstName + ' ' + ticket.user?.lastName || 'Support')}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${ticket.user?.firstName + ' ' + ticket.user?.lastName || ticket.email}</span>
+                            </div>
+                        </td>
+                        <td>${ticket.subject}</td>
+                        <td>
+                            <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
+                                ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-info'}">
+                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
+                            </span>
+                        </td>
+                        <td>${new Date(ticket.createdAt).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
+                                    data-id="${ticket._id}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('tickets-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading tickets:', error);
+                document.getElementById('tickets-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger">
+                            Failed to load tickets. Please try again.
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Load KYC
+        function loadKYC(page = 1, search = '', status = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (status) url += `&status=${status}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load KYC');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('kyc-table-body');
+                tbody.innerHTML = '';
+
+                data.kycRequests.forEach(kyc => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.user.firstName + ' ' + kyc.user.lastName)}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${kyc.user.firstName} ${kyc.user.lastName}</span>
+                            </div>
+                        </td>
+                        <td>${kyc.documentType}</td>
+                        <td>${new Date(kyc.submittedAt).toLocaleDateString()}</td>
+                        <td>
+                            <span class="badge ${kyc.status === 'approved' ? 'bg-success' : kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                                ${kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-kyc-btn" 
+                                    data-id="${kyc._id}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('kyc-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading KYC:', error);
+                document.getElementById('kyc-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-danger">
+                            Failed to load KYC requests. Please try again.
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Load activity logs
+        function loadActivityLogs(page = 1, search = '', type = '', date = '') {
+            let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=10`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+            if (type) url += `&type=${type}`;
+            if (date) url += `&date=${date}`;
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load activity logs');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('logs-table-body');
+                tbody.innerHTML = '';
+
+                data.logs.forEach(log => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${log._id.substring(0, 8)}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user?.firstName + ' ' + log.user?.lastName || 'System')}&background=7367f0&color=fff" 
+                                     alt="User" class="user-avatar">
+                                <span>${log.user?.firstName + ' ' + log.user?.lastName || 'System'}</span>
+                            </div>
+                        </td>
+                        <td>${log.action.replace(/_/g, ' ')}</td>
+                        <td>${log.type || 'system'}</td>
+                        <td>${log.ipAddress}</td>
+                        <td>${new Date(log.createdAt).toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Update pagination
+                updatePagination('logs-pagination', data.totalPages, page);
+            })
+            .catch(error => {
+                console.error('Error loading activity logs:', error);
+                document.getElementById('logs-table-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            Failed to load activity logs. Please try again.
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Update pagination
+        function updatePagination(elementId, totalPages, currentPage) {
+            const pagination = document.getElementById(elementId);
+            pagination.innerHTML = '';
+
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a>`;
+            pagination.appendChild(prevLi);
+
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            if (startPage > 1) {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+                li.innerHTML = `<a class="page-link" href="#" data-page="1">1</a>`;
+                pagination.appendChild(li);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('li');
+                    ellipsis.className = 'page-item disabled';
+                    ellipsis.innerHTML = `<span class="page-link">...</span>`;
+                    pagination.appendChild(ellipsis);
+                }
             }
-            return response.json();
-        })
-        .then(data => {
-            // Clear reply textarea
-            document.getElementById('ticket-reply').value = '';
+
+            for (let i = startPage; i <= endPage; i++) {
+                const li = document.createElement('li');
+                li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                li.innerHTML = `<a class="page-link" href="#" data-page="${i}">${i}</a>`;
+                pagination.appendChild(li);
+            }
+
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('li');
+                    ellipsis.className = 'page-item disabled';
+                    ellipsis.innerHTML = `<span class="page-link">...</span>`;
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const li = document.createElement('li');
+                li.className = 'page-item';
+                li.innerHTML = `<a class="page-link" href="#" data-page="${totalPages}">${totalPages}</a>`;
+                pagination.appendChild(li);
+            }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#" data-page="${currentPage + 1}">Next</a>`;
+            pagination.appendChild(nextLi);
+        }
+
+        // Load user details
+        function loadUserDetails(userId) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load user details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const user = data.user;
+                
+                // Update avatar
+                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.firstName + ' ' + user.lastName)}&background=7367f0&color=fff`;
+                
+                // Update user info
+                document.getElementById('user-detail-name').textContent = `${user.firstName} ${user.lastName}`;
+                document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
+                document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
+                document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
+                document.getElementById('user-balance-input').value = user.balance.toFixed(2);
+                document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
+                
+                // Update status badge
+                const statusBadge = document.getElementById('user-detail-status');
+                statusBadge.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
+                statusBadge.className = 'badge ' + (
+                    user.status === 'active' ? 'bg-success' : 
+                    user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
+                );
+                
+                // Update KYC badge
+                const kycBadge = document.getElementById('user-detail-kyc');
+                kycBadge.textContent = user.kycStatus === 'approved' ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
+                kycBadge.className = 'badge ' + (
+                    user.kycStatus === 'approved' ? 'bg-success' : 
+                    user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
+                );
+                
+                // Update suspend button text
+                const suspendBtn = document.getElementById('suspend-user-btn');
+                suspendBtn.textContent = user.status === 'suspended' ? 'Activate Account' : 'Suspend Account';
+                suspendBtn.className = user.status === 'suspended' ? 
+                    'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger';
+                
+                // Load user activities
+                updateUserActivities(userId);
+            })
+            .catch(error => {
+                console.error('Error loading user details:', error);
+            });
+        }
+
+        // Update user activities
+        function updateUserActivities(userId) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}/activities`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load user activities');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tbody = document.getElementById('user-activity-table');
+                tbody.innerHTML = '';
+
+                data.activities.forEach(activity => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${activity.action.replace(/_/g, ' ')}</td>
+                        <td>${activity.type || 'system'}</td>
+                        <td>${activity.ipAddress}</td>
+                        <td>${new Date(activity.createdAt).toLocaleString()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error loading user activities:', error);
+            });
+        }
+
+        // Load ticket details
+        function loadTicketDetails(ticketId) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ticket details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const ticket = data.ticket;
+                
+                // Update ticket info
+                document.getElementById('ticket-id').textContent = ticket._id.substring(0, 8);
+                document.getElementById('ticket-subject').textContent = ticket.subject;
+                document.getElementById('ticket-category').textContent = ticket.category || 'General';
+                document.getElementById('ticket-description').textContent = ticket.message;
+                document.getElementById('ticket-date').textContent = new Date(ticket.createdAt).toLocaleString();
+                
+                // Update status select
+                document.getElementById('ticket-status-select').value = ticket.status;
+                document.getElementById('ticket-priority-select').value = ticket.priority || 'medium';
+                
+                // Update assign button if already assigned
+                const assignBtn = document.getElementById('assign-ticket-btn');
+                if (ticket.assignedTo) {
+                    assignBtn.textContent = `Assigned to ${ticket.assignedTo.name || 'admin'}`;
+                    assignBtn.disabled = true;
+                } else {
+                    assignBtn.textContent = 'Assign to Me';
+                    assignBtn.disabled = false;
+                }
+                
+                // Update attachments
+                const attachmentsContainer = document.getElementById('ticket-attachments');
+                attachmentsContainer.innerHTML = '';
+                
+                if (ticket.attachments && ticket.attachments.length > 0) {
+                    ticket.attachments.forEach(attachment => {
+                        const link = document.createElement('a');
+                        link.href = attachment;
+                        link.className = 'btn btn-sm btn-outline-secondary me-2';
+                        link.target = '_blank';
+                        link.innerHTML = `<i class="bi bi-file-earmark-text me-1"></i> Attachment`;
+                        attachmentsContainer.appendChild(link);
+                    });
+                } else {
+                    attachmentsContainer.innerHTML = '<p>No attachments</p>';
+                }
+                
+                // Update conversation
+                updateTicketConversation(ticketId);
+            })
+            .catch(error => {
+                console.error('Error loading ticket details:', error);
+            });
+        }
+
+        // Update ticket conversation
+        function updateTicketConversation(ticketId) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${ticketId}/conversation`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load ticket conversation');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const conversationContainer = document.getElementById('ticket-conversation');
+                conversationContainer.innerHTML = '';
+
+                data.messages.forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `chat-message mb-3 ${message.isAdmin ? 'admin-message' : 'user-message'}`;
+                    
+                    messageDiv.innerHTML = `
+                        <div class="d-flex justify-content-between mb-1">
+                            <strong>${message.isAdmin ? 'You' : message.user?.firstName || 'User'}</strong>
+                            <small class="text-muted">${new Date(message.createdAt).toLocaleString()}</small>
+                        </div>
+                        <div class="p-3 ${message.isAdmin ? 'bg-primary text-white rounded' : 'bg-light rounded'}">
+                            <p class="mb-0">${message.message}</p>
+                        </div>
+                    `;
+                    
+                    conversationContainer.appendChild(messageDiv);
+                });
+                
+                // Scroll to bottom
+                conversationContainer.scrollTop = conversationContainer.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error loading ticket conversation:', error);
+            });
+        }
+
+        // Load KYC details
+        function loadKYCDetails(kycId) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${kycId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to load KYC details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const kyc = data.kyc;
+                
+                // Update user info
+                document.getElementById('kyc-fullname').textContent = `${kyc.user.firstName} ${kyc.user.lastName}`;
+                document.getElementById('kyc-dob').textContent = kyc.dateOfBirth ? new Date(kyc.dateOfBirth).toLocaleDateString() : 'Not provided';
+                document.getElementById('kyc-country').textContent = kyc.user.country || 'Not provided';
+                document.getElementById('kyc-submitted').textContent = new Date(kyc.submittedAt).toLocaleString();
+                document.getElementById('kyc-updated').textContent = kyc.updatedAt ? new Date(kyc.updatedAt).toLocaleString() : 'Not updated';
+                
+                // Update status badge
+                const statusBadge = document.getElementById('kyc-current-status');
+                statusBadge.textContent = kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1);
+                statusBadge.className = 'badge ' + (
+                    kyc.status === 'approved' ? 'bg-success' : 
+                    kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'
+                );
+                
+                // Update document images
+                document.getElementById('kyc-id-front').src = kyc.idFrontImage || 'https://via.placeholder.com/400x250?text=ID+Front';
+                document.getElementById('kyc-id-back').src = kyc.idBackImage || 'https://via.placeholder.com/400x250?text=ID+Back';
+                document.getElementById('kyc-proof-address').src = kyc.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
+                document.getElementById('kyc-selfie').src = kyc.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
+            })
+            .catch(error => {
+                console.error('Error loading KYC details:', error);
+            });
+        }
+
+        // Assign ticket to me
+        function assignTicketToMe() {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/assign`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    adminId: currentAdminData._id
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to assign ticket');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Ticket has been assigned to you');
+                loadTicketDetails(currentTicketId);
+            })
+            .catch(error => {
+                showError('Failed to assign ticket: ' + error.message);
+                console.error('Error assigning ticket:', error);
+            });
+        }
+
+        // Update ticket status
+        function updateTicketStatus() {
+            const status = document.getElementById('ticket-status-select').value;
+            const priority = document.getElementById('ticket-priority-select').value;
             
-            // Update conversation
-            updateTicketConversation(currentTicketId);
-        })
-        .catch(error => {
-            console.error('Error sending reply:', error);
-        });
-    }
-
-    // Approve or reject KYC
-    function approveKYC(approve) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/approve`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                approve
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status,
+                    priority
+                })
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update KYC status');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess(`KYC has been ${approve ? 'approved' : 'rejected'}`);
-            loadKYCDetails(currentKycId);
-            loadKYC(); // Refresh KYC list
-        })
-        .catch(error => {
-            console.error('Error updating KYC status:', error);
-        });
-    }
-
-    // Request more KYC info
-    function requestMoreKYCInfo() {
-        const reason = prompt('Please specify what additional information is required:');
-        
-        if (!reason) {
-            return;
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update ticket');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Ticket has been updated successfully');
+                loadTicketDetails(currentTicketId);
+                loadTickets(); // Refresh tickets list
+            })
+            .catch(error => {
+                showError('Failed to update ticket: ' + error.message);
+                console.error('Error updating ticket:', error);
+            });
         }
-        
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/request-info`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                reason
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to request more info');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess('Request for more information has been sent');
-            loadKYCDetails(currentKycId);
-        })
-        .catch(error => {
-            console.error('Error requesting more info:', error);
-        });
-    }
 
-    // Send message to user
-    function sendUserMessage(message) {
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/message`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to send message');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess('Message has been sent to user');
-        })
-        .catch(error => {
-            console.error('Error sending message:', error);
-        });
-    }
-
-    // Reset user password
-    function resetUserPassword() {
-        const newPassword = prompt('Enter new password for the user:');
-        
-        if (!newPassword) {
-            return;
-        }
-        
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/reset-password`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                newPassword
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to reset password');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess('Password has been reset successfully');
-        })
-        .catch(error => {
-            console.error('Error resetting password:', error);
-        });
-    }
-
-    // Toggle user status
-    function toggleUserStatus() {
-        const currentStatus = document.getElementById('user-detail-status').textContent.toLowerCase();
-        const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
-        const confirmMessage = `Are you sure you want to ${newStatus === 'active' ? 'activate' : 'suspend'} this user?`;
-        
-        if (!confirm(confirmMessage)) {
-            return;
-        }
-        
-        fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/status`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                status: newStatus
-            })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update user status');
-            }
-            return response.json();
-        })
-        .then(data => {
-            showSuccess(`User has been ${newStatus === 'active' ? 'activated' : 'suspended'}`);
-            loadUserDetails(currentUserId);
-            loadUsers(); // Refresh users list
-        })
-        .catch(error => {
-            console.error('Error updating user status:', error);
-        });
-    }
-
-    // Export data
-    function exportData(type) {
-        let endpoint = '';
-        
-        switch(type) {
-            case 'users':
-                endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
-                break;
-            case 'trades':
-                endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
-                break;
-            case 'transactions':
-                endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
-                break;
-            case 'tickets':
-                endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
-                break;
-            case 'logs':
-                endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
-                break;
-            default:
+        // Send ticket reply
+        function sendTicketReply() {
+            const message = document.getElementById('ticket-reply').value;
+            
+            if (!message.trim()) {
+                showError('Please enter a message');
                 return;
+            }
+            
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/tickets/${currentTicketId}/reply`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message,
+                    isAdmin: true
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send reply');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Clear reply textarea
+                document.getElementById('ticket-reply').value = '';
+                
+                // Update conversation
+                updateTicketConversation(currentTicketId);
+            })
+            .catch(error => {
+                showError('Failed to send reply: ' + error.message);
+                console.error('Error sending reply:', error);
+            });
         }
-        
-        fetch(endpoint, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to export data');
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            // Create download link
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url);
-            a.remove();
-        })
-        .catch(error => {
-            console.error(`Error exporting ${type}:`, error);
-        });
-    }
 
-    // Add new user notification
-    function addNewUserNotification(user) {
-        const notificationsCount = document.getElementById('notifications-count');
-        const currentCount = parseInt(notificationsCount.textContent);
-        notificationsCount.textContent = currentCount + 1;
-        
-        const notificationsList = document.getElementById('notifications-list');
-        const notification = document.createElement('li');
-        notification.innerHTML = `
-            <a class="dropdown-item" href="#">
-                <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <i class="bi bi-person-plus text-primary"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        <p class="mb-0">New user registered: ${user.firstName} ${user.lastName}</p>
-                        <small class="text-muted">Just now</small>
-                    </div>
-                </div>
-            </a>
-        `;
-        notificationsList.insertBefore(notification, notificationsList.firstChild);
-        
-        // Update stats
-        updateUserStats();
-    }
-
-    // Add new trade notification
-    function addNewTradeNotification(trade) {
-        const notificationsCount = document.getElementById('notifications-count');
-        const currentCount = parseInt(notificationsCount.textContent);
-        notificationsCount.textContent = currentCount + 1;
-        
-        const notificationsList = document.getElementById('notifications-list');
-        const notification = document.createElement('li');
-        notification.innerHTML = `
-            <a class="dropdown-item" href="#">
-                <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <i class="bi bi-currency-exchange text-success"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        <p class="mb-0">New trade completed: $${trade.amount.toFixed(2)}</p>
-                        <small class="text-muted">Just now</small>
-                    </div>
-                </div>
-            </a>
-        `;
-        notificationsList.insertBefore(notification, notificationsList.firstChild);
-        
-        // Update stats
-        updateTradeStats();
-    }
-
-    // Add new ticket notification
-    function addNewTicketNotification(ticket) {
-        const notificationsCount = document.getElementById('notifications-count');
-        const currentCount = parseInt(notificationsCount.textContent);
-        notificationsCount.textContent = currentCount + 1;
-        
-        const pendingTicketsCount = document.getElementById('pending-tickets-count');
-        const currentTicketsCount = parseInt(pendingTicketsCount.textContent);
-        pendingTicketsCount.textContent = currentTicketsCount + 1;
-        
-        const notificationsList = document.getElementById('notifications-list');
-        const notification = document.createElement('li');
-        notification.innerHTML = `
-            <a class="dropdown-item" href="#">
-                <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <i class="bi bi-ticket-perforated text-warning"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        <p class="mb-0">New support ticket: ${ticket.subject}</p>
-                        <small class="text-muted">Just now</small>
-                    </div>
-                </div>
-            </a>
-        `;
-        notificationsList.insertBefore(notification, notificationsList.firstChild);
-        
-        // Update stats
-        updateTicketStats();
-    }
-
-    // Add new KYC notification
-    function addNewKycNotification(kyc) {
-        const notificationsCount = document.getElementById('notifications-count');
-        const currentCount = parseInt(notificationsCount.textContent);
-        notificationsCount.textContent = currentCount + 1;
-        
-        const pendingKycCount = document.getElementById('pending-kyc-count');
-        const currentKycCount = parseInt(pendingKycCount.textContent);
-        pendingKycCount.textContent = currentKycCount + 1;
-        
-        const notificationsList = document.getElementById('notifications-list');
-        const notification = document.createElement('li');
-        notification.innerHTML = `
-            <a class="dropdown-item" href="#">
-                <div class="d-flex align-items-center">
-                    <div class="flex-shrink-0">
-                        <i class="bi bi-shield-check text-info"></i>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                        <p class="mb-0">New KYC submission: ${kyc.user.firstName} ${kyc.user.lastName}</p>
-                        <small class="text-muted">Just now</small>
-                    </div>
-                </div>
-            </a>
-        `;
-        notificationsList.insertBefore(notification, notificationsList.firstChild);
-        
-        // Update stats
-        updateKycStats();
-    }
-
-    // Update user stats
-    function updateUserStats() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/users', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update user stats');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
-            document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
-            document.getElementById('user-growth-rate').textContent = data.growthRate + '%';
-            
-            // Update chart if on dashboard
-            if (document.getElementById('dashboard-section').style.display === 'block') {
-                updateGrowthChart(data.chartData);
-            }
-        })
-        .catch(error => {
-            console.error('Error updating user stats:', error);
-        });
-    }
-
-    // Update trade stats
-    function updateTradeStats() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/trades', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update trade stats');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
-            document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
-            document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
-            document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
-            
-            // Update chart if on dashboard
-            if (document.getElementById('dashboard-section').style.display === 'block') {
-                updateGrowthChart(data.chartData);
-            }
-        })
-        .catch(error => {
-            console.error('Error updating trade stats:', error);
-        });
-    }
-
-    // Update ticket stats
-    function updateTicketStats() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/tickets', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update ticket stats');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
-            
-            // Update notifications if needed
-            loadNotifications();
-        })
-        .catch(error => {
-            console.error('Error updating ticket stats:', error);
-        });
-    }
-
-    // Update KYC stats
-    function updateKycStats() {
-        fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/kyc', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to update KYC stats');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
-            
-            // Update user distribution chart if on dashboard
-            if (document.getElementById('dashboard-section').style.display === 'block') {
-                updateUserDistributionChart(data.userDistribution);
-            }
-            
-            // Update notifications if needed
-            loadNotifications();
-        })
-        .catch(error => {
-            console.error('Error updating KYC stats:', error);
-        });
-    }
-
-    // Show error message
-    function showError(message) {
-        const errorAlert = document.getElementById('error-alert');
-        if (errorAlert) {
-            document.getElementById('error-message').textContent = message;
-            errorAlert.style.display = 'block';
-            setTimeout(() => {
-                errorAlert.style.display = 'none';
-            }, 5000);
-        } else {
-            console.error('Error message:', message);
+        // Approve or reject KYC
+        function approveKYC(approve) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/approve`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    approve
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update KYC status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess(`KYC has been ${approve ? 'approved' : 'rejected'}`);
+                loadKYCDetails(currentKycId);
+                loadKYC(); // Refresh KYC list
+            })
+            .catch(error => {
+                showError('Failed to update KYC status: ' + error.message);
+                console.error('Error updating KYC status:', error);
+            });
         }
-    }
 
-    // Show success message
-    function showSuccess(message) {
-        const successAlert = document.getElementById('success-alert');
-        if (successAlert) {
-            document.getElementById('success-message').textContent = message;
-            successAlert.style.display = 'block';
-            setTimeout(() => {
-                successAlert.style.display = 'none';
-            }, 5000);
-        } else {
-            console.log('Success message:', message);
+        // Request more KYC info
+        function requestMoreKYCInfo() {
+            const reason = prompt('Please specify what additional information is required:');
+            
+            if (!reason) {
+                return;
+            }
+            
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${currentKycId}/request-info`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    reason
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to request more info');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Request for more information has been sent');
+                loadKYCDetails(currentKycId);
+            })
+            .catch(error => {
+                showError('Failed to request more info: ' + error.message);
+                console.error('Error requesting more info:', error);
+            });
         }
-    }
-</script>
+
+        // Send message to user
+        function sendUserMessage(message) {
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/message`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Message has been sent to user');
+            })
+            .catch(error => {
+                showError('Failed to send message: ' + error.message);
+                console.error('Error sending message:', error);
+            });
+        }
+
+        // Reset user password
+        function resetUserPassword() {
+            const newPassword = prompt('Enter new password for the user:');
+            
+            if (!newPassword) {
+                return;
+            }
+            
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newPassword
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to reset password');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess('Password has been reset successfully');
+            })
+            .catch(error => {
+                showError('Failed to reset password: ' + error.message);
+                console.error('Error resetting password:', error);
+            });
+        }
+
+        // Toggle user status
+        function toggleUserStatus() {
+            const currentStatus = document.getElementById('user-detail-status').textContent.toLowerCase();
+            const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+            const confirmMessage = `Are you sure you want to ${newStatus === 'active' ? 'activate' : 'suspend'} this user?`;
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${currentUserId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    status: newStatus
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update user status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showSuccess(`User has been ${newStatus === 'active' ? 'activated' : 'suspended'}`);
+                loadUserDetails(currentUserId);
+                loadUsers(); // Refresh users list
+            })
+            .catch(error => {
+                showError('Failed to update user status: ' + error.message);
+                console.error('Error updating user status:', error);
+            });
+        }
+
+        // Export data
+        function exportData(type) {
+            let endpoint = '';
+            
+            switch(type) {
+                case 'users':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
+                    break;
+                case 'trades':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
+                    break;
+                case 'transactions':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
+                    break;
+                case 'tickets':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
+                    break;
+                case 'logs':
+                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
+                    break;
+                default:
+                    return;
+            }
+            
+            fetch(endpoint, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to export data');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            })
+            .catch(error => {
+                showError(`Failed to export ${type}: ${error.message}`);
+                console.error(`Error exporting ${type}:`, error);
+            });
+        }
+
+        // Add new user notification
+        function addNewUserNotification(user) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-person-plus text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New user registered: ${user.firstName} ${user.lastName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateUserStats();
+        }
+
+        // Add new trade notification
+        function addNewTradeNotification(trade) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-currency-exchange text-success"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New trade completed: $${trade.amount.toFixed(2)}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTradeStats();
+        }
+
+        // Add new ticket notification
+        function addNewTicketNotification(ticket) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingTicketsCount = document.getElementById('pending-tickets-count');
+            const currentTicketsCount = parseInt(pendingTicketsCount.textContent);
+            pendingTicketsCount.textContent = currentTicketsCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-ticket-perforated text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New support ticket: ${ticket.subject}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateTicketStats();
+        }
+
+        // Add new KYC notification
+        function addNewKycNotification(kyc) {
+            const notificationsCount = document.getElementById('notifications-count');
+            const currentCount = parseInt(notificationsCount.textContent);
+            notificationsCount.textContent = currentCount + 1;
+            
+            const pendingKycCount = document.getElementById('pending-kyc-count');
+            const currentKycCount = parseInt(pendingKycCount.textContent);
+            pendingKycCount.textContent = currentKycCount + 1;
+            
+            const notificationsList = document.getElementById('notifications-list');
+            const notification = document.createElement('li');
+            notification.innerHTML = `
+                <a class="dropdown-item" href="#">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-shield-check text-info"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <p class="mb-0">New KYC submission: ${kyc.user.firstName} ${kyc.user.lastName}</p>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </a>
+            `;
+            notificationsList.insertBefore(notification, notificationsList.firstChild);
+            
+            // Update stats
+            updateKycStats();
+        }
+
+        // Update user stats
+        function updateUserStats() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update user stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-users').textContent = data.totalUsers.toLocaleString();
+                document.getElementById('verified-users').textContent = data.verifiedUsers.toLocaleString();
+                document.getElementById('user-growth-rate').textContent = data.growthRate + '%';
+                
+                // Update chart if on dashboard
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateGrowthChart(data.chartData);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating user stats:', error);
+            });
+        }
+
+        // Update trade stats
+        function updateTradeStats() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/trades', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update trade stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('total-trades').textContent = data.totalTrades.toLocaleString();
+                document.getElementById('total-volume').textContent = '$' + data.totalVolume.toLocaleString();
+                document.getElementById('trade-growth-rate').textContent = data.tradeGrowthRate + '%';
+                document.getElementById('volume-change-rate').textContent = data.volumeChangeRate + '%';
+                
+                // Update chart if on dashboard
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateGrowthChart(data.chartData);
+                }
+            })
+            .catch(error => {
+                console.error('Error updating trade stats:', error);
+            });
+        }
+
+        // Update ticket stats
+        function updateTicketStats() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/tickets', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update ticket stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('pending-tickets-count').textContent = data.pendingTickets;
+                
+                // Update notifications if needed
+                loadNotifications();
+            })
+            .catch(error => {
+                console.error('Error updating ticket stats:', error);
+            });
+        }
+
+        // Update KYC stats
+        function updateKycStats() {
+            fetch('https://website-backendd-1.onrender.com/api/v1/admin/stats/kyc', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + authToken,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update KYC stats');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('pending-kyc-count').textContent = data.pendingKYC;
+                
+                // Update user distribution chart if on dashboard
+                if (document.getElementById('dashboard-section').style.display === 'block') {
+                    updateUserDistributionChart(data.userDistribution);
+                }
+                
+                // Update notifications if needed
+                loadNotifications();
+            })
+            .catch(error => {
+                console.error('Error updating KYC stats:', error);
+            });
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorAlert = document.getElementById('error-alert');
+            if (errorAlert) {
+                document.getElementById('error-message').textContent = message;
+                errorAlert.style.display = 'block';
+                setTimeout(() => {
+                    errorAlert.style.display = 'none';
+                }, 5000);
+            } else {
+                console.error('Error message:', message);
+            }
+        }
+
+        // Show success message
+        function showSuccess(message) {
+            const successAlert = document.getElementById('success-alert');
+            if (successAlert) {
+                document.getElementById('success-message').textContent = message;
+                successAlert.style.display = 'block';
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 5000);
+            } else {
+                console.log('Success message:', message);
+            }
+        }
+    </script>
 </body>
 </html>
