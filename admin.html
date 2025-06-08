@@ -2910,7 +2910,7 @@
         // Load activity logs
      // Frontend - Update the loadActivityLogs function
 function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-    let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}`;
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=5`;
     if (search) url += `&search=${encodeURIComponent(search)}`;
     if (type) url += `&action=${type}`;
     if (date) url += `&date=${date}`;
@@ -2927,50 +2927,72 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         return response.json();
     })
     .then(data => {
-        const tbody = document.getElementById('logs-table-body');
-        tbody.innerHTML = '';
+        if (!data.success || !data.data) {
+            throw new Error('Invalid data format received');
+        }
+
+        const activityFeed = document.getElementById('activity-feed');
+        activityFeed.innerHTML = '';
 
         data.data.logs.forEach(log => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${log._id.substring(0, 8)}</td>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(log.user?.fullName || 'System')}&background=7367f0&color=fff" 
-                             alt="User" class="user-avatar">
-                        <span>${log.user?.fullName || 'System'}</span>
-                    </div>
-                </td>
-                <td>${log.activity}</td>
-                <td>
-                    <span class="badge ${log.type === 'trade' ? 'bg-success' : 
-                                      log.type === 'login' ? 'bg-primary' : 
-                                      log.type === 'withdrawal' ? 'bg-warning' : 'bg-secondary'}">
-                        ${log.type.charAt(0).toUpperCase() + log.type.slice(1)}
-                    </span>
-                </td>
-                <td>
-                    <div class="device-info">
-                        <span class="badge bg-info">${log.device?.type || 'Desktop'}</span>
-                        <small class="text-muted">${log.device?.os || 'Unknown OS'}</small>
-                    </div>
-                </td>
-                <td>
-                    ${log.location?.country || 'Unknown'}${log.location?.city ? `, ${log.location.city}` : ''}
-                </td>
-                <td>${new Date(log.timestamp).toLocaleString()}</td>
-            `;
-            tbody.appendChild(row);
-        });
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
 
-        updatePagination('logs-pagination', data.data.totalPages, page);
+            let iconClass = '';
+            let iconBg = '';
+            let activityText = log.action;
+
+            switch(log.action.toLowerCase()) {
+                case 'login':
+                case 'user_login':
+                    iconClass = 'bi-box-arrow-in-right';
+                    iconBg = 'primary';
+                    activityText = `User ${log.user?.fullName || 'Unknown'} logged in`;
+                    break;
+                case 'trade':
+                case 'trade_executed':
+                    iconClass = 'bi-currency-exchange';
+                    iconBg = 'success';
+                    activityText = `Trade executed by ${log.user?.fullName || 'Unknown'}`;
+                    break;
+                case 'withdrawal':
+                case 'withdrawal_requested':
+                    iconClass = 'bi-cash-stack';
+                    iconBg = 'warning';
+                    activityText = `Withdrawal requested by ${log.user?.fullName || 'Unknown'}`;
+                    break;
+                default:
+                    iconClass = 'bi-activity';
+                    iconBg = 'secondary';
+            }
+
+            activityItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                <i class="bi ${iconClass}"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${activityText}</h6>
+                            <p class="mb-0">
+                                ${log.device?.type ? `${log.device.type} (${log.device.os})` : 'Unknown device'} | 
+                                ${log.location?.country || 'Unknown location'}
+                            </p>
+                        </div>
+                    </div>
+                    <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
+                </div>
+            `;
+            activityFeed.appendChild(activityItem);
+        });
     })
     .catch(error => {
         showError('Error loading activity logs: ' + error.message);
         console.error('Error loading activity logs:', error);
     });
 }
-
         // Update pagination
         function updatePagination(elementId, totalPages, currentPage) {
             const pagination = document.getElementById(elementId);
