@@ -828,40 +828,47 @@
       try {
         // Make API call to backend for email/password login
         const response = await fetch(`${API_BASE_URL}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Login failed');
-        }
-        
-        const { token, user } = await response.json();
-        
-        // Store the token and user data based on remember me preference
-        AuthManager.setToken(token, rememberMe);
-        AuthManager.setUserData(user, rememberMe);
-        
-        // Successful login
-        formSuccess.textContent = 'Login successful! Redirecting...';
-        formSuccess.style.display = 'block';
-        
-        // Redirect to dashboard page
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1500);
-        
-      } catch (error) {
-        console.error('Login error:', error);
-        formError.textContent = error.message;
-        formError.style.display = 'block';
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    });
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({ 
+      email: email.trim(),
+      password: password
+    }),
+    credentials: 'include' // Important for cookies
+  });
+  
+  const responseData = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(responseData.error || responseData.message || 'Login failed');
+  }
+  
+  const { token, user } = responseData;
+  
+  // Store the token and user data based on remember me preference
+  AuthManager.setToken(token, rememberMe);
+  AuthManager.setUserData(user, rememberMe);
+  
+  // Successful login
+  formSuccess.textContent = 'Login successful! Redirecting...';
+  formSuccess.style.display = 'block';
+  
+  // Redirect to dashboard page
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 1500);
+  
+} catch (error) {
+  console.error('Login error:', error);
+  formError.textContent = error.message || 'Login failed. Please try again.';
+  formError.style.display = 'block';
+} finally {
+  submitBtn.textContent = originalText;
+  submitBtn.disabled = false;
+}
     
     // Listen for account changes
     if (window.ethereum) {
