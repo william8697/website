@@ -2935,14 +2935,18 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         activityFeed.innerHTML = '';
 
         data.data.logs.forEach(log => {
-            const activityItem = document.createElement('div');
-            activityItem.className = 'activity-item';
+            // Safely get the action type
+            const actionType = log.action?.toLowerCase() || 'unknown';
+            
+            // Determine icon and background based on action type
+            let iconClass = 'bi-activity';
+            let iconBg = 'secondary';
+            let activityText = log.action || 'Unknown activity';
+            let deviceInfo = 'Unknown device';
+            let locationInfo = 'Unknown location';
 
-            let iconClass = '';
-            let iconBg = '';
-            let activityText = log.action;
-
-            switch(log.action.toLowerCase()) {
+            // Set icon and text based on action type
+            switch(actionType) {
                 case 'login':
                 case 'user_login':
                     iconClass = 'bi-box-arrow-in-right';
@@ -2961,11 +2965,20 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
                     iconBg = 'warning';
                     activityText = `Withdrawal requested by ${log.user?.fullName || 'Unknown'}`;
                     break;
-                default:
-                    iconClass = 'bi-activity';
-                    iconBg = 'secondary';
             }
 
+            // Set device info if available
+            if (log.device) {
+                deviceInfo = `${log.device.type || 'Unknown'} (${log.device.os || 'Unknown OS'})`;
+            }
+
+            // Set location info if available
+            if (log.location) {
+                locationInfo = `${log.location.country || 'Unknown'}${log.location.city ? `, ${log.location.city}` : ''}`;
+            }
+
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
             activityItem.innerHTML = `
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
@@ -2977,12 +2990,11 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
                         <div>
                             <h6 class="mb-0">${activityText}</h6>
                             <p class="mb-0">
-                                ${log.device?.type ? `${log.device.type} (${log.device.os})` : 'Unknown device'} | 
-                                ${log.location?.country || 'Unknown location'}
+                                ${deviceInfo} | ${locationInfo}
                             </p>
                         </div>
                     </div>
-                    <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
+                    <span class="activity-time">${log.timestamp ? new Date(log.timestamp).toLocaleString() : 'Unknown time'}</span>
                 </div>
             `;
             activityFeed.appendChild(activityItem);
