@@ -254,7 +254,42 @@
             font-size: 0.75rem;
             color: #b9b9c3;
         }
-        
+        .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+        .avatar-initial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    color: white;
+}
+
+.bg-label-primary {
+    background-color: rgba(115, 103, 240, 0.1);
+    color: #7367f0;
+}
+
+.bg-label-success {
+    background-color: rgba(40, 199, 111, 0.1);
+    color: #28c76f;
+}
+
+.bg-label-warning {
+    background-color: rgba(255, 159, 67, 0.1);
+    color: #ff9f43;
+}
+
+.bg-label-secondary {
+    background-color: rgba(130, 134, 139, 0.1);
+    color: #82868b;
+}
         .dropdown-menu {
             border: none;
             box-shadow: 0 5px 25px 0 rgba(34, 41, 47, 0.1);
@@ -2239,7 +2274,7 @@
         }
 
         // Load dashboard data
-     function loadDashboardStats() {
+    function loadDashboardStats() {
     fetch('https://website-backendd-1.onrender.com/api/v1/admin/dashboard-stats', {
         method: 'GET',
         headers: {
@@ -2265,11 +2300,9 @@
         document.getElementById('volume-change-rate').textContent = data.data.volumeChangeRate + '%';
 
         // Load recent data
-        return Promise.all([
-            loadRecentUsers(),
-            loadRecentActivities(),
-            loadNotifications()
-        ]);
+        loadRecentUsers();
+        loadRecentActivities(); // Add this line
+        loadNotifications();
     })
     .catch(error => {
         showError('Error loading dashboard data: ' + error.message);
@@ -2915,7 +2948,101 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
 
         // Load activity logs
      // Frontend - Update the loadActivityLogs function
+// Function to load recent activities
+function loadRecentActivities() {
+    fetch('https://website-backendd-1.onrender.com/api/v1/admin/recent-activities', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load recent activities');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const activityFeed = document.getElementById('activity-feed');
+        activityFeed.innerHTML = '';
 
+        data.data.forEach(activity => {
+            // Determine icon and background based on activity type
+            let iconClass = 'bi-activity';
+            let iconBg = 'secondary';
+            let activityText = activity.description;
+            
+            // Set icon and text based on activity type
+            if (activity.type === 'login') {
+                iconClass = 'bi-box-arrow-in-right';
+                iconBg = 'primary';
+                activityText = `User ${activity.user?.fullName || 'Unknown'} logged in`;
+            } else if (activity.type === 'trade') {
+                iconClass = 'bi-currency-exchange';
+                iconBg = 'success';
+                activityText = `Trade executed by ${activity.user?.fullName || 'Unknown'}`;
+            } else if (activity.type === 'withdrawal') {
+                iconClass = 'bi-cash-stack';
+                iconBg = 'warning';
+                activityText = `Withdrawal requested by ${activity.user?.fullName || 'Unknown'}`;
+            }
+
+            // Create activity item
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                <i class="bi ${iconClass}"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${activityText}</h6>
+                            <p class="mb-0">
+                                <small class="text-muted">
+                                    IP: ${activity.ipAddress} | ${new Date(activity.timestamp).toLocaleString()}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="activity-time">${timeSince(activity.timestamp)}</span>
+                </div>
+            `;
+            activityFeed.appendChild(activityItem);
+        });
+    })
+    .catch(error => {
+        console.error('Error loading recent activities:', error);
+        showError('Error loading recent activities. Please try again later.');
+    });
+}
+
+// Helper function to display time since activity
+function timeSince(date) {
+    const now = new Date();
+    const then = new Date(date);
+    const seconds = Math.floor((now - then) / 1000);
+    
+    let interval = Math.floor(seconds / 31536000);
+    if (interval >= 1) return interval + "y ago";
+    
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) return interval + "m ago";
+    
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return interval + "d ago";
+    
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return interval + "h ago";
+    
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return interval + "m ago";
+    
+    return Math.floor(seconds) + "s ago";
+}
         // Update pagination
         function updatePagination(elementId, totalPages, currentPage) {
             const pagination = document.getElementById(elementId);
