@@ -3094,64 +3094,72 @@ function timeSince(date) {
         }
 
         // Load user details
-        function loadUserDetails(userId) {
-            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load user details');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const user = data.data.user;
-                
-                // Update avatar
-                document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=7367f0&color=fff`;
-                
-                // Update user info
-                document.getElementById('user-detail-name').textContent = user.fullName;
-                document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
-                document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
-                document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
-                document.getElementById('user-balance-input').value = user.balance.toFixed(2);
-                document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
-                
-                // Update status badge
-                const statusBadge = document.getElementById('user-detail-status');
-                statusBadge.textContent = user.status.charAt(0).toUpperCase() + user.status.slice(1);
-                statusBadge.className = 'badge ' + (
-                    user.status === 'active' ? 'bg-success' : 
-                    user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
-                );
-                
-                // Update KYC badge
-                const kycBadge = document.getElementById('user-detail-kyc');
-                kycBadge.textContent = user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
-                kycBadge.className = 'badge ' + (
-                    user.kycVerified ? 'bg-success' : 
-                    user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
-                );
-                
-                // Update suspend button text
-                const suspendBtn = document.getElementById('suspend-user-btn');
-                suspendBtn.textContent = user.status === 'suspended' ? 'Activate Account' : 'Suspend Account';
-                suspendBtn.className = user.status === 'suspended' ? 
-                    'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger';
-                
-                // Load user activities
-                updateUserActivities(userId);
-            })
-            .catch(error => {
-                showError('Error loading user details: ' + error.message);
-                console.error('Error loading user details:', error);
-            });
+       // Update the loadUserDetails function in admin.html
+function loadUserDetails(userId) {
+    fetch(`https://website-backendd-1.onrender.com/api/v1/admin/users/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load user details');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data || !data.data || !data.data.user) {
+            throw new Error('Invalid user data format');
+        }
+        
+        const user = data.data.user;
+        
+        // Update avatar
+        document.getElementById('user-detail-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=7367f0&color=fff`;
+        
+        // Update user info
+        document.getElementById('user-detail-name').textContent = user.fullName;
+        document.getElementById('user-detail-email').textContent = user.email || 'Wallet user';
+        document.getElementById('user-detail-wallet').textContent = user.walletAddress || 'Not connected';
+        document.getElementById('user-detail-country').textContent = user.country || 'Not specified';
+        document.getElementById('user-balance-input').value = user.balance ? user.balance.toFixed(2) : '0.00';
+        document.getElementById('user-detail-lastlogin').textContent = user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never';
+        
+        // Update status badge
+        const statusBadge = document.getElementById('user-detail-status');
+        statusBadge.textContent = user.status ? user.status.charAt(0).toUpperCase() + user.status.slice(1) : 'Unknown';
+        statusBadge.className = 'badge ' + (
+            user.status === 'active' ? 'bg-success' : 
+            user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'
+        );
+        
+        // Update KYC badge
+        const kycBadge = document.getElementById('user-detail-kyc');
+        kycBadge.textContent = user.kycStatus === 'approved' ? 'Verified' : 
+                              user.kycStatus === 'pending' ? 'Pending' : 'Unverified';
+        kycBadge.className = 'badge ' + (
+            user.kycStatus === 'approved' ? 'bg-success' : 
+            user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'
+        );
+        
+        // Update suspend button text
+        const suspendBtn = document.getElementById('suspend-user-btn');
+        suspendBtn.textContent = user.status === 'suspended' ? 'Activate Account' : 'Suspend Account';
+        suspendBtn.className = user.status === 'suspended' ? 
+            'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger';
+        
+        // Update user activities if available
+        if (data.data.activities) {
+            updateUserActivities(data.data.activities);
+        }
+    })
+    .catch(error => {
+        showError('Error loading user details: ' + error.message);
+        console.error('Error loading user details:', error);
+    });
+}
 
         // Update user activities
         function updateUserActivities(userId) {
