@@ -2710,134 +2710,143 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
 }
 
         // Load trades
-        function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (type) url += `&type=${type}`;
-            if (date) url += `&date=${date}`;
+        // Update loadTrades in admin.html
+function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/trades?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (type) url += `&type=${type}`;
+    if (date) url += `&date=${date}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load trades');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('trades-table-body');
-                tbody.innerHTML = '';
-
-                data.data.trades.forEach(trade => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${trade._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${trade.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge ${trade.type === 'arbitrage' ? 'bg-primary' : 'bg-info'}">
-                                ${trade.type.charAt(0).toUpperCase() + trade.type.slice(1)}
-                            </span>
-                        </td>
-                        <td>$${trade.amount.toFixed(2)}</td>
-                        <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit.toFixed(2)}</td>
-                        <td>
-                            <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                                ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>${new Date(trade.createdAt).toLocaleString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('trades-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading trades: ' + error.message);
-                console.error('Error loading trades:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load trades');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data || !data.data || !data.data.trades) {
+            throw new Error('Invalid trades data format');
         }
 
-        // Load transactions
-        function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (type) url += `&type=${type}`;
-            if (status) url += `&status=${status}`;
-            if (date) url += `&date=${date}`;
+        const tbody = document.getElementById('trades-table-body');
+        tbody.innerHTML = '';
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load transactions');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('transactions-table-body');
-                tbody.innerHTML = '';
+        data.data.trades.forEach(trade => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${trade._id.substring(0, 8)}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(trade.user.fullName)}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${trade.user.fullName}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge ${trade.type === 'arbitrage' ? 'bg-primary' : 'bg-info'}">
+                        ${trade.type.charAt(0).toUpperCase() + trade.type.slice(1)}
+                    </span>
+                </td>
+                <td>$${trade.amount.toFixed(2)}</td>
+                <td class="${trade.profit >= 0 ? 'text-success' : 'text-danger'}">$${trade.profit.toFixed(2)}</td>
+                <td>
+                    <span class="badge ${trade.status === 'completed' ? 'bg-success' : trade.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                        ${trade.status.charAt(0).toUpperCase() + trade.status.slice(1)}
+                    </span>
+                </td>
+                <td>${new Date(trade.date).toLocaleString()}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
 
-                data.data.transactions.forEach(transaction => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${transaction._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${transaction.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
-                        <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
-                        <td>${transaction.currency}</td>
-                        <td>
-                            <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
-                                ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>${new Date(transaction.createdAt).toLocaleString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
+        // Update pagination
+        updatePagination('trades-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        showError('Error loading trades: ' + error.message);
+        console.error('Error loading trades:', error);
+    });
+}
 
-                // Update pagination
-                updatePagination('transactions-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading transactions: ' + error.message);
-                console.error('Error loading transactions:', error);
-            });
+// Update loadTransactions in admin.html
+function loadTransactions(page = 1, search = '', type = '', status = '', date = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/transactions?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (type) url += `&type=${type}`;
+    if (status) url += `&status=${status}`;
+    if (date) url += `&date=${date}`;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load transactions');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data || !data.data || !data.data.transactions) {
+            throw new Error('Invalid transactions data format');
+        }
+
+        const tbody = document.getElementById('transactions-table-body');
+        tbody.innerHTML = '';
+
+        data.data.transactions.forEach(transaction => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${transaction._id.substring(0, 8)}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(transaction.user.fullName)}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${transaction.user.fullName}</span>
+                    </div>
+                </td>
+                <td>${transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}</td>
+                <td>${transaction.amount.toFixed(2)} ${transaction.currency}</td>
+                <td>${transaction.currency}</td>
+                <td>
+                    <span class="badge ${transaction.status === 'completed' ? 'bg-success' : transaction.status === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                        ${transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                    </span>
+                </td>
+                <td>${new Date(transaction.date).toLocaleString()}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('transactions-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        showError('Error loading transactions: ' + error.message);
+        console.error('Error loading transactions:', error);
+    });
+}
 
         // Load tickets
         function loadTickets(page = 1, search = '', status = '', priority = '') {
