@@ -2460,12 +2460,12 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         }
     })
     .then(response => {
-        if (!response.ok) throw new Error('Failed to load activity logs');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         return response.json();
     })
     .then(data => {
-        if (!data.success || !data.data || !Array.isArray(data.data.logs)) {
-            throw new Error('Invalid data format received');
+        if (!data || !data.success || !data.data || !Array.isArray(data.data.logs)) {
+            throw new Error('Invalid logs data format');
         }
 
         const activityFeed = document.getElementById('activity-feed');
@@ -2474,10 +2474,10 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         data.data.logs.forEach(log => {
             // Safely extract all properties with fallbacks
             const action = log.action || 'Unknown action';
-            const user = log.userId || {};
-            const device = log.device || {};
+            const user = log.user || {};
+            const device = log.deviceInfo || {};
             const location = log.location || {};
-            const timestamp = log.timestamp || log.createdAt || new Date();
+            const timestamp = log.timestamp || new Date();
             
             // Determine icon and background based on action type
             let iconClass = 'bi-activity';
@@ -2488,26 +2488,18 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
             if (action.toLowerCase().includes('login')) {
                 iconClass = 'bi-box-arrow-in-right';
                 iconBg = 'primary';
-                activityText = `User ${user.firstName || 'Unknown'} logged in`;
+                activityText = `User ${user.name || 'Unknown'} logged in`;
             } else if (action.toLowerCase().includes('trade')) {
                 iconClass = 'bi-currency-exchange';
                 iconBg = 'success';
-                activityText = `Trade executed by ${user.firstName || 'Unknown'}`;
+                activityText = `Trade executed by ${user.name || 'Unknown'}`;
             } else if (action.toLowerCase().includes('withdrawal')) {
                 iconClass = 'bi-cash-stack';
                 iconBg = 'warning';
-                activityText = `Withdrawal requested by ${user.firstName || 'Unknown'}`;
+                activityText = `Withdrawal requested by ${user.name || 'Unknown'}`;
             }
 
-            // Device and location info
-            const deviceInfo = device.type ? 
-                `${device.type} (${device.os || 'Unknown OS'})` : 
-                'Unknown device';
-                
-            const locationInfo = location.country ? 
-                `${location.country}${location.city ? `, ${location.city}` : ''}` : 
-                'Unknown location';
-
+            // Create activity item
             const activityItem = document.createElement('div');
             activityItem.className = 'activity-item';
             activityItem.innerHTML = `
@@ -2522,21 +2514,22 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
                             <h6 class="mb-0">${activityText}</h6>
                             <p class="mb-0">
                                 <small class="text-muted">
-                                    ${deviceInfo} | ${locationInfo} | 
-                                    ${new Date(timestamp).toLocaleString()}
+                                    ${device.os || 'Unknown OS'} | ${device.browser || 'Unknown browser'} | 
+                                    ${device.device || 'Unknown device'} | 
+                                    ${location.country || 'Unknown location'}
                                 </small>
                             </p>
                         </div>
                     </div>
-                    <span class="activity-time">${new Date(timestamp).toLocaleTimeString()}</span>
+                    <span class="activity-time">${new Date(timestamp).toLocaleString()}</span>
                 </div>
             `;
             activityFeed.appendChild(activityItem);
         });
     })
     .catch(error => {
-        showError('Error loading activity logs: ' + error.message);
         console.error('Error loading activity logs:', error);
+        showError('Error loading activity logs. Please try again later.');
     });
 }
 
@@ -2922,102 +2915,7 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
 
         // Load activity logs
      // Frontend - Update the loadActivityLogs function
-function loadActivityLogs(page = 1, search = '', type = '', date = '') {
-    let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=5`;
-    if (search) url += `&search=${encodeURIComponent(search)}`;
-    if (type) url += `&action=${type}`;
-    if (date) url += `&date=${date}`;
 
-    fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + authToken,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Failed to load activity logs');
-        return response.json();
-    })
-    .then(data => {
-        if (!data.success || !data.data) {
-            throw new Error('Invalid data format received');
-        }
-
-        const activityFeed = document.getElementById('activity-feed');
-        activityFeed.innerHTML = '';
-
-        data.data.logs.forEach(log => {
-            // Safely get the action type
-            const actionType = log.action?.toLowerCase() || 'unknown';
-            
-            // Determine icon and background based on action type
-            let iconClass = 'bi-activity';
-            let iconBg = 'secondary';
-            let activityText = log.action || 'Unknown activity';
-            let deviceInfo = 'Unknown device';
-            let locationInfo = 'Unknown location';
-
-            // Set icon and text based on action type
-            switch(actionType) {
-                case 'login':
-                case 'user_login':
-                    iconClass = 'bi-box-arrow-in-right';
-                    iconBg = 'primary';
-                    activityText = `User ${log.user?.fullName || 'Unknown'} logged in`;
-                    break;
-                case 'trade':
-                case 'trade_executed':
-                    iconClass = 'bi-currency-exchange';
-                    iconBg = 'success';
-                    activityText = `Trade executed by ${log.user?.fullName || 'Unknown'}`;
-                    break;
-                case 'withdrawal':
-                case 'withdrawal_requested':
-                    iconClass = 'bi-cash-stack';
-                    iconBg = 'warning';
-                    activityText = `Withdrawal requested by ${log.user?.fullName || 'Unknown'}`;
-                    break;
-            }
-
-            // Set device info if available
-            if (log.device) {
-                deviceInfo = `${log.device.type || 'Unknown'} (${log.device.os || 'Unknown OS'})`;
-            }
-
-            // Set location info if available
-            if (log.location) {
-                locationInfo = `${log.location.country || 'Unknown'}${log.location.city ? `, ${log.location.city}` : ''}`;
-            }
-
-            const activityItem = document.createElement('div');
-            activityItem.className = 'activity-item';
-            activityItem.innerHTML = `
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex">
-                        <div class="avatar me-3">
-                            <span class="avatar-initial rounded-circle bg-label-${iconBg}">
-                                <i class="bi ${iconClass}"></i>
-                            </span>
-                        </div>
-                        <div>
-                            <h6 class="mb-0">${activityText}</h6>
-                            <p class="mb-0">
-                                ${deviceInfo} | ${locationInfo}
-                            </p>
-                        </div>
-                    </div>
-                    <span class="activity-time">${log.timestamp ? new Date(log.timestamp).toLocaleString() : 'Unknown time'}</span>
-                </div>
-            `;
-            activityFeed.appendChild(activityItem);
-        });
-    })
-    .catch(error => {
-        showError('Error loading activity logs: ' + error.message);
-        console.error('Error loading activity logs:', error);
-    });
-}
         // Update pagination
         function updatePagination(elementId, totalPages, currentPage) {
             const pagination = document.getElementById(elementId);
