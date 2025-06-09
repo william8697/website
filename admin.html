@@ -2849,74 +2849,76 @@ function loadTransactions(page = 1, search = '', type = '', status = '', date = 
 }
 
         // Load tickets
-        function loadTickets(page = 1, search = '', status = '', priority = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (priority) url += `&priority=${priority}`;
+       function loadTickets(page = 1, search = '', status = '', priority = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/tickets?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (priority) url += `&priority=${priority}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load tickets');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('tickets-table-body');
-                tbody.innerHTML = '';
-
-                data.data.tickets.forEach(ticket => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${ticket._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.user.fullName)}&background=7367f0&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${ticket.user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${ticket.subject}</td>
-                        <td>
-                            <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
-                                ${ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
-                                ${ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1)}
-                            </span>
-                        </td>
-                        <td>${new Date(ticket.createdAt).toLocaleString()}</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
-                                    data-id="${ticket._id}" 
-                                    data-subject="${ticket.subject}" 
-                                    data-status="${ticket.status}" 
-                                    data-priority="${ticket.priority}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('tickets-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading tickets: ' + error.message);
-                console.error('Error loading tickets:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load tickets');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Changed from data.data.tickets to just data.tickets
+        const tickets = data.tickets || data.data?.tickets || [];
+        
+        const tbody = document.getElementById('tickets-table-body');
+        tbody.innerHTML = '';
 
+        tickets.forEach(ticket => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${ticket._id ? ticket._id.substring(0, 8) : ''}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(ticket.userId?.firstName || 'Unknown')}+${encodeURIComponent(ticket.userId?.lastName || 'User')}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${ticket.userId ? `${ticket.userId.firstName} ${ticket.userId.lastName}` : ticket.email}</span>
+                    </div>
+                </td>
+                <td>${ticket.subject || 'No subject'}</td>
+                <td>
+                    <span class="badge ${ticket.status === 'resolved' ? 'bg-success' : ticket.status === 'pending' ? 'bg-warning' : 'bg-primary'}">
+                        ${ticket.status ? ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1) : 'Unknown'}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge ${ticket.priority === 'high' ? 'bg-danger' : ticket.priority === 'medium' ? 'bg-warning' : 'bg-secondary'}">
+                        ${ticket.priority ? ticket.priority.charAt(0).toUpperCase() + ticket.priority.slice(1) : 'Unknown'}
+                    </span>
+                </td>
+                <td>${ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : 'Unknown date'}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-ticket-btn" 
+                            data-id="${ticket._id}" 
+                            data-subject="${ticket.subject}" 
+                            data-status="${ticket.status}" 
+                            data-priority="${ticket.priority}">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('tickets-pagination', data.totalPages || 1, page);
+    })
+    .catch(error => {
+        showError('Error loading tickets: ' + error.message);
+        console.error('Error loading tickets:', error);
+    });
+}
         // Load KYC
         function loadKYC(page = 1, search = '', status = '') {
             let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}`;
@@ -3315,49 +3317,69 @@ function loadUserDetails(userId) {
         }
 
         // Load KYC details
-        function loadKYCDetails(kycId) {
-            fetch(`https://website-backendd-1.onrender.com/api/v1/admin/kyc/${kycId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load KYC details');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const kyc = data.data.kyc;
-                
-                // Update user info
-                document.getElementById('kyc-fullname').textContent = kyc.user.fullName;
-                document.getElementById('kyc-dob').textContent = kyc.dateOfBirth ? new Date(kyc.dateOfBirth).toLocaleDateString() : 'Not provided';
-                document.getElementById('kyc-country').textContent = kyc.user.country || 'Not provided';
-                document.getElementById('kyc-submitted').textContent = new Date(kyc.submittedAt).toLocaleString();
-                document.getElementById('kyc-updated').textContent = kyc.updatedAt ? new Date(kyc.updatedAt).toLocaleString() : 'Not updated';
-                
-                // Update status badge
-                const statusBadge = document.getElementById('kyc-current-status');
-                statusBadge.textContent = kyc.status.charAt(0).toUpperCase() + kyc.status.slice(1);
-                statusBadge.className = 'badge ' + (
-                    kyc.status === 'approved' ? 'bg-success' : 
-                    kyc.status === 'pending' ? 'bg-warning' : 'bg-danger'
-                );
-                
-                // Update document images
-                document.getElementById('kyc-id-front').src = kyc.idFront || 'https://via.placeholder.com/400x250?text=ID+Front';
-                document.getElementById('kyc-id-back').src = kyc.idBack || 'https://via.placeholder.com/400x250?text=ID+Back';
-                document.getElementById('kyc-proof-address').src = kyc.proofOfAddress || 'https://via.placeholder.com/400x250?text=Proof+of+Address';
-                document.getElementById('kyc-selfie').src = kyc.selfieWithId || 'https://via.placeholder.com/400x250?text=Selfie+with+ID';
-            })
-            .catch(error => {
-                showError('Error loading KYC details: ' + error.message);
-                console.error('Error loading KYC details:', error);
-            });
+        function loadKYC(page = 1, search = '', status = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/kyc?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load KYC');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Changed from data.data.kycRequests to data.users or data.data?.users
+        const kycRequests = data.users || data.data?.users || [];
+        
+        const tbody = document.getElementById('kyc-table-body');
+        tbody.innerHTML = '';
+
+        kycRequests.forEach(kyc => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(kyc.firstName || 'Unknown')}+${encodeURIComponent(kyc.lastName || 'User')}&background=7367f0&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${kyc.firstName} ${kyc.lastName}</span>
+                    </div>
+                </td>
+                <td>${kyc.kycDocuments?.[0]?.documentType || 'Unknown'}</td>
+                <td>${kyc.kycDocuments?.[0]?.submittedAt ? new Date(kyc.kycDocuments[0].submittedAt).toLocaleDateString() : 'Unknown'}</td>
+                <td>
+                    <span class="badge ${kyc.kycStatus === 'approved' ? 'bg-success' : kyc.kycStatus === 'pending' ? 'bg-warning' : 'bg-danger'}">
+                        ${kyc.kycStatus ? kyc.kycStatus.charAt(0).toUpperCase() + kyc.kycStatus.slice(1) : 'Unknown'}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-kyc-btn" 
+                            data-id="${kyc._id}" 
+                            data-name="${kyc.firstName} ${kyc.lastName}" 
+                            data-country="${kyc.country}" 
+                            data-status="${kyc.kycStatus}">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('kyc-pagination', data.totalPages || 1, page);
+    })
+    .catch(error => {
+        showError('Error loading KYC: ' + error.message);
+        console.error('Error loading KYC:', error);
+    });
+}
 
         // Assign ticket to me
         function assignTicketToMe() {
