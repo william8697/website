@@ -3638,57 +3638,85 @@ function loadUserDetails(userId) {
         }
 
         // Export data
-        function exportData(type) {
-            let endpoint = '';
-            
-            switch(type) {
-                case 'users':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
-                    break;
-                case 'trades':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
-                    break;
-                case 'transactions':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
-                    break;
-                case 'tickets':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
-                    break;
-                case 'logs':
-                    endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
-                    break;
-                default:
-                    return;
-            }
-            
-            fetch(endpoint, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to export data');
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                // Create download link
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${type}-export-${new Date().toISOString().split('T')[0]}.csv`;
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            })
-            .catch(error => {
-                showError(`Failed to export ${type}: ` + error.message);
-                console.error(`Error exporting ${type}:`, error);
-            });
+       function exportData(type) {
+    let endpoint = '';
+    let filename = '';
+    
+    switch(type) {
+        case 'users':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/users/export';
+            filename = `users-export-${new Date().toISOString().split('T')[0]}.csv`;
+            break;
+        case 'trades':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/trades/export';
+            filename = `trades-export-${new Date().toISOString().split('T')[0]}.csv`;
+            break;
+        case 'transactions':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/transactions/export';
+            filename = `transactions-export-${new Date().toISOString().split('T')[0]}.csv`;
+            break;
+        case 'tickets':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/tickets/export';
+            filename = `tickets-export-${new Date().toISOString().split('T')[0]}.csv`;
+            break;
+        case 'logs':
+            endpoint = 'https://website-backendd-1.onrender.com/api/v1/admin/logs/export';
+            filename = `logs-export-${new Date().toISOString().split('T')[0]}.csv`;
+            break;
+        default:
+            showError('Invalid export type');
+            return;
+    }
+    
+    // Show loading state
+    const exportBtn = document.getElementById(`export-${type}-btn`);
+    const originalText = exportBtn.innerHTML;
+    exportBtn.innerHTML = '<span class="loading-spinner"></span> Exporting...';
+    exportBtn.disabled = true;
+    
+    fetch(endpoint, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(response.status === 500 ? 'Server error during export' : 'Failed to export data');
+        }
+        
+        // Check if response is CSV
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('text/csv')) {
+            return response.blob();
+        }
+        return response.json().then(data => {
+            throw new Error(data.error || 'Invalid export format');
+        });
+    })
+    .then(blob => {
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        
+        showSuccess(`${type.charAt(0).toUpperCase() + type.slice(1)} exported successfully`);
+    })
+    .catch(error => {
+        showError(`Failed to export ${type}: ${error.message}`);
+        console.error(`Error exporting ${type}:`, error);
+    })
+    .finally(() => {
+        // Reset button state
+        exportBtn.innerHTML = originalText;
+        exportBtn.disabled = false;
+    });
+}
 
         // Add new user notification
         function addNewUserNotification(user) {
