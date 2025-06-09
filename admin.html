@@ -2613,77 +2613,101 @@ function loadActivityLogs(page = 1, search = '', type = '', date = '') {
         }
 
         // Load users
-        function loadUsers(page = 1, search = '', status = '', kyc = '') {
-            let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
-            if (search) url += `&search=${encodeURIComponent(search)}`;
-            if (status) url += `&status=${status}`;
-            if (kyc) url += `&kyc=${kyc}`;
+       function loadUsers(page = 1, search = '', status = '', kyc = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/users?page=${page}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (status) url += `&status=${status}`;
+    if (kyc) url += `&kyc=${kyc}`;
 
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load users');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const tbody = document.getElementById('users-table-body');
-                tbody.innerHTML = '';
-
-                data.data.users.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user._id.substring(0, 8)}</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.fullName)}&background=${user.kycVerified ? '28c76f' : '00cfe8'}&color=fff" 
-                                     alt="User" class="user-avatar">
-                                <span>${user.fullName}</span>
-                            </div>
-                        </td>
-                        <td>${user.email || 'Wallet user'}</td>
-                        <td>${user.walletAddress ? user.walletAddress.substring(0, 6) + '...' + user.walletAddress.substring(user.walletAddress.length - 4) : 'N/A'}</td>
-                        <td>$${user.balance.toFixed(2)}</td>
-                        <td>
-                            <span class="badge ${user.status === 'active' ? 'bg-success' : user.status === 'inactive' ? 'bg-secondary' : 'bg-danger'}">
-                                ${user.status.charAt(0).toUpperCase() + user.status.slice(1)}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge ${user.kycVerified ? 'bg-success' : user.kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary'}">
-                                ${user.kycVerified ? 'Verified' : user.kycStatus === 'pending' ? 'Pending' : 'Unverified'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary view-user-btn" 
-                                    data-id="${user._id}" 
-                                    data-name="${user.fullName}" 
-                                    data-email="${user.email || ''}" 
-                                    data-wallet="${user.walletAddress || ''}" 
-                                    data-country="${user.country || ''}" 
-                                    data-status="${user.status}" 
-                                    data-kyc="${user.kycVerified ? 'verified' : user.kycStatus === 'pending' ? 'pending' : 'unverified'}">
-                                <i class="bi bi-eye"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Update pagination
-                updatePagination('users-pagination', data.data.totalPages, page);
-            })
-            .catch(error => {
-                showError('Error loading users: ' + error.message);
-                console.error('Error loading users:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to load users');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const tbody = document.getElementById('users-table-body');
+        tbody.innerHTML = '';
+
+        data.data.users.forEach(user => {
+            // Safely handle all properties with fallbacks
+            const userId = user._id || '';
+            const fullName = user.firstName && user.lastName 
+                ? `${user.firstName} ${user.lastName}` 
+                : 'Unknown User';
+            const email = user.email || 'Wallet user';
+            const walletAddress = user.walletAddress 
+                ? `${user.walletAddress.substring(0, 6)}...${user.walletAddress.substring(user.walletAddress.length - 4)}` 
+                : 'N/A';
+            const balance = typeof user.balance === 'number' ? user.balance.toFixed(2) : '0.00';
+            const status = user.status || 'active';
+            const kycStatus = user.kycStatus || 'not_submitted';
+            
+            // Create status badge with safe defaults
+            const statusText = status.charAt(0).toUpperCase() + status.slice(1);
+            const statusClass = status === 'active' ? 'bg-success' : 
+                              status === 'inactive' ? 'bg-secondary' : 'bg-danger';
+            
+            // Create KYC badge with safe defaults
+            const kycText = kycStatus === 'approved' ? 'Verified' : 
+                           kycStatus === 'pending' ? 'Pending' : 'Unverified';
+            const kycClass = kycStatus === 'approved' ? 'bg-success' : 
+                            kycStatus === 'pending' ? 'bg-warning' : 'bg-secondary';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${userId.substring(0, 8)}</td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=${kycStatus === 'approved' ? '28c76f' : '00cfe8'}&color=fff" 
+                             alt="User" class="user-avatar">
+                        <span>${fullName}</span>
+                    </div>
+                </td>
+                <td>${email}</td>
+                <td>${walletAddress}</td>
+                <td>$${balance}</td>
+                <td>
+                    <span class="badge ${statusClass}">
+                        ${statusText}
+                    </span>
+                </td>
+                <td>
+                    <span class="badge ${kycClass}">
+                        ${kycText}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary view-user-btn" 
+                            data-id="${userId}" 
+                            data-name="${fullName}" 
+                            data-email="${email}" 
+                            data-wallet="${user.walletAddress || ''}" 
+                            data-country="${user.country || ''}" 
+                            data-status="${status}" 
+                            data-kyc="${kycStatus}">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Update pagination
+        updatePagination('users-pagination', data.data.totalPages, page);
+    })
+    .catch(error => {
+        showError('Error loading users: ' + error.message);
+        console.error('Error loading users:', error);
+    });
+}
 
         // Load trades
         function loadTrades(page = 1, search = '', status = '', type = '', date = '') {
