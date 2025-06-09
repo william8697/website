@@ -2450,82 +2450,100 @@
 }
 
         // Load recent activities
-        function loadRecentActivities() {
-            fetch('https://website-backendd-1.onrender.com/api/v1/admin/logs?limit=5', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer ' + authToken,
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to load recent activities');
-                }
-                return response.json();
-            })
-            .then(data => {
-                const activityFeed = document.getElementById('activity-feed');
-                activityFeed.innerHTML = '';
+      // Update the loadActivityLogs function in admin.html
+function loadActivityLogs(page = 1, search = '', type = '', date = '') {
+    let url = `https://website-backendd-1.onrender.com/api/v1/admin/logs?page=${page}&limit=5`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (type) url += `&action=${type}`;
+    if (date) url += `&date=${date}`;
 
-                data.data.logs.forEach(log => {
-                    const activityItem = document.createElement('div');
-                    activityItem.className = 'activity-item';
-
-                    let iconClass = '';
-                    let iconBg = '';
-                    let activityText = '';
-
-                    switch(log.type) {
-                        case 'login':
-                            iconClass = 'bi-box-arrow-in-right';
-                            iconBg = 'primary';
-                            activityText = `User ${log.user.fullName} logged in`;
-                            break;
-                        case 'trade':
-                            iconClass = 'bi-currency-exchange';
-                            iconBg = 'success';
-                            activityText = `User ${log.user.fullName} completed a trade`;
-                            break;
-                        case 'withdrawal':
-                            iconClass = 'bi-cash-stack';
-                            iconBg = 'warning';
-                            activityText = `User ${log.user.fullName} requested a withdrawal`;
-                            break;
-                        case 'deposit':
-                            iconClass = 'bi-wallet2';
-                            iconBg = 'info';
-                            activityText = `User ${log.user.fullName} made a deposit`;
-                            break;
-                        default:
-                            iconClass = 'bi-activity';
-                            iconBg = 'secondary';
-                            activityText = log.description;
-                    }
-
-                    activityItem.innerHTML = `
-                        <div class="d-flex justify-content-between">
-                            <div class="d-flex">
-                                <div class="avatar me-3">
-                                    <span class="avatar-initial rounded-circle bg-label-${iconBg}">
-                                        <i class="bi ${iconClass}"></i>
-                                    </span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0">${activityText}</h6>
-                                    <p class="mb-0">${log.description}</p>
-                                </div>
-                            </div>
-                            <span class="activity-time">${new Date(log.timestamp).toLocaleString()}</span>
-                        </div>
-                    `;
-                    activityFeed.appendChild(activityItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading recent activities:', error);
-            });
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + authToken,
+            'Content-Type': 'application/json'
         }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to load activity logs');
+        return response.json();
+    })
+    .then(data => {
+        if (!data.success || !data.data || !Array.isArray(data.data.logs)) {
+            throw new Error('Invalid data format received');
+        }
+
+        const activityFeed = document.getElementById('activity-feed');
+        activityFeed.innerHTML = '';
+
+        data.data.logs.forEach(log => {
+            // Safely extract all properties with fallbacks
+            const action = log.action || 'Unknown action';
+            const user = log.userId || {};
+            const device = log.device || {};
+            const location = log.location || {};
+            const timestamp = log.timestamp || log.createdAt || new Date();
+            
+            // Determine icon and background based on action type
+            let iconClass = 'bi-activity';
+            let iconBg = 'secondary';
+            let activityText = action;
+            
+            // Set icon and text based on action type
+            if (action.toLowerCase().includes('login')) {
+                iconClass = 'bi-box-arrow-in-right';
+                iconBg = 'primary';
+                activityText = `User ${user.firstName || 'Unknown'} logged in`;
+            } else if (action.toLowerCase().includes('trade')) {
+                iconClass = 'bi-currency-exchange';
+                iconBg = 'success';
+                activityText = `Trade executed by ${user.firstName || 'Unknown'}`;
+            } else if (action.toLowerCase().includes('withdrawal')) {
+                iconClass = 'bi-cash-stack';
+                iconBg = 'warning';
+                activityText = `Withdrawal requested by ${user.firstName || 'Unknown'}`;
+            }
+
+            // Device and location info
+            const deviceInfo = device.type ? 
+                `${device.type} (${device.os || 'Unknown OS'})` : 
+                'Unknown device';
+                
+            const locationInfo = location.country ? 
+                `${location.country}${location.city ? `, ${location.city}` : ''}` : 
+                'Unknown location';
+
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+            activityItem.innerHTML = `
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded-circle bg-label-${iconBg}">
+                                <i class="bi ${iconClass}"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">${activityText}</h6>
+                            <p class="mb-0">
+                                <small class="text-muted">
+                                    ${deviceInfo} | ${locationInfo} | 
+                                    ${new Date(timestamp).toLocaleString()}
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="activity-time">${new Date(timestamp).toLocaleTimeString()}</span>
+                </div>
+            `;
+            activityFeed.appendChild(activityItem);
+        });
+    })
+    .catch(error => {
+        showError('Error loading activity logs: ' + error.message);
+        console.error('Error loading activity logs:', error);
+    });
+}
 
         // Load notifications
         function loadNotifications() {
