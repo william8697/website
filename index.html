@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Professional Crypto Trading Platform with real-time market data">
   <meta name="keywords" content="crypto, trading, bitcoin, ethereum, cryptocurrency">
-  <title>Crypto Trading Platform</title>
+  <title>CryptoTrade Pro</title>
   <style>
     :root {
       --primary-bg: #0b0e11;
@@ -64,7 +64,7 @@
     }
 
     .logo-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: var(--primary-accent);
       white-space: nowrap;
@@ -152,6 +152,8 @@
       justify-content: center;
       font-weight: bold;
       cursor: pointer;
+      background-size: cover;
+      background-position: center;
     }
 
     .dropdown-menu {
@@ -255,7 +257,7 @@
 
     .section-link {
       color: var(--primary-accent);
-      font-size: 13px;
+      font-size: 14px;
       text-decoration: none;
       font-weight: 500;
       cursor: pointer;
@@ -279,7 +281,7 @@
     th, td {
       padding: 12px 16px;
       text-align: left;
-      font-size: 13px;
+      font-size: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
@@ -302,19 +304,18 @@
     }
 
     .coin-icon {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border-radius: 50%;
     }
 
     .coin-name {
       font-weight: 500;
-      font-size: 13px;
     }
 
     .coin-symbol {
       color: var(--text-secondary);
-      font-size: 12px;
+      font-size: 13px;
       margin-left: 4px;
     }
 
@@ -354,7 +355,7 @@
     }
 
     .stat-label {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
       margin-bottom: 4px;
     }
@@ -411,11 +412,10 @@
 
     .price {
       font-weight: 500;
-      font-size: 13px;
     }
 
     .price-change {
-      font-size: 12px;
+      font-size: 13px;
     }
 
     /* Trading View */
@@ -431,7 +431,7 @@
     .trading-tab {
       padding: 12px 16px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-secondary);
       position: relative;
@@ -471,17 +471,11 @@
       margin-top: 16px;
     }
 
-    .reviews-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-      padding: 16px;
-    }
-
     .review-card {
       background-color: var(--card-bg);
       border-radius: 4px;
       padding: 16px;
+      margin-bottom: 12px;
       border: 1px solid var(--border-color);
     }
 
@@ -491,21 +485,22 @@
       margin-bottom: 12px;
     }
 
-    .reviewer-avatar {
+    .review-avatar {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       margin-right: 12px;
-      object-fit: cover;
+      background-size: cover;
+      background-position: center;
     }
 
-    .reviewer-info {
+    .review-user {
       flex: 1;
     }
 
-    .reviewer-name {
+    .review-name {
       font-weight: 500;
-      font-size: 14px;
+      margin-bottom: 2px;
     }
 
     .review-date {
@@ -519,7 +514,7 @@
     }
 
     .review-content {
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.5;
     }
 
@@ -587,7 +582,7 @@
     }
 
     .modal-title {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
     }
 
@@ -615,8 +610,8 @@
     }
 
     .coin-icon-lg {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
     }
 
     .coin-name-lg {
@@ -626,19 +621,19 @@
 
     .coin-symbol-lg {
       color: var(--text-secondary);
-      font-size: 14px;
+      font-size: 16px;
       margin-left: 8px;
     }
 
     .coin-price-lg {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 600;
       margin: 8px 0;
     }
 
     .price-change-lg {
-      font-size: 14px;
-      padding: 6px 10px;
+      font-size: 16px;
+      padding: 8px 12px;
       border-radius: 4px;
       display: inline-block;
     }
@@ -654,21 +649,21 @@
     .coin-stats {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin: 12px 0;
+      gap: 16px;
+      margin: 16px 0;
     }
 
     .stat-card {
       background-color: var(--card-bg);
-      padding: 12px;
+      padding: 16px;
       border-radius: 4px;
       border: 1px solid var(--border-color);
     }
 
     .stat-label-lg {
-      font-size: 13px;
+      font-size: 14px;
       color: var(--text-secondary);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .stat-value-lg {
@@ -677,7 +672,7 @@
     }
 
     .coin-chart-container {
-      margin-top: 20px;
+      margin-top: 24px;
       height: 350px;
       background-color: var(--card-bg);
       border-radius: 4px;
@@ -686,8 +681,8 @@
 
     .trade-actions {
       display: flex;
-      gap: 12px;
-      margin-top: 20px;
+      gap: 16px;
+      margin-top: 24px;
     }
 
     /* Portfolio Table */
@@ -699,24 +694,24 @@
 
     /* Form Styles */
     .form-group {
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .form-label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
+      margin-bottom: 8px;
+      font-size: 14px;
       font-weight: 500;
     }
 
     .form-control {
       width: 100%;
-      padding: 8px 10px;
+      padding: 10px 12px;
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
       border-radius: 4px;
       color: var(--text-primary);
-      font-size: 13px;
+      font-size: 14px;
       transition: all 0.2s;
     }
 
@@ -728,11 +723,42 @@
 
     .form-row {
       display: flex;
-      gap: 12px;
+      gap: 16px;
     }
 
     .form-col {
       flex: 1;
+    }
+
+    /* Toast Notifications */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--secondary-bg);
+      color: var(--text-primary);
+      padding: 12px 24px;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      max-width: 90%;
+      text-align: center;
+      border-left: 4px solid var(--primary-accent);
+    }
+
+    .toast.success {
+      border-left-color: var(--positive);
+    }
+
+    .toast.error {
+      border-left-color: var(--negative);
+    }
+
+    .toast.show {
+      opacity: 1;
     }
 
     /* Footer */
@@ -740,7 +766,7 @@
       text-align: center;
       padding: 20px;
       color: var(--text-secondary);
-      font-size: 12px;
+      font-size: 14px;
       border-top: 1px solid var(--border-color);
       margin-top: 40px;
     }
@@ -769,7 +795,7 @@
       }
 
       .logo-title {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .nav-container {
@@ -778,12 +804,12 @@
 
       .nav-link {
         padding: 6px 8px;
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .btn {
         padding: 6px 12px;
-        font-size: 12px;
+        font-size: 13px;
       }
 
       .user-balance {
@@ -803,15 +829,14 @@
 
       th, td {
         padding: 10px 12px;
-        font-size: 12px;
       }
 
       .trading-content {
         height: 300px;
       }
 
-      .reviews-container {
-        grid-template-columns: 1fr;
+      .coin-chart-container {
+        height: 300px;
       }
     }
 
@@ -840,7 +865,7 @@
 
       .stats-box {
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
       }
 
       .form-row {
@@ -853,80 +878,50 @@
         font-size: 12px;
       }
 
-      .coin-name-lg {
-        font-size: 18px;
-      }
-
-      .coin-price-lg {
-        font-size: 18px;
+      .trading-content {
+        height: 250px;
       }
 
       .coin-chart-container {
         height: 250px;
       }
-    }
 
-    /* Notification Banner */
-    .notification-banner {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: var(--primary-accent);
-      color: #000;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1100;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
+      .coin-name-lg {
+        font-size: 18px;
+      }
 
-    .notification-content {
-      flex: 1;
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .notification-close {
-      cursor: pointer;
-      font-size: 18px;
-      margin-left: 12px;
+      .coin-price-lg {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Notification Banner for Admin Messages -->
-  <div class="notification-banner" id="adminNotification" style="display: none;">
-    <div class="notification-content" id="adminNotificationContent"></div>
-    <div class="notification-close" onclick="closeAdminNotification()">×</div>
-  </div>
-
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img id="logoImage" src="" alt="Crypto Trading Platform" class="logo">
-      <h1 class="logo-title">Crypto Trading</h1>
+      <img id="platformLogo" alt="CryptoTrade Pro" class="logo">
+      <h1 class="logo-title">CryptoTrade Pro</h1>
     </div>
     
     <div class="nav-container">
-      <div class="nav-link" id="marketsLink">Markets</div>
-      <div class="nav-link" id="tradeLink">Trade</div>
-      <div class="nav-link" id="futuresLink">Futures</div>
-      <div class="nav-link" id="earnLink">Earn</div>
+      <a class="nav-link" id="marketsLink">Markets</a>
+      <a class="nav-link" id="tradeLink">Trade</a>
+      <a class="nav-link" id="futuresLink">Futures</a>
+      <a class="nav-link" id="earnLink">Earn</a>
       
       <div id="authButtons" class="auth-buttons">
-        <a href="login.html" class="btn btn-outline">Login</a>
-        <a href="signup.html" class="btn btn-primary">Sign Up</a>
+        <a class="btn btn-outline" id="loginBtn">Login</a>
+        <a class="btn btn-primary" id="signupBtn">Sign Up</a>
       </div>
       
       <div id="userMenuContainer" class="user-menu" style="display: none;">
         <div class="user-balance" id="userBalanceDisplay">$0.00</div>
         <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()"></div>
         <div class="dropdown-menu" id="dropdownMenu">
-          <a href="dashboard.html" class="dropdown-item">Dashboard</a>
-          <a href="portfolio.html" class="dropdown-item">Portfolio</a>
-          <a href="settings.html" class="dropdown-item">Settings</a>
+          <a class="dropdown-item" id="dashboardLink">Dashboard</a>
+          <a class="dropdown-item" id="portfolioLink">Portfolio</a>
+          <a class="dropdown-item" id="settingsLink">Settings</a>
           <div class="dropdown-item" onclick="logout()">Logout</div>
         </div>
       </div>
@@ -939,7 +934,7 @@
     <div class="alert-banner warning" id="guestAlert">
       <div class="alert-icon">⚠️</div>
       <div class="alert-content">
-        You're currently viewing as a guest. <a href="login.html" class="alert-link">Login</a> or <a href="signup.html" class="alert-link">Sign Up</a> to start trading.
+        You're currently viewing as a guest. <a class="alert-link" id="guestLoginLink">Login</a> or <a class="alert-link" id="guestSignupLink">Sign Up</a> to start trading.
       </div>
     </div>
 
@@ -954,7 +949,7 @@
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Market Overview</h2>
-        <div class="section-link" id="viewAllMarkets">View All</div>
+        <a class="section-link" id="viewAllMarkets">View All</a>
       </div>
       
       <div class="table-container">
@@ -969,9 +964,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="marketTable">
-            <!-- Market data will be loaded here -->
-          </tbody>
+          <tbody id="marketTable"></tbody>
         </table>
       </div>
     </div>
@@ -984,7 +977,7 @@
       </div>
       <div class="stat-item">
         <div class="stat-label">24h Volume</div>
-        <div class="stat-value" id="dailyVolume">$0.00</div>
+        <div class="stat-value" id="globalVolume">$0.00</div>
       </div>
       <div class="stat-item">
         <div class="stat-label">Total Assets</div>
@@ -997,21 +990,17 @@
       <div class="section gainers">
         <div class="section-header">
           <h2 class="section-title">Top Gainers</h2>
-          <div class="section-link" id="viewAllGainers">View All</div>
+          <a class="section-link" id="viewAllGainers">View All</a>
         </div>
-        <ul class="coin-list" id="gainersList">
-          <!-- Gainers data will be loaded here -->
-        </ul>
+        <ul class="coin-list" id="gainersList"></ul>
       </div>
       
       <div class="section trending">
         <div class="section-header">
           <h2 class="section-title">Trending</h2>
-          <div class="section-link" id="viewAllTrending">View All</div>
+          <a class="section-link" id="viewAllTrending">View All</a>
         </div>
-        <ul class="coin-list" id="trendingList">
-          <!-- Trending data will be loaded here -->
-        </ul>
+        <ul class="coin-list" id="trendingList"></ul>
       </div>
     </div>
 
@@ -1039,23 +1028,19 @@
     <!-- Reviews Section -->
     <div class="section reviews-section">
       <div class="section-header">
-        <h2 class="section-title">User Reviews</h2>
-        <div class="section-link" id="viewAllReviews">View All</div>
+        <h2 class="section-title">Trader Reviews</h2>
+        <a class="section-link" id="viewAllReviews">View All</a>
       </div>
-      <div class="reviews-container" id="reviewsContainer">
-        <!-- Reviews will be loaded here -->
-      </div>
+      <div id="reviewsContainer"></div>
     </div>
   </div>
 
   <!-- Withdrawals Feed -->
   <div class="withdrawals-feed" id="withdrawalsFeed">
-    <!-- Withdrawal data will be loaded here -->
-  </div>
-
-  <!-- Footer -->
-  <div class="footer">
-    <div>All rights reserved © 2023 Crypto Trading Platform</div>
+    <div class="section-header">
+      <h3>Recent Withdrawals</h3>
+    </div>
+    <div id="withdrawalsList"></div>
   </div>
 
   <!-- Coin Detail Modal -->
@@ -1087,9 +1072,7 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody id="allCoinsTable">
-            <!-- All coins data will be loaded here -->
-          </tbody>
+          <tbody id="allCoinsTable"></tbody>
         </table>
       </div>
     </div>
@@ -1145,6 +1128,11 @@
     </div>
   </div>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2023 CryptoTrade Pro. All rights reserved.</p>
+  </footer>
+
   <script>
     // API Configuration
     const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
@@ -1170,69 +1158,63 @@
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', async () => {
-      // Load logo from backend
-      await loadLogo();
+      // Load platform logo from backend
+      loadPlatformLogo();
+      
+      // Setup event listeners
+      setupEventListeners();
       
       // Check authentication status
       await checkAuthStatus();
       
-      // Load all data
-      await loadAllData();
+      // Load all initial data
+      await loadInitialData();
       
       // Initialize WebSocket connection
       initWebSocket();
-      
-      // Setup event listeners
-      setupEventListeners();
     });
 
-    // Load logo from backend
-    async function loadLogo() {
+    // Load platform logo from backend
+    async function loadPlatformLogo() {
       try {
         const response = await fetch(`${API_BASE_URL}/settings/logo`);
         if (response.ok) {
           const data = await response.json();
-          document.getElementById('logoImage').src = data.logoUrl;
+          document.getElementById('platformLogo').src = data.logoUrl;
         } else {
           // Fallback logo if API fails
-          document.getElementById('logoImage').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+          document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
         }
       } catch (error) {
         console.error('Error loading logo:', error);
-        document.getElementById('logoImage').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-      }
-    }
-
-    // Load all data
-    async function loadAllData() {
-      try {
-        await Promise.all([
-          loadMarketData(),
-          loadGainersData(),
-          loadTrendingData(),
-          loadPlatformStats(),
-          loadWithdrawalData(),
-          loadReviewsData()
-        ]);
-      } catch (error) {
-        console.error('Error loading data:', error);
-        showToast('Error loading data. Please refresh the page.', 'error');
+        document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
       }
     }
 
     // Setup event listeners
     function setupEventListeners() {
       // Navigation links
-      document.getElementById('marketsLink').addEventListener('click', () => loadMarketData());
-      document.getElementById('tradeLink').addEventListener('click', () => showTradeSection());
-      document.getElementById('futuresLink').addEventListener('click', () => showFuturesSection());
-      document.getElementById('earnLink').addEventListener('click', () => showEarnSection());
+      document.getElementById('marketsLink').addEventListener('click', () => loadMarketsData());
+      document.getElementById('tradeLink').addEventListener('click', () => loadTradeData());
+      document.getElementById('futuresLink').addEventListener('click', () => loadFuturesData());
+      document.getElementById('earnLink').addEventListener('click', () => loadEarnData());
+      
+      // Auth buttons
+      document.getElementById('loginBtn').addEventListener('click', () => window.location.href = 'login.html');
+      document.getElementById('signupBtn').addEventListener('click', () => window.location.href = 'signup.html');
+      document.getElementById('guestLoginLink').addEventListener('click', () => window.location.href = 'login.html');
+      document.getElementById('guestSignupLink').addEventListener('click', () => window.location.href = 'signup.html');
+      
+      // User menu links
+      document.getElementById('dashboardLink').addEventListener('click', () => window.location.href = 'dashboard.html');
+      document.getElementById('portfolioLink').addEventListener('click', () => window.location.href = 'portfolio.html');
+      document.getElementById('settingsLink').addEventListener('click', () => window.location.href = 'settings.html');
       
       // View all links
-      document.getElementById('viewAllMarkets').addEventListener('click', () => showAllCoins());
-      document.getElementById('viewAllGainers').addEventListener('click', () => showAllGainers());
-      document.getElementById('viewAllTrending').addEventListener('click', () => showAllTrending());
-      document.getElementById('viewAllReviews').addEventListener('click', () => showAllReviews());
+      document.getElementById('viewAllMarkets').addEventListener('click', showAllCoins);
+      document.getElementById('viewAllGainers').addEventListener('click', showAllGainers);
+      document.getElementById('viewAllTrending').addEventListener('click', showAllTrending);
+      document.getElementById('viewAllReviews').addEventListener('click', showAllReviews);
       
       // Trading tabs
       document.getElementById('btcTab').addEventListener('click', () => changeChart('BTCUSDT'));
@@ -1241,6 +1223,23 @@
       
       // Trade amount input
       document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
+    }
+
+    // Load all initial data
+    async function loadInitialData() {
+      try {
+        await Promise.all([
+          loadMarketData(),
+          loadGainersData(),
+          loadTrendingData(),
+          loadGlobalStats(),
+          loadWithdrawalsData(),
+          loadReviewsData()
+        ]);
+      } catch (error) {
+        console.error('Error loading initial data:', error);
+        showToast('Failed to load initial data. Please refresh the page.', 'error');
+      }
     }
 
     // Check authentication status
@@ -1292,10 +1291,17 @@
         authButtons.style.display = 'none';
         userMenu.style.display = 'flex';
         
-        // Set user avatar initial
-        const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
-                       currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
-        document.getElementById('userAvatar').textContent = initial;
+        // Set user avatar
+        const avatar = document.getElementById('userAvatar');
+        if (currentUser.avatarUrl) {
+          avatar.style.backgroundImage = `url(${currentUser.avatarUrl})`;
+          avatar.textContent = '';
+        } else {
+          const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
+                         currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
+          avatar.textContent = initial;
+          avatar.style.backgroundImage = '';
+        }
         
         // Update balance display
         document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
@@ -1453,9 +1459,6 @@
         case 'PORTFOLIO_UPDATE':
           handlePortfolioUpdate(data);
           break;
-        case 'ADMIN_MESSAGE':
-          handleAdminMessage(data);
-          break;
         case 'PRICE_UPDATE':
           handlePriceUpdate(data);
           break;
@@ -1504,18 +1507,6 @@
       document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
     }
 
-    // Handle admin messages from WebSocket
-    function handleAdminMessage(data) {
-      if (!adminMessages.some(msg => msg.id === data.id)) {
-        adminMessages.push(data);
-        
-        // Show notification if user hasn't seen it yet
-        if (!viewedMessages.includes(data.id)) {
-          showAdminNotification(data.message);
-        }
-      }
-    }
-
     // Handle price updates from WebSocket
     function handlePriceUpdate(data) {
       if (coinPrices[data.coinId]) {
@@ -1531,70 +1522,21 @@
 
     // Handle withdrawal updates from WebSocket
     function handleWithdrawalUpdate(data) {
-      const feed = document.getElementById('withdrawalsFeed');
-      const newItem = document.createElement('div');
-      newItem.className = 'withdrawal-item';
-      newItem.textContent = `${data.username} withdrawn ${data.amount} ${data.coin}`;
-      
-      // Add to beginning of feed
-      feed.insertBefore(newItem, feed.firstChild);
-      
-      // Remove oldest item if more than 5
-      const items = Array.from(feed.querySelectorAll('.withdrawal-item'));
-      if (items.length > 5) {
-        feed.removeChild(items[items.length - 1]);
-      }
+      addWithdrawalToFeed(data);
     }
 
     // Handle review updates from WebSocket
     function handleReviewUpdate(data) {
-      const container = document.getElementById('reviewsContainer');
-      const review = createReviewElement(data);
-      
-      // Add to beginning of container
-      container.insertBefore(review, container.firstChild);
-      
-      // Remove oldest review if more than 6
-      const reviews = Array.from(container.querySelectorAll('.review-card'));
-      if (reviews.length > 6) {
-        container.removeChild(reviews[reviews.length - 1]);
-      }
-    }
-
-    // Show admin notification
-    function showAdminNotification(message) {
-      const notification = document.getElementById('adminNotification');
-      const content = document.getElementById('adminNotificationContent');
-      
-      content.textContent = message;
-      notification.style.display = 'flex';
-      
-      // Auto-hide after 10 seconds
-      setTimeout(() => {
-        if (notification.style.display === 'flex') {
-          closeAdminNotification();
-        }
-      }, 10000);
-    }
-
-    // Close admin notification
-    function closeAdminNotification() {
-      const notification = document.getElementById('adminNotification');
-      const content = document.getElementById('adminNotificationContent');
-      const messageId = adminMessages.find(msg => msg.message === content.textContent)?.id;
-      
-      if (messageId) {
-        viewedMessages.push(messageId);
-      }
-      
-      notification.style.display = 'none';
+      addReviewToContainer(data);
     }
 
     // Load market data
     async function loadMarketData() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets`);
-        if (!response.ok) throw new Error('Failed to fetch market data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch market data');
+        }
         
         marketData = await response.json();
         
@@ -1619,7 +1561,9 @@
     async function loadGainersData() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-        if (!response.ok) throw new Error('Failed to fetch gainers data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch gainers data');
+        }
         
         gainersData = await response.json();
         
@@ -1646,7 +1590,9 @@
     async function loadTrendingData() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets/trending`);
-        if (!response.ok) throw new Error('Failed to fetch trending data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch trending data');
+        }
         
         trendingData = await response.json();
         
@@ -1669,44 +1615,63 @@
       }
     }
 
-    // Load platform stats
-    async function loadPlatformStats() {
+    // Load global stats
+    async function loadGlobalStats() {
       try {
         const response = await fetch(`${API_BASE_URL}/stats`);
-        if (!response.ok) throw new Error('Failed to fetch platform stats');
+        if (!response.ok) {
+          throw new Error('Failed to fetch global stats');
+        }
         
         const stats = await response.json();
         
         // Update UI
         document.getElementById('totalTraders').textContent = stats.totalTraders.toLocaleString();
-        document.getElementById('dailyVolume').textContent = `$${(stats.dailyVolume / 1000000).toFixed(2)}M`;
+        document.getElementById('globalVolume').textContent = `$${(stats.dailyVolume / 1000000000).toFixed(2)}B`;
         document.getElementById('totalAssets').textContent = `$${(stats.totalAssets / 1000000000).toFixed(2)}B`;
       } catch (error) {
-        console.error('Error loading platform stats:', error);
-        showToast('Failed to load platform statistics', 'error');
+        console.error('Error loading global stats:', error);
+        showToast('Failed to load platform stats', 'error');
       }
     }
 
-    // Load withdrawal data
-    async function loadWithdrawalData() {
+    // Load withdrawals data
+    async function loadWithdrawalsData() {
       try {
         const response = await fetch(`${API_BASE_URL}/withdrawals/recent`);
-        if (!response.ok) throw new Error('Failed to fetch withdrawal data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch withdrawals data');
+        }
         
         const withdrawals = await response.json();
-        const feed = document.getElementById('withdrawalsFeed');
-        feed.innerHTML = '';
         
-        // Display withdrawals (max 5)
-        withdrawals.slice(0, 5).forEach(withdrawal => {
-          const item = document.createElement('div');
-          item.className = 'withdrawal-item';
-          item.textContent = `${withdrawal.username} withdrawn ${withdrawal.amount} ${withdrawal.coin}`;
-          feed.appendChild(item);
+        // Update UI
+        const withdrawalsList = document.getElementById('withdrawalsList');
+        withdrawalsList.innerHTML = '';
+        
+        withdrawals.forEach(withdrawal => {
+          addWithdrawalToFeed(withdrawal);
         });
       } catch (error) {
-        console.error('Error loading withdrawal data:', error);
-        showToast('Failed to load withdrawal feed', 'error');
+        console.error('Error loading withdrawals data:', error);
+        showToast('Failed to load recent withdrawals', 'error');
+      }
+    }
+
+    // Add withdrawal to feed
+    function addWithdrawalToFeed(withdrawal) {
+      const withdrawalsList = document.getElementById('withdrawalsList');
+      const newItem = document.createElement('div');
+      newItem.className = 'withdrawal-item';
+      newItem.textContent = `${withdrawal.user} withdrawn ${withdrawal.amount} ${withdrawal.currency}`;
+      
+      // Add to beginning of feed
+      withdrawalsList.insertBefore(newItem, withdrawalsList.firstChild);
+      
+      // Remove oldest item if more than 5
+      const items = Array.from(withdrawalsList.querySelectorAll('.withdrawal-item'));
+      if (items.length > 5) {
+        withdrawalsList.removeChild(items[items.length - 1]);
       }
     }
 
@@ -1714,51 +1679,74 @@
     async function loadReviewsData() {
       try {
         const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) throw new Error('Failed to fetch reviews data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch reviews data');
+        }
         
         const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
         
-        // Display reviews (max 6)
-        reviews.slice(0, 6).forEach(review => {
-          const reviewElement = createReviewElement(review);
-          container.appendChild(reviewElement);
+        // Update UI
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        reviewsContainer.innerHTML = '';
+        
+        reviews.slice(0, 3).forEach(review => {
+          addReviewToContainer(review);
         });
       } catch (error) {
         console.error('Error loading reviews data:', error);
-        showToast('Failed to load user reviews', 'error');
+        showToast('Failed to load trader reviews', 'error');
       }
     }
 
-    // Create review element
-    function createReviewElement(review) {
+    // Add review to container
+    function addReviewToContainer(review) {
+      const reviewsContainer = document.getElementById('reviewsContainer');
       const reviewCard = document.createElement('div');
       reviewCard.className = 'review-card';
       
-      // Format date
-      const reviewDate = new Date(review.date).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-      
-      // Create stars for rating
-      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-      
       reviewCard.innerHTML = `
         <div class="review-header">
-          <img src="${review.user.avatar}" alt="${review.user.name}" class="reviewer-avatar">
-          <div class="reviewer-info">
-            <div class="reviewer-name">${review.user.name}</div>
-            <div class="review-date">${reviewDate}</div>
+          <div class="review-avatar" style="background-image: url(${review.user.avatarUrl || 'https://i.imgur.com/8Km9tLL.jpg'})"></div>
+          <div class="review-user">
+            <div class="review-name">${review.user.name}</div>
+            <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
           </div>
-          <div class="review-rating">${stars}</div>
+          <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
         </div>
         <div class="review-content">${review.content}</div>
       `;
       
-      return reviewCard;
+      reviewsContainer.appendChild(reviewCard);
+    }
+
+    // Show all reviews
+    function showAllReviews() {
+      // In a real implementation, this would open a modal with all reviews
+      window.location.href = 'reviews.html';
+    }
+
+    // Load markets data
+    async function loadMarketsData() {
+      await loadMarketData();
+      window.scrollTo(0, 0);
+    }
+
+    // Load trade data
+    async function loadTradeData() {
+      // In a real implementation, this would load the trade interface
+      window.location.href = 'trade.html';
+    }
+
+    // Load futures data
+    async function loadFuturesData() {
+      // In a real implementation, this would load the futures interface
+      window.location.href = 'futures.html';
+    }
+
+    // Load earn data
+    async function loadEarnData() {
+      // In a real implementation, this would load the earn interface
+      window.location.href = 'earn.html';
     }
 
     // Update market table
@@ -1862,49 +1850,6 @@
       });
     }
 
-    // Show trade section
-    async function showTradeSection() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/trade`);
-        if (!response.ok) throw new Error('Failed to load trade section');
-        
-        // Here you would typically update the UI to show the trade section
-        // For now, we'll just show a toast notification
-        showToast('Trade section loaded', 'info');
-      } catch (error) {
-        console.error('Error loading trade section:', error);
-        showToast('Failed to load trade section', 'error');
-      }
-    }
-
-    // Show futures section
-    async function showFuturesSection() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/futures`);
-        if (!response.ok) throw new Error('Failed to load futures section');
-        
-        // Here you would typically update the UI to show the futures section
-        showToast('Futures section loaded', 'info');
-      } catch (error) {
-        console.error('Error loading futures section:', error);
-        showToast('Failed to load futures section', 'error');
-      }
-    }
-
-    // Show earn section
-    async function showEarnSection() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/earn`);
-        if (!response.ok) throw new Error('Failed to load earn section');
-        
-        // Here you would typically update the UI to show the earn section
-        showToast('Earn section loaded', 'info');
-      } catch (error) {
-        console.error('Error loading earn section:', error);
-        showToast('Failed to load earn section', 'error');
-      }
-    }
-
     // Show coin detail modal
     async function showCoinDetail(coinId) {
       const modal = document.getElementById('coinModal');
@@ -1912,8 +1857,10 @@
       const title = document.getElementById('coinModalTitle');
       
       try {
-        const response = await fetch(`${API_BASE_URL}/coins/${coinId}`);
-        if (!response.ok) throw new Error('Failed to fetch coin details');
+        const response = await fetch(`${API_BASE_URL}/markets/${coinId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch coin details');
+        }
         
         const coin = await response.json();
         const coinData = coinPrices[coin.id] || {
@@ -1923,6 +1870,9 @@
         
         // Set modal title
         title.textContent = `${coin.name} (${coin.symbol.toUpperCase()})`;
+        
+        // Load chart symbol (use USDT for stablecoins)
+        const chartSymbol = coin.symbol === 'usdt' ? 'USDTUSD' : `${coin.symbol.toUpperCase()}USDT`;
         
         // Prepare modal content
         content.innerHTML = `
@@ -1958,7 +1908,7 @@
             </div>
             
             <div class="coin-chart-container">
-              <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${coin.symbol.toUpperCase()}USDT&interval=D&hidesidetoolbar=1&theme=dark"></iframe>
+              <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${chartSymbol}&interval=D&hidesidetoolbar=1&theme=dark"></iframe>
             </div>
             
             <div class="trade-actions">
@@ -2115,14 +2065,26 @@
     }
 
     // Show all coins modal
-    async function showAllCoins() {
+    function showAllCoins() {
       const modal = document.getElementById('allCoinsModal');
+      modal.style.display = 'block';
       
+      // Load all coins if not already loaded
+      if (document.getElementById('allCoinsTable').children.length === 0) {
+        loadAllCoins();
+      }
+    }
+
+    // Load all coins for the modal
+    async function loadAllCoins() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets/all`);
-        if (!response.ok) throw new Error('Failed to fetch all coins');
+        if (!response.ok) {
+          throw new Error('Failed to fetch all coins');
+        }
         
         const coins = await response.json();
+        
         const tableBody = document.getElementById('allCoinsTable');
         tableBody.innerHTML = '';
         
@@ -2157,8 +2119,6 @@
           
           tableBody.appendChild(row);
         });
-        
-        modal.style.display = 'block';
       } catch (error) {
         console.error('Error loading all coins:', error);
         showToast('Failed to load all coins', 'error');
@@ -2166,48 +2126,15 @@
     }
 
     // Show all gainers modal
-    async function showAllGainers() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/markets/gainers/all`);
-        if (!response.ok) throw new Error('Failed to fetch all gainers');
-        
-        const gainers = await response.json();
-        // Similar to showAllCoins but for gainers
-        showToast(`Loaded ${gainers.length} top gainers`, 'info');
-      } catch (error) {
-        console.error('Error loading all gainers:', error);
-        showToast('Failed to load all gainers', 'error');
-      }
+    function showAllGainers() {
+      // In a real implementation, this would open a modal with all gainers
+      window.location.href = 'gainers.html';
     }
 
     // Show all trending modal
-    async function showAllTrending() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/markets/trending/all`);
-        if (!response.ok) throw new Error('Failed to fetch all trending coins');
-        
-        const trending = await response.json();
-        // Similar to showAllCoins but for trending
-        showToast(`Loaded ${trending.length} trending coins`, 'info');
-      } catch (error) {
-        console.error('Error loading all trending coins:', error);
-        showToast('Failed to load all trending coins', 'error');
-      }
-    }
-
-    // Show all reviews modal
-    async function showAllReviews() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/reviews/all`);
-        if (!response.ok) throw new Error('Failed to fetch all reviews');
-        
-        const reviews = await response.json();
-        // Similar to showAllCoins but for reviews
-        showToast(`Loaded ${reviews.length} user reviews`, 'info');
-      } catch (error) {
-        console.error('Error loading all reviews:', error);
-        showToast('Failed to load all reviews', 'error');
-      }
+    function showAllTrending() {
+      // In a real implementation, this would open a modal with all trending coins
+      window.location.href = 'trending.html';
     }
 
     // Change trading chart
