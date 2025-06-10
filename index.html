@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Professional Crypto Trading Platform with real-time market data">
-  <meta name="keywords" content="crypto, trading, bitcoin, ethereum, cryptocurrency">
-  <title>Crypto Trading Market</title>
+  <meta name="description" content="Professional Crypto Trading Platform">
+  <title>Crypto Trading</title>
   <style>
     :root {
       --primary-bg: #0b0e11;
@@ -33,7 +32,6 @@
       color: var(--text-primary);
       background-color: var(--primary-bg);
       overflow-x: hidden;
-      position: relative;
     }
 
     /* Header Styles */
@@ -473,7 +471,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
-      margin-top: 16px;
+      padding: 16px;
     }
 
     .review-card {
@@ -503,24 +501,22 @@
     }
 
     .review-user {
-      flex: 1;
-    }
-
-    .review-name {
       font-weight: 500;
     }
 
     .review-date {
       font-size: 12px;
       color: var(--text-secondary);
+      margin-top: 2px;
     }
 
     .review-rating {
       color: var(--primary-accent);
-      font-weight: 500;
+      margin-left: auto;
     }
 
     .review-content {
+      font-size: 14px;
       line-height: 1.5;
     }
 
@@ -561,7 +557,6 @@
       background-color: rgba(0, 0, 0, 0.7);
       z-index: 1000;
       overflow-y: auto;
-      backdrop-filter: blur(5px);
     }
 
     .modal-content {
@@ -720,15 +715,6 @@
       box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
     }
 
-    .form-row {
-      display: flex;
-      gap: 16px;
-    }
-
-    .form-col {
-      flex: 1;
-    }
-
     /* Responsive Styles */
     @media (max-width: 1200px) {
       .main-content {
@@ -822,29 +808,42 @@
         gap: 16px;
       }
 
-      .form-row {
-        flex-direction: column;
-        gap: 0;
-      }
-
       .withdrawals-feed {
         width: 200px;
         font-size: 12px;
       }
-
-      .trading-content {
-        height: 250px;
-      }
     }
 
     /* Footer */
-    .footer {
+    footer {
       text-align: center;
       padding: 20px;
       color: var(--text-secondary);
       font-size: 14px;
       border-top: 1px solid var(--border-color);
       margin-top: 40px;
+    }
+
+    /* Loading States */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .loading-spinner {
+      border: 3px solid rgba(240, 185, 11, 0.1);
+      border-radius: 50%;
+      border-top: 3px solid var(--primary-accent);
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     /* Notification Banner */
@@ -895,12 +894,12 @@
       opacity: 1;
     }
 
-    .toast.success {
-      border-left: 4px solid var(--positive);
-    }
-
     .toast.error {
       border-left: 4px solid var(--negative);
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--positive);
     }
 
     .toast.info {
@@ -918,15 +917,15 @@
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img id="siteLogo" src="" alt="Crypto Trading Market" class="logo">
-      <h1 class="logo-title">Crypto Trading Market</h1>
+      <img id="logoImage" alt="Crypto Trading" class="logo">
+      <h1 class="logo-title">Crypto Trading</h1>
     </div>
     
     <div class="nav-container">
-      <a href="#" class="nav-link" onclick="loadMarketData()">Markets</a>
-      <a href="#" class="nav-link" onclick="loadTradeData()">Trade</a>
-      <a href="#" class="nav-link" onclick="loadFuturesData()">Futures</a>
-      <a href="#" class="nav-link" onclick="loadEarnData()">Earn</a>
+      <a class="nav-link" onclick="loadMarketData()">Markets</a>
+      <a class="nav-link" onclick="loadTradeData()">Trade</a>
+      <a class="nav-link" onclick="loadFuturesData()">Futures</a>
+      <a class="nav-link" onclick="loadEarnData()">Earn</a>
       
       <div id="authButtons" class="auth-buttons">
         <a href="login.html" class="btn btn-outline">Login</a>
@@ -967,7 +966,7 @@
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Market Overview</h2>
-        <a href="#" class="section-link" onclick="showAllCoins()">View All</a>
+        <a class="section-link" onclick="showAllCoins()">View All</a>
       </div>
       
       <div class="table-container">
@@ -997,7 +996,7 @@
       </div>
       <div class="stat-item">
         <div class="stat-label">24h Volume</div>
-        <div class="stat-value" id="globalVolume">$0.00</div>
+        <div class="stat-value" id="totalVolume">$0.00</div>
       </div>
       <div class="stat-item">
         <div class="stat-label">Total Assets</div>
@@ -1010,7 +1009,7 @@
       <div class="section gainers">
         <div class="section-header">
           <h2 class="section-title">Top Gainers</h2>
-          <a href="#" class="section-link" onclick="showAllGainers()">View All</a>
+          <a class="section-link" onclick="showAllGainers()">View All</a>
         </div>
         <ul class="coin-list" id="gainersList">
           <!-- Gainers data will be loaded here -->
@@ -1020,7 +1019,7 @@
       <div class="section trending">
         <div class="section-header">
           <h2 class="section-title">Trending</h2>
-          <a href="#" class="section-link" onclick="showAllTrending()">View All</a>
+          <a class="section-link" onclick="showAllTrending()">View All</a>
         </div>
         <ul class="coin-list" id="trendingList">
           <!-- Trending data will be loaded here -->
@@ -1052,8 +1051,8 @@
     <!-- Reviews Section -->
     <div class="section reviews-section">
       <div class="section-header">
-        <h2 class="section-title">TransPilot Reviews</h2>
-        <a href="#" class="section-link" onclick="showAllReviews()">View All</a>
+        <h2 class="section-title">Trader Reviews</h2>
+        <a class="section-link" onclick="showAllReviews()">View All</a>
       </div>
       <div class="reviews-container" id="reviewsContainer">
         <!-- Reviews will be loaded here -->
@@ -1061,14 +1060,11 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div>All rights reserved © 2023 Crypto Trading Market</div>
-  </footer>
-
   <!-- Withdrawals Feed -->
   <div class="withdrawals-feed" id="withdrawalsFeed">
-    <div class="withdrawal-item">Loading withdrawal proofs...</div>
+    <div class="loading">
+      <div class="loading-spinner"></div>
+    </div>
   </div>
 
   <!-- Coin Detail Modal -->
@@ -1158,6 +1154,23 @@
     </div>
   </div>
 
+  <!-- All Reviews Modal -->
+  <div class="modal" id="allReviewsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">All Reviews</h2>
+        <span class="close-modal" onclick="closeModal('allReviewsModal')">&times;</span>
+      </div>
+      <div class="reviews-container" id="allReviewsContainer">
+        <!-- All reviews will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>All rights reserved © 2023 Crypto Trading Platform</p>
+  </footer>
+
   <script>
     // API Configuration
     const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
@@ -1180,6 +1193,7 @@
     let socket = null;
     let adminMessages = [];
     let viewedMessages = [];
+    let reviewsData = [];
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', async () => {
@@ -1191,12 +1205,17 @@
       
       // Load initial data
       await loadMarketData();
-      await loadGlobalStats();
+      await loadStatsData();
       await loadReviews();
-      await loadWithdrawalProofs();
       
       // Initialize WebSocket connection
       initWebSocket();
+      
+      // Start withdrawal feed updates
+      updateWithdrawalFeed();
+      
+      // Check for admin messages
+      checkAdminMessages();
       
       // Event listeners
       document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
@@ -1205,17 +1224,15 @@
     // Load logo from backend
     async function loadLogo() {
       try {
-        const response = await fetch(`${API_BASE_URL}/settings/logo`);
+        const response = await fetch(`${API_BASE_URL}/logo`);
         if (response.ok) {
           const data = await response.json();
-          document.getElementById('siteLogo').src = data.logoUrl;
-        } else {
-          // Fallback logo if API fails
-          document.getElementById('siteLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+          document.getElementById('logoImage').src = data.logoUrl;
         }
       } catch (error) {
         console.error('Error loading logo:', error);
-        document.getElementById('siteLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+        // Fallback logo
+        document.getElementById('logoImage').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
       }
     }
 
@@ -1369,7 +1386,7 @@
         }
         
         clearAuthData();
-        showToast('You have been logged out successfully');
+        showToast('You have been logged out successfully', 'success');
       } catch (error) {
         console.error('Error logging out:', error);
         showToast('Error logging out. Please try again.', 'error');
@@ -1450,7 +1467,7 @@
       
       // Show notification if balance was increased by admin
       if (data.source === 'admin') {
-        showToast(`Your balance has been updated by admin. New balance: $${userBalance.toFixed(2)}`);
+        showToast(`Your balance has been updated by admin. New balance: $${userBalance.toFixed(2)}`, 'success');
       }
     }
 
@@ -1460,7 +1477,7 @@
         `You made a profit of $${data.profit.toFixed(2)}` : 
         `Trade completed successfully`;
       
-      showToast(`${profitText}. New balance: $${data.balance.toFixed(2)}`);
+      showToast(`${profitText}. New balance: $${data.balance.toFixed(2)}`, 'success');
       
       // Update balance display
       userBalance = data.balance;
@@ -1550,18 +1567,36 @@
       notification.style.display = 'none';
     }
 
+    // Check for admin messages
+    async function checkAdminMessages() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/messages`);
+        if (response.ok) {
+          const messages = await response.json();
+          adminMessages = messages;
+          
+          // Show unread messages
+          messages.forEach(msg => {
+            if (!viewedMessages.includes(msg.id)) {
+              showAdminNotification(msg.message);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching admin messages:', error);
+      }
+    }
+
     // Load market data
     async function loadMarketData() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch market data');
-        }
+        if (!response.ok) throw new Error('Failed to fetch market data');
         
         const data = await response.json();
         marketData = data.marketData;
-        gainersData = data.gainers;
-        trendingData = data.trending;
+        gainersData = data.gainersData;
+        trendingData = data.trendingData;
         
         // Initialize coin prices
         marketData.forEach(coin => {
@@ -1598,85 +1633,38 @@
         updateTrendingList();
       } catch (error) {
         console.error('Error loading market data:', error);
-        showToast('Failed to load market data. Please try again.', 'error');
+        showToast('Failed to load market data', 'error');
       }
     }
 
-    // Load global stats
-    async function loadGlobalStats() {
+    // Load stats data
+    async function loadStatsData() {
       try {
         const response = await fetch(`${API_BASE_URL}/stats`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch global stats');
-        }
+        if (!response.ok) throw new Error('Failed to fetch stats data');
         
         const data = await response.json();
         document.getElementById('totalTraders').textContent = data.totalTraders.toLocaleString();
-        document.getElementById('globalVolume').textContent = `$${(data.dailyVolume / 1000000000).toFixed(2)}B`;
-        document.getElementById('totalAssets').textContent = `$${(data.totalAssets / 1000000000).toFixed(2)}B`;
+        document.getElementById('totalVolume').textContent = `$${data.totalVolume.toLocaleString()}`;
+        document.getElementById('totalAssets').textContent = `$${data.totalAssets.toLocaleString()}`;
       } catch (error) {
-        console.error('Error loading global stats:', error);
-        showToast('Failed to load global stats. Please try again.', 'error');
+        console.error('Error loading stats data:', error);
+        showToast('Failed to load stats data', 'error');
       }
     }
 
-    // Load reviews
+    // Load reviews data
     async function loadReviews() {
       try {
         const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch reviews');
-        }
+        if (!response.ok) throw new Error('Failed to fetch reviews');
         
-        const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
-        
-        // Display first 4 reviews
-        reviews.slice(0, 4).forEach(review => {
-          const reviewCard = document.createElement('div');
-          reviewCard.className = 'review-card';
-          reviewCard.innerHTML = `
-            <div class="review-header">
-              <div class="review-avatar">${review.userName.charAt(0).toUpperCase()}</div>
-              <div class="review-user">
-                <div class="review-name">${review.userName}</div>
-                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
-              </div>
-              <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
-            </div>
-            <div class="review-content">${review.content}</div>
-          `;
-          container.appendChild(reviewCard);
-        });
+        const data = await response.json();
+        reviewsData = data.reviews;
+        updateReviews();
       } catch (error) {
         console.error('Error loading reviews:', error);
-        showToast('Failed to load reviews. Please try again.', 'error');
-      }
-    }
-
-    // Load withdrawal proofs
-    async function loadWithdrawalProofs() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/withdrawals`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch withdrawal proofs');
-        }
-        
-        const withdrawals = await response.json();
-        const feed = document.getElementById('withdrawalsFeed');
-        feed.innerHTML = '';
-        
-        // Display latest 5 withdrawals
-        withdrawals.slice(0, 5).forEach(withdrawal => {
-          const item = document.createElement('div');
-          item.className = 'withdrawal-item';
-          item.textContent = `User withdrawn ${withdrawal.amount} ${withdrawal.coin}`;
-          feed.appendChild(item);
-        });
-      } catch (error) {
-        console.error('Error loading withdrawal proofs:', error);
-        showToast('Failed to load withdrawal proofs. Please try again.', 'error');
+        showToast('Failed to load reviews', 'error');
       }
     }
 
@@ -1781,54 +1769,50 @@
       });
     }
 
-    // Load trade data
-    async function loadTradeData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/trade`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch trade data');
-        }
-        
-        const data = await response.json();
-        // Here you would update the trade section UI with the data
-        showToast('Trade data loaded successfully');
-      } catch (error) {
-        console.error('Error loading trade data:', error);
-        showToast('Failed to load trade data. Please try again.', 'error');
-      }
+    // Update reviews
+    function updateReviews() {
+      const container = document.getElementById('reviewsContainer');
+      container.innerHTML = '';
+      
+      // Show only 3 reviews in the main view
+      const reviewsToShow = reviewsData.slice(0, 3);
+      
+      reviewsToShow.forEach(review => {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="review-header">
+            <div class="review-avatar">${review.userName.charAt(0).toUpperCase()}</div>
+            <div>
+              <div class="review-user">${review.userName}</div>
+              <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+            </div>
+            <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+          </div>
+          <div class="review-content">${review.content}</div>
+        `;
+        container.appendChild(card);
+      });
     }
 
-    // Load futures data
-    async function loadFuturesData() {
+    // Update withdrawal feed
+    async function updateWithdrawalFeed() {
       try {
-        const response = await fetch(`${API_BASE_URL}/futures`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch futures data');
-        }
+        const response = await fetch(`${API_BASE_URL}/withdrawals`);
+        if (!response.ok) throw new Error('Failed to fetch withdrawals');
         
         const data = await response.json();
-        // Here you would update the futures section UI with the data
-        showToast('Futures data loaded successfully');
-      } catch (error) {
-        console.error('Error loading futures data:', error);
-        showToast('Failed to load futures data. Please try again.', 'error');
-      }
-    }
-
-    // Load earn data
-    async function loadEarnData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/earn`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch earn data');
-        }
+        const feed = document.getElementById('withdrawalsFeed');
+        feed.innerHTML = '';
         
-        const data = await response.json();
-        // Here you would update the earn section UI with the data
-        showToast('Earn data loaded successfully');
+        data.withdrawals.forEach(withdrawal => {
+          const item = document.createElement('div');
+          item.className = 'withdrawal-item';
+          item.textContent = `User withdrawn ${withdrawal.amount} ${withdrawal.coin}`;
+          feed.appendChild(item);
+        });
       } catch (error) {
-        console.error('Error loading earn data:', error);
-        showToast('Failed to load earn data. Please try again.', 'error');
+        console.error('Error updating withdrawal feed:', error);
       }
     }
 
@@ -1840,9 +1824,7 @@
       
       try {
         const response = await fetch(`${API_BASE_URL}/coins/${coinId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch coin details');
-        }
+        if (!response.ok) throw new Error('Failed to fetch coin details');
         
         const coin = await response.json();
         const coinData = coinPrices[coin.id] || {
@@ -1902,8 +1884,8 @@
         
         modal.style.display = 'block';
       } catch (error) {
-        console.error('Error loading coin details:', error);
-        showToast('Failed to load coin details. Please try again.', 'error');
+        console.error('Error showing coin detail:', error);
+        showToast('Failed to load coin details', 'error');
       }
     }
 
@@ -2053,9 +2035,7 @@
       
       try {
         const response = await fetch(`${API_BASE_URL}/coins`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch all coins');
-        }
+        if (!response.ok) throw new Error('Failed to fetch all coins');
         
         const coins = await response.json();
         const tableBody = document.getElementById('allCoinsTable');
@@ -2103,14 +2083,11 @@
       const modal = document.getElementById('allCoinsModal');
       const title = document.querySelector('#allCoinsModal .modal-title');
       title.textContent = 'Top Gainers';
-      
       modal.style.display = 'block';
       
       try {
-        const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch gainers');
-        }
+        const response = await fetch(`${API_BASE_URL}/gainers`);
+        if (!response.ok) throw new Error('Failed to fetch gainers');
         
         const coins = await response.json();
         const tableBody = document.getElementById('allCoinsTable');
@@ -2158,14 +2135,11 @@
       const modal = document.getElementById('allCoinsModal');
       const title = document.querySelector('#allCoinsModal .modal-title');
       title.textContent = 'Trending Coins';
-      
       modal.style.display = 'block';
       
       try {
-        const response = await fetch(`${API_BASE_URL}/markets/trending`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch trending coins');
-        }
+        const response = await fetch(`${API_BASE_URL}/trending`);
+        if (!response.ok) throw new Error('Failed to fetch trending coins');
         
         const coins = await response.json();
         const tableBody = document.getElementById('allCoinsTable');
@@ -2208,52 +2182,38 @@
       }
     }
 
-    // Show all reviews
+    // Show all reviews modal
     async function showAllReviews() {
+      const modal = document.getElementById('allReviewsModal');
+      modal.style.display = 'block';
+      
       try {
         const response = await fetch(`${API_BASE_URL}/reviews/all`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch all reviews');
-        }
+        if (!response.ok) throw new Error('Failed to fetch all reviews');
         
         const reviews = await response.json();
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.id = 'reviewsModal';
-        modal.innerHTML = `
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title">All Reviews</h2>
-              <span class="close-modal" onclick="closeModal('reviewsModal')">&times;</span>
-            </div>
-            <div class="reviews-container" id="allReviewsContainer"></div>
-          </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
         const container = document.getElementById('allReviewsContainer');
+        container.innerHTML = '';
+        
         reviews.forEach(review => {
-          const reviewCard = document.createElement('div');
-          reviewCard.className = 'review-card';
-          reviewCard.innerHTML = `
+          const card = document.createElement('div');
+          card.className = 'review-card';
+          card.innerHTML = `
             <div class="review-header">
               <div class="review-avatar">${review.userName.charAt(0).toUpperCase()}</div>
-              <div class="review-user">
-                <div class="review-name">${review.userName}</div>
+              <div>
+                <div class="review-user">${review.userName}</div>
                 <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
               </div>
               <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
             </div>
             <div class="review-content">${review.content}</div>
           `;
-          container.appendChild(reviewCard);
+          container.appendChild(card);
         });
-        
-        modal.style.display = 'block';
       } catch (error) {
         console.error('Error loading all reviews:', error);
-        showToast('Failed to load all reviews. Please try again.', 'error');
+        showToast('Failed to load reviews', 'error');
       }
     }
 
@@ -2282,19 +2242,54 @@
       document.getElementById(chartId).classList.add('active');
     }
 
+    // Load trade data
+    async function loadTradeData() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/trade`);
+        if (!response.ok) throw new Error('Failed to fetch trade data');
+        
+        const data = await response.json();
+        // Update UI with trade data as needed
+        showToast('Trade data loaded', 'success');
+      } catch (error) {
+        console.error('Error loading trade data:', error);
+        showToast('Failed to load trade data', 'error');
+      }
+    }
+
+    // Load futures data
+    async function loadFuturesData() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/futures`);
+        if (!response.ok) throw new Error('Failed to fetch futures data');
+        
+        const data = await response.json();
+        // Update UI with futures data as needed
+        showToast('Futures data loaded', 'success');
+      } catch (error) {
+        console.error('Error loading futures data:', error);
+        showToast('Failed to load futures data', 'error');
+      }
+    }
+
+    // Load earn data
+    async function loadEarnData() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/earn`);
+        if (!response.ok) throw new Error('Failed to fetch earn data');
+        
+        const data = await response.json();
+        // Update UI with earn data as needed
+        showToast('Earn data loaded', 'success');
+      } catch (error) {
+        console.error('Error loading earn data:', error);
+        showToast('Failed to load earn data', 'error');
+      }
+    }
+
     // Close modal
     function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.style.display = 'none';
-        
-        // Remove dynamically created modals
-        if (modalId === 'reviewsModal') {
-          setTimeout(() => {
-            document.body.removeChild(modal);
-          }, 300);
-        }
-      }
+      document.getElementById(modalId).style.display = 'none';
     }
 
     // Show toast notification
