@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Professional Crypto Trading Platform with real-time market data">
   <meta name="keywords" content="crypto, trading, bitcoin, ethereum, cryptocurrency">
-  <title>CryptoTrade Pro</title>
+  <title>Crypto Trading Market</title>
   <style>
     :root {
       --primary-bg: #0b0e11;
@@ -19,11 +19,6 @@
       --border-color: #2b3139;
       --header-height: 64px;
       --mobile-breakpoint: 768px;
-      --font-small: 12px;
-      --font-medium: 14px;
-      --font-large: 16px;
-      --font-xlarge: 18px;
-      --font-xxlarge: 20px;
     }
 
     * {
@@ -39,7 +34,6 @@
       background-color: var(--primary-bg);
       overflow-x: hidden;
       position: relative;
-      font-size: var(--font-medium);
     }
 
     /* Header Styles */
@@ -70,10 +64,16 @@
     }
 
     .logo-title {
-      font-size: var(--font-xlarge);
+      font-size: 20px;
       font-weight: 600;
       color: var(--primary-accent);
       white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+      .logo-title {
+        font-size: 16px;
+      }
     }
 
     .nav-container {
@@ -86,7 +86,7 @@
       color: var(--text-primary);
       text-decoration: none;
       font-weight: 500;
-      font-size: var(--font-medium);
+      font-size: 14px;
       padding: 8px 12px;
       border-radius: 4px;
       transition: all 0.2s;
@@ -105,7 +105,7 @@
       padding: 8px 16px;
       border-radius: 4px;
       font-weight: 500;
-      font-size: var(--font-medium);
+      font-size: 14px;
       cursor: pointer;
       border: none;
       transition: all 0.2s;
@@ -130,16 +130,6 @@
       background-color: rgba(255, 255, 255, 0.05);
     }
 
-    .btn-success {
-      background-color: var(--positive);
-      color: #000;
-    }
-
-    .btn-danger {
-      background-color: var(--negative);
-      color: #fff;
-    }
-
     .user-menu {
       display: flex;
       align-items: center;
@@ -151,7 +141,7 @@
       background-color: var(--card-bg);
       padding: 8px 12px;
       border-radius: 4px;
-      font-size: var(--font-medium);
+      font-size: 14px;
       font-weight: 500;
       color: var(--primary-accent);
     }
@@ -167,8 +157,6 @@
       justify-content: center;
       font-weight: bold;
       cursor: pointer;
-      background-size: cover;
-      background-position: center;
     }
 
     .dropdown-menu {
@@ -194,7 +182,7 @@
       color: var(--text-primary);
       text-decoration: none;
       display: block;
-      font-size: var(--font-medium);
+      font-size: 14px;
       transition: all 0.2s;
     }
 
@@ -219,7 +207,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: var(--font-medium);
+      font-size: 14px;
     }
 
     .alert-banner.warning {
@@ -230,12 +218,8 @@
       border-left: 4px solid var(--positive);
     }
 
-    .alert-banner.error {
-      border-left: 4px solid var(--negative);
-    }
-
     .alert-icon {
-      font-size: var(--font-xlarge);
+      font-size: 20px;
     }
 
     .alert-content {
@@ -269,13 +253,13 @@
     }
 
     .section-title {
-      font-size: var(--font-xlarge);
+      font-size: 18px;
       font-weight: 600;
     }
 
     .section-link {
       color: var(--primary-accent);
-      font-size: var(--font-medium);
+      font-size: 14px;
       text-decoration: none;
       font-weight: 500;
     }
@@ -298,7 +282,7 @@
     th, td {
       padding: 12px 16px;
       text-align: left;
-      font-size: var(--font-medium);
+      font-size: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
@@ -332,7 +316,7 @@
 
     .coin-symbol {
       color: var(--text-secondary);
-      font-size: var(--font-small);
+      font-size: 13px;
       margin-left: 4px;
     }
 
@@ -351,7 +335,7 @@
 
     .btn-sm {
       padding: 4px 8px;
-      font-size: var(--font-small);
+      font-size: 12px;
       min-width: 60px;
     }
 
@@ -369,17 +353,16 @@
 
     .stat-item {
       text-align: center;
-      flex: 1;
     }
 
     .stat-label {
-      font-size: var(--font-small);
+      font-size: 14px;
       color: var(--text-secondary);
       margin-bottom: 4px;
     }
 
     .stat-value {
-      font-size: var(--font-xlarge);
+      font-size: 18px;
       font-weight: 600;
     }
 
@@ -433,7 +416,7 @@
     }
 
     .price-change {
-      font-size: var(--font-small);
+      font-size: 13px;
     }
 
     /* Trading View */
@@ -449,7 +432,7 @@
     .trading-tab {
       padding: 12px 16px;
       cursor: pointer;
-      font-size: var(--font-medium);
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-secondary);
       position: relative;
@@ -471,7 +454,7 @@
 
     .trading-content {
       display: none;
-      height: 400px;
+      height: 450px;
     }
 
     .trading-content.active {
@@ -484,12 +467,18 @@
       border: none;
     }
 
-    /* Reviews Section */
-    .reviews-section {
-      margin-top: 16px;
+    @media (max-width: 768px) {
+      .trading-chart {
+        height: 300px;
+      }
     }
 
-    .reviews-container {
+    /* Reviews Section */
+    .reviews-section {
+      margin-top: 24px;
+    }
+
+    .reviews-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
@@ -498,7 +487,7 @@
 
     .review-card {
       background-color: var(--card-bg);
-      border-radius: 4px;
+      border-radius: 8px;
       padding: 16px;
       border: 1px solid var(--border-color);
     }
@@ -514,8 +503,7 @@
       height: 40px;
       border-radius: 50%;
       margin-right: 12px;
-      background-size: cover;
-      background-position: center;
+      object-fit: cover;
     }
 
     .review-user {
@@ -523,22 +511,21 @@
     }
 
     .review-name {
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 2px;
     }
 
     .review-date {
-      font-size: var(--font-small);
       color: var(--text-secondary);
+      font-size: 12px;
     }
 
     .review-rating {
       color: var(--primary-accent);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .review-content {
-      font-size: var(--font-medium);
       line-height: 1.5;
     }
 
@@ -561,7 +548,7 @@
     .withdrawal-item {
       padding: 8px 0;
       border-bottom: 1px solid var(--border-color);
-      font-size: var(--font-small);
+      font-size: 13px;
     }
 
     .withdrawal-item:last-child {
@@ -606,12 +593,12 @@
     }
 
     .modal-title {
-      font-size: var(--font-xxlarge);
+      font-size: 20px;
       font-weight: 600;
     }
 
     .close-modal {
-      font-size: var(--font-xxlarge);
+      font-size: 24px;
       cursor: pointer;
       color: var(--text-secondary);
       transition: all 0.2s;
@@ -639,13 +626,13 @@
     }
 
     .coin-name-lg {
-      font-size: var(--font-xxlarge);
+      font-size: 24px;
       font-weight: 600;
     }
 
     .coin-symbol-lg {
       color: var(--text-secondary);
-      font-size: var(--font-large);
+      font-size: 16px;
       margin-left: 8px;
     }
 
@@ -656,7 +643,7 @@
     }
 
     .price-change-lg {
-      font-size: var(--font-large);
+      font-size: 16px;
       padding: 8px 12px;
       border-radius: 4px;
       display: inline-block;
@@ -685,13 +672,13 @@
     }
 
     .stat-label-lg {
-      font-size: var(--font-medium);
+      font-size: 14px;
       color: var(--text-secondary);
       margin-bottom: 8px;
     }
 
     .stat-value-lg {
-      font-size: var(--font-xlarge);
+      font-size: 18px;
       font-weight: 600;
     }
 
@@ -724,7 +711,7 @@
     .form-label {
       display: block;
       margin-bottom: 8px;
-      font-size: var(--font-medium);
+      font-size: 14px;
       font-weight: 500;
     }
 
@@ -735,7 +722,7 @@
       border: 1px solid var(--border-color);
       border-radius: 4px;
       color: var(--text-primary);
-      font-size: var(--font-medium);
+      font-size: 14px;
       transition: all 0.2s;
     }
 
@@ -752,50 +739,6 @@
 
     .form-col {
       flex: 1;
-    }
-
-    /* Toast Notification */
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
-      border-radius: 4px;
-      color: white;
-      font-weight: 500;
-      z-index: 1100;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      max-width: 90%;
-      text-align: center;
-    }
-
-    .toast.success {
-      background-color: var(--positive);
-    }
-
-    .toast.error {
-      background-color: var(--negative);
-    }
-
-    .toast.warning {
-      background-color: var(--primary-accent);
-      color: #000;
-    }
-
-    .toast.show {
-      opacity: 1;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: var(--text-secondary);
-      font-size: var(--font-small);
-      border-top: 1px solid var(--border-color);
-      margin-top: 40px;
     }
 
     /* Responsive Styles */
@@ -817,20 +760,12 @@
     }
 
     @media (max-width: 768px) {
-      :root {
-        --font-small: 10px;
-        --font-medium: 12px;
-        --font-large: 14px;
-        --font-xlarge: 16px;
-        --font-xxlarge: 18px;
-      }
-
       header {
         padding: 0 12px;
       }
 
       .logo-title {
-        font-size: var(--font-xlarge);
+        font-size: 18px;
       }
 
       .nav-container {
@@ -839,12 +774,12 @@
 
       .nav-link {
         padding: 6px 8px;
-        font-size: var(--font-medium);
+        font-size: 13px;
       }
 
       .btn {
         padding: 6px 12px;
-        font-size: var(--font-medium);
+        font-size: 13px;
       }
 
       .user-balance {
@@ -864,23 +799,6 @@
 
       th, td {
         padding: 10px 12px;
-        font-size: var(--font-medium);
-      }
-
-      .trading-content {
-        height: 300px;
-      }
-
-      .coin-price-lg {
-        font-size: 24px;
-      }
-
-      .stat-value {
-        font-size: var(--font-large);
-      }
-
-      .stat-value-lg {
-        font-size: var(--font-large);
       }
     }
 
@@ -919,11 +837,7 @@
 
       .withdrawals-feed {
         width: 200px;
-        font-size: var(--font-small);
-      }
-
-      .reviews-container {
-        grid-template-columns: 1fr;
+        font-size: 12px;
       }
     }
 
@@ -933,8 +847,6 @@
       justify-content: center;
       align-items: center;
       padding: 40px;
-      flex-direction: column;
-      gap: 12px;
     }
 
     .loading-spinner {
@@ -969,14 +881,56 @@
 
     .notification-content {
       flex: 1;
-      font-size: var(--font-medium);
+      font-size: 14px;
       font-weight: 500;
     }
 
     .notification-close {
       cursor: pointer;
-      font-size: var(--font-xlarge);
+      font-size: 18px;
       margin-left: 12px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--secondary-bg);
+      color: var(--text-primary);
+      padding: 12px 24px;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--positive);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--negative);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--primary-accent);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -990,8 +944,8 @@
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img id="siteLogo" src="" alt="CryptoTrade Pro" class="logo">
-      <h1 class="logo-title">CryptoTrade Pro</h1>
+      <img id="platformLogo" class="logo" alt="Crypto Trading Market">
+      <h1 class="logo-title">Crypto Trading Market</h1>
     </div>
     
     <div class="nav-container">
@@ -1001,17 +955,17 @@
       <a href="#" class="nav-link" id="earnLink">Earn</a>
       
       <div id="authButtons" class="auth-buttons">
-        <a href="#" class="btn btn-outline" id="loginBtn">Login</a>
-        <a href="#" class="btn btn-primary" id="signupBtn">Sign Up</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up</a>
       </div>
       
       <div id="userMenuContainer" class="user-menu" style="display: none;">
         <div class="user-balance" id="userBalanceDisplay">$0.00</div>
         <div class="user-avatar" id="userAvatar" onclick="toggleDropdown()"></div>
         <div class="dropdown-menu" id="dropdownMenu">
-          <a href="#" class="dropdown-item" id="dashboardLink">Dashboard</a>
-          <a href="#" class="dropdown-item" id="portfolioLink">Portfolio</a>
-          <a href="#" class="dropdown-item" id="settingsLink">Settings</a>
+          <a href="dashboard.html" class="dropdown-item">Dashboard</a>
+          <a href="portfolio.html" class="dropdown-item">Portfolio</a>
+          <a href="settings.html" class="dropdown-item">Settings</a>
           <div class="dropdown-item" onclick="logout()">Logout</div>
         </div>
       </div>
@@ -1024,7 +978,7 @@
     <div class="alert-banner warning" id="guestAlert">
       <div class="alert-icon">⚠️</div>
       <div class="alert-content">
-        You're currently viewing as a guest. <a href="#" class="alert-link" id="loginAlertLink">Login</a> or <a href="#" class="alert-link" id="signupAlertLink">Sign Up</a> to start trading.
+        You're currently viewing as a guest. <a href="login.html" class="alert-link">Login</a> or <a href="signup.html" class="alert-link">Sign Up</a> to start trading.
       </div>
     </div>
 
@@ -1103,9 +1057,9 @@
     <!-- Trading View -->
     <div class="section trading-view">
       <div class="trading-tabs">
-        <div class="trading-tab active" data-pair="BTCUSDT">BTC/USDT</div>
-        <div class="trading-tab" data-pair="ETHUSDT">ETH/USDT</div>
-        <div class="trading-tab" data-pair="BNBUSDT">BNB/USDT</div>
+        <div class="trading-tab active" onclick="changeChart('BTCUSDT')">BTC/USDT</div>
+        <div class="trading-tab" onclick="changeChart('ETHUSDT')">ETH/USDT</div>
+        <div class="trading-tab" onclick="changeChart('BNBUSDT')">BNB/USDT</div>
       </div>
       
       <div class="trading-content active" id="btcChart">
@@ -1124,10 +1078,9 @@
     <!-- Reviews Section -->
     <div class="section reviews-section">
       <div class="section-header">
-        <h2 class="section-title">Trader Reviews</h2>
-        <a href="#" class="section-link" id="viewAllReviews">View All</a>
+        <h2 class="section-title">User Reviews</h2>
       </div>
-      <div class="reviews-container" id="reviewsContainer">
+      <div class="reviews-grid" id="reviewsContainer">
         <!-- Reviews will be loaded here -->
       </div>
     </div>
@@ -1142,11 +1095,6 @@
       <!-- Withdrawals will be loaded here -->
     </div>
   </div>
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2023 CryptoTrade Pro. All rights reserved.</p>
-  </footer>
 
   <!-- Coin Detail Modal -->
   <div class="modal" id="coinModal">
@@ -1185,6 +1133,58 @@
     </div>
   </div>
 
+  <!-- All Gainers Modal -->
+  <div class="modal" id="allGainersModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Top Gainers (24h)</h2>
+        <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="allGainersTable">
+            <!-- All gainers data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Trending Modal -->
+  <div class="modal" id="allTrendingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Trending Coins</h2>
+        <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="allTrendingTable">
+            <!-- All trending data will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <!-- Trade Modal -->
   <div class="modal" id="tradeModal">
     <div class="modal-content">
@@ -1216,154 +1216,29 @@
     </div>
   </div>
 
-  <!-- Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Login</h2>
-        <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-      </div>
-      
-      <div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
-        </div>
-        
-        <div class="form-group">
-          <label>
-            <input type="checkbox" id="rememberMe"> Remember me
-          </label>
-        </div>
-        
-        <button class="btn btn-primary" id="loginSubmitBtn" style="width: 100%; margin-top: 16px;">
-          Login
-        </button>
-        
-        <div style="text-align: center; margin-top: 16px;">
-          <a href="#" onclick="showForgotPasswordModal()">Forgot password?</a>
-        </div>
-        
-        <div style="text-align: center; margin-top: 16px;">
-          Don't have an account? <a href="#" onclick="showSignupModal()">Sign up</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Signup Modal -->
-  <div class="modal" id="signupModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Sign Up</h2>
-        <span class="close-modal" onclick="closeModal('signupModal')">&times;</span>
-      </div>
-      
-      <div>
-        <div class="form-group">
-          <label class="form-label">Username</label>
-          <input type="text" class="form-control" id="signupUsername" placeholder="Choose a username">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input type="password" class="form-control" id="signupPassword" placeholder="Create a password">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label">Confirm Password</label>
-          <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm your password">
-        </div>
-        
-        <div class="form-group">
-          <label>
-            <input type="checkbox" id="agreeTerms"> I agree to the <a href="#" onclick="showTermsModal()">Terms of Service</a>
-          </label>
-        </div>
-        
-        <button class="btn btn-primary" id="signupSubmitBtn" style="width: 100%; margin-top: 16px;">
-          Create Account
-        </button>
-        
-        <div style="text-align: center; margin-top: 16px;">
-          Already have an account? <a href="#" onclick="showLoginModal()">Login</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Forgot Password Modal -->
-  <div class="modal" id="forgotPasswordModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Forgot Password</h2>
-        <span class="close-modal" onclick="closeModal('forgotPasswordModal')">&times;</span>
-      </div>
-      
-      <div>
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" id="forgotPasswordEmail" placeholder="Enter your email">
-        </div>
-        
-        <button class="btn btn-primary" id="forgotPasswordSubmitBtn" style="width: 100%; margin-top: 16px;">
-          Reset Password
-        </button>
-        
-        <div style="text-align: center; margin-top: 16px;">
-          Remember your password? <a href="#" onclick="showLoginModal()">Login</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Success Modal -->
   <div class="modal" id="successModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 class="modal-title">Success</h2>
+        <h2 class="modal-title">Trade Successful</h2>
         <span class="close-modal" onclick="closeModal('successModal')">&times;</span>
       </div>
       
       <div style="text-align: center; padding: 24px 0;">
         <div style="font-size: 48px; color: var(--positive); margin-bottom: 16px;">✓</div>
-        <h3 style="margin-bottom: 8px;" id="successTitle">Operation Completed</h3>
+        <h3 style="margin-bottom: 8px;" id="successTitle">Trade Completed</h3>
         <p id="successMessage"></p>
         <button class="btn btn-primary" onclick="closeModal('successModal')" style="margin-top: 24px;">
-          Continue
+          Continue Trading
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Error Modal -->
-  <div class="modal" id="errorModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Error</h2>
-        <span class="close-modal" onclick="closeModal('errorModal')">&times;</span>
-      </div>
-      
-      <div style="text-align: center; padding: 24px 0;">
-        <div style="font-size: 48px; color: var(--negative); margin-bottom: 16px;">✗</div>
-        <h3 style="margin-bottom: 8px;" id="errorTitle">Operation Failed</h3>
-        <p id="errorMessage"></p>
-        <button class="btn btn-danger" onclick="closeModal('errorModal')" style="margin-top: 24px;">
-          Try Again
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2023 Crypto Trading Market. All rights reserved.</p>
+  </footer>
 
   <script>
     // API Configuration
@@ -1378,8 +1253,6 @@
     let marketData = [];
     let gainersData = [];
     let trendingData = [];
-    let reviewsData = [];
-    let withdrawalsData = [];
     let coinPrices = {};
     let currentTrade = {
       coin: null,
@@ -1389,50 +1262,88 @@
     let socket = null;
     let adminMessages = [];
     let viewedMessages = [];
-    let authToken = null;
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', async () => {
-      // Set up event listeners
-      setupEventListeners();
-      
-      // Load site logo from backend
-      loadSiteLogo();
+      // Load platform logo from backend
+      await loadPlatformLogo();
       
       // Check authentication status
       await checkAuthStatus();
       
-      // Load all data
-      await loadAllData();
+      // Load market data
+      await loadMarketData();
+      
+      // Load reviews
+      await loadReviews();
+      
+      // Load withdrawals
+      await loadWithdrawals();
       
       // Initialize WebSocket connection
       initWebSocket();
+      
+      // Set up event listeners
+      setupEventListeners();
+      
+      // Start periodic updates
+      startPeriodicUpdates();
     });
+
+    // Load platform logo from backend
+    async function loadPlatformLogo() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/platform/logo`);
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('platformLogo').src = data.logoUrl;
+        } else {
+          // Fallback logo if API fails
+          document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+        }
+      } catch (error) {
+        console.error('Error loading platform logo:', error);
+        document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+      }
+    }
 
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
       document.getElementById('marketsLink').addEventListener('click', (e) => {
         e.preventDefault();
-        loadMarketsData();
+        loadMarketData();
       });
       
       document.getElementById('tradeLink').addEventListener('click', (e) => {
         e.preventDefault();
-        loadTradeData();
+        if (!currentUser) {
+          showToast('Please login to access the trading platform', 'error');
+          return;
+        }
+        // In a real app, this would navigate to the trading page
+        showToast('Trading platform would open here', 'info');
       });
       
       document.getElementById('futuresLink').addEventListener('click', (e) => {
         e.preventDefault();
-        loadFuturesData();
+        if (!currentUser) {
+          showToast('Please login to access futures trading', 'error');
+          return;
+        }
+        showToast('Futures trading would open here', 'info');
       });
       
       document.getElementById('earnLink').addEventListener('click', (e) => {
         e.preventDefault();
-        loadEarnData();
+        if (!currentUser) {
+          showToast('Please login to access earn products', 'error');
+          return;
+        }
+        showToast('Earn products would open here', 'info');
       });
       
-      // View all links
+      // View All links
       document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
         e.preventDefault();
         showAllCoins();
@@ -1448,99 +1359,34 @@
         showAllTrending();
       });
       
-      document.getElementById('viewAllReviews').addEventListener('click', (e) => {
-        e.preventDefault();
-        showAllReviews();
-      });
-      
-      // Auth buttons
-      document.getElementById('loginBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        showLoginModal();
-      });
-      
-      document.getElementById('signupBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        showSignupModal();
-      });
-      
-      document.getElementById('loginAlertLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        showLoginModal();
-      });
-      
-      document.getElementById('signupAlertLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        showSignupModal();
-      });
-      
-      // User menu links
-      document.getElementById('dashboardLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        loadDashboardData();
-      });
-      
-      document.getElementById('portfolioLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        loadPortfolioData();
-      });
-      
-      document.getElementById('settingsLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        loadSettingsData();
-      });
-      
-      // Trading tabs
-      document.querySelectorAll('.trading-tab').forEach(tab => {
-        tab.addEventListener('click', (e) => {
-          const pair = e.target.getAttribute('data-pair');
-          changeChart(pair);
-        });
-      });
-      
-      // Trade form
+      // Trade amount input
       document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
-      document.getElementById('confirmTradeBtn').addEventListener('click', executeTrade);
-      
-      // Login form
-      document.getElementById('loginSubmitBtn').addEventListener('click', loginUser);
-      
-      // Signup form
-      document.getElementById('signupSubmitBtn').addEventListener('click', signupUser);
-      
-      // Forgot password form
-      document.getElementById('forgotPasswordSubmitBtn').addEventListener('click', resetPassword);
     }
 
-    // Load site logo from backend
-    async function loadSiteLogo() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/site/logo`);
-        if (response.ok) {
-          const data = await response.json();
-          document.getElementById('siteLogo').src = data.logoUrl;
-        } else {
-          // Fallback logo
-          document.getElementById('siteLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-        }
-      } catch (error) {
-        console.error('Error loading site logo:', error);
-        document.getElementById('siteLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-      }
+    // Start periodic updates
+    function startPeriodicUpdates() {
+      // Update prices every 30 seconds
+      setInterval(updatePrices, 30000);
+      
+      // Update withdrawals feed every 5 seconds
+      setInterval(loadWithdrawals, 5000);
+      
+      // Check for admin messages every minute
+      setInterval(checkAdminMessages, 60000);
     }
 
     // Check authentication status
     async function checkAuthStatus() {
       try {
-        authToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-        if (!authToken) {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (!token) {
           updateAuthUI();
           return;
         }
         
         const response = await fetch(`${API_BASE_URL}/auth/status`, {
           headers: {
-            'Authorization': `Bearer ${authToken}`
+            'Authorization': `Bearer ${token}`
           }
         });
         
@@ -1557,7 +1403,7 @@
           if (socket) {
             socket.send(JSON.stringify({
               type: 'AUTHENTICATE',
-              token: authToken
+              token: token
             }));
           }
         } else {
@@ -1578,17 +1424,10 @@
         authButtons.style.display = 'none';
         userMenu.style.display = 'flex';
         
-        // Set user avatar
-        const avatar = document.getElementById('userAvatar');
-        if (currentUser.avatarUrl) {
-          avatar.style.backgroundImage = `url(${currentUser.avatarUrl})`;
-          avatar.textContent = '';
-        } else {
-          avatar.style.backgroundImage = '';
-          const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
-                         currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
-          avatar.textContent = initial;
-        }
+        // Set user avatar initial
+        const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
+                       currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
+        document.getElementById('userAvatar').textContent = initial;
         
         // Update balance display
         document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
@@ -1643,7 +1482,6 @@
     function clearAuthData() {
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
-      authToken = null;
       currentUser = null;
       userBalance = 0;
       userPortfolio = [];
@@ -1673,29 +1511,216 @@
       }
     });
 
-    // Load all data for the dashboard
-    async function loadAllData() {
+    // Logout user
+    async function logout() {
       try {
-        await Promise.all([
-          loadMarketsData(),
-          loadGlobalStats(),
-          loadReviewsData(),
-          loadWithdrawalsData(),
-          checkAdminMessages()
-        ]);
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          await fetch(`${API_BASE_URL}/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        }
+        
+        clearAuthData();
+        showToast('You have been logged out successfully');
       } catch (error) {
-        console.error('Error loading all data:', error);
-        showToast('Failed to load data. Please try again.', 'error');
+        console.error('Error logging out:', error);
+        showToast('Error logging out. Please try again.', 'error');
       }
     }
 
-    // Load markets data
-    async function loadMarketsData() {
+    // Initialize WebSocket connection
+    function initWebSocket() {
+      if (socket) {
+        socket.close();
+      }
+      
+      socket = new WebSocket('wss://website-backendd-1.onrender.com');
+      
+      socket.addEventListener('open', () => {
+        console.log('WebSocket connection established');
+        
+        // Authenticate if user is logged in
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        if (token) {
+          socket.send(JSON.stringify({
+            type: 'AUTHENTICATE',
+            token: token
+          }));
+        }
+      });
+
+      socket.addEventListener('message', (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          handleWebSocketMessage(data);
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
+        }
+      });
+
+      socket.addEventListener('close', () => {
+        console.log('WebSocket connection closed');
+        // Attempt to reconnect after 5 seconds
+        setTimeout(initWebSocket, 5000);
+      });
+
+      socket.addEventListener('error', (error) => {
+        console.error('WebSocket error:', error);
+      });
+    }
+
+    // Handle WebSocket messages
+    function handleWebSocketMessage(data) {
+      switch (data.type) {
+        case 'BALANCE_UPDATE':
+          handleBalanceUpdate(data);
+          break;
+        case 'TRADE_UPDATE':
+          handleTradeUpdate(data);
+          break;
+        case 'PORTFOLIO_UPDATE':
+          handlePortfolioUpdate(data);
+          break;
+        case 'ADMIN_MESSAGE':
+          handleAdminMessage(data);
+          break;
+        case 'PRICE_UPDATE':
+          handlePriceUpdate(data);
+          break;
+        default:
+          console.log('Unknown message type:', data.type);
+      }
+    }
+
+    // Handle balance updates from WebSocket
+    function handleBalanceUpdate(data) {
+      userBalance = data.balance;
+      document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
+      
+      // Show notification if balance was increased by admin
+      if (data.source === 'admin') {
+        showToast(`Your balance has been updated by admin. New balance: $${userBalance.toFixed(2)}`);
+      }
+    }
+
+    // Handle trade updates from WebSocket
+    function handleTradeUpdate(data) {
+      const profitText = data.profit > 0 ? 
+        `You made a profit of $${data.profit.toFixed(2)}` : 
+        `Trade completed successfully`;
+      
+      showToast(`${profitText}. New balance: $${data.balance.toFixed(2)}`);
+      
+      // Update balance display
+      userBalance = data.balance;
+      document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
+    }
+
+    // Handle portfolio updates from WebSocket
+    function handlePortfolioUpdate(data) {
+      userPortfolio = data.portfolio || [];
+      
+      // Update portfolio change display
+      const portfolioChange = calculatePortfolioChange();
+      document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
+      document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+    }
+
+    // Handle admin messages from WebSocket
+    function handleAdminMessage(data) {
+      if (!adminMessages.some(msg => msg.id === data.id)) {
+        adminMessages.push(data);
+        
+        // Show notification if user hasn't seen it yet
+        if (!viewedMessages.includes(data.id)) {
+          showAdminNotification(data.message);
+        }
+      }
+    }
+
+    // Handle price updates from WebSocket
+    function handlePriceUpdate(data) {
+      if (coinPrices[data.coinId]) {
+        coinPrices[data.coinId].currentPrice = data.price;
+        coinPrices[data.coinId].change24h = data.change24h;
+        
+        // Update UI if needed
+        updateMarketTable();
+        updateGainersList();
+        updateTrendingList();
+      }
+    }
+
+    // Show admin notification
+    function showAdminNotification(message) {
+      const notification = document.getElementById('adminNotification');
+      const content = document.getElementById('adminNotificationContent');
+      
+      content.textContent = message;
+      notification.style.display = 'flex';
+      
+      // Auto-hide after 10 seconds
+      setTimeout(() => {
+        if (notification.style.display === 'flex') {
+          closeAdminNotification();
+        }
+      }, 10000);
+    }
+
+    // Close admin notification
+    function closeAdminNotification() {
+      const notification = document.getElementById('adminNotification');
+      const content = document.getElementById('adminNotificationContent');
+      const messageId = adminMessages.find(msg => msg.message === content.textContent)?.id;
+      
+      if (messageId) {
+        viewedMessages.push(messageId);
+      }
+      
+      notification.style.display = 'none';
+    }
+
+    // Check for admin messages
+    async function checkAdminMessages() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/messages`);
+        if (response.ok) {
+          const messages = await response.json();
+          adminMessages = messages;
+          
+          // Show unread messages
+          messages.forEach(msg => {
+            if (!viewedMessages.includes(msg.id)) {
+              showAdminNotification(msg.message);
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching admin messages:', error);
+      }
+    }
+
+    // Load market data
+    async function loadMarketData() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets`);
-        if (!response.ok) throw new Error('Failed to fetch market data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch market data');
+        }
         
-        marketData = await response.json();
+        const data = await response.json();
+        marketData = data.marketData || [];
+        gainersData = data.gainers || [];
+        trendingData = data.trending || [];
+        
+        // Update global stats
+        document.getElementById('totalTraders').textContent = data.stats.totalTraders.toLocaleString();
+        document.getElementById('globalVolume').textContent = `$${(data.stats.dailyVolume / 1000000000).toFixed(2)}B`;
+        document.getElementById('totalAssets').textContent = data.stats.totalAssets;
         
         // Initialize coin prices
         marketData.forEach(coin => {
@@ -1706,38 +1731,6 @@
           };
         });
         
-        updateMarketTable();
-      } catch (error) {
-        console.error('Error loading markets data:', error);
-        showToast('Failed to load market data', 'error');
-      }
-    }
-
-    // Load global stats
-    async function loadGlobalStats() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/stats`);
-        if (!response.ok) throw new Error('Failed to fetch global stats');
-        
-        const stats = await response.json();
-        
-        document.getElementById('totalTraders').textContent = stats.totalTraders.toLocaleString();
-        document.getElementById('globalVolume').textContent = `$${(stats.dailyVolume / 1000000).toFixed(2)}M`;
-        document.getElementById('totalAssets').textContent = stats.totalAssets;
-      } catch (error) {
-        console.error('Error loading global stats:', error);
-      }
-    }
-
-    // Load gainers data
-    async function loadGainersData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-        if (!response.ok) throw new Error('Failed to fetch gainers data');
-        
-        gainersData = await response.json();
-        
-        // Update coin prices
         gainersData.forEach(coin => {
           if (!coinPrices[coin.id]) {
             coinPrices[coin.id] = {
@@ -1748,21 +1741,6 @@
           }
         });
         
-        updateGainersList();
-      } catch (error) {
-        console.error('Error loading gainers data:', error);
-      }
-    }
-
-    // Load trending data
-    async function loadTrendingData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/markets/trending`);
-        if (!response.ok) throw new Error('Failed to fetch trending data');
-        
-        trendingData = await response.json();
-        
-        // Update coin prices
         trendingData.forEach(coin => {
           if (!coinPrices[coin.id]) {
             coinPrices[coin.id] = {
@@ -1773,142 +1751,13 @@
           }
         });
         
+        // Update UI
+        updateMarketTable();
+        updateGainersList();
         updateTrendingList();
       } catch (error) {
-        console.error('Error loading trending data:', error);
-      }
-    }
-
-    // Load reviews data
-    async function loadReviewsData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) throw new Error('Failed to fetch reviews data');
-        
-        reviewsData = await response.json();
-        updateReviewsList();
-      } catch (error) {
-        console.error('Error loading reviews data:', error);
-      }
-    }
-
-    // Load withdrawals data
-    async function loadWithdrawalsData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/withdrawals`);
-        if (!response.ok) throw new Error('Failed to fetch withdrawals data');
-        
-        withdrawalsData = await response.json();
-        updateWithdrawalsList();
-      } catch (error) {
-        console.error('Error loading withdrawals data:', error);
-      }
-    }
-
-    // Load trade data
-    async function loadTradeData() {
-      try {
-        await Promise.all([
-          loadMarketsData(),
-          loadGainersData()
-        ]);
-        showToast('Trade data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading trade data:', error);
-        showToast('Failed to load trade data', 'error');
-      }
-    }
-
-    // Load futures data
-    async function loadFuturesData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/futures`);
-        if (!response.ok) throw new Error('Failed to fetch futures data');
-        
-        const futuresData = await response.json();
-        // In a real app, you would update the UI with futures data
-        showToast('Futures data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading futures data:', error);
-        showToast('Failed to load futures data', 'error');
-      }
-    }
-
-    // Load earn data
-    async function loadEarnData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/earn`);
-        if (!response.ok) throw new Error('Failed to fetch earn data');
-        
-        const earnData = await response.json();
-        // In a real app, you would update the UI with earn data
-        showToast('Earn data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading earn data:', error);
-        showToast('Failed to load earn data', 'error');
-      }
-    }
-
-    // Load dashboard data
-    async function loadDashboardData() {
-      try {
-        await loadAllData();
-        showToast('Dashboard data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading dashboard data:', error);
-        showToast('Failed to load dashboard data', 'error');
-      }
-    }
-
-    // Load portfolio data
-    async function loadPortfolioData() {
-      try {
-        if (!authToken) {
-          showToast('Please login to view your portfolio', 'error');
-          return;
-        }
-        
-        const response = await fetch(`${API_BASE_URL}/portfolio`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        });
-        
-        if (!response.ok) throw new Error('Failed to fetch portfolio data');
-        
-        const portfolio = await response.json();
-        userPortfolio = portfolio;
-        
-        // In a real app, you would update the UI with portfolio data
-        showToast('Portfolio data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading portfolio data:', error);
-        showToast('Failed to load portfolio data', 'error');
-      }
-    }
-
-    // Load settings data
-    async function loadSettingsData() {
-      try {
-        if (!authToken) {
-          showToast('Please login to view settings', 'error');
-          return;
-        }
-        
-        const response = await fetch(`${API_BASE_URL}/settings`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          }
-        });
-        
-        if (!response.ok) throw new Error('Failed to fetch settings data');
-        
-        const settings = await response.json();
-        // In a real app, you would update the UI with settings data
-        showToast('Settings data loaded', 'success');
-      } catch (error) {
-        console.error('Error loading settings data:', error);
-        showToast('Failed to load settings data', 'error');
+        console.error('Error loading market data:', error);
+        showToast('Failed to load market data. Please try again.', 'error');
       }
     }
 
@@ -1916,18 +1765,6 @@
     function updateMarketTable() {
       const tableBody = document.getElementById('marketTable');
       tableBody.innerHTML = '';
-      
-      if (marketData.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="6" class="loading">
-              <div class="loading-spinner"></div>
-              Loading market data...
-            </td>
-          </tr>
-        `;
-        return;
-      }
       
       marketData.forEach(coin => {
         const coinData = coinPrices[coin.id] || {
@@ -1968,16 +1805,6 @@
       const gainersList = document.getElementById('gainersList');
       gainersList.innerHTML = '';
       
-      if (gainersData.length === 0) {
-        gainersList.innerHTML = `
-          <li class="loading">
-            <div class="loading-spinner"></div>
-            Loading gainers...
-          </li>
-        `;
-        return;
-      }
-      
       gainersData.forEach(coin => {
         const coinData = coinPrices[coin.id] || {
           currentPrice: coin.currentPrice,
@@ -2009,16 +1836,6 @@
       const trendingList = document.getElementById('trendingList');
       trendingList.innerHTML = '';
       
-      if (trendingData.length === 0) {
-        trendingList.innerHTML = `
-          <li class="loading">
-            <div class="loading-spinner"></div>
-            Loading trending coins...
-          </li>
-        `;
-        return;
-      }
-      
       trendingData.forEach(coin => {
         const coinData = coinPrices[coin.id] || {
           currentPrice: coin.currentPrice,
@@ -2045,66 +1862,61 @@
       });
     }
 
-    // Update reviews list
-    function updateReviewsList() {
-      const reviewsContainer = document.getElementById('reviewsContainer');
-      reviewsContainer.innerHTML = '';
-      
-      if (reviewsData.length === 0) {
-        reviewsContainer.innerHTML = `
-          <div class="loading">
-            <div class="loading-spinner"></div>
-            Loading reviews...
-          </div>
-        `;
-        return;
-      }
-      
-      // Show only the first 3 reviews on the main page
-      const reviewsToShow = reviewsData.slice(0, 3);
-      
-      reviewsToShow.forEach(review => {
-        const card = document.createElement('div');
-        card.className = 'review-card';
-        card.innerHTML = `
-          <div class="review-header">
-            <div class="review-avatar" style="background-image: url(${review.user.avatarUrl || 'https://via.placeholder.com/40'})"></div>
-            <div class="review-user">
-              <div class="review-name">${review.user.name}</div>
-              <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+    // Load reviews
+    async function loadReviews() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/reviews`);
+        if (!response.ok) {
+          throw new Error('Failed to load reviews');
+        }
+        
+        const reviews = await response.json();
+        const container = document.getElementById('reviewsContainer');
+        container.innerHTML = '';
+        
+        reviews.forEach(review => {
+          const card = document.createElement('div');
+          card.className = 'review-card';
+          card.innerHTML = `
+            <div class="review-header">
+              <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+              <div class="review-user">
+                <div class="review-name">${review.user.name}</div>
+                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+              </div>
+              <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
             </div>
-            <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
-          </div>
-          <div class="review-content">${review.content}</div>
-        `;
-        reviewsContainer.appendChild(card);
-      });
+            <div class="review-content">${review.content}</div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Error loading reviews:', error);
+        showToast('Failed to load reviews', 'error');
+      }
     }
 
-    // Update withdrawals list
-    function updateWithdrawalsList() {
-      const withdrawalsList = document.getElementById('withdrawalsList');
-      withdrawalsList.innerHTML = '';
-      
-      if (withdrawalsData.length === 0) {
-        withdrawalsList.innerHTML = `
-          <div class="loading">
-            <div class="loading-spinner"></div>
-            Loading withdrawals...
-          </div>
-        `;
-        return;
+    // Load withdrawals
+    async function loadWithdrawals() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/withdrawals`);
+        if (!response.ok) {
+          throw new Error('Failed to load withdrawals');
+        }
+        
+        const withdrawals = await response.json();
+        const container = document.getElementById('withdrawalsList');
+        container.innerHTML = '';
+        
+        withdrawals.slice(0, 5).forEach(withdrawal => {
+          const item = document.createElement('div');
+          item.className = 'withdrawal-item';
+          item.textContent = `${withdrawal.user} withdrawn ${withdrawal.amount} ${withdrawal.asset}`;
+          container.appendChild(item);
+        });
+      } catch (error) {
+        console.error('Error loading withdrawals:', error);
       }
-      
-      // Show only the first 5 withdrawals
-      const withdrawalsToShow = withdrawalsData.slice(0, 5);
-      
-      withdrawalsToShow.forEach(withdrawal => {
-        const item = document.createElement('div');
-        item.className = 'withdrawal-item';
-        item.textContent = `${withdrawal.user} withdrawn ${withdrawal.amount.toFixed(8)} ${withdrawal.currency}`;
-        withdrawalsList.appendChild(item);
-      });
     }
 
     // Show coin detail modal
@@ -2193,7 +2005,6 @@
       
       if (!currentUser) {
         showToast('Please login to trade', 'error');
-        showLoginModal();
         return;
       }
       
@@ -2269,11 +2080,12 @@
       }
       
       try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         const response = await fetch(`${API_BASE_URL}/trades/${currentTrade.type}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify({
             coinId: currentTrade.coin.id,
@@ -2307,22 +2119,33 @@
       }
     }
 
+    // Show success modal after trade
+    function showSuccessModal(profit) {
+      const modal = document.getElementById('successModal');
+      const title = document.getElementById('successTitle');
+      const message = document.getElementById('successMessage');
+      
+      if (profit > 0) {
+        title.textContent = 'Trade Successful!';
+        message.textContent = `You made a profit of $${profit.toFixed(2)} on this trade.`;
+      } else {
+        title.textContent = 'Trade Completed';
+        message.textContent = 'Your trade has been executed successfully.';
+      }
+      
+      modal.style.display = 'block';
+    }
+
     // Show all coins modal
     async function showAllCoins() {
       const modal = document.getElementById('allCoinsModal');
       modal.style.display = 'block';
       
-      // Load all coins if not already loaded
-      if (document.getElementById('allCoinsTable').children.length === 0) {
-        await loadAllCoins();
-      }
-    }
-
-    // Load all coins for the modal
-    async function loadAllCoins() {
       try {
         const response = await fetch(`${API_BASE_URL}/markets/all`);
-        if (!response.ok) throw new Error('Failed to fetch all coins');
+        if (!response.ok) {
+          throw new Error('Failed to load all coins');
+        }
         
         const coins = await response.json();
         const tableBody = document.getElementById('allCoinsTable');
@@ -2367,9 +2190,50 @@
 
     // Show all gainers modal
     async function showAllGainers() {
+      const modal = document.getElementById('allGainersModal');
+      modal.style.display = 'block';
+      
       try {
-        await loadGainersData();
-        showToast('All gainers loaded', 'success');
+        const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+        if (!response.ok) {
+          throw new Error('Failed to load all gainers');
+        }
+        
+        const coins = await response.json();
+        const tableBody = document.getElementById('allGainersTable');
+        tableBody.innerHTML = '';
+        
+        coins.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allGainersModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
       } catch (error) {
         console.error('Error loading all gainers:', error);
         showToast('Failed to load all gainers', 'error');
@@ -2378,28 +2242,58 @@
 
     // Show all trending modal
     async function showAllTrending() {
+      const modal = document.getElementById('allTrendingModal');
+      modal.style.display = 'block';
+      
       try {
-        await loadTrendingData();
-        showToast('All trending coins loaded', 'success');
+        const response = await fetch(`${API_BASE_URL}/markets/trending`);
+        if (!response.ok) {
+          throw new Error('Failed to load all trending coins');
+        }
+        
+        const coins = await response.json();
+        const tableBody = document.getElementById('allTrendingTable');
+        tableBody.innerHTML = '';
+        
+        coins.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allTrendingModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
       } catch (error) {
         console.error('Error loading all trending coins:', error);
         showToast('Failed to load all trending coins', 'error');
       }
     }
 
-    // Show all reviews modal
-    async function showAllReviews() {
-      try {
-        await loadReviewsData();
-        showToast('All reviews loaded', 'success');
-      } catch (error) {
-        console.error('Error loading all reviews:', error);
-        showToast('Failed to load all reviews', 'error');
-      }
-    }
-
     // Change trading chart
-    function changeChart(pair) {
+    function changeChart(symbol) {
       // Update tabs
       document.querySelectorAll('.trading-tab').forEach(tab => {
         tab.classList.remove('active');
@@ -2407,7 +2301,7 @@
       
       // Activate clicked tab
       const activeTab = Array.from(document.querySelectorAll('.trading-tab')).find(tab => 
-        tab.getAttribute('data-pair') === pair
+        tab.textContent === symbol.replace('USDT', '/USDT')
       );
       
       if (activeTab) {
@@ -2419,405 +2313,64 @@
         content.classList.remove('active');
       });
       
-      const chartId = pair.toLowerCase().replace('usdt', 'Chart');
+      const chartId = symbol.toLowerCase().replace('usdt', 'Chart');
       document.getElementById(chartId).classList.add('active');
     }
 
-    // Show login modal
-    function showLoginModal() {
-      closeAllModals();
-      document.getElementById('loginModal').style.display = 'block';
-    }
-
-    // Show signup modal
-    function showSignupModal() {
-      closeAllModals();
-      document.getElementById('signupModal').style.display = 'block';
-    }
-
-    // Show forgot password modal
-    function showForgotPasswordModal() {
-      closeAllModals();
-      document.getElementById('forgotPasswordModal').style.display = 'block';
-    }
-
-    // Show success modal
-    function showSuccessModal(message = '') {
-      const modal = document.getElementById('successModal');
-      document.getElementById('successMessage').textContent = message;
-      modal.style.display = 'block';
-    }
-
-    // Show error modal
-    function showErrorModal(message = '') {
-      const modal = document.getElementById('errorModal');
-      document.getElementById('errorMessage').textContent = message;
-      modal.style.display = 'block';
-    }
-
-    // Close all modals
-    function closeAllModals() {
-      document.querySelectorAll('.modal').forEach(modal => {
-        modal.style.display = 'none';
-      });
-    }
-
-    // Close specific modal
-    function closeModal(modalId) {
-      document.getElementById(modalId).style.display = 'none';
-    }
-
-    // Login user
-    async function loginUser() {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      const rememberMe = document.getElementById('rememberMe').checked;
-      
-      if (!email || !password) {
-        showToast('Please fill in all fields', 'error');
-        return;
+    // Update prices with random variations
+    function updatePrices() {
+      // Update prices for all coins with random variations
+      for (const coinId in coinPrices) {
+        if (coinPrices.hasOwnProperty(coinId)) {
+          const originalPrice = coinPrices[coinId].originalPrice;
+          
+          // Determine if this update will be profit or loss
+          const isProfit = Math.random() > 0.5; // 50% chance for profit or loss
+          
+          if (isProfit) {
+            // Generate random profit between 0 and 15%
+            const profitPercent = Math.random() * 15;
+            coinPrices[coinId].currentPrice = originalPrice * (1 + profitPercent/100);
+            coinPrices[coinId].change24h = profitPercent;
+          } else {
+            // Generate random loss between 0 and 7%
+            const lossPercent = Math.random() * 7;
+            coinPrices[coinId].currentPrice = originalPrice * (1 - lossPercent/100);
+            coinPrices[coinId].change24h = -lossPercent;
+          }
+        }
       }
       
-      try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password
-          })
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          authToken = data.token;
-          
-          // Store token based on remember me choice
-          if (rememberMe) {
-            localStorage.setItem('token', authToken);
-          } else {
-            sessionStorage.setItem('token', authToken);
-          }
-          
-          // Update UI
-          currentUser = data.user;
-          userBalance = data.balance || 0;
-          userPortfolio = data.portfolio || [];
-          updateAuthUI();
-          showWelcomeMessage();
-          
-          // Close modal
-          closeModal('loginModal');
-          showToast('Login successful', 'success');
-          
-          // Connect to WebSocket with authentication
-          if (socket) {
+      // Update UI
+      updateMarketTable();
+      updateGainersList();
+      updateTrendingList();
+      
+      // Update portfolio change if user is logged in
+      if (currentUser) {
+        const portfolioChange = calculatePortfolioChange();
+        document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
+        document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+      }
+      
+      // Simulate sending price updates via WebSocket
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        for (const coinId in coinPrices) {
+          if (coinPrices.hasOwnProperty(coinId)) {
             socket.send(JSON.stringify({
-              type: 'AUTHENTICATE',
-              token: authToken
+              type: 'PRICE_UPDATE',
+              coinId: coinId,
+              price: coinPrices[coinId].currentPrice,
+              change24h: coinPrices[coinId].change24h
             }));
           }
-        } else {
-          const error = await response.json();
-          showToast(error.message || 'Login failed', 'error');
-        }
-      } catch (error) {
-        console.error('Error logging in:', error);
-        showToast('Network error. Please try again.', 'error');
-      }
-    }
-
-    // Signup user
-    async function signupUser() {
-      const username = document.getElementById('signupUsername').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('signupConfirmPassword').value;
-      const agreeTerms = document.getElementById('agreeTerms').checked;
-      
-      if (!username || !email || !password || !confirmPassword) {
-        showToast('Please fill in all fields', 'error');
-        return;
-      }
-      
-      if (password !== confirmPassword) {
-        showToast('Passwords do not match', 'error');
-        return;
-      }
-      
-      if (!agreeTerms) {
-        showToast('You must agree to the terms of service', 'error');
-        return;
-      }
-      
-      try {
-        const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            username: username,
-            email: email,
-            password: password
-          })
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          showToast('Account created successfully. Please login.', 'success');
-          closeModal('signupModal');
-          showLoginModal();
-        } else {
-          const error = await response.json();
-          showToast(error.message || 'Signup failed', 'error');
-        }
-      } catch (error) {
-        console.error('Error signing up:', error);
-        showToast('Network error. Please try again.', 'error');
-      }
-    }
-
-    // Reset password
-    async function resetPassword() {
-      const email = document.getElementById('forgotPasswordEmail').value;
-      
-      if (!email) {
-        showToast('Please enter your email', 'error');
-        return;
-      }
-      
-      try {
-        const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email
-          })
-        });
-        
-        if (response.ok) {
-          showToast('Password reset link sent to your email', 'success');
-          closeModal('forgotPasswordModal');
-        } else {
-          const error = await response.json();
-          showToast(error.message || 'Failed to send reset link', 'error');
-        }
-      } catch (error) {
-        console.error('Error resetting password:', error);
-        showToast('Network error. Please try again.', 'error');
-      }
-    }
-
-    // Logout user
-    async function logout() {
-      try {
-        if (authToken) {
-          await fetch(`${API_BASE_URL}/auth/logout`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${authToken}`
-            }
-          });
-        }
-        
-        clearAuthData();
-        showToast('You have been logged out successfully', 'success');
-      } catch (error) {
-        console.error('Error logging out:', error);
-        showToast('Error logging out. Please try again.', 'error');
-      }
-    }
-
-    // Initialize WebSocket connection
-    function initWebSocket() {
-      if (socket) {
-        socket.close();
-      }
-      
-      socket = new WebSocket('wss://website-backendd-1.onrender.com');
-      
-      socket.addEventListener('open', () => {
-        console.log('WebSocket connection established');
-        
-        // Authenticate if user is logged in
-        if (authToken) {
-          socket.send(JSON.stringify({
-            type: 'AUTHENTICATE',
-            token: authToken
-          }));
-        }
-      });
-
-      socket.addEventListener('message', (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          handleWebSocketMessage(data);
-        } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
-        }
-      });
-
-      socket.addEventListener('close', () => {
-        console.log('WebSocket connection closed');
-        // Attempt to reconnect after 5 seconds
-        setTimeout(initWebSocket, 5000);
-      });
-
-      socket.addEventListener('error', (error) => {
-        console.error('WebSocket error:', error);
-      });
-    }
-
-    // Handle WebSocket messages
-    function handleWebSocketMessage(data) {
-      switch (data.type) {
-        case 'PRICE_UPDATE':
-          handlePriceUpdate(data);
-          break;
-        case 'BALANCE_UPDATE':
-          handleBalanceUpdate(data);
-          break;
-        case 'TRADE_UPDATE':
-          handleTradeUpdate(data);
-          break;
-        case 'PORTFOLIO_UPDATE':
-          handlePortfolioUpdate(data);
-          break;
-        case 'ADMIN_MESSAGE':
-          handleAdminMessage(data);
-          break;
-        case 'WITHDRAWAL_UPDATE':
-          handleWithdrawalUpdate(data);
-          break;
-        default:
-          console.log('Unknown message type:', data.type);
-      }
-    }
-
-    // Handle price updates from WebSocket
-    function handlePriceUpdate(data) {
-      if (coinPrices[data.coinId]) {
-        coinPrices[data.coinId].currentPrice = data.price;
-        coinPrices[data.coinId].change24h = data.change24h;
-        
-        // Update UI
-        updateMarketTable();
-        updateGainersList();
-        updateTrendingList();
-        
-        // Update portfolio change if user is logged in
-        if (currentUser) {
-          const portfolioChange = calculatePortfolioChange();
-          document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
-          document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
         }
       }
     }
 
-    // Handle balance updates from WebSocket
-    function handleBalanceUpdate(data) {
-      userBalance = data.balance;
-      document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
-      
-      // Show notification if balance was increased by admin
-      if (data.source === 'admin') {
-        showToast(`Your balance has been updated by admin. New balance: $${userBalance.toFixed(2)}`);
-      }
-    }
-
-    // Handle trade updates from WebSocket
-    function handleTradeUpdate(data) {
-      const profitText = data.profit > 0 ? 
-        `You made a profit of $${data.profit.toFixed(2)}` : 
-        `Trade completed successfully`;
-      
-      showToast(`${profitText}. New balance: $${data.balance.toFixed(2)}`);
-      
-      // Update balance display
-      userBalance = data.balance;
-      document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
-    }
-
-    // Handle portfolio updates from WebSocket
-    function handlePortfolioUpdate(data) {
-      userPortfolio = data.portfolio || [];
-      
-      // Update portfolio change display
-      const portfolioChange = calculatePortfolioChange();
-      document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
-      document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
-    }
-
-    // Handle admin messages from WebSocket
-    function handleAdminMessage(data) {
-      if (!adminMessages.some(msg => msg.id === data.id)) {
-        adminMessages.push(data);
-        
-        // Show notification if user hasn't seen it yet
-        if (!viewedMessages.includes(data.id)) {
-          showAdminNotification(data.message);
-        }
-      }
-    }
-
-    // Handle withdrawal updates from WebSocket
-    function handleWithdrawalUpdate(data) {
-      withdrawalsData.unshift(data);
-      updateWithdrawalsList();
-    }
-
-    // Show admin notification
-    function showAdminNotification(message) {
-      const notification = document.getElementById('adminNotification');
-      const content = document.getElementById('adminNotificationContent');
-      
-      content.textContent = message;
-      notification.style.display = 'flex';
-      
-      // Auto-hide after 10 seconds
-      setTimeout(() => {
-        if (notification.style.display === 'flex') {
-          closeAdminNotification();
-        }
-      }, 10000);
-    }
-
-    // Close admin notification
-    function closeAdminNotification() {
-      const notification = document.getElementById('adminNotification');
-      const content = document.getElementById('adminNotificationContent');
-      const messageId = adminMessages.find(msg => msg.message === content.textContent)?.id;
-      
-      if (messageId) {
-        viewedMessages.push(messageId);
-      }
-      
-      notification.style.display = 'none';
-    }
-
-    // Check for admin messages
-    async function checkAdminMessages() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/messages`);
-        if (response.ok) {
-          const messages = await response.json();
-          adminMessages = messages;
-          
-          // Show unread messages
-          messages.forEach(msg => {
-            if (!viewedMessages.includes(msg.id)) {
-              showAdminNotification(msg.message);
-            }
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching admin messages:', error);
-      }
+    // Close modal
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
     }
 
     // Show toast notification
