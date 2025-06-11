@@ -19,6 +19,8 @@
       --border-color: #2b3139;
       --header-height: 64px;
       --mobile-breakpoint: 768px;
+      --trustpilot-green: #00b67a;
+      --trustpilot-dark: #2d2d2d;
     }
 
     * {
@@ -76,6 +78,12 @@
       }
     }
 
+    @media (max-width: 480px) {
+      .logo-title {
+        font-size: 14px;
+      }
+    }
+
     .nav-container {
       display: flex;
       align-items: center;
@@ -90,6 +98,7 @@
       padding: 8px 12px;
       border-radius: 4px;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .nav-link:hover {
@@ -109,6 +118,7 @@
       cursor: pointer;
       border: none;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .btn-primary {
@@ -485,11 +495,18 @@
       padding: 16px;
     }
 
+    @media (max-width: 768px) {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .review-card {
-      background-color: var(--card-bg);
+      background-color: white;
       border-radius: 8px;
-      padding: 16px;
-      border: 1px solid var(--border-color);
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      color: var(--trustpilot-dark);
     }
 
     .review-header {
@@ -499,8 +516,8 @@
     }
 
     .review-avatar {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       margin-right: 12px;
       object-fit: cover;
@@ -512,21 +529,46 @@
 
     .review-name {
       font-weight: 600;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
+      color: var(--trustpilot-dark);
     }
 
     .review-date {
-      color: var(--text-secondary);
+      color: #666;
       font-size: 12px;
     }
 
     .review-rating {
-      color: var(--primary-accent);
+      color: var(--trustpilot-green);
       font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .review-rating .stars {
+      color: var(--trustpilot-green);
+      font-size: 16px;
+      margin-right: 5px;
     }
 
     .review-content {
       line-height: 1.5;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .review-platform {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .review-platform img {
+      height: 16px;
+      margin-right: 5px;
     }
 
     /* Withdrawals Feed */
@@ -765,7 +807,7 @@
       }
 
       .logo-title {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .nav-container {
@@ -775,6 +817,11 @@
       .nav-link {
         padding: 6px 8px;
         font-size: 13px;
+        display: none;
+      }
+
+      .nav-link.mobile-visible {
+        display: block;
       }
 
       .btn {
@@ -804,7 +851,7 @@
 
     @media (max-width: 576px) {
       .logo-title {
-        display: none;
+        font-size: 14px;
       }
 
       .auth-buttons {
@@ -813,6 +860,7 @@
 
       .btn {
         padding: 6px 8px;
+        font-size: 12px;
       }
 
       .section-header {
@@ -839,28 +887,6 @@
         width: 200px;
         font-size: 12px;
       }
-    }
-
-    /* Loading States */
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-    }
-
-    .loading-spinner {
-      border: 3px solid rgba(240, 185, 11, 0.1);
-      border-radius: 50%;
-      border-top: 3px solid var(--primary-accent);
-      width: 24px;
-      height: 24px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
     }
 
     /* Notification Banner */
@@ -932,6 +958,51 @@
       border-top: 1px solid var(--border-color);
       margin-top: 40px;
     }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-container {
+        position: relative;
+      }
+      
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: var(--secondary-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        padding: 8px;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+      
+      .nav-links.show {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .nav-links .nav-link {
+        display: block;
+        padding: 8px 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -949,10 +1020,14 @@
     </div>
     
     <div class="nav-container">
-      <a href="#" class="nav-link" id="marketsLink">Markets</a>
-      <a href="#" class="nav-link" id="tradeLink">Trade</a>
-      <a href="#" class="nav-link" id="futuresLink">Futures</a>
-      <a href="#" class="nav-link" id="earnLink">Earn</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      
+      <div class="nav-links" id="navLinks">
+        <a href="#" class="nav-link mobile-visible" id="marketsLink">Markets</a>
+        <a href="#" class="nav-link" id="tradeLink">Trade</a>
+        <a href="#" class="nav-link" id="futuresLink">Futures</a>
+        <a href="#" class="nav-link" id="earnLink">Earn</a>
+      </div>
       
       <div id="authButtons" class="auth-buttons">
         <a href="login.html" class="btn btn-outline">Login</a>
@@ -1288,7 +1363,27 @@
       
       // Start periodic updates
       startPeriodicUpdates();
+      
+      // Setup mobile menu
+      setupMobileMenu();
     });
+
+    // Setup mobile menu toggle
+    function setupMobileMenu() {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const navLinks = document.getElementById('navLinks');
+      
+      mobileMenuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', (event) => {
+        if (!event.target.closest('.nav-container') && navLinks.classList.contains('show')) {
+          navLinks.classList.remove('show');
+        }
+      });
+    }
 
     // Load platform logo from backend
     async function loadPlatformLogo() {
@@ -1321,8 +1416,7 @@
           showToast('Please login to access the trading platform', 'error');
           return;
         }
-        // In a real app, this would navigate to the trading page
-        showToast('Trading platform would open here', 'info');
+        window.location.href = 'dashboard.html';
       });
       
       document.getElementById('futuresLink').addEventListener('click', (e) => {
@@ -1331,7 +1425,7 @@
           showToast('Please login to access futures trading', 'error');
           return;
         }
-        showToast('Futures trading would open here', 'info');
+        window.location.href = 'dashboard.html?tab=futures';
       });
       
       document.getElementById('earnLink').addEventListener('click', (e) => {
@@ -1340,7 +1434,7 @@
           showToast('Please login to access earn products', 'error');
           return;
         }
-        showToast('Earn products would open here', 'info');
+        window.location.href = 'dashboard.html?tab=earn';
       });
       
       // View All links
@@ -1874,7 +1968,10 @@
         const container = document.getElementById('reviewsContainer');
         container.innerHTML = '';
         
-        reviews.forEach(review => {
+        // Only show 3 reviews
+        const displayedReviews = reviews.slice(0, 3);
+        
+        displayedReviews.forEach(review => {
           const card = document.createElement('div');
           card.className = 'review-card';
           card.innerHTML = `
@@ -1884,9 +1981,16 @@
                 <div class="review-name">${review.user.name}</div>
                 <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
               </div>
-              <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+              <div class="review-rating">
+                <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+                ${review.rating.toFixed(1)}
+              </div>
             </div>
             <div class="review-content">${review.content}</div>
+            <div class="review-platform">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
+              Trustpilot
+            </div>
           `;
           container.appendChild(card);
         });
