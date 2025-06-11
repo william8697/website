@@ -1386,21 +1386,21 @@
     }
 
     // Load platform logo from backend
-    async function loadPlatformLogo() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/platform/logo`);
-        if (response.ok) {
-          const data = await response.json();
-          document.getElementById('platformLogo').src = data.logoUrl;
-        } else {
-          // Fallback logo if API fails
-          document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-        }
-      } catch (error) {
-        console.error('Error loading platform logo:', error);
-        document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-      }
+   async function loadPlatformLogo() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/platform/logo`);
+    if (response.ok) {
+      const data = await response.json();
+      document.getElementById('platformLogo').src = data.logoUrl;
+    } else {
+      // Fallback to direct URL if endpoint fails
+      document.getElementById('platformLogo').src = 'https://www.dropbox.com/scl/fi/uetnfwoe05357p3alf8bx/WhatsApp-Image-2025-06-11-at-07.49.46_3b634219.jpg?rlkey=fj3gr8kjgpp7chjv2fqb3b8qx&st=a2l1c7gm&dl=0';
     }
+  } catch (error) {
+    console.error('Error loading platform logo:', error);
+    document.getElementById('platformLogo').src = 'https://www.dropbox.com/scl/fi/uetnfwoe05357p3alf8bx/WhatsApp-Image-2025-06-11-at-07.49.46_3b634219.jpg?rlkey=fj3gr8kjgpp7chjv2fqb3b8qx&st=a2l1c7gm&dl=0';
+  }
+}
 
     // Set up event listeners
     function setupEventListeners() {
