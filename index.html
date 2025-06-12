@@ -54,18 +54,44 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+   /* Logo Container Styles */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
 
-    .logo {
-  height: 32px;
-  width: 32px;
-  border-radius: 25%;
-  object-fit: cover;
-  border: 2px solid var(--primary-accent);
+.logo {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 2px;
+  transition: all 0.3s ease;
+  background-clip: padding-box;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.logo:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+/* Fallback styles */
+.logo-fallback {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f0b90b 0%, #f8d33a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+  border: 2px solid transparent;
 }
 
     .logo-title {
@@ -1389,54 +1415,101 @@
     }
 
     async function loadPlatformLogo() {
+  const logoContainer = document.querySelector('.logo-container');
+  const logoImg = document.getElementById('platformLogo');
+  const logoTitle = document.querySelector('.logo-title');
+  
   try {
-    const response = await fetch(`${API_BASE_URL}/platform/logo`, {
+    // Show skeleton loader while loading
+    logoImg.style.display = 'none';
+    logoContainer.insertAdjacentHTML('beforeend', 
+      '<div class="logo-skeleton"></div>'
+    );
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/platform/logo`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      credentials: 'include' // Include cookies if needed
+      credentials: 'include'
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-    const data = await response.json();
+    const { data } = await response.json();
     
-    if (data.success && data.data && data.data.url) {
-      const logoImg = document.getElementById('platformLogo');
-      logoImg.src = data.data.url;
-      logoImg.onerror = () => {
-        // Fallback to first version if primary URL fails
-        logoImg.src = data.data.versions.desktop;
-      };
+    if (data?.circular) {
+      // Remove skeleton
+      document.querySelector('.logo-skeleton')?.remove();
+      
+      // Set logo source
+      logoImg.src = data.circular;
+      logoImg.style.display = 'block';
+      
+      // Apply dynamic styling from API
+      if (data.styling?.circular) {
+        logoImg.style.borderRadius = '50%';
+        logoImg.style.border = `${data.styling.border.width} solid ${data.styling.border.color}`;
+        logoImg.style.transition = 'border-color 0.3s ease';
+        
+        logoImg.onmouseenter = () => {
+          logoImg.style.borderColor = data.styling.border.hoverColor;
+        };
+        logoImg.onmouseleave = () => {
+          logoImg.style.borderColor = data.styling.border.color;
+        };
+      }
       
       // Preload other versions
-      const preloadLinks = [
-        `<link rel="preload" as="image" href="${data.data.versions.mobile}" imagesrcset="">`,
-        `<link rel="preload" as="image" href="${data.data.versions.thumbnail}" imagesrcset="">`
-      ].join('');
-      document.head.insertAdjacentHTML('beforeend', preloadLinks);
+      this.preloadLogoVersions(data);
       
       return true;
     }
     
-    throw new Error('Invalid logo data structure');
+    throw new Error('Invalid logo data');
     
   } catch (error) {
-    console.error('Error loading platform logo:', error);
-    // Fallback to local logo if API fails
-    document.getElementById('platformLogo').src = 'assets/images/logo-fallback.png';
+    console.error('Logo load error:', error);
+    document.querySelector('.logo-skeleton')?.remove();
+    
+    // Fallback to local logo
+    logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
+    logoImg.style.display = 'block';
+    logoImg.style.borderRadius = '50%';
+    logoImg.style.border = '2px solid transparent';
+    logoImg.style.padding = '2px';
+    
     return false;
   }
 }
 
-// Call this in your DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', async () => {
-  await loadPlatformLogo();
-  // ... rest of your initialization code
+function preloadLogoVersions(logoData) {
+  const preloadContainer = document.createElement('div');
+  preloadContainer.style.display = 'none';
+  
+  if (logoData.versions?.light) {
+    const light = document.createElement('img');
+    light.src = logoData.versions.light;
+    preloadContainer.appendChild(light);
+  }
+  
+  if (logoData.versions?.dark) {
+    const dark = document.createElement('img');
+    dark.src = logoData.versions.dark;
+    preloadContainer.appendChild(dark);
+  }
+  
+  document.body.appendChild(preloadContainer);
+}
+
+// Initialize when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadPlatformLogo().then(success => {
+    if (!success) {
+      console.warn('Using fallback logo');
+    }
+  });
 });
     // Set up event listeners
     function setupEventListeners() {
