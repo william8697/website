@@ -2067,52 +2067,120 @@ let lastWithdrawalTimestamp = 0;
 let isWithdrawalsLoading = false;
 
 // Improved loadWithdrawals function
+// Update the loadWithdrawals function
 async function loadWithdrawals() {
-  if (isWithdrawalsLoading) return;
-  isWithdrawalsLoading = true;
-  
   try {
-    const response = await fetch(`${API_BASE_URL}/withdrawals?limit=5&timestamp=${Date.now()}`);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch withdrawals: ${response.status}`);
-    }
+    const response = await fetch(`${API_BASE_URL}/withdrawals?limit=5`);
+    if (!response.ok) throw new Error(`Failed to fetch withdrawals: ${response.status}`);
     
     const result = await response.json();
     if (!result.success || !Array.isArray(result.data)) {
       throw new Error('Invalid withdrawals data structure');
     }
 
-    const container = document.getElementById('withdrawalsList');
-    
-    // Only update if we have new data
-    if (result.lastUpdated > lastWithdrawalTimestamp) {
-      lastWithdrawalTimestamp = result.lastUpdated;
-      container.innerHTML = '';
-      
-      result.data.forEach(withdrawal => {
-        const item = document.createElement('div');
-        item.className = 'withdrawal-item';
-        item.innerHTML = `
-          <span class="withdrawal-user">${withdrawal.userId}</span>
-          <span class="withdrawal-amount">${withdrawal.displayAmount}</span>
-          <span class="withdrawal-time">${withdrawal.timestamp}</span>
-        `;
-        container.appendChild(item);
-      });
-    }
+    updateWithdrawalsUI(result.data);
   } catch (error) {
     console.error('Withdrawals update error:', error);
-    // Don't show error to user for background updates
-  } finally {
-    isWithdrawalsLoading = false;
+    // Fallback to showing cached withdrawals if available
+    if (window.lastWithdrawals) {
+      updateWithdrawalsUI(window.lastWithdrawals);
+    }
   }
 }
 
-// Update withdrawals every second
-setInterval(loadWithdrawals, 1000);
+function updateWithdrawalsUI(withdrawals) {
+  const container = document.getElementById('withdrawalsList');
+  container.innerHTML = '';
+  
+  // Store for fallback
+  window.lastWithdrawals = withdrawals;
+  
+  withdrawals.forEach(withdrawal => {
+    const item = document.createElement('div');
+    item.className = 'withdrawal-item';
+    
+    // Format amount based on coin type
+    let formattedAmount;
+    if (withdrawal.asset === 'BTC' || withdrawal.asset === 'ETH') {
+      formattedAmount = parseFloat(withdrawal.amount).toFixed(6);
+    } else {
+      formattedAmount = parseFloat(withdrawal.amount).toFixed(2);
+    }
+    
+    // Format timestamp to local time
+    const timestamp = new Date(withdrawal.timestamp);
+    const timeString = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    item.innerHTML = `
+      <div class="withdrawal-coin">${withdrawal.asset}</div>
+      <div class="withdrawal-amount">${formattedAmount}</div>
+      <div class="withdrawal-user">${withdrawal.userId}</div>
+      <div class="withdrawal-time">${timeString}</div>
+    `;
+    
+    container.appendChild(item);
+  });
+}
 
-// Initial load
-loadWithdrawals();
+// Handle WebSocket withdrawal updates
+function handleWebSocketMessage(data) {
+  switch (data.type) {
+    case 'WITHDRAWAL_UPDATE':
+    case 'INITIAL_WITHDRAWALS':
+      updateWithdrawalsUI(data.withdrawals);
+      break;
+    // ... other cases
+  }
+}
+
+// Update the CSS for withdrawals feed
+const withdrawalsCSS = `
+.withdrawal-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  align-items: center;
+}
+
+.withdrawal-coin {
+  font-weight: bold;
+  color: var(--primary-accent);
+}
+
+.withdrawal-amount {
+  text-align: right;
+}
+
+.withdrawal-user {
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+.withdrawal-time {
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .withdrawal-item {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  
+  .withdrawal-user {
+    grid-column: span 2;
+  }
+}
+`;
+
+// Add the CSS to the page
+const style = document.createElement('style');
+style.textContent = withdrawalsCSS;
+document.head.appendChild(style);
    
     // Show coin detail modal
     async function showCoinDetail(coinId) {
