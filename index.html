@@ -1422,74 +1422,82 @@ async function loadPlatformLogo() {
   const logoTitle = document.querySelector('.logo-title');
   
   try {
-    // Show skeleton loader while loading
+    // Show loading state
     logoImg.style.display = 'none';
-    logoContainer.insertAdjacentHTML('beforeend', 
-      '<div class="logo-skeleton"></div>'
-    );
+    const skeleton = document.createElement('div');
+    skeleton.className = 'logo-skeleton';
+    logoContainer.appendChild(skeleton);
 
+    // Fetch logo data
     const response = await fetch(`${API_BASE_URL}/api/v1/platform/logo`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
+      credentials: 'include',
+      cache: 'force-cache'
     });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+    
     const { data } = await response.json();
+    skeleton.remove();
+
+    // Create image element
+    const img = new Image();
+    img.src = data.circular;
+    img.className = 'logo';
+    img.alt = 'Platform Logo';
     
-    if (data?.circular) {
-      // Remove skeleton
-      document.querySelector('.logo-skeleton')?.remove();
+    // Apply styling from API
+    if (data.styling?.circular) {
+      img.style.borderRadius = '50%';
+      img.style.border = `${data.styling.border.width} solid ${data.styling.border.color}`;
+      img.style.padding = '2px';
+      img.style.transition = 'border-color 0.3s ease';
+      img.style.width = data.styling.dimensions?.width || '40px';
+      img.style.height = data.styling.dimensions?.height || '40px';
       
-      // Set logo source
-      logoImg.src = data.circular;
-      logoImg.style.display = 'block';
-      
-      // Apply dynamic styling from API
-      if (data.styling?.circular) {
-        logoImg.style.borderRadius = '50%';
-        logoImg.style.border = `${data.styling.border.width} solid ${data.styling.border.color}`;
-        logoImg.style.padding = '2px';
-        logoImg.style.transition = 'border-color 0.3s ease';
-        
-        if (data.styling.dimensions) {
-          logoImg.style.width = data.styling.dimensions.width;
-          logoImg.style.height = data.styling.dimensions.height;
-        }
-        
-        logoImg.onmouseenter = () => {
-          logoImg.style.borderColor = data.styling.border.hoverColor;
-        };
-        logoImg.onmouseleave = () => {
-          logoImg.style.borderColor = data.styling.border.color;
-        };
-      }
-      
-      return true;
+      img.onmouseenter = () => {
+        img.style.borderColor = data.styling.border.hoverColor;
+      };
+      img.onmouseleave = () => {
+        img.style.borderColor = data.styling.border.color;
+      };
     }
+
+    // Handle image load/error
+    img.onload = () => {
+      logoContainer.replaceChild(img, logoImg);
+      logoImg.remove();
+      document.getElementById('platformLogo').id = ''; // Remove old ID
+      img.id = 'platformLogo';
+    };
     
-    throw new Error('Invalid logo data');
-    
+    img.onerror = () => {
+      console.error('Failed to load logo image, using fallback');
+      skeleton.remove();
+      loadFallbackLogo();
+    };
+
   } catch (error) {
     console.error('Logo load error:', error);
     document.querySelector('.logo-skeleton')?.remove();
-    
-    // Fallback to local logo
-    logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
-    logoImg.style.display = 'block';
-    logoImg.style.borderRadius = '50%';
-    logoImg.style.border = '2px solid transparent';
-    logoImg.style.padding = '2px';
-    logoImg.style.width = '40px';
-    logoImg.style.height = '40px';
-    
-    return false;
+    loadFallbackLogo();
   }
 }
+
+function loadFallbackLogo() {
+  const logoImg = document.getElementById('platformLogo');
+  logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
+  logoImg.style.display = 'block';
+  logoImg.style.borderRadius = '50%';
+  logoImg.style.border = '2px solid transparent';
+  logoImg.style.padding = '2px';
+  logoImg.style.width = '40px';
+  logoImg.style.height = '40px';
+}
+
+// Initialize when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadPlatformLogo();
+});
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
