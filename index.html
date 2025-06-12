@@ -1417,27 +1417,58 @@
     const API_BASE_URL = 'https://website-backendd-1.onrender.com';
 
 async function loadPlatformLogo() {
+  const logoContainer = document.querySelector('.logo-container');
   const logoImg = document.getElementById('platformLogo');
+  const logoTitle = document.querySelector('.logo-title');
   
   try {
+    // Show skeleton loader while loading
+    logoImg.style.display = 'none';
+    logoContainer.insertAdjacentHTML('beforeend', 
+      '<div class="logo-skeleton"></div>'
+    );
+
     const response = await fetch(`${API_BASE_URL}/api/v1/platform/logo`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json'
-      }
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const { data } = await response.json();
     
-    if (data?.url) {
-      logoImg.src = data.url;
-      logoImg.style.borderRadius = '50%';
-      logoImg.style.border = '2px solid transparent';
-      logoImg.style.padding = '2px';
+    if (data?.circular) {
+      // Remove skeleton
+      document.querySelector('.logo-skeleton')?.remove();
+      
+      // Set logo source
+      logoImg.src = data.circular;
+      logoImg.style.display = 'block';
+      
+      // Apply dynamic styling from API
+      if (data.styling?.circular) {
+        logoImg.style.borderRadius = '50%';
+        logoImg.style.border = `${data.styling.border.width} solid ${data.styling.border.color}`;
+        logoImg.style.padding = '2px';
+        logoImg.style.transition = 'border-color 0.3s ease';
+        
+        if (data.styling.dimensions) {
+          logoImg.style.width = data.styling.dimensions.width;
+          logoImg.style.height = data.styling.dimensions.height;
+        }
+        
+        logoImg.onmouseenter = () => {
+          logoImg.style.borderColor = data.styling.border.hoverColor;
+        };
+        logoImg.onmouseleave = () => {
+          logoImg.style.borderColor = data.styling.border.color;
+        };
+      }
+      
       return true;
     }
     
@@ -1445,17 +1476,20 @@ async function loadPlatformLogo() {
     
   } catch (error) {
     console.error('Logo load error:', error);
-    // Fallback to SVG logo
+    document.querySelector('.logo-skeleton')?.remove();
+    
+    // Fallback to local logo
     logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
+    logoImg.style.display = 'block';
     logoImg.style.borderRadius = '50%';
     logoImg.style.border = '2px solid transparent';
+    logoImg.style.padding = '2px';
+    logoImg.style.width = '40px';
+    logoImg.style.height = '40px';
+    
     return false;
   }
 }
-
-// Initialize
-document.addEventListener('DOMContentLoaded', loadPlatformLogo);
-    
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
