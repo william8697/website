@@ -1390,26 +1390,54 @@
 
     async function loadPlatformLogo() {
   try {
-    const response = await fetch(`${API_BASE_URL}/platform/logo`);
-    if (response.ok) {
-      const data = await response.json();
-      const logo = document.getElementById('platformLogo');
-      logo.src = data.logoUrl;
-      logo.onerror = () => {
-        // Fallback if logo fails to load
-        logo.src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-        logo.style.border = 'none'; // Remove circular border for fallback
-      };
-    } else {
-      throw new Error('Failed to fetch logo');
+    const response = await fetch(`${API_BASE_URL}/platform/logo`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include' // Include cookies if needed
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const data = await response.json();
+    
+    if (data.success && data.data && data.data.url) {
+      const logoImg = document.getElementById('platformLogo');
+      logoImg.src = data.data.url;
+      logoImg.onerror = () => {
+        // Fallback to first version if primary URL fails
+        logoImg.src = data.data.versions.desktop;
+      };
+      
+      // Preload other versions
+      const preloadLinks = [
+        `<link rel="preload" as="image" href="${data.data.versions.mobile}" imagesrcset="">`,
+        `<link rel="preload" as="image" href="${data.data.versions.thumbnail}" imagesrcset="">`
+      ].join('');
+      document.head.insertAdjacentHTML('beforeend', preloadLinks);
+      
+      return true;
+    }
+    
+    throw new Error('Invalid logo data structure');
+    
   } catch (error) {
     console.error('Error loading platform logo:', error);
-    const logo = document.getElementById('platformLogo');
-    logo.src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-    logo.style.border = 'none'; // Remove circular border for fallback
+    // Fallback to local logo if API fails
+    document.getElementById('platformLogo').src = 'assets/images/logo-fallback.png';
+    return false;
   }
 }
+
+// Call this in your DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadPlatformLogo();
+  // ... rest of your initialization code
+});
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
