@@ -54,45 +54,16 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-   /* Logo Container Styles */
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-}
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.logo {
-  height: 40px;
-  width: 40px;
-  object-fit: contain;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  padding: 2px;
-  transition: all 0.3s ease;
-  background-clip: padding-box;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-.logo:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: scale(1.05);
-}
-
-/* Fallback styles */
-.logo-fallback {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f0b90b 0%, #f8d33a 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  font-weight: bold;
-  font-size: 18px;
-  border: 2px solid transparent;
-}
+    .logo {
+      height: 28px;
+      width: auto;
+    }
 
     .logo-title {
       font-size: 20px;
@@ -1182,7 +1153,7 @@
     <!-- Reviews Section -->
     <div class="section reviews-section">
       <div class="section-header">
-        <h2 class="section-title">Traders Reviews</h2>
+        <h2 class="section-title">User Reviews</h2>
       </div>
       <div class="reviews-grid" id="reviewsContainer">
         <!-- Reviews will be loaded here -->
@@ -1346,7 +1317,7 @@
 
   <script>
     // API Configuration
-    const API_BASE_URL = 'https://website-backendd-1.onrender.com';
+    const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
     const JWT_SECRET = '17581758Na.%';
     const JWT_EXPIRES_IN = '30d';
     
@@ -1414,90 +1385,23 @@
       });
     }
 
-    const API_BASE_URL = 'https://website-backendd-1.onrender.com';
-
-async function loadPlatformLogo() {
-  const logoContainer = document.querySelector('.logo-container');
-  const logoImg = document.getElementById('platformLogo');
-  const logoTitle = document.querySelector('.logo-title');
-  
-  try {
-    // Show loading state
-    logoImg.style.display = 'none';
-    const skeleton = document.createElement('div');
-    skeleton.className = 'logo-skeleton';
-    logoContainer.appendChild(skeleton);
-
-    // Fetch logo data
-    const response = await fetch(`${API_BASE_URL}/api/v1/platform/logo`, {
-      credentials: 'include',
-      cache: 'force-cache'
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
-    const { data } = await response.json();
-    skeleton.remove();
-
-    // Create image element
-    const img = new Image();
-    img.src = data.circular;
-    img.className = 'logo';
-    img.alt = 'Platform Logo';
-    
-    // Apply styling from API
-    if (data.styling?.circular) {
-      img.style.borderRadius = '50%';
-      img.style.border = `${data.styling.border.width} solid ${data.styling.border.color}`;
-      img.style.padding = '2px';
-      img.style.transition = 'border-color 0.3s ease';
-      img.style.width = data.styling.dimensions?.width || '40px';
-      img.style.height = data.styling.dimensions?.height || '40px';
-      
-      img.onmouseenter = () => {
-        img.style.borderColor = data.styling.border.hoverColor;
-      };
-      img.onmouseleave = () => {
-        img.style.borderColor = data.styling.border.color;
-      };
+    // Load platform logo from backend
+    async function loadPlatformLogo() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/platform/logo`);
+        if (response.ok) {
+          const data = await response.json();
+          document.getElementById('platformLogo').src = data.logoUrl;
+        } else {
+          // Fallback logo if API fails
+          document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+        }
+      } catch (error) {
+        console.error('Error loading platform logo:', error);
+        document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+      }
     }
 
-    // Handle image load/error
-    img.onload = () => {
-      logoContainer.replaceChild(img, logoImg);
-      logoImg.remove();
-      document.getElementById('platformLogo').id = ''; // Remove old ID
-      img.id = 'platformLogo';
-    };
-    
-    img.onerror = () => {
-      console.error('Failed to load logo image, using fallback');
-      skeleton.remove();
-      loadFallbackLogo();
-    };
-
-  } catch (error) {
-    console.error('Logo load error:', error);
-    document.querySelector('.logo-skeleton')?.remove();
-    loadFallbackLogo();
-  }
-}
-
-function loadFallbackLogo() {
-  const logoImg = document.getElementById('platformLogo');
-  logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
-  logoImg.style.display = 'block';
-  logoImg.style.borderRadius = '50%';
-  logoImg.style.border = '2px solid transparent';
-  logoImg.style.padding = '2px';
-  logoImg.style.width = '40px';
-  logoImg.style.height = '40px';
-}
-
-// Initialize when DOM loads
-document.addEventListener('DOMContentLoaded', () => {
-  loadPlatformLogo();
-});
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
