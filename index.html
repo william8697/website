@@ -2031,42 +2031,42 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
         showToast('Failed to load reviews', 'error');
       }
     }
-
-    // Load withdrawals
-    // Load withdrawals
+// Update your existing loadWithdrawals function with this:
 async function loadWithdrawals() {
   try {
     const response = await fetch(`${API_BASE_URL}/withdrawals?limit=5`);
-    if (!response.ok) {
-      throw new Error('Failed to load withdrawals');
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     
-    const data = await response.json();
-    if (!data.success || !data.data) {
-      throw new Error('Invalid withdrawals data');
+    const result = await response.json();
+    if (!result.success || !Array.isArray(result.data)) {
+      throw new Error('Invalid withdrawals data structure');
     }
 
     const container = document.getElementById('withdrawalsList');
     container.innerHTML = '';
     
-    data.data.forEach(withdrawal => {
+    result.data.forEach(withdrawal => {
+      // Ensure amount is treated as number
+      const amount = typeof withdrawal.amount === 'number' ? withdrawal.amount : parseFloat(withdrawal.amount);
+      
       const item = document.createElement('div');
       item.className = 'withdrawal-item';
       
-      // Format the amount with appropriate decimal places
-      const formattedAmount = withdrawal.amount.toFixed(
-        withdrawal.asset === 'BTC' ? 6 : 
-        withdrawal.asset === 'ETH' ? 4 : 2
-      );
+      // Format amount based on coin type
+      const decimals = ['BTC', 'ETH'].includes(withdrawal.asset) ? 6 : 2;
+      const formattedAmount = amount.toFixed(decimals);
       
       item.textContent = `User ${withdrawal.user} withdrawn ${formattedAmount} ${withdrawal.asset}`;
       container.appendChild(item);
     });
   } catch (error) {
     console.error('Error loading withdrawals:', error);
-    // Don't show error to user for this non-critical feature
+    // Optional: Display error to user in a non-intrusive way
+    const container = document.getElementById('withdrawalsList');
+    container.innerHTML = '<div class="withdrawal-item">Withdrawal updates loading...</div>';
   }
 }
+   
     // Show coin detail modal
     async function showCoinDetail(coinId) {
       const modal = document.getElementById('coinModal');
