@@ -2033,28 +2033,40 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load withdrawals
-    async function loadWithdrawals() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/withdrawals`);
-        if (!response.ok) {
-          throw new Error('Failed to load withdrawals');
-        }
-        
-        const withdrawals = await response.json();
-        const container = document.getElementById('withdrawalsList');
-        container.innerHTML = '';
-        
-        withdrawals.slice(0, 5).forEach(withdrawal => {
-          const item = document.createElement('div');
-          item.className = 'withdrawal-item';
-          item.textContent = `${withdrawal.user} withdrawn ${withdrawal.amount} ${withdrawal.asset}`;
-          container.appendChild(item);
-        });
-      } catch (error) {
-        console.error('Error loading withdrawals:', error);
-      }
+    // Load withdrawals
+async function loadWithdrawals() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/withdrawals?limit=5`);
+    if (!response.ok) {
+      throw new Error('Failed to load withdrawals');
+    }
+    
+    const data = await response.json();
+    if (!data.success || !data.data) {
+      throw new Error('Invalid withdrawals data');
     }
 
+    const container = document.getElementById('withdrawalsList');
+    container.innerHTML = '';
+    
+    data.data.forEach(withdrawal => {
+      const item = document.createElement('div');
+      item.className = 'withdrawal-item';
+      
+      // Format the amount with appropriate decimal places
+      const formattedAmount = withdrawal.amount.toFixed(
+        withdrawal.asset === 'BTC' ? 6 : 
+        withdrawal.asset === 'ETH' ? 4 : 2
+      );
+      
+      item.textContent = `User ${withdrawal.user} withdrawn ${formattedAmount} ${withdrawal.asset}`;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error('Error loading withdrawals:', error);
+    // Don't show error to user for this non-critical feature
+  }
+}
     // Show coin detail modal
     async function showCoinDetail(coinId) {
       const modal = document.getElementById('coinModal');
