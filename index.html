@@ -54,29 +54,31 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+   .logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  object-fit: cover;
+}
 
-    .logo {
-      height: 28px;
-      width: auto;
-    }
+.logo:hover {
+  border-color: rgba(255,255,255,0.2);
+}
 
-    .logo-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--primary-accent);
-      white-space: nowrap;
-    }
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    @media (max-width: 768px) {
-      .logo-title {
-        font-size: 16px;
-      }
-    }
+@media (max-width: 768px) {
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+}
 
     @media (max-width: 480px) {
       .logo-title {
