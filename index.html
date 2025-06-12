@@ -1511,6 +1511,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+function preloadLogoVersions(logoData) {
+  const preloadContainer = document.createElement('div');
+  preloadContainer.style.display = 'none';
+  
+  if (logoData.versions?.light) {
+    const light = document.createElement('img');
+    light.src = logoData.versions.light;
+    preloadContainer.appendChild(light);
+  }
+  
+  if (logoData.versions?.dark) {
+    const dark = document.createElement('img');
+    dark.src = logoData.versions.dark;
+    preloadContainer.appendChild(dark);
+  }
+  
+  document.body.appendChild(preloadContainer);
+}
+
+// Initialize when DOM loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadPlatformLogo().then(success => {
+    if (!success) {
+      console.warn('Using fallback logo');
+    }
+  });
+});
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
