@@ -1385,22 +1385,52 @@
       });
     }
 
-    // Load platform logo from backend
-    async function loadPlatformLogo() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/platform/logo`);
-        if (response.ok) {
-          const data = await response.json();
-          document.getElementById('platformLogo').src = data.logoUrl;
-        } else {
-          // Fallback logo if API fails
-          document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-        }
-      } catch (error) {
-        console.error('Error loading platform logo:', error);
-        document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
-      }
-    }
+    // In your existing JavaScript code, add this function:
+async function loadPlatformLogo() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/platform/logo`);
+    if (!response.ok) throw new Error('Failed to fetch logo');
+    
+    const data = await response.json();
+    const logoImg = document.getElementById('platformLogo');
+    
+    // Set logo source
+    logoImg.src = data.data.default;
+    
+    // Apply circular styling
+    logoImg.style.borderRadius = '50%';
+    logoImg.style.border = data.data.styling.border.width + ' solid ' + data.data.styling.border.color;
+    logoImg.style.width = data.data.styling.dimensions.width;
+    logoImg.style.height = data.data.styling.dimensions.height;
+    logoImg.style.objectFit = 'cover';
+    
+    // Add hover effect
+    logoImg.addEventListener('mouseenter', () => {
+      logoImg.style.borderColor = data.data.styling.border.hoverColor;
+    });
+    logoImg.addEventListener('mouseleave', () => {
+      logoImg.style.borderColor = data.data.styling.border.color;
+    });
+    
+    // Fallback if image fails to load
+    logoImg.onerror = () => {
+      logoImg.src = data.data.styling.fallback.svg;
+      console.warn('Logo image failed to load, using SVG fallback');
+    };
+    
+  } catch (error) {
+    console.error('Error loading logo:', error);
+    // Use fallback SVG directly
+    const logoImg = document.getElementById('platformLogo');
+    logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
+    logoImg.style.borderRadius = '50%';
+    logoImg.style.width = '40px';
+    logoImg.style.height = '40px';
+  }
+}
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', loadPlatformLogo);
 
     // Set up event listeners
     function setupEventListeners() {
