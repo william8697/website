@@ -1398,16 +1398,18 @@
       logo.onerror = () => {
         // Fallback if logo fails to load
         logo.src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+        logo.style.border = 'none'; // Remove circular border for fallback
       };
     } else {
       throw new Error('Failed to fetch logo');
     }
   } catch (error) {
     console.error('Error loading platform logo:', error);
-    document.getElementById('platformLogo').src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+    const logo = document.getElementById('platformLogo');
+    logo.src = 'https://cryptologos.cc/logos/versions/binance-coin-bnb-logo.png';
+    logo.style.border = 'none'; // Remove circular border for fallback
   }
 }
-
     // Set up event listeners
     function setupEventListeners() {
       // Navigation links
