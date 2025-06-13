@@ -2034,39 +2034,41 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 // Update your existing loadWithdrawals function with this:
 async function loadWithdrawals() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/withdrawals?limit=5`);
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-    
-    const result = await response.json();
-    if (!result.success || !Array.isArray(result.data)) {
-      throw new Error('Invalid withdrawals data structure');
+    try {
+      const response = await fetch('/api/v1/withdrawals/recent?limit=5&_=' + Date.now());
+      const data = await response.json();
+      
+      if (data.success) {
+        updateWithdrawalsUI(data.data);
+      } else {
+        console.error('Failed to load withdrawals:', data.error);
+      }
+    } catch (error) {
+      console.error('Withdrawals fetch error:', error);
     }
+  }
 
+  function updateWithdrawalsUI(withdrawals) {
     const container = document.getElementById('withdrawalsList');
     container.innerHTML = '';
     
-    result.data.forEach(withdrawal => {
-      // Ensure amount is treated as number
-      const amount = typeof withdrawal.amount === 'number' ? withdrawal.amount : parseFloat(withdrawal.amount);
-      
+    withdrawals.forEach(w => {
       const item = document.createElement('div');
       item.className = 'withdrawal-item';
       
-      // Format amount based on coin type
-      const decimals = ['BTC', 'ETH'].includes(withdrawal.asset) ? 6 : 2;
-      const formattedAmount = amount.toFixed(decimals);
+      // Format amount based on asset type
+      const amount = w.asset === 'BTC' ? w.amount.toFixed(8) :
+                     w.asset === 'ETH' ? w.amount.toFixed(6) :
+                     w.amount.toFixed(4);
       
-      item.textContent = `User ${withdrawal.user} withdrawn ${formattedAmount} ${withdrawal.asset}`;
+      item.textContent = `User ${w.user} withdrawn ${amount} ${w.asset}`;
       container.appendChild(item);
     });
-  } catch (error) {
-    console.error('Error loading withdrawals:', error);
-    // Optional: Display error to user in a non-intrusive way
-    const container = document.getElementById('withdrawalsList');
-    container.innerHTML = '<div class="withdrawal-item">Withdrawal updates loading...</div>';
   }
-}
+
+  // Load immediately and every second
+  loadWithdrawals();
+  setInterval(loadWithdrawals, 1000);
    
     // Show coin detail modal
     async function showCoinDetail(coinId) {
