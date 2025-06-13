@@ -487,91 +487,174 @@
 
     /* Reviews Section */
  .reviews-section {
-      margin-top: 24px;
-    }
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #1e2329;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
 
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-      padding: 16px;
-    }
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
 
-    @media (max-width: 768px) {
-      .reviews-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #eaecef;
+}
 
-    .review-card {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      border: 1px solid #e0e0e0;
-      color: var(--trustpilot-dark);
-    }
+.last-updated {
+  font-size: 0.85rem;
+  color: #848e9c;
+}
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
 
-    .review-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      margin-right: 12px;
-      object-fit: cover;
-    }
+.review-card {
+  background: #2b3139;
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid #3a424d;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .review-user {
-      flex: 1;
-    }
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
 
-    .review-name {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--trustpilot-dark);
-    }
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-    .review-date {
-      color: #666;
-      font-size: 12px;
-    }
+.review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f0b90b;
+  margin-right: 1rem;
+}
 
-    .review-rating {
-      color: var(--trustpilot-green);
-      font-weight: 600;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-    }
+.review-user {
+  flex: 1;
+}
 
-    .review-rating .stars {
-      color: var(--trustpilot-green);
-      font-size: 16px;
-      margin-right: 5px;
-    }
+.review-name {
+  font-weight: 600;
+  color: #eaecef;
+  margin-bottom: 0.25rem;
+}
 
-    .review-content {
-      line-height: 1.5;
-      color: #333;
-      font-size: 14px;
-    }
+.review-date {
+  color: #848e9c;
+  font-size: 0.8rem;
+}
 
-    .review-platform {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #666;
-    }
+.review-rating {
+  color: #00b67a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
 
-    .review-platform img {
-      height: 16px;
-      margin-right: 5px;
-    }
+.stars {
+  color: #00b67a;
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.review-content {
+  line-height: 1.6;
+  color: #eaecef;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.review-platform {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #848e9c;
+}
+
+.review-platform img {
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+/* Loading and error states */
+.loading-state,
+.error-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+}
+
+.spinner {
+  border: 4px solid rgba(240, 185, 11, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #f0b90b;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f6465d;
+}
+
+.retry-btn {
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover {
+  background: #f8d33a;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .review-card {
+    padding: 1.25rem;
+  }
+}
 
     /* Withdrawals Feed Styles */
 .withdrawals-feed {
