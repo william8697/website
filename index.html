@@ -2165,12 +2165,13 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-// Add this script to your index.html
+
 document.addEventListener('DOMContentLoaded', () => {
   const reviewsContainer = document.getElementById('reviewsContainer');
   const refreshBtn = document.getElementById('refreshBtn');
   const refreshIcon = document.getElementById('refreshIcon');
   
+  const API_BASE_URL = 'https://website-backendd-1.onrender.com';
   let isLoading = false;
   
   // Load reviews on page load
@@ -2195,6 +2196,7 @@ document.addEventListener('DOMContentLoaded', () => {
       reviewsContainer.innerHTML = `
         <div class="loading">
           <div class="spinner"></div>
+          <p>Loading reviews...</p>
         </div>
       `;
       
@@ -2232,8 +2234,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderReviews(reviews) {
     if (reviews.length === 0) {
       reviewsContainer.innerHTML = `
-        <div class="error-message">
-          No reviews available at the moment
+        <div class="empty-state">
+          <i class="icon-empty"></i>
+          <p>No reviews available at the moment</p>
         </div>
       `;
       return;
@@ -2242,13 +2245,13 @@ document.addEventListener('DOMContentLoaded', () => {
     reviewsContainer.innerHTML = reviews.map(review => `
       <div class="review-card">
         <div class="review-header">
-          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+          <img src="${review.user.avatar || 'default-avatar.png'}" alt="${review.user.name}" class="review-avatar">
           <div class="review-user">
             <div class="review-name">${review.user.name}</div>
             <div class="review-meta">
-              <span>${review.user.country}</span>
-              <span>•</span>
-              <span>${review.user.occupation}</span>
+              ${review.user.country ? `<span>${review.user.country}</span>` : ''}
+              ${review.user.country && review.user.occupation ? '<span>•</span>' : ''}
+              ${review.user.occupation ? `<span>${review.user.occupation}</span>` : ''}
             </div>
           </div>
           <div class="review-rating">
@@ -2260,11 +2263,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="review-content">${review.content}</div>
         <div class="review-footer">
           <div class="review-platform">
-            <span>${review.platform}</span>
+            ${review.platform ? `<span>${review.platform}</span>` : ''}
             ${review.verified ? '<span class="review-verified">✓ Verified</span>' : ''}
           </div>
           <div class="review-date">${formatDate(review.date)}</div>
-          ${review.profit ? `<div class="review-profit">${review.profit} profit</div>` : ''}
+          ${review.profit ? `<div class="review-profit">+${review.profit}% profit</div>` : ''}
         </div>
       </div>
     `).join('');
@@ -2272,9 +2275,13 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function showError(error) {
     reviewsContainer.innerHTML = `
-      <div class="error-message">
+      <div class="error-state">
+        <i class="icon-error"></i>
         <p>Failed to load reviews. Please try again.</p>
-        <button class="retry-btn" onclick="loadReviews()">Retry</button>
+        <p class="error-detail">${error.message}</p>
+        <button class="retry-btn" onclick="loadReviews()">
+          <i class="icon-refresh"></i> Retry
+        </button>
       </div>
     `;
   }
@@ -2296,6 +2303,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+    
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
