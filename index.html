@@ -2050,50 +2050,118 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     // Load reviews
 
 
-   async function loadReviews() {
+   // In your frontend JavaScript (e.g., main.js or reviews.js)
+
+// Reviews Section Component
+class ReviewsSection {
+  constructor() {
+    this.reviewsContainer = document.getElementById('reviewsContainer');
+    this.lastFetchTime = 0;
+    this.reviewCacheDuration = 10 * 60 * 1000; // 10 minutes in ms
+    this.init();
+  }
+
+  async init() {
+    await this.loadReviews();
+    // Refresh reviews every 10 minutes
+    setInterval(() => this.loadReviews(), this.reviewCacheDuration);
+  }
+
+  async loadReviews() {
     try {
-      const response = await fetch('https://website-backendd-1.onrender.com/api/v1/reviews');
-      const { data: reviews } = await response.json();
-      
-      const grid = document.getElementById('reviewsGrid');
-      grid.innerHTML = '';
-      
-      reviews.forEach(review => {
-        const card = document.createElement('div');
-        card.className = 'review-card';
-        card.innerHTML = `
-          <div class="review-header">
-            <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-            <div class="review-user">
-              <div class="review-name">${review.user.name}</div>
-              <span class="review-trader-type">${review.user.type} trader</span>
-            </div>
-            <div class="review-rating">
-              ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
-            </div>
-          </div>
-          <div class="review-content">${review.content}</div>
-          <div class="review-footer">
-            <div>${new Date(review.date).toLocaleDateString()}</div>
-            <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-              ${review.verified ? 'Verified' : ''}
-            </div>
-          </div>
-        `;
-        grid.appendChild(card);
+      // Show loading state
+      this.reviewsContainer.innerHTML = `
+        <div class="review-loading">
+          <div class="loading-spinner"></div>
+          <p>Loading latest reviews...</p>
+        </div>
+      `;
+
+      const response = await fetch('https://website-backendd-1.onrender.com/api/v1/reviews', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache' // Ensure fresh data
+        }
       });
-      
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      this.displayReviews(data.data);
+      this.lastFetchTime = Date.now();
     } catch (error) {
       console.error('Failed to load reviews:', error);
+      this.showErrorState();
     }
   }
-  
-  // Load reviews on page load
-  document.addEventListener('DOMContentLoaded', loadReviews);
-  
-  // Refresh reviews every 10 minutes
-  setInterval(loadReviews, 600000);
+
+  displayReviews(reviews) {
+    if (!reviews || reviews.length === 0) {
+      this.showNoReviewsState();
+      return;
+    }
+
+    this.reviewsContainer.innerHTML = reviews.map(review => `
+      <div class="review-card" data-review-id="${review.id}">
+        <div class="review-header">
+          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar" loading="lazy">
+          <div class="review-user">
+            <div class="review-name">${review.user.name}</div>
+            <div class="review-date">${this.formatDate(review.date)}</div>
+          </div>
+          <div class="review-rating">
+            <span class="stars">${this.renderStars(review.rating)}</span>
+            ${review.rating.toFixed(1)}
+          </div>
+        </div>
+        <div class="review-content">${review.content}</div>
+        <div class="review-platform">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot" loading="lazy">
+          ${review.platform}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderStars(rating) {
+    const fullStars = '★'.repeat(Math.floor(rating));
+    const halfStar = rating % 1 >= 0.5 ? '½' : '';
+    const emptyStars = '☆'.repeat(5 - Math.ceil(rating));
+    return `${fullStars}${halfStar}${emptyStars}`;
+  }
+
+  formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  }
+
+  showErrorState() {
+    this.reviewsContainer.innerHTML = `
+      <div class="review-error">
+        <div class="error-icon">⚠️</div>
+        <p>We couldn't load reviews right now. Please try again later.</p>
+        <button class="retry-btn" id="retryReviewsBtn">Retry</button>
+      </div>
+    `;
+    document.getElementById('retryReviewsBtn').addEventListener('click', () => this.loadReviews());
+  }
+
+  showNoReviewsState() {
+    this.reviewsContainer.innerHTML = `
+      <div class="no-reviews">
+        <div class="no-reviews-icon">👀</div>
+        <p>No reviews available at the moment. Check back soon!</p>
+      </div>
+    `;
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new ReviewsSection();
+});
    
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
