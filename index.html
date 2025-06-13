@@ -486,40 +486,50 @@
     }
 
     /* Reviews Section */
-   /* Reviews Section Styles */
-.reviews-section {
-  margin: 2rem 0;
+  .reviews-section {
+  max-width: 1200px;
+  margin: 2rem auto;
   padding: 1.5rem;
-  background-color: var(--secondary-bg);
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: #1e2329;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.reviews-section h2 {
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  margin: 0;
   font-size: 1.5rem;
-  color: var(--text-primary);
-  text-align: center;
+  color: #eaecef;
+}
+
+.last-updated {
+  font-size: 0.85rem;
+  color: #848e9c;
 }
 
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  padding: 0.5rem;
 }
 
 .review-card {
-  background-color: var(--card-bg);
+  background: #2b3139;
   border-radius: 8px;
   padding: 1.5rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid #3a424d;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .review-header {
@@ -532,9 +542,9 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  margin-right: 1rem;
   object-fit: cover;
-  border: 2px solid var(--primary-accent);
+  border: 2px solid #f0b90b;
+  margin-right: 1rem;
 }
 
 .review-user {
@@ -543,32 +553,31 @@
 
 .review-name {
   font-weight: 600;
+  color: #eaecef;
   margin-bottom: 0.25rem;
-  color: var(--text-primary);
 }
 
 .review-date {
-  color: var(--text-secondary);
-  font-size: 0.85rem;
+  color: #848e9c;
+  font-size: 0.8rem;
 }
 
 .review-rating {
-  color: var(--trustpilot-green);
+  color: #00b67a;
   font-weight: 600;
-  font-size: 0.95rem;
   display: flex;
   align-items: center;
 }
 
-.review-rating .stars {
-  color: var(--trustpilot-green);
+.stars {
+  color: #00b67a;
   font-size: 1rem;
   margin-right: 0.5rem;
 }
 
 .review-content {
   line-height: 1.6;
-  color: var(--text-primary);
+  color: #eaecef;
   margin-bottom: 1rem;
   font-size: 0.95rem;
 }
@@ -576,9 +585,8 @@
 .review-platform {
   display: flex;
   align-items: center;
-  margin-top: 1rem;
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: #848e9c;
 }
 
 .review-platform img {
@@ -586,23 +594,44 @@
   margin-right: 0.5rem;
 }
 
-/* Loading and Error States */
-.review-loading,
-.review-error,
-.no-reviews {
+/* Loading and error states */
+.loading-state,
+.error-state {
   grid-column: 1 / -1;
   text-align: center;
   padding: 2rem;
 }
 
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
+.spinner {
+  border: 4px solid rgba(240, 185, 11, 0.1);
   border-radius: 50%;
-  border-top: 4px solid var(--primary-accent);
+  border-top: 4px solid #f0b90b;
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f6465d;
+}
+
+.retry-btn {
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.retry-btn:hover {
+  background: #f8d33a;
 }
 
 @keyframes spin {
@@ -610,36 +639,16 @@
   100% { transform: rotate(360deg); }
 }
 
-.error-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.retry-btn {
-  background-color: var(--primary-accent);
-  color: #000;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.retry-btn:hover {
-  background-color: #f8d33a;
-}
-
-.no-reviews-icon {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-/* Responsive Adjustments */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .reviews-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
   
   .review-card {
@@ -2116,118 +2125,142 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     // Load reviews
 
 
-   // In your frontend JavaScript (e.g., main.js or reviews.js)
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-// Reviews Section Component
-class ReviewsSection {
-  constructor() {
-    this.reviewsContainer = document.getElementById('reviewsContainer');
-    this.lastFetchTime = 0;
-    this.reviewCacheDuration = 10 * 60 * 1000; // 10 minutes in ms
-    this.init();
-  }
+const ReviewsSection = () => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState('');
 
-  async init() {
-    await this.loadReviews();
-    // Refresh reviews every 10 minutes
-    setInterval(() => this.loadReviews(), this.reviewCacheDuration);
-  }
-
-  async loadReviews() {
+  // Fetch reviews with retry logic
+  const fetchReviews = async (retryCount = 0) => {
     try {
-      // Show loading state
-      this.reviewsContainer.innerHTML = `
-        <div class="review-loading">
-          <div class="loading-spinner"></div>
-          <p>Loading latest reviews...</p>
-        </div>
-      `;
-
-      const response = await fetch('https://website-backendd-1.onrender.com/api/v1/reviews', {
+      setLoading(true);
+      setError(null);
+      
+      const response = await axios.get('/api/v1/reviews', {
+        timeout: 5000,
         headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache' // Ensure fresh data
+          'Cache-Control': 'no-cache'
         }
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.data.success) {
+        setReviews(response.data.data);
+        setLastUpdated(new Date(response.data.meta.generatedAt).toLocaleString());
+      } else {
+        throw new Error(response.data.error || 'Invalid response');
       }
-
-      const data = await response.json();
-      this.displayReviews(data.data);
-      this.lastFetchTime = Date.now();
-    } catch (error) {
-      console.error('Failed to load reviews:', error);
-      this.showErrorState();
+    } catch (err) {
+      if (retryCount < 2) {
+        console.warn(`Retrying reviews fetch (attempt ${retryCount + 1})...`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+        return fetchReviews(retryCount + 1);
+      }
+      setError(err.response?.data?.error || err.message || 'Failed to load reviews');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
-  displayReviews(reviews) {
-    if (!reviews || reviews.length === 0) {
-      this.showNoReviewsState();
-      return;
-    }
+  // Initial load and periodic refresh
+  useEffect(() => {
+    fetchReviews();
+    const interval = setInterval(fetchReviews, 10 * 60 * 1000); // 10 minutes
+    return () => clearInterval(interval);
+  }, []);
 
-    this.reviewsContainer.innerHTML = reviews.map(review => `
-      <div class="review-card" data-review-id="${review.id}">
-        <div class="review-header">
-          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar" loading="lazy">
-          <div class="review-user">
-            <div class="review-name">${review.user.name}</div>
-            <div class="review-date">${this.formatDate(review.date)}</div>
-          </div>
-          <div class="review-rating">
-            <span class="stars">${this.renderStars(review.rating)}</span>
-            ${review.rating.toFixed(1)}
-          </div>
-        </div>
-        <div class="review-content">${review.content}</div>
-        <div class="review-platform">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot" loading="lazy">
-          ${review.platform}
-        </div>
-      </div>
-    `).join('');
-  }
-
-  renderStars(rating) {
+  // Render helpers
+  const renderStars = (rating) => {
     const fullStars = '★'.repeat(Math.floor(rating));
     const halfStar = rating % 1 >= 0.5 ? '½' : '';
     const emptyStars = '☆'.repeat(5 - Math.ceil(rating));
     return `${fullStars}${halfStar}${emptyStars}`;
-  }
+  };
 
-  formatDate(dateString) {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  }
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
-  showErrorState() {
-    this.reviewsContainer.innerHTML = `
-      <div class="review-error">
-        <div class="error-icon">⚠️</div>
-        <p>We couldn't load reviews right now. Please try again later.</p>
-        <button class="retry-btn" id="retryReviewsBtn">Retry</button>
+  return (
+    <section className="reviews-section">
+      <div className="section-header">
+        <h2>User Experiences</h2>
+        {lastUpdated && (
+          <div className="last-updated">
+            Last updated: {lastUpdated}
+          </div>
+        )}
       </div>
-    `;
-    document.getElementById('retryReviewsBtn').addEventListener('click', () => this.loadReviews());
-  }
 
-  showNoReviewsState() {
-    this.reviewsContainer.innerHTML = `
-      <div class="no-reviews">
-        <div class="no-reviews-icon">👀</div>
-        <p>No reviews available at the moment. Check back soon!</p>
-      </div>
-    `;
-  }
-}
+      {loading && !reviews.length ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading authentic reviews...</p>
+        </div>
+      ) : error ? (
+        <div className="error-state">
+          <div className="error-icon">⚠️</div>
+          <p>{error}</p>
+          <button 
+            className="retry-btn"
+            onClick={() => fetchReviews()}
+          >
+            Retry
+          </button>
+        </div>
+      ) : (
+        <div className="reviews-grid">
+          {reviews.map(review => (
+            <div key={review.id} className="review-card">
+              <div className="review-header">
+                <img 
+                  src={review.user.avatar} 
+                  alt={review.user.name}
+                  className="review-avatar"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = 'https://i.pravatar.cc/300?img=0';
+                  }}
+                />
+                <div className="review-user">
+                  <div className="review-name">{review.user.name}</div>
+                  <div className="review-date">{formatDate(review.date)}</div>
+                </div>
+                <div className="review-rating">
+                  <span className="stars" aria-label={`${review.rating} out of 5 stars`}>
+                    {renderStars(review.rating)}
+                  </span>
+                  {review.rating.toFixed(1)}
+                </div>
+              </div>
+              <div className="review-content">
+                {review.content}
+              </div>
+              <div className="review-platform">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" 
+                  alt="Trustpilot"
+                  loading="lazy"
+                />
+                {review.platform}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  new ReviewsSection();
-});
+export default ReviewsSection;
+   
    
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
