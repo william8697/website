@@ -2124,49 +2124,141 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-    async function loadReviews() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) {
-          throw new Error('Failed to load reviews');
+    import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const ReviewsSection = () => {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState('');
+
+  // Fetch reviews with retry logic
+  const fetchReviews = async (retryCount = 0) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await axios.get('/api/v1/reviews', {
+        timeout: 5000,
+        headers: {
+          'Cache-Control': 'no-cache'
         }
-        
-        const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
-        
-        // Only show 3 reviews
-        const displayedReviews = reviews.slice(0, 3);
-        
-        displayedReviews.forEach(review => {
-          const card = document.createElement('div');
-          card.className = 'review-card';
-          card.innerHTML = `
-            <div class="review-header">
-              <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-              <div class="review-user">
-                <div class="review-name">${review.user.name}</div>
-                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
-              </div>
-              <div class="review-rating">
-                <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                ${review.rating.toFixed(1)}
-              </div>
-            </div>
-            <div class="review-content">${review.content}</div>
-            <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-              Trustpilot
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-        showToast('Failed to load reviews', 'error');
+      });
+
+      if (response.data.success) {
+        setReviews(response.data.data);
+        setLastUpdated(new Date(response.data.meta.generatedAt).toLocaleString());
+      } else {
+        throw new Error(response.data.error || 'Invalid response');
       }
+    } catch (err) {
+      if (retryCount < 2) {
+        console.warn(`Retrying reviews fetch (attempt ${retryCount + 1})...`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+        return fetchReviews(retryCount + 1);
+      }
+      setError(err.response?.data?.error || err.message || 'Failed to load reviews');
+    } finally {
+      setLoading(false);
     }
-// Update your existing loadWithdrawals function with this:
+  };
+
+  // Initial load and periodic refresh
+  useEffect(() => {
+    fetchReviews();
+    const interval = setInterval(fetchReviews, 10 * 60 * 1000); // 10 minutes
+    return () => clearInterval(interval);
+  }, []);
+
+  // Render helpers
+  const renderStars = (rating) => {
+    const fullStars = '★'.repeat(Math.floor(rating));
+    const halfStar = rating % 1 >= 0.5 ? '½' : '';
+    const emptyStars = '☆'.repeat(5 - Math.ceil(rating));
+    return `${fullStars}${halfStar}${emptyStars}`;
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  return (
+    <section className="reviews-section">
+      <div className="section-header">
+        <h2>User Experiences</h2>
+        {lastUpdated && (
+          <div className="last-updated">
+            Last updated: {lastUpdated}
+          </div>
+        )}
+      </div>
+
+      {loading && !reviews.length ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading authentic reviews...</p>
+        </div>
+      ) : error ? (
+        <div className="error-state">
+          <div className="error-icon">⚠️</div>
+          <p>{error}</p>
+          <button 
+            className="retry-btn"
+            onClick={() => fetchReviews()}
+          >
+            Retry
+          </button>
+        </div>
+      ) : (
+        <div className="reviews-grid">
+          {reviews.map(review => (
+            <div key={review.id} className="review-card">
+              <div className="review-header">
+                <img 
+                  src={review.user.avatar} 
+                  alt={review.user.name}
+                  className="review-avatar"
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = 'https://i.pravatar.cc/300?img=0';
+                  }}
+                />
+                <div className="review-user">
+                  <div className="review-name">{review.user.name}</div>
+                  <div className="review-date">{formatDate(review.date)}</div>
+                </div>
+                <div className="review-rating">
+                  <span className="stars" aria-label={`${review.rating} out of 5 stars`}>
+                    {renderStars(review.rating)}
+                  </span>
+                  {review.rating.toFixed(1)}
+                </div>
+              </div>
+              <div className="review-content">
+                {review.content}
+              </div>
+              <div className="review-platform">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" 
+                  alt="Trustpilot"
+                  loading="lazy"
+                />
+                {review.platform}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default ReviewsSection;
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
 
