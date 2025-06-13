@@ -486,51 +486,49 @@
     }
 
     /* Reviews Section */
- .reviews-section {
-    margin-top: 40px;
+.reviews-section {
     background-color: var(--secondary-bg);
     border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .reviews-refresh {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    color: var(--primary-accent);
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: rgba(240, 185, 11, 0.1);
-    transition: all 0.2s;
-  }
-  
-  .reviews-refresh:hover {
-    background-color: rgba(240, 185, 11, 0.2);
-  }
-  
-  .refresh-icon {
-    font-size: 16px;
-    animation: pulse 2s infinite;
-  }
-  
-  @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
+    margin-top: 24px;
+    border: 1px solid var(--border-color);
   }
   
   .reviews-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .refresh-reviews {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-accent);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  
+  .refresh-reviews:hover {
+    background-color: rgba(240, 185, 11, 0.1);
+  }
+  
+  .refresh-icon {
+    font-size: 16px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
   
   .review-card {
     background-color: var(--card-bg);
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 20px;
     border: 1px solid var(--border-color);
     transition: transform 0.3s ease;
@@ -544,16 +542,16 @@
   .review-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
   
   .review-avatar {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+    margin-right: 12px;
     object-fit: cover;
     border: 2px solid var(--primary-accent);
-    margin-right: 15px;
   }
   
   .review-user {
@@ -562,41 +560,49 @@
   
   .review-name {
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     color: var(--text-primary);
   }
   
-  .review-date {
-    color: var(--text-secondary);
+  .review-meta {
+    display: flex;
+    gap: 8px;
     font-size: 12px;
+    color: var(--text-secondary);
   }
   
   .review-rating {
-    display: flex;
-    align-items: center;
     color: var(--trustpilot-green);
     font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
   }
   
-  .stars {
+  .review-rating .stars {
     color: var(--trustpilot-green);
-    margin-right: 5px;
     font-size: 16px;
-    letter-spacing: 2px;
+    margin-right: 5px;
   }
   
   .review-content {
-    line-height: 1.6;
+    line-height: 1.5;
     color: var(--text-primary);
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+  }
+  
+  .review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-secondary);
   }
   
   .review-platform {
     display: flex;
     align-items: center;
-    font-size: 12px;
-    color: var(--text-secondary);
   }
   
   .review-platform img {
@@ -604,15 +610,60 @@
     margin-right: 5px;
   }
   
-  .verified-badge {
-    display: inline-flex;
-    align-items: center;
-    background-color: rgba(14, 203, 129, 0.1);
+  .review-verified {
     color: var(--positive);
-    padding: 2px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .trustpilot-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: var(--card-bg);
     border-radius: 4px;
-    font-size: 11px;
-    margin-left: 8px;
+    margin: 16px;
+  }
+  
+  .trustpilot-badge img {
+    height: 20px;
+  }
+  
+  .trustpilot-badge span {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  
+  /* Skeleton loading state */
+  .review-skeleton {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+  }
+  
+  .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    margin-bottom: 12px;
+  }
+  
+  .skeleton-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .skeleton-line {
+    height: 12px;
+    background-color: var(--border-color);
+    border-radius: 4px;
   }
   
   @media (max-width: 768px) {
