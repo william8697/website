@@ -2089,48 +2089,102 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-    async function loadReviews() {
-      try {
+
+let lastReviewFetch = 0;
+  const REVIEW_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
+  
+  async function loadReviews() {
+    try {
+      // Only fetch if cache is empty or 10 minutes have passed
+      const now = Date.now();
+      if (now - lastReviewFetch > REVIEW_REFRESH_INTERVAL) {
         const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) {
-          throw new Error('Failed to load reviews');
+        if (!response.ok) throw new Error('Failed to load reviews');
+        
+        const data = await response.json();
+        if (data.success) {
+          displayReviews(data.data);
+          lastReviewFetch = now;
         }
-        
-        const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
-        
-        // Only show 3 reviews
-        const displayedReviews = reviews.slice(0, 3);
-        
-        displayedReviews.forEach(review => {
-          const card = document.createElement('div');
-          card.className = 'review-card';
-          card.innerHTML = `
-            <div class="review-header">
-              <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-              <div class="review-user">
-                <div class="review-name">${review.user.name}</div>
-                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
-              </div>
-              <div class="review-rating">
-                <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                ${review.rating.toFixed(1)}
-              </div>
-            </div>
-            <div class="review-content">${review.content}</div>
-            <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-              Trustpilot
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-        showToast('Failed to load reviews', 'error');
       }
+    } catch (error) {
+      console.error('Error loading reviews:', error);
+      // Fallback to cached reviews if available
     }
+  }
+  
+  function displayReviews(reviews) {
+    const container = document.getElementById('reviewsContainer');
+    container.innerHTML = '';
+    
+    reviews.forEach(review => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      
+      // Generate star rating
+      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+      
+      // Format date (e.g., "2 weeks ago")
+      const dateText = formatReviewDate(new Date(review.date));
+      
+      card.innerHTML = `
+        <div class="review-header">
+          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+          <div class="review-user">
+            <div class="review-name">
+              ${review.user.name}
+              ${review.isVerified ? '<span class="verified-badge">Verified</span>' : ''}
+            </div>
+            <div class="review-date">${dateText}</div>
+          </div>
+          <div class="review-rating">
+            <span class="stars">${stars}</span>
+            ${review.rating.toFixed(1)}
+          </div>
+        </div>
+        <div class="review-content">${review.content}</div>
+        <div class="review-platform">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
+          ${review.platform}
+        </div>
+      `;
+      
+      container.appendChild(card);
+    });
+  }
+  
+  function formatReviewDate(date) {
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    
+    if (days < 1) return 'Today';
+    if (days === 1) return 'Yesterday';
+    if (days < 7) return `${days} days ago`;
+    if (days < 30) {
+      const weeks = Math.floor(days / 7);
+      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+    }
+    if (days < 365) {
+      const months = Math.floor(days / 30);
+      return `${months} month${months > 1 ? 's' : ''} ago`;
+    }
+    return date.toLocaleDateString();
+  }
+  
+  // Manual refresh button
+  document.getElementById('refreshReviews').addEventListener('click', () => {
+    lastReviewFetch = 0; // Force refresh
+    loadReviews();
+    showToast('Reviews refreshed');
+  });
+  
+  // Initial load
+  document.addEventListener('DOMContentLoaded', loadReviews);
+  
+  // Auto-refresh every 10 minutes
+  setInterval(loadReviews, REVIEW_REFRESH_INTERVAL);
+    
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
