@@ -486,100 +486,166 @@
     }
 
     /* Reviews Section */
-   .reviews-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
+   /* Reviews Section Styles */
+.reviews-section {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reviews-section h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 0.5rem;
+}
+
+.review-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  object-fit: cover;
+  border: 2px solid var(--primary-accent);
+}
+
+.review-user {
+  flex: 1;
+}
+
+.review-name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.review-date {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.review-rating {
+  color: var(--trustpilot-green);
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.review-rating .stars {
+  color: var(--trustpilot-green);
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.review-content {
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.review-platform {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.review-platform img {
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+/* Loading and Error States */
+.review-loading,
+.review-error,
+.no-reviews {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid var(--primary-accent);
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.retry-btn {
+  background-color: var(--primary-accent);
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover {
+  background-color: #f8d33a;
+}
+
+.no-reviews-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .reviews-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr;
   }
   
   .review-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
+    padding: 1.25rem;
   }
-  
-  .review-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .review-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .review-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 15px;
-    border: 2px solid #f0b90b;
-  }
-  
-  .review-user {
-    flex: 1;
-  }
-  
-  .review-name {
-    font-weight: 600;
-    margin-bottom: 5px;
-  }
-  
-  .review-trader-type {
-    font-size: 12px;
-    color: #666;
-    background: #f5f5f5;
-    padding: 2px 8px;
-    border-radius: 10px;
-    display: inline-block;
-  }
-  
-  .review-rating {
-    color: #f0b90b;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .review-content {
-    line-height: 1.6;
-    color: #333;
-    margin-bottom: 15px;
-  }
-  
-  .review-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: #999;
-  }
-  
-  .review-platform {
-    display: flex;
-    align-items: center;
-  }
-  
-  .review-platform img {
-    height: 16px;
-    margin-right: 5px;
-  }
-  
-  @media (max-width: 768px) {
-    .reviews-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
+}
     /* Withdrawals Feed Styles */
 .withdrawals-feed {
   position: fixed;
