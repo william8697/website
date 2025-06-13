@@ -1515,34 +1515,93 @@
       </div>
     </div>
 
-    <!-- Reviews Section -->
-    <div class="section reviews-section">
+    <div class="reviews-section">
   <div class="section-header">
-    <h2 class="section-title">Traders Reviews</h2>
-    <div class="refresh-reviews" id="refreshReviewsBtn">
-      <span class="refresh-icon">⟳</span>
-      <span class="refresh-text">Live Reviews</span>
+    <h2 class="section-title">Trader Experiences</h2>
+    <div class="section-controls">
+      <div class="refresh-control" id="refreshReviewsBtn">
+        <i class="icon-refresh"></i>
+        <span>Refresh Reviews</span>
+      </div>
+      <div class="write-review">
+        <a href="/write-review" class="btn btn-outline">
+          <i class="icon-edit"></i> Write a Review
+        </a>
+      </div>
     </div>
   </div>
-  
-  <div class="reviews-grid" id="reviewsContainer">
-    <!-- Reviews will be loaded here dynamically -->
+
+  <!-- TrustScore Summary -->
+  <div class="trust-score">
+    <div class="score-display">
+      <div class="score-value">4.8</div>
+      <div class="score-stars">
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star filled">★</span>
+        <span class="star half">★</span>
+      </div>
+      <div class="score-label">Excellent</div>
+    </div>
+    <div class="score-details">
+      <div class="score-stat">
+        <span class="stat-value">2,457</span>
+        <span class="stat-label">Total Reviews</span>
+      </div>
+      <div class="score-stat">
+        <span class="stat-value">94%</span>
+        <span class="stat-label">Would Recommend</span>
+      </div>
+      <div class="score-stat">
+        <span class="stat-value">87%</span>
+        <span class="stat-label">5-Star Reviews</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Container -->
+  <div class="reviews-container" id="reviewsContainer">
+    <!-- Skeleton loading state -->
     <div class="review-skeleton">
-      <div class="skeleton-avatar"></div>
+      <div class="skeleton-header">
+        <div class="skeleton-avatar"></div>
+        <div class="skeleton-user">
+          <div class="skeleton-line" style="width: 120px"></div>
+          <div class="skeleton-line" style="width: 80px"></div>
+        </div>
+      </div>
+      <div class="skeleton-rating">
+        <div class="skeleton-stars"></div>
+      </div>
       <div class="skeleton-content">
-        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line" style="width: 90%"></div>
         <div class="skeleton-line" style="width: 80%"></div>
-        <div class="skeleton-line" style="width: 70%"></div>
-        <div class="skeleton-line" style="width: 50%"></div>
+        <div class="skeleton-line" style="width: 60%"></div>
+      </div>
+      <div class="skeleton-footer">
+        <div class="skeleton-line" style="width: 100px"></div>
       </div>
     </div>
     <!-- Repeat skeleton 3 more times -->
   </div>
-  
-  <div class="reviews-footer">
-    <div class="trustpilot-badge">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Trustpilot_logo_%282022%29.svg/1200px-Trustpilot_logo_%282022%29.svg.png" alt="Trustpilot">
-      <span>Rated 4.8/5 based on 2,457 trader reviews</span>
+
+  <!-- Trustpilot Badge -->
+  <div class="trustpilot-badge">
+    <div class="trustpilot-logo">
+      <svg viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M23.96 12.12c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6 6-2.69 6-6zm-10.5 0c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5z" fill="#00B67A"/>
+        <path d="M12.34 12.12c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6 6-2.69 6-6zm-10.5 0c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5z" fill="#00B67A"/>
+        <path d="M60.84 12.12c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6 6-2.69 6-6zm-10.5 0c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5z" fill="#00B67A"/>
+        <path d="M84.72 12.12c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6 6-2.69 6-6zm-10.5 0c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5z" fill="#00B67A"/>
+        <path d="M108.6 12.12c0-3.31-2.69-6-6-6s-6 2.69-6 6 2.69 6 6 6 6-2.69 6-6zm-10.5 0c0-2.48 2.02-4.5 4.5-4.5s4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5-4.5-2.02-4.5-4.5z" fill="#00B67A"/>
+      </svg>
+      <span>Trustpilot</span>
+    </div>
+    <div class="trustpilot-rating">
+      <span class="stars">★★★★★</span>
+      <span class="rating">4.8 / 5</span>
     </div>
   </div>
 </div>
@@ -2373,146 +2432,273 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
       });
     }
 
-    // Load reviews
- async function loadReviews() {
-    try {
-      const reviewsContainer = document.getElementById('reviewsContainer');
-      
-      // Show skeleton loading state
-      reviewsContainer.innerHTML = `
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line" style="width: 60%"></div>
-            <div class="skeleton-line" style="width: 80%"></div>
-            <div class="skeleton-line" style="width: 70%"></div>
-            <div class="skeleton-line" style="width: 50%"></div>
-          </div>
-        </div>
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line" style="width: 60%"></div>
-            <div class="skeleton-line" style="width: 80%"></div>
-            <div class="skeleton-line" style="width: 70%"></div>
-            <div class="skeleton-line" style="width: 50%"></div>
-          </div>
-        </div>
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line" style="width: 60%"></div>
-            <div class="skeleton-line" style="width: 80%"></div>
-            <div class="skeleton-line" style="width: 70%"></div>
-            <div class="skeleton-line" style="width: 50%"></div>
-          </div>
-        </div>
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line" style="width: 60%"></div>
-            <div class="skeleton-line" style="width: 80%"></div>
-            <div class="skeleton-line" style="width: 70%"></div>
-            <div class="skeleton-line" style="width: 50%"></div>
-          </div>
-        </div>
-      `;
-      
-      // Determine screen size for responsive review count
-      const screenWidth = window.innerWidth;
-      const isMobile = screenWidth <= 768;
-      
-      // Add screen size header
-      const headers = {
-        'X-Screen-Size': isMobile ? 'mobile' : 'desktop'
+// Review Management System
+  class ReviewManager {
+    constructor() {
+      this.cache = {
+        data: [],
+        lastUpdated: 0,
+        expires: 0
       };
-      
-      const response = await fetch(`${API_BASE_URL}/reviews`, { headers });
-      if (!response.ok) throw new Error('Failed to load reviews');
-      
-      const data = await response.json();
-      if (!data.success || !data.data) throw new Error('Invalid reviews data');
-      
-      // Render reviews
-      reviewsContainer.innerHTML = data.data.map(review => `
+      this.initialLoad = true;
+      this.init();
+    }
+
+    async init() {
+      this.setupEventListeners();
+      await this.loadReviews();
+      this.startAutoRefresh();
+    }
+
+    setupEventListeners() {
+      // Manual refresh
+      document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
+        this.loadReviews(true);
+      });
+
+      // Window resize for responsive review count
+      window.addEventListener('resize', () => {
+        if (!this.initialLoad) {
+          this.renderReviews();
+        }
+      });
+    }
+
+    async loadReviews(forceRefresh = false) {
+      try {
+        // Show loading state
+        this.showLoading();
+        
+        // Check cache if not forcing refresh
+        if (!forceRefresh && this.cache.expires > Date.now()) {
+          this.renderReviews();
+          return;
+        }
+
+        // Determine screen size for responsive loading
+        const isMobile = window.innerWidth <= 768;
+        const headers = {
+          'X-Screen-Width': window.innerWidth.toString()
+        };
+
+        // Add cache busting for forced refresh
+        if (forceRefresh) {
+          headers['Cache-Control'] = 'no-cache';
+        }
+
+        const response = await fetch(`${API_BASE_URL}/reviews`, { headers });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error('Invalid response data');
+        }
+
+        // Update cache
+        this.cache = {
+          data: data.data,
+          lastUpdated: new Date(data.meta.generatedAt).getTime(),
+          expires: new Date(data.meta.nextRefresh).getTime()
+        };
+
+        // Render reviews
+        this.renderReviews();
+        
+        // Update UI
+        this.initialLoad = false;
+        this.showRefreshAnimation();
+
+      } catch (error) {
+        console.error('Failed to load reviews:', error);
+        this.showError();
+        
+        // If we have cached data, show that instead
+        if (this.cache.data.length > 0) {
+          this.renderReviews();
+        }
+      }
+    }
+
+    renderReviews() {
+      const container = document.getElementById('reviewsContainer');
+      if (!container) return;
+
+      // Determine how many reviews to show based on screen size
+      const isMobile = window.innerWidth <= 768;
+      const reviewCount = isMobile ? 4 : 5;
+      const reviewsToShow = this.cache.data.slice(0, reviewCount);
+
+      container.innerHTML = reviewsToShow.map(review => `
         <div class="review-card">
           <div class="review-header">
             <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
             <div class="review-user">
               <div class="review-name">${review.user.name}</div>
               <div class="review-meta">
-                <span>${review.user.country || 'Trader'}</span>
+                <span>${review.user.country}</span>
                 <span>•</span>
-                <span>${review.user.occupation || 'Crypto Enthusiast'}</span>
+                <span>${review.user.occupation}</span>
               </div>
             </div>
             <div class="review-rating">
-              <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-              ${review.rating.toFixed(1)}
+              <span class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+              <span class="review-rating-value">${review.rating}.0</span>
             </div>
           </div>
+          <h3 class="review-title">${review.title}</h3>
           <div class="review-content">${review.content}</div>
           <div class="review-footer">
             <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Trustpilot_logo_%282022%29.svg/1200px-Trustpilot_logo_%282022%29.svg.png" alt="Trustpilot">
               <span>${review.platform}</span>
+              ${review.verified ? '<span class="review-verified"><i class="review-verified-icon">✓</i> Verified</span>' : ''}
             </div>
-            <div class="review-verified">
-              ${review.verified ? '✓ Verified' : ''}
-            </div>
-            <div class="review-date">
-              ${formatReviewDate(review.date)}
-            </div>
+            <div class="review-date">${this.formatDate(review.date)}</div>
+            ${review.profit ? `<div class="review-profit">${review.profit} profit</div>` : ''}
           </div>
         </div>
       `).join('');
-      
-    } catch (error) {
-      console.error('Error loading reviews:', error);
-      const reviewsContainer = document.getElementById('reviewsContainer');
-      reviewsContainer.innerHTML = `
-        <div class="alert-banner warning">
-          <div class="alert-icon">⚠️</div>
-          <div class="alert-content">
-            Failed to load reviews. <a href="#" onclick="loadReviews()" class="alert-link">Try again</a>
+    }
+
+    showLoading() {
+      const container = document.getElementById('reviewsContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="review-skeleton">
+          <div class="skeleton-header">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-user">
+              <div class="skeleton-line" style="width: 120px"></div>
+              <div class="skeleton-line" style="width: 80px"></div>
+            </div>
+          </div>
+          <div class="skeleton-rating"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line" style="width: 90%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+          </div>
+          <div class="skeleton-footer"></div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-header">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-user">
+              <div class="skeleton-line" style="width: 120px"></div>
+              <div class="skeleton-line" style="width: 80px"></div>
+            </div>
+          </div>
+          <div class="skeleton-rating"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line" style="width: 90%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+          </div>
+          <div class="skeleton-footer"></div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-header">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-user">
+              <div class="skeleton-line" style="width: 120px"></div>
+              <div class="skeleton-line" style="width: 80px"></div>
+            </div>
+          </div>
+          <div class="skeleton-rating"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line" style="width: 90%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+          </div>
+          <div class="skeleton-footer"></div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-header">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-user">
+              <div class="skeleton-line" style="width: 120px"></div>
+              <div class="skeleton-line" style="width: 80px"></div>
+            </div>
+          </div>
+          <div class="skeleton-rating"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line" style="width: 90%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+          </div>
+          <div class="skeleton-footer"></div>
+        </div>
+      `;
+    }
+
+    showError() {
+      const container = document.getElementById('reviewsContainer');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="review-error">
+          <div class="error-icon">⚠️</div>
+          <div class="error-message">
+            <h3>Failed to load reviews</h3>
+            <p>We couldn't load the latest reviews. Please try again later.</p>
+            <button class="btn btn-outline" onclick="reviewManager.loadReviews(true)">Retry</button>
           </div>
         </div>
       `;
     }
+
+    showRefreshAnimation() {
+      const refreshBtn = document.getElementById('refreshReviewsBtn');
+      if (!refreshBtn) return;
+
+      const icon = refreshBtn.querySelector('i');
+      if (!icon) return;
+
+      // Add animation class
+      icon.classList.add('refreshing');
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        icon.classList.remove('refreshing');
+      }, 1000);
+    }
+
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 0) return 'Today';
+      if (diffDays === 1) return 'Yesterday';
+      if (diffDays < 7) return `${diffDays} days ago`;
+      if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+      
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+      });
+    }
+
+    startAutoRefresh() {
+      // Refresh every 10 minutes
+      setInterval(() => {
+        this.loadReviews();
+      }, 10 * 60 * 1000);
+    }
   }
-  
-  // Format review date as "X days ago"
-  function formatReviewDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  }
-  
-  // Auto-refresh reviews every 10 minutes
-  function startReviewRefresh() {
-    setInterval(loadReviews, 10 * 60 * 1000); // 10 minutes
-    
-    // Manual refresh button
-    document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
-      loadReviews();
-      // Show refresh animation
-      const icon = document.querySelector('.refresh-icon');
-      icon.style.animation = 'none';
-      void icon.offsetWidth; // Trigger reflow
-      icon.style.animation = 'spin 0.5s linear';
-    });
-  }
-  
-  // Call this when the page loads
+
+  // Initialize when DOM is loaded
   document.addEventListener('DOMContentLoaded', () => {
-    loadReviews();
-    startReviewRefresh();
+    window.reviewManager = new ReviewManager();
   });
     
 // Update your existing loadWithdrawals function with this:
