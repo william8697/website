@@ -2056,48 +2056,97 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-    async function loadReviews() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) {
-          throw new Error('Failed to load reviews');
+    async function fetchReviews() {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '<div class="loading">Loading reviews...</div>';
+            
+            try {
+                const response = await fetch('https://website-backendd-1.onrender.com/api/v1/reviews');
+                const data = await response.json();
+                
+                if (data.success && data.data.length > 0) {
+                    displayReviews(data.data);
+                } else {
+                    container.innerHTML = '<div class="error">No reviews available at the moment</div>';
+                }
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+                container.innerHTML = '<div class="error">Failed to load reviews. Please try again later.</div>';
+            }
         }
+
+        // Display reviews in the grid
+        function displayReviews(reviews) {
+            const container = document.getElementById('reviewsContainer');
+            container.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+                
+                // Format date
+                const reviewDate = new Date(review.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                // Create star rating
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                
+                // Verified badge
+                const verifiedBadge = review.verified ? 
+                    `<span class="review-verified">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#00b67a">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                        Verified
+                    </span>` : '';
+                
+                // Pro trader badge
+                const proBadge = review.isProTrader ? 
+                    `<span style="margin-left:8px;color:#666;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffb400" style="vertical-align:middle;">
+                            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                        </svg>
+                        Pro
+                    </span>` : '';
+                
+                card.innerHTML = `
+                    <div class="review-header">
+                        <img src="${review.avatar}" alt="${review.name}" class="review-avatar" onerror="this.src='https://i.imgur.com/JUdKQxU.png'">
+                        <div class="review-user">
+                            <div class="review-name">${review.name}</div>
+                            <div class="review-meta">
+                                ${reviewDate}
+                                ${verifiedBadge}
+                                ${proBadge}
+                            </div>
+                        </div>
+                        <div class="review-rating" title="${review.rating} out of 5 stars">
+                            ${stars}
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        ${review.content}
+                    </div>
+                    <div class="review-footer">
+                        <div class="review-platform">
+                            <img src="https://cdn.trustpilot.net/brand-assets/1.6.0/logo-white.svg" alt="Trustpilot">
+                            ${review.platform}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Initial load
+        fetchReviews();
         
-        const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
-        
-        // Only show 3 reviews
-        const displayedReviews = reviews.slice(0, 3);
-        
-        displayedReviews.forEach(review => {
-          const card = document.createElement('div');
-          card.className = 'review-card';
-          card.innerHTML = `
-            <div class="review-header">
-              <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-              <div class="review-user">
-                <div class="review-name">${review.user.name}</div>
-                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
-              </div>
-              <div class="review-rating">
-                <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                ${review.rating.toFixed(1)}
-              </div>
-            </div>
-            <div class="review-content">${review.content}</div>
-            <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-              Trustpilot
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-        showToast('Failed to load reviews', 'error');
-      }
-    }
+        // Refresh every 10 minutes (600000ms)
+        setInterval(fetchReviews, 600000);
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
