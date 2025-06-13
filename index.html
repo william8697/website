@@ -2564,7 +2564,274 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
 // Review Management System
+// Review Management System
+class ReviewManager {
+  constructor() {
+    this.cache = {
+      data: [],
+      lastUpdated: 0,
+      expires: 0
+    };
+    this.initialLoad = true;
+    this.init();
+  }
 
+  async init() {
+    this.setupEventListeners();
+    await this.loadReviews();
+    this.startAutoRefresh();
+  }
+
+  setupEventListeners() {
+    // Manual refresh
+    document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
+      this.loadReviews(true);
+    });
+
+    // Window resize for responsive review count
+    window.addEventListener('resize', () => {
+      if (!this.initialLoad) {
+        this.renderReviews();
+      }
+    });
+  }
+
+  async loadReviews(forceRefresh = false) {
+    try {
+      // Show loading state
+      this.showLoading();
+      
+      // Check cache if not forcing refresh
+      if (!forceRefresh && this.cache.expires > Date.now()) {
+        this.renderReviews();
+        return;
+      }
+
+      // Determine screen size for responsive loading
+      const isMobile = window.innerWidth <= 768;
+      const headers = {
+        'X-Screen-Width': window.innerWidth.toString()
+      };
+
+      // Add cache busting for forced refresh
+      if (forceRefresh) {
+        headers['Cache-Control'] = 'no-cache';
+      }
+
+      const response = await fetch(`${API_BASE_URL}/reviews`, { headers });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error('Invalid response data');
+      }
+
+      // Update cache
+      this.cache = {
+        data: data.data,
+        lastUpdated: new Date(data.meta.generatedAt).getTime(),
+        expires: new Date(data.meta.nextRefresh).getTime()
+      };
+
+      // Render reviews
+      this.renderReviews();
+      
+      // Update UI
+      this.initialLoad = false;
+      this.showRefreshAnimation();
+
+    } catch (error) {
+      console.error('Failed to load reviews:', error);
+      this.showError();
+      
+      // If we have cached data, show that instead
+      if (this.cache.data.length > 0) {
+        this.renderReviews();
+      }
+    }
+  }
+
+  renderReviews() {
+    const container = document.getElementById('reviewsContainer');
+    if (!container) return;
+
+    // Determine how many reviews to show based on screen size
+    const isMobile = window.innerWidth <= 768;
+    const reviewCount = isMobile ? 4 : 5;
+    const reviewsToShow = this.cache.data.slice(0, reviewCount);
+
+    container.innerHTML = reviewsToShow.map(review => `
+      <div class="review-card">
+        <div class="review-header">
+          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+          <div class="review-user">
+            <div class="review-name">${review.user.name}</div>
+            <div class="review-meta">
+              <span>${review.user.country}</span>
+              <span>•</span>
+              <span>${review.user.occupation}</span>
+            </div>
+          </div>
+          <div class="review-rating">
+            <span class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+            <span class="review-rating-value">${review.rating}.0</span>
+          </div>
+        </div>
+        <h3 class="review-title">${review.title}</h3>
+        <div class="review-content">${review.content}</div>
+        <div class="review-footer">
+          <div class="review-platform">
+            <span>${review.platform}</span>
+            ${review.verified ? '<span class="review-verified"><i class="review-verified-icon">✓</i> Verified</span>' : ''}
+          </div>
+          <div class="review-date">${this.formatDate(review.date)}</div>
+          ${review.profit ? `<div class="review-profit">${review.profit} profit</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  showLoading() {
+    const container = document.getElementById('reviewsContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="review-skeleton">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-user">
+            <div class="skeleton-line" style="width: 120px"></div>
+            <div class="skeleton-line" style="width: 80px"></div>
+          </div>
+        </div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%"></div>
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+      <div class="review-skeleton">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-user">
+            <div class="skeleton-line" style="width: 120px"></div>
+            <div class="skeleton-line" style="width: 80px"></div>
+          </div>
+        </div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%"></div>
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+      <div class="review-skeleton">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-user">
+            <div class="skeleton-line" style="width: 120px"></div>
+            <div class="skeleton-line" style="width: 80px"></div>
+          </div>
+        </div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%"></div>
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+      <div class="review-skeleton">
+        <div class="skeleton-header">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-user">
+            <div class="skeleton-line" style="width: 120px"></div>
+            <div class="skeleton-line" style="width: 80px"></div>
+          </div>
+        </div>
+        <div class="skeleton-rating"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line" style="width: 90%"></div>
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+    `;
+  }
+
+  showError() {
+    const container = document.getElementById('reviewsContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="review-error">
+        <div class="error-icon">⚠️</div>
+        <div class="error-message">
+          <h3>Failed to load reviews</h3>
+          <p>We couldn't load the latest reviews. Please try again later.</p>
+          <button class="btn btn-outline" onclick="reviewManager.loadReviews(true)">Retry</button>
+        </div>
+      </div>
+    `;
+  }
+
+  showRefreshAnimation() {
+    const refreshBtn = document.getElementById('refreshReviewsBtn');
+    if (!refreshBtn) return;
+
+    const icon = refreshBtn.querySelector('i');
+    if (!icon) return;
+
+    // Add animation class
+    icon.classList.add('refreshing');
+    
+    // Remove after animation completes
+    setTimeout(() => {
+      icon.classList.remove('refreshing');
+    }, 1000);
+  }
+
+  formatDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  }
+
+  startAutoRefresh() {
+    // Refresh every 10 minutes
+    setInterval(() => {
+      this.loadReviews();
+    }, 10 * 60 * 1000);
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  window.reviewManager = new ReviewManager();
+});
     
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
