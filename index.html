@@ -486,82 +486,43 @@
     }
 
     /* Reviews Section */
+/* =============================================
+   PROFESSIONAL REVIEW COMPONENT STYLING
+   ============================================= */
+
 .reviews-section {
-  background-color: var(--secondary-bg);
+  background: var(--card-bg);
   border-radius: 12px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.section-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.refresh-btn {
-  background-color: var(--primary-accent);
-  color: #000;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
-}
-
-.refresh-btn:hover {
-  background-color: #f8d33a;
-}
-
-.refresh-icon {
-  transition: transform 0.3s ease;
-}
-
-.refresh-icon.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .reviews-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
 }
 
 .review-card {
-  background-color: var(--card-bg);
-  border-radius: 10px;
-  padding: 20px;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
   border: 1px solid var(--border-color);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .review-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 .review-header {
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .review-avatar {
@@ -569,186 +530,121 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
   border: 2px solid var(--primary-accent);
 }
 
-.review-user {
+.review-user-info {
   flex: 1;
 }
 
-.review-name {
+.reviewer-name {
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 0.25rem;
   color: var(--text-primary);
 }
 
-.review-meta {
-  display: flex;
-  gap: 8px;
-  font-size: 13px;
+.reviewer-meta {
+  font-size: 0.8rem;
   color: var(--text-secondary);
+  display: flex;
+  gap: 0.5rem;
 }
 
 .review-rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  color: #00b67a; /* Trustpilot green */
+  font-size: 1.1rem;
+  letter-spacing: 1px;
 }
 
-.review-stars {
-  color: var(--trustpilot-green);
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-
-.review-rating-value {
+.rating-value {
   font-weight: 600;
-  font-size: 16px;
+  margin-left: 0.3rem;
   color: var(--text-primary);
 }
 
 .review-title {
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 10px;
-  font-size: 18px;
+  margin: 1rem 0;
   color: var(--text-primary);
 }
 
 .review-content {
   line-height: 1.6;
-  margin-bottom: 15px;
-  color: var(--text-primary);
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.profit-badge {
+  display: inline-block;
+  background: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
 }
 
 .review-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  color: var(--text-secondary);
   border-top: 1px solid var(--border-color);
-  padding-top: 15px;
+  padding-top: 1rem;
+  font-size: 0.8rem;
 }
 
-.review-platform {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.platform-name {
+  color: var(--text-secondary);
 }
 
-.review-verified {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: var(--positive);
+.verified-badge {
+  color: #0ecb81;
+  margin-left: 0.5rem;
 }
 
-.review-profit {
-  background-color: rgba(14, 203, 129, 0.1);
-  color: var(--positive);
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 12px;
+.review-date {
+  color: var(--text-secondary);
 }
 
-.trustpilot-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  padding: 15px;
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.trustpilot-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.trustpilot-logo svg {
-  width: 100px;
-  height: 20px;
-}
-
-.trustpilot-logo span {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.trustpilot-rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.trustpilot-stars {
-  color: var(--trustpilot-green);
-  font-size: 16px;
-  letter-spacing: 2px;
-}
-
-.trustpilot-score {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.loading {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
+/* Loading and error states */
+.review-loading,
+.review-error {
   grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
 }
 
-.spinner {
+.loading-spinner {
+  border: 3px solid rgba(240, 185, 11, 0.2);
+  border-top-color: var(--primary-accent);
+  border-radius: 50%;
   width: 40px;
   height: 40px;
-  border: 4px solid rgba(240, 185, 11, 0.3);
-  border-radius: 50%;
-  border-top-color: var(--primary-accent);
-  animation: spin 1s ease-in-out infinite;
-}
-
-.error-message {
-  background-color: rgba(246, 70, 93, 0.1);
-  color: var(--negative);
-  padding: 15px;
-  border-radius: 6px;
-  text-align: center;
-  margin: 20px 0;
-  grid-column: 1 / -1;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
 }
 
 .retry-btn {
-  background-color: var(--negative);
-  color: white;
+  background: var(--primary-accent);
+  color: #000;
   border: none;
-  padding: 8px 15px;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
-  margin-top: 10px;
+  margin-top: 1rem;
   cursor: pointer;
+  font-weight: 500;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .reviews-container {
     grid-template-columns: 1fr;
   }
   
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  }
-  
-  .trustpilot-badge {
-    flex-direction: column;
-    text-align: center;
+  .review-card {
+    padding: 1rem;
   }
 }
     /* Withdrawals Feed Styles */
@@ -2237,147 +2133,158 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
         trendingList.appendChild(item);
       });
     }
+// =============================================
+// PROFESSIONAL REVIEW DISPLAY SYSTEM
+// =============================================
 
-    // Load reviews
-const REVIEW_API_URL = 'https://website-backendd-1.onrender.com/api/v1/reviews';
-let currentReviews = [];
-let isRefreshing = false;
-
-// Initialize review system
-document.addEventListener('DOMContentLoaded', () => {
-  loadReviews();
-  
-  // Set up refresh button
-  document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
-    if (!isRefreshing) {
-      loadReviews(true);
-    }
-  });
-  
-  // Auto-refresh every 10 minutes
-  setInterval(() => loadReviews(), 10 * 60 * 1000);
-});
-
-// Load reviews from API
-async function loadReviews(forceRefresh = false) {
-  try {
-    isRefreshing = true;
-    document.getElementById('refreshIcon').classList.add('spin');
+class ReviewSystem {
+  constructor() {
+    this.reviewsContainer = document.getElementById('reviewsContainer');
+    this.refreshBtn = document.getElementById('refreshBtn');
+    this.refreshIcon = document.getElementById('refreshIcon');
+    this.currentReviews = [];
+    this.isLoading = false;
     
-    // Show loading state
-    document.getElementById('reviewsContainer').innerHTML = `
-      <div class="loading">
-        <div class="spinner"></div>
-      </div>
-    `;
-    
-    // Add screen width header for responsive loading
-    const headers = {
-      'X-Screen-Width': window.innerWidth.toString()
-    };
-    
-    // Add cache busting for forced refresh
-    if (forceRefresh) {
-      headers['Cache-Control'] = 'no-cache';
-    }
-    
-    const response = await fetch(REVIEW_API_URL, { headers });
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (!data.success || !Array.isArray(data.data)) {
-      throw new Error('Invalid response data');
-    }
-    
-    currentReviews = data.data;
-    renderReviews();
-    
-  } catch (error) {
-    console.error('Failed to load reviews:', error);
-    showError(error);
-  } finally {
-    isRefreshing = false;
-    document.getElementById('refreshIcon').classList.remove('spin');
-  }
-}
-
-// Render reviews to the DOM
-function renderReviews() {
-  const container = document.getElementById('reviewsContainer');
-  
-  if (!currentReviews || currentReviews.length === 0) {
-    container.innerHTML = `
-      <div class="error-message">
-        No reviews available at the moment
-      </div>
-    `;
-    return;
+    this.init();
   }
   
-  container.innerHTML = currentReviews.map(review => `
-    <div class="review-card">
-      <div class="review-header">
-        <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar" 
-             onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.user.name)}&background=random'">
-        <div class="review-user">
-          <div class="review-name">${review.user.name}</div>
-          <div class="review-meta">
-            <span>${review.user.country}</span>
-            <span>•</span>
-            <span>${review.user.occupation}</span>
+  async init() {
+    this.setupEventListeners();
+    await this.loadReviews();
+    this.startAutoRefresh();
+  }
+  
+  async loadReviews(forceRefresh = false) {
+    if (this.isLoading) return;
+    
+    try {
+      this.isLoading = true;
+      this.showLoadingState();
+      
+      const headers = {};
+      if (forceRefresh) {
+        headers['Cache-Control'] = 'no-cache';
+      }
+      
+      const response = await fetch('https://website-backendd-1.onrender.com/api/v1/reviews', { headers });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.status !== "success" || !Array.isArray(data.data)) {
+        throw new Error('Invalid review data');
+      }
+      
+      this.currentReviews = data.data;
+      this.renderReviews();
+      
+    } catch (error) {
+      console.error('[Review Load Error]', error);
+      this.showErrorState(error);
+    } finally {
+      this.isLoading = false;
+      this.refreshIcon.classList.remove('spin');
+    }
+  }
+  
+  renderReviews() {
+    if (this.currentReviews.length === 0) {
+      this.reviewsContainer.innerHTML = `
+        <div class="review-error">
+          <i class="fas fa-exclamation-circle"></i>
+          <p>No reviews available at this time</p>
+        </div>
+      `;
+      return;
+    }
+    
+    this.reviewsContainer.innerHTML = this.currentReviews.map(review => `
+      <div class="review-card">
+        <div class="review-header">
+          <img src="${review.user.avatar}" 
+               alt="${review.user.name}" 
+               class="review-avatar"
+               onerror="this.src='https://via.placeholder.com/100?text=User'">
+          <div class="review-user-info">
+            <h4 class="reviewer-name">${review.user.name}</h4>
+            <div class="reviewer-meta">
+              <span class="reviewer-location">${review.user.location}</span>
+              <span class="reviewer-occupation">${review.user.occupation}</span>
+            </div>
+          </div>
+          <div class="review-rating">
+            ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+            <span class="rating-value">${review.rating}.0</span>
           </div>
         </div>
-        <div class="review-rating">
-          <span class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-          <span class="review-rating-value">${review.rating}.0</span>
+        
+        <h3 class="review-title">${review.title}</h3>
+        <div class="review-content">
+          <p>${review.content}</p>
+          ${review.profit ? `<div class="profit-badge">+${review.profit} profit</div>` : ''}
+        </div>
+        
+        <div class="review-footer">
+          <div class="review-platform">
+            <span class="platform-name">${review.platform}</span>
+            ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
+          </div>
+          <div class="review-date">
+            ${new Date(review.date).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </div>
         </div>
       </div>
-      <h3 class="review-title">${review.title}</h3>
-      <div class="review-content">${review.content}</div>
-      <div class="review-footer">
-        <div class="review-platform">
-          <span>${review.platform}</span>
-          ${review.verified ? '<span class="review-verified">✓ Verified</span>' : ''}
-        </div>
-        <div class="review-date">${formatDate(review.date)}</div>
-        ${review.profit ? `<div class="review-profit">${review.profit} profit</div>` : ''}
+    `).join('');
+  }
+  
+  showLoadingState() {
+    this.refreshIcon.classList.add('spin');
+    this.reviewsContainer.innerHTML = `
+      <div class="review-loading">
+        <div class="loading-spinner"></div>
+        <p>Loading professional reviews...</p>
       </div>
-    </div>
-  `).join('');
+    `;
+  }
+  
+  showErrorState(error) {
+    this.reviewsContainer.innerHTML = `
+      <div class="review-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        <p>Failed to load reviews. Please try again.</p>
+        <button class="retry-btn" onclick="reviewSystem.loadReviews()">
+          Retry
+        </button>
+      </div>
+    `;
+  }
+  
+  startAutoRefresh() {
+    setInterval(() => this.loadReviews(), REVIEW_SYSTEM.REFRESH_INTERVAL);
+  }
+  
+  setupEventListeners() {
+    this.refreshBtn.addEventListener('click', () => {
+      if (!this.isLoading) {
+        this.loadReviews(true);
+      }
+    });
+  }
 }
 
-// Show error message
-function showError(error) {
-  document.getElementById('reviewsContainer').innerHTML = `
-    <div class="error-message">
-      <p>Failed to load reviews. Please try again.</p>
-      <button class="retry-btn" onclick="loadReviews()">Retry</button>
-    </div>
-  `;
-}
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  window.reviewSystem = new ReviewSystem();
+});
+    // Load reviews
 
-// Format date
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-  
-  if (diffDays === 0) return 'Today';
-  if (diffDays === 1) return 'Yesterday';
-  if (diffDays < 7) return `${diffDays} days ago`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-  
-  return date.toLocaleDateString('en-US', { 
-    month: 'short', 
-    day: 'numeric', 
-    year: 'numeric' 
-  });
-}
-    
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
