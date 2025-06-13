@@ -573,33 +573,83 @@
       margin-right: 5px;
     }
 
-    /* Withdrawals Feed */
-    .withdrawals-feed {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: var(--secondary-bg);
-      border-radius: 4px;
-      padding: 12px;
-      max-height: 200px;
-      overflow-y: auto;
-      width: 300px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      z-index: 100;
-    }
+    /* Withdrawals Feed Styles */
+.withdrawals-feed {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 12px;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 300px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 13px;
+}
 
-    .withdrawal-item {
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 13px;
-      color: green;
-    }
+.withdrawals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
 
-    .withdrawal-item:last-child {
-      border-bottom: none;
-    }
+.withdrawals-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
+.withdrawals-close {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+.withdrawal-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--positive);
+  display: flex;
+  align-items: center;
+}
+
+.withdrawal-item:last-child {
+  border-bottom: none;
+}
+
+.withdrawal-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.withdrawal-details {
+  flex: 1;
+}
+
+.withdrawal-amount {
+  font-weight: 500;
+}
+
+.withdrawal-time {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .withdrawals-feed {
+    width: 250px;
+    bottom: 10px;
+    right: 10px;
+  }
+}
     /* Modal Styles */
     .modal {
       display: none;
@@ -1165,14 +1215,15 @@
   </div>
 
   <!-- Withdrawals Feed -->
-  <div class="withdrawals-feed" id="withdrawalsFeed">
-    <div class="section-header">
-      <h3>Recent Withdrawals</h3>
-    </div>
-    <div id="withdrawalsList">
-      <!-- Withdrawals will be loaded here -->
-    </div>
+<div class="withdrawals-feed" id="withdrawalsFeed">
+  <div class="withdrawals-header">
+    <div class="withdrawals-title">Recent Withdrawals</div>
+    <div class="withdrawals-close" onclick="toggleWithdrawalsFeed()">×</div>
   </div>
+  <div id="withdrawalsList">
+    <!-- Withdrawals will be loaded here -->
+  </div>
+</div>
 
   <!-- Coin Detail Modal -->
   <div class="modal" id="coinModal">
@@ -2033,42 +2084,55 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
       }
     }
 // Update your existing loadWithdrawals function with this:
-async function loadWithdrawals() {
-    try {
-      const response = await fetch('/api/v1/withdrawals/recent?limit=5&_=' + Date.now());
-      const data = await response.json();
-      
-      if (data.success) {
-        updateWithdrawalsUI(data.data);
-      } else {
-        console.error('Failed to load withdrawals:', data.error);
-      }
-    } catch (error) {
-      console.error('Withdrawals fetch error:', error);
-    }
-  }
+// Withdrawals Feed Functions
+let withdrawalsFeedVisible = true;
 
-  function updateWithdrawalsUI(withdrawals) {
+async function loadWithdrawals() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/withdrawals/recent?limit=5`);
+    if (!response.ok) throw new Error('Failed to load withdrawals');
+    
+    const result = await response.json();
+    if (!result.success || !Array.isArray(result.data)) {
+      throw new Error('Invalid withdrawals data');
+    }
+
     const container = document.getElementById('withdrawalsList');
     container.innerHTML = '';
     
-    withdrawals.forEach(w => {
+    result.data.forEach(withdrawal => {
       const item = document.createElement('div');
       item.className = 'withdrawal-item';
       
-      // Format amount based on asset type
-      const amount = w.asset === 'BTC' ? w.amount.toFixed(8) :
-                     w.asset === 'ETH' ? w.amount.toFixed(6) :
-                     w.amount.toFixed(4);
+      // Format amount based on coin type
+      const decimals = ['BTC', 'ETH'].includes(withdrawal.asset) ? 6 : 2;
+      const formattedAmount = parseFloat(withdrawal.amount).toFixed(decimals);
       
-      item.textContent = `User ${w.user} withdrawn ${amount} ${w.asset}`;
+      item.innerHTML = `
+        <span class="withdrawal-icon">→</span>
+        <div class="withdrawal-details">
+          <div class="withdrawal-amount">${formattedAmount} ${withdrawal.asset}</div>
+          <div class="withdrawal-time">User ${withdrawal.user}</div>
+        </div>
+      `;
       container.appendChild(item);
     });
+  } catch (error) {
+    console.error('Error loading withdrawals:', error);
+    const container = document.getElementById('withdrawalsList');
+    container.innerHTML = '<div class="withdrawal-item">Loading withdrawals...</div>';
   }
+}
 
-  // Load immediately and every second
-  loadWithdrawals();
-  setInterval(loadWithdrawals, 1000);
+function toggleWithdrawalsFeed() {
+  const feed = document.getElementById('withdrawalsFeed');
+  withdrawalsFeedVisible = !withdrawalsFeedVisible;
+  feed.style.display = withdrawalsFeedVisible ? 'block' : 'none';
+}
+
+// Call this in your DOMContentLoaded event
+loadWithdrawals();
+setInterval(loadWithdrawals, 5000); // Refresh every 5 seconds
    
     // Show coin detail modal
     async function showCoinDetail(coinId) {
