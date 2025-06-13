@@ -486,108 +486,93 @@
     }
 
     /* Reviews Section */
-    ..reviews-container {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-        
-        .review-card {
-            width: 32%;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 20px;
-            margin: 0 10px;
-            transition: transform 0.3s ease;
-        }
-        
-        .review-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .review-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .review-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-        
-        .review-user {
-            flex: 1;
-        }
-        
-        .review-name {
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-        
-        .review-verified {
-            font-size: 12px;
-            color: #00b67a;
-            display: flex;
-            align-items: center;
-        }
-        
-        .review-verified svg {
-            margin-right: 5px;
-        }
-        
-        .review-rating {
-            color: #ffb400;
-            font-size: 18px;
-            letter-spacing: 2px;
-        }
-        
-        .review-content {
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-        
-        .review-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: #666;
-        }
-        
-        .review-platform {
-            display: flex;
-            align-items: center;
-        }
-        
-        .review-platform img {
-            height: 16px;
-            margin-right: 5px;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-            color: #666;
-        }
-        
-        @media (max-width: 768px) {
-            .reviews-container {
-                flex-direction: column;
-            }
-            
-            .review-card {
-                width: 100%;
-                margin-bottom: 20px;
-            }
+    .reviews-section {
+      margin-top: 24px;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .review-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      color: var(--trustpilot-dark);
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 12px;
+      object-fit: cover;
+    }
+
+    .review-user {
+      flex: 1;
+    }
+
+    .review-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--trustpilot-dark);
+    }
+
+    .review-date {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .review-rating {
+      color: var(--trustpilot-green);
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .review-rating .stars {
+      color: var(--trustpilot-green);
+      font-size: 16px;
+      margin-right: 5px;
+    }
+
+    .review-content {
+      line-height: 1.5;
+      color: #333;
+      font-size: 14px;
+    }
+
+    .review-platform {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .review-platform img {
+      height: 16px;
+      margin-right: 5px;
+    }
+
     /* Withdrawals Feed Styles */
 .withdrawals-feed {
   position: fixed;
