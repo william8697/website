@@ -1304,14 +1304,35 @@
 
     <!-- Reviews Section -->
     <div class="section reviews-section">
-      <div class="section-header">
-        <h2 class="section-title">Traders Reviews</h2>
-      </div>
-      <div class="reviews-grid" id="reviewsContainer">
-        <!-- Reviews will be loaded here -->
-      </div>
+  <div class="section-header">
+    <h2 class="section-title">Traders Reviews</h2>
+    <div class="refresh-reviews" id="refreshReviewsBtn">
+      <span class="refresh-icon">⟳</span>
+      <span class="refresh-text">Live Reviews</span>
     </div>
   </div>
+  
+  <div class="reviews-grid" id="reviewsContainer">
+    <!-- Reviews will be loaded here dynamically -->
+    <div class="review-skeleton">
+      <div class="skeleton-avatar"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line" style="width: 80%"></div>
+        <div class="skeleton-line" style="width: 70%"></div>
+        <div class="skeleton-line" style="width: 50%"></div>
+      </div>
+    </div>
+    <!-- Repeat skeleton 3 more times -->
+  </div>
+  
+  <div class="reviews-footer">
+    <div class="trustpilot-badge">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Trustpilot_logo_%282022%29.svg/1200px-Trustpilot_logo_%282022%29.svg.png" alt="Trustpilot">
+      <span>Rated 4.8/5 based on 2,457 trader reviews</span>
+    </div>
+  </div>
+</div>
 
   <!-- Withdrawals Feed -->
 <div class="withdrawals-feed" id="withdrawalsFeed">
@@ -2140,101 +2161,146 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-
-let lastReviewFetch = 0;
-  const REVIEW_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
-  
-  async function loadReviews() {
+ async function loadReviews() {
     try {
-      // Only fetch if cache is empty or 10 minutes have passed
-      const now = Date.now();
-      if (now - lastReviewFetch > REVIEW_REFRESH_INTERVAL) {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) throw new Error('Failed to load reviews');
-        
-        const data = await response.json();
-        if (data.success) {
-          displayReviews(data.data);
-          lastReviewFetch = now;
-        }
-      }
-    } catch (error) {
-      console.error('Error loading reviews:', error);
-      // Fallback to cached reviews if available
-    }
-  }
-  
-  function displayReviews(reviews) {
-    const container = document.getElementById('reviewsContainer');
-    container.innerHTML = '';
-    
-    reviews.forEach(review => {
-      const card = document.createElement('div');
-      card.className = 'review-card';
+      const reviewsContainer = document.getElementById('reviewsContainer');
       
-      // Generate star rating
-      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-      
-      // Format date (e.g., "2 weeks ago")
-      const dateText = formatReviewDate(new Date(review.date));
-      
-      card.innerHTML = `
-        <div class="review-header">
-          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-          <div class="review-user">
-            <div class="review-name">
-              ${review.user.name}
-              ${review.isVerified ? '<span class="verified-badge">Verified</span>' : ''}
-            </div>
-            <div class="review-date">${dateText}</div>
-          </div>
-          <div class="review-rating">
-            <span class="stars">${stars}</span>
-            ${review.rating.toFixed(1)}
+      // Show skeleton loading state
+      reviewsContainer.innerHTML = `
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 70%"></div>
+            <div class="skeleton-line" style="width: 50%"></div>
           </div>
         </div>
-        <div class="review-content">${review.content}</div>
-        <div class="review-platform">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-          ${review.platform}
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 70%"></div>
+            <div class="skeleton-line" style="width: 50%"></div>
+          </div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 70%"></div>
+            <div class="skeleton-line" style="width: 50%"></div>
+          </div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 70%"></div>
+            <div class="skeleton-line" style="width: 50%"></div>
+          </div>
         </div>
       `;
       
-      container.appendChild(card);
+      // Determine screen size for responsive review count
+      const screenWidth = window.innerWidth;
+      const isMobile = screenWidth <= 768;
+      
+      // Add screen size header
+      const headers = {
+        'X-Screen-Size': isMobile ? 'mobile' : 'desktop'
+      };
+      
+      const response = await fetch(`${API_BASE_URL}/reviews`, { headers });
+      if (!response.ok) throw new Error('Failed to load reviews');
+      
+      const data = await response.json();
+      if (!data.success || !data.data) throw new Error('Invalid reviews data');
+      
+      // Render reviews
+      reviewsContainer.innerHTML = data.data.map(review => `
+        <div class="review-card">
+          <div class="review-header">
+            <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+            <div class="review-user">
+              <div class="review-name">${review.user.name}</div>
+              <div class="review-meta">
+                <span>${review.user.country || 'Trader'}</span>
+                <span>•</span>
+                <span>${review.user.occupation || 'Crypto Enthusiast'}</span>
+              </div>
+            </div>
+            <div class="review-rating">
+              <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+              ${review.rating.toFixed(1)}
+            </div>
+          </div>
+          <div class="review-content">${review.content}</div>
+          <div class="review-footer">
+            <div class="review-platform">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Trustpilot_logo_%282022%29.svg/1200px-Trustpilot_logo_%282022%29.svg.png" alt="Trustpilot">
+              <span>${review.platform}</span>
+            </div>
+            <div class="review-verified">
+              ${review.verified ? '✓ Verified' : ''}
+            </div>
+            <div class="review-date">
+              ${formatReviewDate(review.date)}
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (error) {
+      console.error('Error loading reviews:', error);
+      const reviewsContainer = document.getElementById('reviewsContainer');
+      reviewsContainer.innerHTML = `
+        <div class="alert-banner warning">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-content">
+            Failed to load reviews. <a href="#" onclick="loadReviews()" class="alert-link">Try again</a>
+          </div>
+        </div>
+      `;
+    }
+  }
+  
+  // Format review date as "X days ago"
+  function formatReviewDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  
+  // Auto-refresh reviews every 10 minutes
+  function startReviewRefresh() {
+    setInterval(loadReviews, 10 * 60 * 1000); // 10 minutes
+    
+    // Manual refresh button
+    document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
+      loadReviews();
+      // Show refresh animation
+      const icon = document.querySelector('.refresh-icon');
+      icon.style.animation = 'none';
+      void icon.offsetWidth; // Trigger reflow
+      icon.style.animation = 'spin 0.5s linear';
     });
   }
   
-  function formatReviewDate(date) {
-    const now = new Date();
-    const diff = now - date;
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (days < 1) return 'Today';
-    if (days === 1) return 'Yesterday';
-    if (days < 7) return `${days} days ago`;
-    if (days < 30) {
-      const weeks = Math.floor(days / 7);
-      return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
-    }
-    if (days < 365) {
-      const months = Math.floor(days / 30);
-      return `${months} month${months > 1 ? 's' : ''} ago`;
-    }
-    return date.toLocaleDateString();
-  }
-  
-  // Manual refresh button
-  document.getElementById('refreshReviews').addEventListener('click', () => {
-    lastReviewFetch = 0; // Force refresh
+  // Call this when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
     loadReviews();
-    showToast('Reviews refreshed');
+    startReviewRefresh();
   });
-  
-  // Initial load
-  document.addEventListener('DOMContentLoaded', loadReviews);
-  
-  // Auto-refresh every 10 minutes
-  setInterval(loadReviews, REVIEW_REFRESH_INTERVAL);
     
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
