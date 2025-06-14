@@ -14,6 +14,8 @@
       --text-primary: #eaecef;
       --text-secondary: #848e9c;
       --primary-accent: #f0b90b;
+      --trustpilot-green: #00b67a;
+  --trustpilot-dark: #2d2d2d;
       --positive: #0ecb81;
       --negative: #f6465d;
       --border-color: #2b3139;
@@ -486,92 +488,92 @@
     }
 
     /* Reviews Section */
-    .reviews-section {
-      margin-top: 24px;
-    }
+   .reviews-section {
+  margin-top: 24px;
+}
 
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-      padding: 16px;
-    }
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
 
-    @media (max-width: 768px) {
-      .reviews-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+@media (max-width: 768px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
-    .review-card {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      border: 1px solid #e0e0e0;
-      color: var(--trustpilot-dark);
-    }
+.review-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  color: var(--trustpilot-dark);
+}
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-    .review-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      margin-right: 12px;
-      object-fit: cover;
-    }
+.review-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+}
 
-    .review-user {
-      flex: 1;
-    }
+.review-user {
+  flex: 1;
+}
 
-    .review-name {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: var(--trustpilot-dark);
-    }
+.review-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--trustpilot-dark);
+}
 
-    .review-date {
-      color: #666;
-      font-size: 12px;
-    }
+.review-date {
+  color: #666;
+  font-size: 12px;
+}
 
-    .review-rating {
-      color: var(--trustpilot-green);
-      font-weight: 600;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-    }
+.review-rating {
+  color: var(--trustpilot-green);
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
 
-    .review-rating .stars {
-      color: var(--trustpilot-green);
-      font-size: 16px;
-      margin-right: 5px;
-    }
+.review-rating .stars {
+  color: var(--trustpilot-green);
+  font-size: 16px;
+  margin-right: 5px;
+}
 
-    .review-content {
-      line-height: 1.5;
-      color: #333;
-      font-size: 14px;
-    }
+.review-content {
+  line-height: 1.5;
+  color: #333;
+  font-size: 14px;
+}
 
-    .review-platform {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #666;
-    }
+.review-platform {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}
 
-    .review-platform img {
-      height: 16px;
-      margin-right: 5px;
-    }
+.review-platform img {
+  height: 16px;
+  margin-right: 5px;
+}
 
     /* Withdrawals Feed Styles */
 .withdrawals-feed {
@@ -2041,48 +2043,55 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-    async function loadReviews() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
-        if (!response.ok) {
-          throw new Error('Failed to load reviews');
-        }
-        
-        const reviews = await response.json();
-        const container = document.getElementById('reviewsContainer');
-        container.innerHTML = '';
-        
-        // Only show 3 reviews
-        const displayedReviews = reviews.slice(0, 3);
-        
-        displayedReviews.forEach(review => {
-          const card = document.createElement('div');
-          card.className = 'review-card';
-          card.innerHTML = `
-            <div class="review-header">
-              <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
-              <div class="review-user">
-                <div class="review-name">${review.user.name}</div>
-                <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
-              </div>
-              <div class="review-rating">
-                <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                ${review.rating.toFixed(1)}
-              </div>
-            </div>
-            <div class="review-content">${review.content}</div>
-            <div class="review-platform">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
-              Trustpilot
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      } catch (error) {
-        console.error('Error loading reviews:', error);
-        showToast('Failed to load reviews', 'error');
-      }
+    // Add this with your other functions
+async function loadReviews() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/reviews`);
+    if (!response.ok) {
+      throw new Error('Failed to load reviews');
     }
+    
+    const { data: reviews } = await response.json();
+    const container = document.getElementById('reviewsContainer');
+    container.innerHTML = '';
+    
+    reviews.forEach(review => {
+      const card = document.createElement('div');
+      card.className = 'review-card';
+      card.innerHTML = `
+        <div class="review-header">
+          <img src="${review.user.avatar}" alt="${review.user.name}" class="review-avatar">
+          <div class="review-user">
+            <div class="review-name">${review.user.name}</div>
+            <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
+          </div>
+          <div class="review-rating">
+            <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+            ${review.rating.toFixed(1)}
+          </div>
+        </div>
+        <div class="review-content">${review.content}</div>
+        <div class="review-platform">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png" alt="Trustpilot">
+          ${review.platform}
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error('Error loading reviews:', error);
+    showToast('Failed to load reviews', 'error');
+  }
+}
+
+// Call this in your DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', async () => {
+  // ... your existing code ...
+  await loadReviews();
+  
+  // Refresh reviews every hour
+  setInterval(loadReviews, 60 * 60 * 1000);
+});
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
