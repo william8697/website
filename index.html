@@ -2187,173 +2187,154 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
     }
 
     // Load reviews
-   // Reviews functionality
-const REVIEWS_API_URL = 'https://website-backendd-1.onrender.com/api/v1/reviews';
-
-// Platform logo mapping
-const PLATFORM_LOGOS = {
-  'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
-  'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
-  'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
-  'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
-};
-
-// Format date as "Month Day, Year"
-function formatReviewDate(dateString) {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
-}
-
-// Generate star rating display
-function generateStarRating(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+// Check if reviews functionality is already loaded
+if (typeof window.reviewsInitialized === 'undefined') {
+  window.reviewsInitialized = true; // Mark as loaded
   
-  return '★'.repeat(fullStars) + 
-         (hasHalfStar ? '½' : '') + 
-         '☆'.repeat(emptyStars);
-}
-
-// Load reviews from API
-// Reviews functionality
-const REVIEWS_API_URL = 'https://website-backendd-1.onrender.com/api/v1/reviews';
-
-// Platform logo mapping
-const PLATFORM_LOGOS = {
-  'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
-  'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
-  'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
-  'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
-};
-
-// Format date as "Month Day, Year"
-function formatReviewDate(dateString) {
-  const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
-}
-
-// Generate star rating display (matches your platform's style)
-function generateStarRating(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 >= 0.5;
-  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  // Constants with unique names to avoid conflicts
+  const REVIEWS_ENDPOINT_URL = 'https://website-backendd-1.onrender.com/api/v1/reviews';
   
-  return '★'.repeat(fullStars) + 
-         (hasHalfStar ? '½' : '') + 
-         '☆'.repeat(emptyStars);
-}
+  // Platform logo mapping
+  const REVIEW_PLATFORM_LOGOS = {
+    'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
+    'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
+    'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
+    'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
+  };
 
-// Load reviews from API
-async function loadReviews() {
-  const container = document.getElementById('reviewsContainer');
-  
-  try {
-    // Show loading state (3 skeleton cards)
-    container.innerHTML = `
-      <div class="review-skeleton">
-        <div class="skeleton-avatar"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-      <div class="review-skeleton">
-        <div class="skeleton-avatar"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-      <div class="review-skeleton">
-        <div class="skeleton-avatar"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-    `;
+  // Format date as "Month Day, Year"
+  function formatReviewDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  }
+
+  // Generate star rating display
+  function getStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
     
-    const response = await fetch(REVIEWS_API_URL);
+    return '★'.repeat(fullStars) + 
+           (hasHalfStar ? '½' : '') + 
+           '☆'.repeat(emptyStars);
+  }
+
+  // Main function to load and display reviews
+  function loadReviewData() {
+    const container = document.getElementById('reviewsContainer');
     
-    if (!response.ok) {
-      throw new Error(`Failed to load reviews: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (!data.success || !Array.isArray(data.data)) {
-      throw new Error('Invalid reviews data received');
-    }
-    
-    // Clear container
-    container.innerHTML = '';
-    
-    // Add reviews to the page
-    data.data.forEach(review => {
-      const reviewElement = document.createElement('div');
-      reviewElement.className = 'review-card';
-      reviewElement.innerHTML = `
-        <div class="review-header">
-          <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
-               onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
-          <div class="review-user">
-            <div class="review-name">
-              ${review.name}
-              ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
-            </div>
-            <div class="review-date">${formatReviewDate(review.date)}</div>
-          </div>
-          <div class="review-rating">
-            <span class="stars">${generateStarRating(review.rating)}</span>
-            <span>${review.rating.toFixed(1)}</span>
+    try {
+      // Show loading state
+      container.innerHTML = `
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
           </div>
         </div>
-        <div class="review-content">${review.content}</div>
-        <div class="review-platform">
-          <img src="${PLATFORM_LOGOS[review.platform] || PLATFORM_LOGOS['Trustpilot']}" 
-               alt="${review.platform}" 
-               onerror="this.style.display='none'">
-          ${review.platform}
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
         </div>
       `;
-      container.appendChild(reviewElement);
-    });
-    
-  } catch (error) {
-    console.error('Error loading reviews:', error);
-    container.innerHTML = `
-      <div class="review-error" style="grid-column: 1 / -1;">
-        <div style="margin-bottom: 12px; color: var(--text-secondary);">
-          Couldn't load reviews right now
-        </div>
-        <button class="btn btn-outline" onclick="loadReviews()">
-          <span class="refresh-icon">⟳</span> Try Again
-        </button>
-      </div>
-    `;
+      
+      fetch(REVIEWS_ENDPOINT_URL)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data.success || !Array.isArray(data.data)) {
+            throw new Error('Invalid reviews data structure');
+          }
+          
+          container.innerHTML = '';
+          
+          data.data.forEach(review => {
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'review-card';
+            reviewElement.innerHTML = `
+              <div class="review-header">
+                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
+                <div class="review-user">
+                  <div class="review-name">
+                    ${review.name}
+                    ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
+                  </div>
+                  <div class="review-date">${formatReviewDate(review.date)}</div>
+                </div>
+                <div class="review-rating">
+                  <span class="stars">${getStarRating(review.rating)}</span>
+                  <span>${review.rating.toFixed(1)}</span>
+                </div>
+              </div>
+              <div class="review-content">${review.content}</div>
+              <div class="review-platform">
+                <img src="${REVIEW_PLATFORM_LOGOS[review.platform] || REVIEW_PLATFORM_LOGOS['Trustpilot']}" 
+                     alt="${review.platform}" 
+                     onerror="this.style.display='none'">
+                ${review.platform}
+              </div>
+            `;
+            container.appendChild(reviewElement);
+          });
+        })
+        .catch(error => {
+          console.error('Failed to load reviews:', error);
+          container.innerHTML = `
+            <div class="review-error" style="grid-column: 1 / -1;">
+              <div style="margin-bottom: 12px; color: var(--text-secondary);">
+                Couldn't load reviews at this time
+              </div>
+              <button class="btn btn-outline" onclick="window.loadReviewData()">
+                <span class="refresh-icon">⟳</span> Try Again
+              </button>
+            </div>
+          `;
+        });
+    } catch (error) {
+      console.error('Error in review loading function:', error);
+    }
   }
-}
 
-// Initialize reviews when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  loadReviews();
-  
-  // Set up refresh button
-  document.getElementById('refreshReviewsBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    loadReviews();
+  // Initialize only after DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    // Make function available globally
+    window.loadReviewData = loadReviewData;
+    
+    // Initial load
+    loadReviewData();
+    
+    // Set up refresh button
+    const refreshBtn = document.getElementById('refreshReviewsBtn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        loadReviewData();
+      });
+    }
+    
+    // Auto-refresh every 10 minutes
+    setInterval(loadReviewData, 10 * 60 * 1000);
   });
-  
-  // Auto-refresh every 10 minutes (matches backend rotation)
-  setInterval(loadReviews, 10 * 60 * 1000);
-});
-
-// Make function available globally for retry button
-window.loadReviews = loadReviews;
+}
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
