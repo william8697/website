@@ -488,58 +488,64 @@
     }
 
     /* Reviews Section */
+/* Reviews Section - Matched to your platform style */
 .reviews-section {
   background-color: var(--secondary-bg);
   border-radius: 8px;
-  padding: 30px;
-  margin: 40px 0;
+  padding: 24px;
+  margin: 32px 0;
   border: 1px solid var(--border-color);
 }
 
-.section-header {
+.reviews-section .section-header {
+  margin-bottom: 24px;
   text-align: center;
-  margin-bottom: 30px;
 }
 
-.section-subtitle {
-  color: var(--text-secondary);
-  margin-top: 8px;
+.reviews-section .section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.reviews-section .section-subtitle {
   font-size: 14px;
+  color: var(--text-secondary);
 }
 
 .reviews-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  margin: 0 auto;
+  gap: 16px;
 }
 
 .review-card {
   background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 18px;
   border: 1px solid var(--border-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-accent);
+  transform: translateY(-2px);
 }
 
 .review-header {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .review-avatar {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 15px;
-  border: 2px solid var(--primary-accent);
+  margin-right: 12px;
+  border: 2px solid rgba(240, 185, 11, 0.3);
 }
 
 .review-user {
@@ -547,9 +553,12 @@
 }
 
 .review-name {
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-weight: 500;
   color: var(--text-primary);
+  font-size: 15px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
 }
 
 .review-date {
@@ -564,15 +573,22 @@
 
 .stars {
   color: #FFD700;
-  letter-spacing: 2px;
-  margin-right: 5px;
+  letter-spacing: 1px;
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+.review-rating span:last-child {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .review-content {
-  line-height: 1.6;
   color: var(--text-primary);
-  margin-bottom: 15px;
   font-size: 14px;
+  line-height: 1.5;
+  margin: 12px 0;
 }
 
 .review-platform {
@@ -580,12 +596,13 @@
   align-items: center;
   font-size: 12px;
   color: var(--text-secondary);
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .review-platform img {
-  height: 16px;
+  height: 14px;
   margin-right: 6px;
+  opacity: 0.8;
 }
 
 .verified-badge {
@@ -597,65 +614,84 @@
   border-radius: 4px;
   font-size: 11px;
   margin-left: 8px;
+  font-weight: 500;
 }
 
 .verified-badge:before {
   content: "✓";
   margin-right: 3px;
+  font-size: 10px;
 }
 
 .reviews-footer {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 24px;
 }
 
 #refreshReviewsBtn {
   display: inline-flex;
   align-items: center;
   padding: 8px 16px;
+  font-size: 14px;
 }
 
 .refresh-icon {
   margin-right: 6px;
   transition: transform 0.3s ease;
+  font-size: 16px;
 }
 
 #refreshReviewsBtn:hover .refresh-icon {
   transform: rotate(180deg);
 }
 
-/* Skeleton Loading */
+/* Loading Skeletons */
 .review-skeleton {
   background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 6px;
+  padding: 18px;
   border: 1px solid var(--border-color);
   display: flex;
 }
 
 .skeleton-avatar {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background-color: var(--border-color);
-  margin-right: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin-right: 12px;
 }
 
 .skeleton-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .skeleton-line {
   height: 12px;
-  background-color: var(--border-color);
+  background-color: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton-line:last-child {
+  width: 70%;
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 0.3; }
+}
+
+/* Error State */
+.review-error {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px;
+  color: var(--text-primary);
 }
 
 /* Responsive */
@@ -1298,27 +1334,28 @@
       </div>
     </div>
 
-    <!-- Reviews Section -->
-    <section class="reviews-section">
+    want reviews to appear -->
+<section class="reviews-section">
   <div class="section-header">
-    <h2 class="section-title">What Our Traders Say</h2>
-    <div class="section-subtitle">Trusted by thousands of crypto enthusiasts worldwide</div>
+    <h2 class="section-title">User Testimonials</h2>
+    <div class="section-subtitle">Trusted by traders worldwide</div>
   </div>
+  
   <div class="reviews-container" id="reviewsContainer">
-    <!-- Reviews will be loaded here dynamically -->
+    <!-- Loading skeleton will appear here initially -->
     <div class="review-skeleton">
       <div class="skeleton-avatar"></div>
       <div class="skeleton-content">
-        <div class="skeleton-line" style="width: 70%"></div>
-        <div class="skeleton-line" style="width: 100%"></div>
-        <div class="skeleton-line" style="width: 90%"></div>
-        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
       </div>
     </div>
   </div>
+  
   <div class="reviews-footer">
     <button class="btn btn-outline" id="refreshReviewsBtn">
-      <i class="refresh-icon">↻</i> Refresh Reviews
+      <span class="refresh-icon">⟳</span> Refresh Reviews
     </button>
   </div>
 </section>
@@ -2179,36 +2216,63 @@ function generateStarRating(rating) {
 }
 
 // Load reviews from API
+// Reviews functionality
+const REVIEWS_API_URL = 'https://website-backendd-1.onrender.com/api/v1/reviews';
+
+// Platform logo mapping
+const PLATFORM_LOGOS = {
+  'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
+  'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
+  'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
+  'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
+};
+
+// Format date as "Month Day, Year"
+function formatReviewDate(dateString) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// Generate star rating display (matches your platform's style)
+function generateStarRating(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  
+  return '★'.repeat(fullStars) + 
+         (hasHalfStar ? '½' : '') + 
+         '☆'.repeat(emptyStars);
+}
+
+// Load reviews from API
 async function loadReviews() {
   const container = document.getElementById('reviewsContainer');
   
   try {
-    // Show loading state
+    // Show loading state (3 skeleton cards)
     container.innerHTML = `
       <div class="review-skeleton">
         <div class="skeleton-avatar"></div>
         <div class="skeleton-content">
-          <div class="skeleton-line" style="width: 70%"></div>
-          <div class="skeleton-line" style="width: 100%"></div>
-          <div class="skeleton-line" style="width: 90%"></div>
-          <div class="skeleton-line" style="width: 60%"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
         </div>
       </div>
       <div class="review-skeleton">
         <div class="skeleton-avatar"></div>
         <div class="skeleton-content">
-          <div class="skeleton-line" style="width: 80%"></div>
-          <div class="skeleton-line" style="width: 90%"></div>
-          <div class="skeleton-line" style="width: 70%"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
         </div>
       </div>
       <div class="review-skeleton">
         <div class="skeleton-avatar"></div>
         <div class="skeleton-content">
-          <div class="skeleton-line" style="width: 60%"></div>
-          <div class="skeleton-line" style="width: 100%"></div>
-          <div class="skeleton-line" style="width: 80%"></div>
-          <div class="skeleton-line" style="width: 50%"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
         </div>
       </div>
     `;
@@ -2216,13 +2280,13 @@ async function loadReviews() {
     const response = await fetch(REVIEWS_API_URL);
     
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`Failed to load reviews: ${response.status}`);
     }
     
     const data = await response.json();
     
     if (!data.success || !Array.isArray(data.data)) {
-      throw new Error('Invalid reviews data');
+      throw new Error('Invalid reviews data received');
     }
     
     // Clear container
@@ -2245,14 +2309,14 @@ async function loadReviews() {
           </div>
           <div class="review-rating">
             <span class="stars">${generateStarRating(review.rating)}</span>
-            ${review.rating.toFixed(1)}
+            <span>${review.rating.toFixed(1)}</span>
           </div>
         </div>
         <div class="review-content">${review.content}</div>
         <div class="review-platform">
           <img src="${PLATFORM_LOGOS[review.platform] || PLATFORM_LOGOS['Trustpilot']}" 
                alt="${review.platform}" 
-               onerror="this.src='${PLATFORM_LOGOS['Trustpilot']}'">
+               onerror="this.style.display='none'">
           ${review.platform}
         </div>
       `;
@@ -2260,14 +2324,14 @@ async function loadReviews() {
     });
     
   } catch (error) {
-    console.error('Failed to load reviews:', error);
+    console.error('Error loading reviews:', error);
     container.innerHTML = `
-      <div class="review-error" style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-        <div style="font-size: 18px; margin-bottom: 10px; color: var(--text-primary);">
-          Couldn't load reviews at this time
+      <div class="review-error" style="grid-column: 1 / -1;">
+        <div style="margin-bottom: 12px; color: var(--text-secondary);">
+          Couldn't load reviews right now
         </div>
         <button class="btn btn-outline" onclick="loadReviews()">
-          Try Again
+          <span class="refresh-icon">⟳</span> Try Again
         </button>
       </div>
     `;
@@ -2279,13 +2343,17 @@ document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
   
   // Set up refresh button
-  document.getElementById('refreshReviewsBtn').addEventListener('click', () => {
+  document.getElementById('refreshReviewsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
     loadReviews();
   });
   
-  // Auto-refresh every 10 minutes (same as backend rotation)
+  // Auto-refresh every 10 minutes (matches backend rotation)
   setInterval(loadReviews, 10 * 60 * 1000);
 });
+
+// Make function available globally for retry button
+window.loadReviews = loadReviews;
 // Update your existing loadWithdrawals function with this:
 // Withdrawals Feed Functions
 let withdrawalsFeedVisible = true;
