@@ -2159,14 +2159,20 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
       });
     }
 
-class AnimatedCounter {
+ const FRONTEND_STATS_CONFIG = {
+    BASE_TRADERS: 8000000,
+    BASE_VOLUME: 500000000, // $500M
+    TOTAL_ASSETS: 127
+  };
+
+  class AnimatedCounter {
     constructor(element, initialValue = 0) {
       this.element = element;
       this.currentValue = initialValue;
       this.targetValue = initialValue;
       this.animationFrame = null;
-      this.duration = 1000; // Animation duration in ms
-      this.easing = t => t * (2 - t); // Easing function
+      this.duration = 1000;
+      this.easing = t => t * (2 - t);
     }
     
     setValue(newValue) {
@@ -2174,7 +2180,8 @@ class AnimatedCounter {
       
       this.targetValue = newValue;
       if (!this.animationFrame) {
-        this.animate();
+        this.startTime = null;
+        this.animationFrame = requestAnimationFrame(this.animate.bind(this));
       }
     }
     
@@ -2195,7 +2202,6 @@ class AnimatedCounter {
         this.animationFrame = requestAnimationFrame(this.animate.bind(this));
       } else {
         this.currentValue = this.targetValue;
-        this.startTime = null;
         this.animationFrame = null;
       }
     }
@@ -2216,14 +2222,14 @@ class AnimatedCounter {
     const volumeElement = document.getElementById('dailyVolume');
     const assetsElement = document.getElementById('totalAssets');
     
-    // Format initial values
-    tradersElement.textContent = STATS_CONFIG.BASE_TRADERS.toLocaleString('en-US');
-    volumeElement.textContent = '$' + STATS_CONFIG.BASE_VOLUME.toLocaleString('en-US');
-    assetsElement.textContent = STATS_CONFIG.TOTAL_ASSETS;
+    // Set initial values from frontend config
+    tradersElement.textContent = FRONTEND_STATS_CONFIG.BASE_TRADERS.toLocaleString('en-US');
+    volumeElement.textContent = '$' + FRONTEND_STATS_CONFIG.BASE_VOLUME.toLocaleString('en-US');
+    assetsElement.textContent = FRONTEND_STATS_CONFIG.TOTAL_ASSETS;
     
-    // Create animated counters
-    traderCounter = new AnimatedCounter(tradersElement, STATS_CONFIG.BASE_TRADERS);
-    volumeCounter = new AnimatedCounter(volumeElement, STATS_CONFIG.BASE_VOLUME);
+    // Create animated counters with initial values
+    traderCounter = new AnimatedCounter(tradersElement, FRONTEND_STATS_CONFIG.BASE_TRADERS);
+    volumeCounter = new AnimatedCounter(volumeElement, FRONTEND_STATS_CONFIG.BASE_VOLUME);
     
     // Start polling for updates
     pollStats();
@@ -2243,16 +2249,28 @@ class AnimatedCounter {
       })
       .catch(error => {
         console.error('Error fetching stats:', error);
+        // Retry with exponential backoff
+        const retryDelay = Math.min(30000, Math.pow(2, 5) * 1000); // Max 30 seconds
+        setTimeout(pollStats, retryDelay);
       })
       .finally(() => {
         // Random poll interval between 1-20 seconds
-        const nextPoll = Math.floor(Math.random() * 19000) + 1000;
-        setTimeout(pollStats, nextPoll);
+        if (!document.hidden) { // Only poll when page is visible
+          const nextPoll = Math.floor(Math.random() * 19000) + 1000;
+          setTimeout(pollStats, nextPoll);
+        }
       });
   }
   
   // Initialize when DOM is loaded
   document.addEventListener('DOMContentLoaded', initLiveStats);
+  
+  // Resume polling when page becomes visible
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      pollStats();
+    }
+  });
 
          
     // Update gainers list
