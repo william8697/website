@@ -2125,6 +2125,104 @@ document.addEventListener('DOMContentLoaded', loadPlatformLogo);
       });
     }
 
+
+// Global stats updater
+let liveStats = {
+  totalTraders: 8000000,
+  dailyVolume: 0,
+  totalAssets: 100
+};
+
+// Format large numbers
+function formatNumber(num) {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  }
+  return num.toString();
+}
+
+// Format currency
+function formatCurrency(amount) {
+  if (amount >= 1000000000) {
+    return '$' + (amount / 1000000000).toFixed(1) + 'B';
+  }
+  if (amount >= 1000000) {
+    return '$' + (amount / 1000000).toFixed(1) + 'M';
+  }
+  if (amount >= 1000) {
+    return '$' + (amount / 1000).toFixed(1) + 'K';
+  }
+  return '$' + amount.toFixed(0);
+}
+
+// Update stats display
+function updateStatsDisplay() {
+  document.getElementById('totalTraders').textContent = formatNumber(liveStats.totalTraders);
+  document.getElementById('globalVolume').textContent = formatCurrency(liveStats.dailyVolume);
+  document.getElementById('totalAssets').textContent = liveStats.totalAssets;
+}
+
+// Fetch live stats from backend
+async function fetchLiveStats() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/stats/live`);
+    if (!response.ok) throw new Error('Failed to fetch stats');
+    
+    const data = await response.json();
+    if (data.success) {
+      liveStats = {
+        totalTraders: data.data.totalTraders,
+        dailyVolume: data.data.dailyVolume,
+        totalAssets: data.data.totalAssets
+      };
+      updateStatsDisplay();
+    }
+  } catch (error) {
+    console.error('Error fetching live stats:', error);
+    // Fallback to local increment if API fails
+    incrementStatsLocally();
+  }
+}
+
+// Local increment fallback (uses same algorithm as backend)
+function incrementStatsLocally() {
+  // Generate random increments
+  const traderIncrement = getRandomIncrement(11, 7999);
+  const volumeIncrement = getRandomIncrement(511, 45281);
+  
+  // Update stats
+  liveStats.totalTraders += traderIncrement;
+  liveStats.dailyVolume += volumeIncrement;
+  
+  updateStatsDisplay();
+}
+
+// Helper function for random increments
+function getRandomIncrement(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Initialize stats updater
+function initStatsUpdater() {
+  // First load
+  fetchLiveStats();
+  
+  // Update from server every 5 seconds
+  setInterval(fetchLiveStats, 5000);
+  
+  // Smooth local updates between server calls
+  setInterval(incrementStatsLocally, 1000);
+}
+
+// Call this in your DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', () => {
+  initStatsUpdater();
+  // ... rest of your existing code
+}); 
+         
     // Update gainers list
     function updateGainersList() {
       const gainersList = document.getElementById('gainersList');
