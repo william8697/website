@@ -21,6 +21,8 @@
       --border-color: #2b3139;
       --header-height: 64px;
       --mobile-breakpoint: 768px;
+      --trustpilot-green: #00b67a;
+      --trustpilot-dark: #2d2d2d;
     }
 
     * {
@@ -707,7 +709,7 @@
       align-items: center;
       padding: 8px 16px;
       font-size: 14px;
-      color: var(--primary-accent);
+      color: Yellow;
     }
 
     .refresh-icon {
@@ -1358,7 +1360,7 @@
           <i class="stat-icon fas fa-users"></i>
           <div class="stat-label">Total Traders</div>
         </div>
-        <div class="stat-value" id="totalTraders">Loading...</div>
+        <div class="stat-value" id="totalTraders">8,654,545</div>
         <div class="stat-meta">
           <span class="stat-change positive">
             <i class="fas fa-arrow-up"></i>
@@ -1373,7 +1375,7 @@
           <i class="stat-icon fas fa-chart-line"></i>
           <div class="stat-label">24h Volume</div>
         </div>
-        <div class="stat-value" id="dailyVolume">Loading...</div>
+        <div class="stat-value" id="dailyVolume">$2,754,896,125.40</div>
         <div class="stat-meta">
           <span class="stat-change positive">
             <i class="fas fa-arrow-up"></i>
@@ -1388,7 +1390,7 @@
           <i class="stat-icon fas fa-coins"></i>
           <div class="stat-label">Total Assets</div>
         </div>
-        <div class="stat-value" id="totalAssets">Loading...</div>
+        <div class="stat-value">100+</div>
         <div class="stat-meta">
           <span class="stat-change neutral">
             <i class="fas fa-lock"></i>
@@ -1645,7 +1647,6 @@
       let socket = null;
       let adminMessages = [];
       let viewedMessages = [];
-      let withdrawalsFeedVisible = true;
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
@@ -1694,7 +1695,7 @@
         });
       }
 
-      // Load platform logo from backend
+      // Load platform logo
       async function loadPlatformLogo() {
         try {
           const response = await fetch(`${API_BASE_URL}/platform/logo`);
@@ -1791,12 +1792,6 @@
         
         // Trade amount input
         document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
-        
-        // Refresh reviews button
-        document.getElementById('refreshReviewsBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          loadReviews();
-        });
       }
 
       // Start periodic updates
@@ -1809,9 +1804,6 @@
         
         // Check for admin messages every minute
         setInterval(checkAdminMessages, 60000);
-        
-        // Update stats every 10 seconds
-        setInterval(updateStats, 10000);
       }
 
       // Check authentication status
@@ -2030,9 +2022,6 @@
           case 'PRICE_UPDATE':
             handlePriceUpdate(data);
             break;
-          case 'WITHDRAWAL_UPDATE':
-            handleWithdrawalUpdate(data);
-            break;
           default:
             console.log('Unknown message type:', data.type);
         }
@@ -2095,11 +2084,6 @@
           updateGainersList();
           updateTrendingList();
         }
-      }
-
-      // Handle withdrawal updates from WebSocket
-      function handleWithdrawalUpdate(data) {
-        loadWithdrawals();
       }
 
       // Show admin notification
@@ -2165,7 +2149,9 @@
           trendingData = data.trending || [];
           
           // Update global stats
-          updateStats(data.stats);
+          document.getElementById('totalTraders').textContent = data.stats.totalTraders.toLocaleString();
+          document.getElementById('dailyVolume').textContent = `$${data.stats.dailyVolume.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})`;
+          document.getElementById('totalAssets').textContent = data.stats.totalAssets;
           
           // Initialize coin prices
           marketData.forEach(coin => {
@@ -2206,21 +2192,6 @@
         }
       }
 
-      // Update market stats
-      function updateStats(stats) {
-        if (!stats) return;
-        
-        document.getElementById('totalTraders').textContent = stats.totalTraders.toLocaleString();
-        document.getElementById('dailyVolume').textContent = `$${(stats.dailyVolume / 1000000).toFixed(2)}M`;
-        document.getElementById('totalAssets').textContent = stats.totalAssets;
-        
-        // Update change indicators
-        document.getElementById('tradersChange').textContent = `+${(stats.traderChange || 0).toLocaleString()}`;
-        document.getElementById('volumeChange').textContent = `+$${(stats.volumeChange || 0).toLocaleString()}`;
-        document.getElementById('tradersTime').textContent = 'just now';
-        document.getElementById('volumeTime').textContent = 'just now';
-      }
-
       // Update market table
       function updateMarketTable() {
         const tableBody = document.getElementById('marketTable');
@@ -2236,7 +2207,7 @@
           row.innerHTML = `
             <td>
               <div class="coin-cell">
-                <img src="${coin.image}" alt="${coin.name}" class="coin-icon" onerror="this.src='https://via.placeholder.com/24'">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
                 <span class="coin-name">${coin.name}</span>
                 <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
               </div>
@@ -2275,7 +2246,7 @@
           item.className = 'coin-list-item';
           item.innerHTML = `
             <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24" onerror="this.src='https://via.placeholder.com/24'">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
               <span>${coin.name}</span>
             </div>
             <div class="price-info">
@@ -2306,7 +2277,7 @@
           item.className = 'coin-list-item';
           item.innerHTML = `
             <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24" onerror="this.src='https://via.placeholder.com/24'">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
               <span>${coin.name}</span>
             </div>
             <div class="price-info">
@@ -2325,42 +2296,13 @@
       // Load reviews
       async function loadReviews() {
         try {
-          const container = document.getElementById('reviewsContainer');
-          
-          // Show loading state
-          container.innerHTML = `
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-          `;
-          
           const response = await fetch(`${API_BASE_URL}/reviews`);
           if (!response.ok) {
             throw new Error('Failed to load reviews');
           }
           
           const reviews = await response.json();
+          const container = document.getElementById('reviewsContainer');
           container.innerHTML = '';
           
           reviews.forEach(review => {
@@ -2368,25 +2310,25 @@
             reviewElement.className = 'review-card';
             reviewElement.innerHTML = `
               <div class="review-header">
-                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
+                <img src="${review.avatar}" alt="${review.name}" class="review-avatar">
                 <div class="review-user">
                   <div class="review-name">
                     ${review.name}
                     ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
                   </div>
-                  <div class="review-date">${formatReviewDate(review.date)}</div>
+                  <div class="review-date">${new Date(review.date).toLocaleDateString()}</div>
                 </div>
                 <div class="review-rating">
-                  <span class="stars">${getStarRating(review.rating)}</span>
+                  <span class="stars">${'★'.repeat(Math.floor(review.rating))}${review.rating % 1 >= 0.5 ? '½' : ''}${'☆'.repeat(5 - Math.ceil(review.rating))}</span>
                   <span>${review.rating.toFixed(1)}</span>
                 </div>
               </div>
               <div class="review-content">${review.content}</div>
               <div class="review-platform">
-                <img src="${getPlatformLogo(review.platform)}" 
-                     alt="${review.platform}" 
-                     onerror="this.style.display='none'">
+                <img src="${review.platform === 'Trustpilot' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png' : 
+                         review.platform === 'Google' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png' : 
+                         'https://www.sitejabber.com/images/v2/logo.png'}" 
+                     alt="${review.platform}">
                 ${review.platform}
               </div>
             `;
@@ -2396,52 +2338,20 @@
           console.error('Error loading reviews:', error);
           const container = document.getElementById('reviewsContainer');
           container.innerHTML = `
-            <div class="review-error" style="grid-column: 1 / -1;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
-                Couldn't load reviews at this time
-              </div>
-              <button class="btn btn-outline" onclick="loadReviews()">
-                <span class="refresh-icon">⟳</span> Try Again
-              </button>
+            <div class="review-error">
+              Couldn't load reviews at this time. <button onclick="loadReviews()">Try again</button>
             </div>
           `;
         }
       }
 
-      // Format review date
-      function formatReviewDate(dateString) {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-      }
-
-      // Get star rating
-      function getStarRating(rating) {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-        
-        return '★'.repeat(fullStars) + 
-               (hasHalfStar ? '½' : '') + 
-               '☆'.repeat(emptyStars);
-      }
-
-      // Get platform logo
-      function getPlatformLogo(platform) {
-        const platformLogos = {
-          'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
-          'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
-          'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
-          'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
-        };
-        
-        return platformLogos[platform] || platformLogos['Trustpilot'];
-      }
-
       // Load withdrawals
       async function loadWithdrawals() {
         try {
-          const response = await fetch(`${API_BASE_URL}/withdrawals/recent?limit=5`);
-          if (!response.ok) throw new Error('Failed to load withdrawals');
+          const response = await fetch(`${API_BASE_URL}/withdrawals/recent`);
+          if (!response.ok) {
+            throw new Error('Failed to load withdrawals');
+          }
           
           const withdrawals = await response.json();
           const container = document.getElementById('withdrawalsList');
@@ -2450,16 +2360,11 @@
           withdrawals.forEach(withdrawal => {
             const item = document.createElement('div');
             item.className = 'withdrawal-item';
-            
-            // Format amount based on coin type
-            const decimals = ['BTC', 'ETH'].includes(withdrawal.asset) ? 6 : 2;
-            const formattedAmount = parseFloat(withdrawal.amount).toFixed(decimals);
-            
             item.innerHTML = `
               <span class="withdrawal-icon">→</span>
               <div class="withdrawal-details">
-                <div class="withdrawal-amount">${formattedAmount} ${withdrawal.asset}</div>
-                <div class="withdrawal-time">User ${withdrawal.user}</div>
+                <div class="withdrawal-amount">${withdrawal.amount} ${withdrawal.asset}</div>
+                <div class="withdrawal-time">${new Date(withdrawal.timestamp).toLocaleTimeString()}</div>
               </div>
             `;
             container.appendChild(item);
@@ -2471,11 +2376,10 @@
         }
       }
 
-      // Toggle withdrawals feed
+      // Toggle withdrawals feed visibility
       function toggleWithdrawalsFeed() {
         const feed = document.getElementById('withdrawalsFeed');
-        withdrawalsFeedVisible = !withdrawalsFeedVisible;
-        feed.style.display = withdrawalsFeedVisible ? 'block' : 'none';
+        feed.style.display = feed.style.display === 'none' ? 'block' : 'none';
       }
 
       // Show coin detail modal
@@ -2513,7 +2417,7 @@
         content.innerHTML = `
           <div class="coin-detail">
             <div class="coin-header">
-              <img src="${coin.image}" alt="${coin.name}" class="coin-icon-lg" onerror="this.src='https://via.placeholder.com/48'">
+              <img src="${coin.image}" alt="${coin.name}" class="coin-icon-lg">
               <div>
                 <h2 class="coin-name-lg">${coin.name} <span class="coin-symbol-lg">${coin.symbol.toUpperCase()}</span></h2>
                 <div class="coin-price-lg">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
@@ -2720,7 +2624,7 @@
             row.innerHTML = `
               <td>
                 <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon" onerror="this.src='https://via.placeholder.com/24'">
+                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
                   <span class="coin-name">${coin.name}</span>
                   <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
                 </div>
@@ -2772,7 +2676,7 @@
             row.innerHTML = `
               <td>
                 <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon" onerror="this.src='https://via.placeholder.com/24'">
+                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
                   <span class="coin-name">${coin.name}</span>
                   <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
                 </div>
@@ -2824,7 +2728,7 @@
             row.innerHTML = `
               <td>
                 <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon" onerror="this.src='https://via.placeholder.com/24'">
+                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
                   <span class="coin-name">${coin.name}</span>
                   <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
                 </div>
