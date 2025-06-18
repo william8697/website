@@ -571,223 +571,168 @@
       }
     }
 
-    /* Reviews Section */
-    .reviews-section {
-      background-color: var(--secondary-bg);
-      border-radius: 8px;
-      padding: 24px;
-      margin: 32px 0;
-      border: 1px solid var(--border-color);
-    }
+    /* News Section Styles */
+.news-section {
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 32px 0;
+  border: 1px solid var(--border-color);
+}
 
-    .reviews-section .section-header {
-      margin-bottom: 24px;
-      text-align: center;
-    }
+.news-section .section-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
 
-    .reviews-section .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
+.news-section .section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
 
-    .reviews-section .section-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
+.news-section .section-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
 
-    .reviews-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
+.news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
 
-    .review-card {
-      background-color: var(--card-bg);
-      border-radius: 6px;
-      padding: 18px;
-      border: 1px solid var(--border-color);
-      transition: all 0.2s ease;
-    }
+.news-card {
+  background-color: var(--card-bg);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
 
-    .review-card:hover {
-      border-color: var(--primary-accent);
-      transform: translateY(-2px);
-    }
+.news-card:hover {
+  border-color: var(--primary-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+.news-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background-color: var(--primary-bg);
+}
 
-    .review-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 12px;
-      border: 2px solid rgba(240, 185, 11, 0.3);
-    }
+.news-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-    .review-user {
-      flex: 1;
-    }
+.news-source {
+  font-size: 12px;
+  color: var(--primary-accent);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
-    .review-name {
-      font-weight: 500;
-      color: var(--text-primary);
-      font-size: 15px;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-    }
+.news-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
 
-    .review-date {
-      color: var(--text-secondary);
-      font-size: 12px;
-    }
+.news-excerpt {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  flex: 1;
+}
 
-    .review-rating {
-      display: flex;
-      align-items: center;
-    }
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
 
-    .stars {
-      color: #FFD700;
-      letter-spacing: 1px;
-      margin-right: 6px;
-      font-size: 14px;
-    }
+.news-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
 
-    .review-rating span:last-child {
-      color: var(--text-primary);
-      font-size: 13px;
-      font-weight: 500;
-    }
+.news-update-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
 
-    .review-content {
-      color: var(--text-primary);
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 12px 0;
-    }
+/* Loading Skeletons */
+.news-skeleton {
+  background-color: var(--card-bg);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-    .review-platform {
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 8px;
-    }
+.skeleton-image {
+  width: 100%;
+  height: 160px;
+  background-color: rgba(255, 255, 255, 0.05);
+}
 
-    .review-platform img {
-      height: 14px;
-      margin-right: 6px;
-      opacity: 0.8;
-    }
+.skeleton-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-    .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      background-color: rgba(0, 182, 122, 0.1);
-      color: #00b67a;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      margin-left: 8px;
-      font-weight: 500;
-    }
+.skeleton-line {
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
 
-    .verified-badge:before {
-      content: "✓";
-      margin-right: 3px;
-      font-size: 10px;
-    }
+.skeleton-line:first-child {
+  width: 60%;
+}
 
-    .reviews-footer {
-      text-align: center;
-      margin-top: 24px;
-    }
+.skeleton-line:nth-child(2) {
+  width: 90%;
+}
 
-    #refreshReviewsBtn {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 16px;
-      font-size: 14px;
-      color: var(--primary-accent);
-    }
+.skeleton-line:last-child {
+  width: 70%;
+  margin-top: auto;
+  margin-bottom: 0;
+  height: 10px;
+}
 
-    .refresh-icon {
-      margin-right: 6px;
-      transition: transform 0.3s ease;
-      font-size: 16px;
-    }
-
-    #refreshReviewsBtn:hover .refresh-icon {
-      transform: rotate(180deg);
-    }
-
-    /* Loading Skeletons */
-    .review-skeleton {
-      background-color: var(--card-bg);
-      border-radius: 6px;
-      padding: 18px;
-      border: 1px solid var(--border-color);
-      display: flex;
-    }
-
-    .skeleton-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.05);
-      margin-right: 12px;
-    }
-
-    .skeleton-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .skeleton-line {
-      height: 12px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-      margin-bottom: 8px;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-
-    .skeleton-line:last-child {
-      width: 70%;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 0.3; }
-    }
-
-    /* Error State */
-    .review-error {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 30px;
-      color: var(--text-primary);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .reviews-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .reviews-section {
-        padding: 20px;
-      }
-    }
+/* Responsive */
+@media (max-width: 768px) {
+  .news-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .news-section {
+    padding: 20px;
+  }
+}
 
     /* Withdrawals Feed Styles */
     .withdrawals-feed {
