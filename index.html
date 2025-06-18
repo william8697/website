@@ -570,225 +570,230 @@
         height: 300px;
       }
     }
+/* News Section Styles */
+.news-section {
+  background-color: var(--secondary-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 32px 0;
+  border: 1px solid var(--border-color);
+}
 
-    /* Reviews Section */
-    .reviews-section {
-      background-color: var(--secondary-bg);
-      border-radius: 8px;
-      padding: 24px;
-      margin: 32px 0;
-      border: 1px solid var(--border-color);
-    }
+.news-section .section-header {
+  margin-bottom: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-    .reviews-section .section-header {
-      margin-bottom: 24px;
-      text-align: center;
-    }
+.news-section .section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
 
-    .reviews-section .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
+.news-section .section-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
 
-    .reviews-section .section-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
+.news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
 
-    .reviews-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-    }
+.news-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
 
-    .review-card {
-      background-color: var(--card-bg);
-      border-radius: 6px;
-      padding: 18px;
-      border: 1px solid var(--border-color);
-      transition: all 0.2s ease;
-    }
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary-accent);
+}
 
-    .review-card:hover {
-      border-color: var(--primary-accent);
-      transform: translateY(-2px);
-    }
+.news-image-container {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
+}
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+.news-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
 
-    .review-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 12px;
-      border: 2px solid rgba(240, 185, 11, 0.3);
-    }
+.news-card:hover .news-image {
+  transform: scale(1.05);
+}
 
-    .review-user {
-      flex: 1;
-    }
+.news-content {
+  padding: 16px;
+}
 
-    .review-name {
-      font-weight: 500;
-      color: var(--text-primary);
-      font-size: 15px;
-      margin-bottom: 2px;
-      display: flex;
-      align-items: center;
-    }
+.news-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-    .review-date {
-      color: var(--text-secondary);
-      font-size: 12px;
-    }
+.news-excerpt {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-    .review-rating {
-      display: flex;
-      align-items: center;
-    }
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
 
-    .stars {
-      color: #FFD700;
-      letter-spacing: 1px;
-      margin-right: 6px;
-      font-size: 14px;
-    }
+.news-source {
+  background-color: rgba(240, 185, 11, 0.1);
+  color: var(--primary-accent);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
 
-    .review-rating span:last-child {
-      color: var(--text-primary);
-      font-size: 13px;
-      font-weight: 500;
-    }
+.news-date {
+  margin-left: auto;
+}
 
-    .review-content {
-      color: var(--text-primary);
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 12px 0;
-    }
+.news-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
 
-    .review-platform {
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-top: 8px;
-    }
+.news-sources {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
 
-    .review-platform img {
-      height: 14px;
-      margin-right: 6px;
-      opacity: 0.8;
-    }
+.news-sources img {
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
 
-    .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      background-color: rgba(0, 182, 122, 0.1);
-      color: #00b67a;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 11px;
-      margin-left: 8px;
-      font-weight: 500;
-    }
+.news-sources img:hover {
+  opacity: 1;
+}
 
-    .verified-badge:before {
-      content: "✓";
-      margin-right: 3px;
-      font-size: 10px;
-    }
+/* News Detail Modal */
+.news-detail-header {
+  margin-bottom: 20px;
+}
 
-    .reviews-footer {
-      text-align: center;
-      margin-top: 24px;
-    }
+.news-detail-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
 
-    #refreshReviewsBtn {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 16px;
-      font-size: 14px;
-      color: var(--primary-accent);
-    }
+.news-detail-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
 
-    .refresh-icon {
-      margin-right: 6px;
-      transition: transform 0.3s ease;
-      font-size: 16px;
-    }
+.news-detail-content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
 
-    #refreshReviewsBtn:hover .refresh-icon {
-      transform: rotate(180deg);
-    }
+.news-detail-content p {
+  margin-bottom: 16px;
+}
 
-    /* Loading Skeletons */
-    .review-skeleton {
-      background-color: var(--card-bg);
-      border-radius: 6px;
-      padding: 18px;
-      border: 1px solid var(--border-color);
-      display: flex;
-    }
+.news-detail-footer {
+  display: flex;
+  justify-content: flex-end;
+}
 
-    .skeleton-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.05);
-      margin-right: 12px;
-    }
+/* Loading Skeletons */
+.news-skeleton {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
 
-    .skeleton-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+.skeleton-image {
+  height: 180px;
+  background-color: rgba(255, 255, 255, 0.05);
+  animation: pulse 1.5s infinite ease-in-out;
+}
 
-    .skeleton-line {
-      height: 12px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-      margin-bottom: 8px;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
+.skeleton-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-    .skeleton-line:last-child {
-      width: 70%;
-    }
+.skeleton-line {
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 0.3; }
-    }
+/* Responsive */
+@media (max-width: 768px) {
+  .news-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .news-section {
+    padding: 20px;
+  }
+  
+  .news-detail-title {
+    font-size: 20px;
+  }
+  
+  .news-detail-content {
+    font-size: 14px;
+  }
+}
 
-    /* Error State */
-    .review-error {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 30px;
-      color: var(--text-primary);
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .reviews-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .reviews-section {
-        padding: 20px;
-      }
-    }
-
+    
     /* Withdrawals Feed Styles */
     .withdrawals-feed {
       position: fixed;
@@ -2470,123 +2475,146 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       // Load reviews
-      async function loadReviews() {
-        const container = document.getElementById('reviewsContainer');
-        
-        try {
-          // Show loading state
-          container.innerHTML = `
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-          `;
-          
-          const response = await fetch(`${API_BASE_URL}/reviews`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid reviews data structure');
-          }
-          
-          container.innerHTML = '';
-          
-          data.data.forEach(review => {
-            const reviewElement = document.createElement('div');
-            reviewElement.className = 'review-card';
-            reviewElement.innerHTML = `
-              <div class="review-header">
-                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
-                <div class="review-user">
-                  <div class="review-name">
-                    ${review.name}
-                    ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
-                  </div>
-                  <div class="review-date">${formatReviewDate(review.date)}</div>
-                </div>
-                <div class="review-rating">
-                  <span class="stars">${getStarRating(review.rating)}</span>
-                  <span>${review.rating.toFixed(1)}</span>
-                </div>
-              </div>
-              <div class="review-content">${review.content}</div>
-              <div class="review-platform">
-                <img src="${getPlatformLogo(review.platform)}" 
-                     alt="${review.platform}" 
-                     onerror="this.style.display='none'">
-                ${review.platform}
-              </div>
-            `;
-            container.appendChild(reviewElement);
-          });
-        } catch (error) {
-          console.error('Failed to load reviews:', error);
-          container.innerHTML = `
-            <div class="review-error" style="grid-column: 1 / -1;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
-                Couldn't load reviews at this time
-              </div>
-              <button class="btn btn-outline" onclick="loadReviews()">
-                <span class="refresh-icon">⟳</span> Try Again
-              </button>
-            </div>
-          `;
-        }
-      }
+   // News Functions
+async function loadNews() {
+  const container = document.getElementById('newsContainer');
+  
+  try {
+    // Show loading state
+    container.innerHTML = `
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+          <div class="skeleton-line" style="width: 40%"></div>
+        </div>
+      </div>
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+          <div class="skeleton-line" style="width: 40%"></div>
+        </div>
+      </div>
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line" style="width: 80%"></div>
+          <div class="skeleton-line" style="width: 60%"></div>
+          <div class="skeleton-line" style="width: 40%"></div>
+        </div>
+      </div>
+    `;
+    
+    const response = await fetch(`${API_BASE_URL}/news`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    if (!data.success || !Array.isArray(data.data.articles)) {
+      throw new Error('Invalid news data structure');
+    }
+    
+    renderNews(data.data.articles);
+    
+  } catch (error) {
+    console.error('Failed to load news:', error);
+    container.innerHTML = `
+      <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+        <div style="margin-bottom: 12px; color: var(--text-secondary);">
+          Couldn't load news at this time
+        </div>
+        <button class="btn btn-outline" onclick="loadNews()">
+          <span class="refresh-icon">⟳</span> Try Again
+        </button>
+      </div>
+    `;
+  }
+}
 
-      // Format date as "Month Day, Year"
-      function formatReviewDate(dateString) {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-      }
+function renderNews(articles) {
+  const container = document.getElementById('newsContainer');
+  container.innerHTML = '';
+  
+  articles.forEach(article => {
+    const newsCard = document.createElement('div');
+    newsCard.className = 'news-card';
+    newsCard.innerHTML = `
+      <div class="news-image-container">
+        <img src="${article.imageUrl || 'https://via.placeholder.com/300x180?text=Crypto+News'}" 
+             alt="${article.title}" 
+             class="news-image"
+             onerror="this.src='https://via.placeholder.com/300x180?text=Crypto+News'">
+      </div>
+      <div class="news-content">
+        <h3 class="news-title">${article.title}</h3>
+        <p class="news-excerpt">${article.description || 'No description available'}</p>
+        <div class="news-meta">
+          <span class="news-source">${article.sourceName || article.source}</span>
+          <span class="news-date">${formatNewsDate(article.publishedAt)}</span>
+        </div>
+      </div>
+    `;
+    
+    newsCard.addEventListener('click', () => showNewsDetail(article));
+    container.appendChild(newsCard);
+  });
+}
 
-      // Generate star rating display
-      function getStarRating(rating) {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-        
-        return '★'.repeat(fullStars) + 
-               (hasHalfStar ? '½' : '') + 
-               '☆'.repeat(emptyStars);
-      }
+function formatNewsDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
 
-      // Get platform logo
-      function getPlatformLogo(platform) {
-        const platformLogos = {
-          'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
-          'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
-          'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
-          'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
-        };
-        
-        return platformLogos[platform] || platformLogos['Trustpilot'];
-      }
+function showNewsDetail(article) {
+  const modal = document.getElementById('newsModal');
+  const title = document.getElementById('newsModalTitle');
+  const image = document.getElementById('newsDetailImage');
+  const content = document.getElementById('newsDetailContent');
+  const source = document.getElementById('newsSource');
+  const date = document.getElementById('newsDate');
+  const author = document.getElementById('newsAuthor');
+  const originalLink = document.getElementById('newsOriginalLink');
+  
+  title.textContent = article.sourceName || article.source;
+  image.src = article.imageUrl || 'https://via.placeholder.com/800x400?text=Crypto+News';
+  image.onerror = () => {
+    image.src = 'https://via.placeholder.com/800x400?text=Crypto+News';
+  };
+  
+  content.innerHTML = `
+    <p><strong>${article.title}</strong></p>
+    <p>${article.description || 'No detailed content available.'}</p>
+  `;
+  
+  source.textContent = article.sourceName || article.source;
+  date.textContent = formatNewsDate(article.publishedAt);
+  author.textContent = article.author ? `By ${article.author}` : '';
+  author.style.display = article.author ? 'inline-block' : 'none';
+  
+  originalLink.href = article.url;
+  
+  modal.style.display = 'block';
+}
 
+// Initialize news on page load
+document.addEventListener('DOMContentLoaded', () => {
+  loadNews();
+  
+  // Set up refresh button
+  document.getElementById('refreshNewsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    loadNews();
+  });
+});
       // Load withdrawals
       async function loadWithdrawals() {
         try {
