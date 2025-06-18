@@ -2444,111 +2444,238 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Load reviews
-      async function loadReviews() {
-        const container = document.getElementById('reviewsContainer');
-        
-        try {
-          // Show loading state
-          container.innerHTML = `
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-          `;
-          
-          const response = await fetch(`${API_BASE_URL}/reviews`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid reviews data structure');
-          }
-          
-          container.innerHTML = '';
-          
-          data.data.forEach(review => {
-            const reviewElement = document.createElement('div');
-            reviewElement.className = 'review-card';
-            reviewElement.innerHTML = `
-              <div class="review-header">
-                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
-                <div class="review-user">
-                  <div class="review-name">
-                    ${review.name}
-                    ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
-                  </div>
-                  <div class="review-date">${formatReviewDate(review.date)}</div>
-                </div>
-                <div class="review-rating">
-                  <span class="stars">${getStarRating(review.rating)}</span>
-                  <span>${review.rating.toFixed(1)}</span>
-                </div>
-              </div>
-              <div class="review-content">${review.content}</div>
-              <div class="review-platform">
-                <img src="${getPlatformLogo(review.platform)}" 
-                     alt="${review.platform}" 
-                     onerror="this.style.display='none'">
-                ${review.platform}
-              </div>
-            `;
-            container.appendChild(reviewElement);
-          });
-        } catch (error) {
-          console.error('Failed to load reviews:', error);
-          container.innerHTML = `
-            <div class="review-error" style="grid-column: 1 / -1;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
-                Couldn't load reviews at this time
-              </div>
-              <button class="btn btn-outline" onclick="loadReviews()">
-                <span class="refresh-icon">⟳</span> Try Again
-              </button>
-            </div>
-          `;
-        }
-      }
+  // News API Configuration
+const NEWS_API_KEY = '2ae97f0c0a8045b48ca8dabcfa592533';
+const CRYPTOCOMPARE_KEY = '5d87784487440f9f5fde0fae0f8e36c5b59033162e7f72a3044b58b8ca7b9702';
+let currentNewsCategory = 'all';
+let newsData = [];
 
-      // Format date as "Month Day, Year"
-      function formatReviewDate(dateString) {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-      }
+// Initialize news section
+async function initNewsSection() {
+  await loadNews();
+  setupNewsFilters();
+  
+  // Set up periodic news updates (every hour)
+  setInterval(loadNews, 3600000);
+  
+  // Refresh button event listener
+  document.getElementById('refreshNewsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    loadNews();
+  });
+}
 
-      // Generate star rating display
-      function getStarRating(rating) {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-        
-        return '★'.repeat(fullStars) + 
-               (hasHalfStar ? '½' : '') + 
-               '☆'.repeat(emptyStars);
-      }
+// Load news data
+async function loadNews() {
+  const container = document.getElementById('newsContainer');
+  
+  try {
+    // Show loading state
+    container.innerHTML = `
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+      <div class="news-skeleton">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </div>
+    `;
+    
+    // Fetch from both APIs in parallel
+    const [newsApiData, cryptoCompareData] = await Promise.all([
+      fetchNewsFromNewsAPI(),
+      fetchNewsFromCryptoCompare()
+    ]);
+    
+    // Combine and process data
+    newsData = [...newsApiData, ...cryptoCompareData]
+      .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+      .slice(0, 12); // Limit to 12 most recent articles
+    
+    updateNewsDisplay();
+    
+  } catch (error) {
+    console.error('Failed to load news:', error);
+    container.innerHTML = `
+      <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+        <div style="margin-bottom: 12px; color: var(--text-secondary);">
+          Couldn't load news at this time
+        </div>
+        <button class="btn btn-outline" onclick="loadNews()">
+          <span class="refresh-icon">⟳</span> Try Again
+        </button>
+      </div>
+    `;
+  }
+}
+
+// Fetch from NewsAPI
+async function fetchNewsFromNewsAPI() {
+  try {
+    const response = await fetch(`https://newsapi.org/v2/everything?q=cryptocurrency+OR+blockchain&language=en&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`);
+    if (!response.ok) throw new Error('NewsAPI request failed');
+    
+    const data = await response.json();
+    return data.articles.map(article => ({
+      title: article.title,
+      description: article.description,
+      url: article.url,
+      imageUrl: article.urlToImage || getFallbackImage(article.source.name),
+      source: article.source.name,
+      publishedAt: article.publishedAt,
+      category: determineCategory(article.title, article.description)
+    }));
+  } catch (error) {
+    console.error('NewsAPI error:', error);
+    return [];
+  }
+}
+
+// Fetch from CryptoCompare
+async function fetchNewsFromCryptoCompare() {
+  try {
+    const response = await fetch(`https://min-api.cryptocompare.com/data/v2/news/?lang=EN&api_key=${CRYPTOCOMPARE_KEY}`);
+    if (!response.ok) throw new Error('CryptoCompare request failed');
+    
+    const data = await response.json();
+    return data.Data.map(item => ({
+      title: item.title,
+      description: item.body,
+      url: item.url,
+      imageUrl: item.imageurl || getFallbackImage(item.source),
+      source: item.source,
+      publishedAt: new Date(item.published_on * 1000).toISOString(),
+      category: determineCategory(item.title, item.body, item.categories)
+    }));
+  } catch (error) {
+    console.error('CryptoCompare error:', error);
+    return [];
+  }
+}
+
+// Determine news category
+function determineCategory(title, description, categories = '') {
+  const lowerTitle = title.toLowerCase();
+  const lowerDesc = description.toLowerCase();
+  const lowerCategories = categories.toLowerCase();
+  
+  if (lowerTitle.includes('bitcoin') || lowerDesc.includes('bitcoin') || lowerCategories.includes('bitcoin')) {
+    return 'bitcoin';
+  }
+  if (lowerTitle.includes('ethereum') || lowerDesc.includes('ethereum') || lowerCategories.includes('ethereum')) {
+    return 'ethereum';
+  }
+  if (lowerTitle.includes('regulation') || lowerDesc.includes('regulation') || lowerTitle.includes('legal') || lowerDesc.includes('legal')) {
+    return 'regulation';
+  }
+  if (lowerTitle.includes('market') || lowerDesc.includes('market') || lowerTitle.includes('price') || lowerDesc.includes('price')) {
+    return 'market';
+  }
+  return 'general';
+}
+
+// Get fallback image for news items
+function getFallbackImage(source) {
+  const sources = {
+    'coindesk': 'https://www.coindesk.com/resizer/7iWX4iG5YwB6XpYH4Jb3jZ7XZ3M=/1200x628/center/middle/cloudfront-us-east-1.images.arcpublishing.com/coindesk/ZJZZK5B2ZNF25LYQHMUTBTOMLU.png',
+    'cointelegraph': 'https://cointelegraph.com/assets/img/ct-meta-img.jpg',
+    'decrypt': 'https://decrypt.co/wp-content/uploads/2021/10/Decrypt-Logo-Large-1-1160x650.png',
+    'theblock': 'https://www.tbstat.com/wp/uploads/2021/07/20210707_The-Block_Logo_Dark.png',
+    'default': 'https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'
+  };
+  
+  const sourceKey = Object.keys(sources).find(key => 
+    source.toLowerCase().includes(key)
+  );
+  
+  return sources[sourceKey] || sources.default;
+}
+
+// Update news display based on current category
+function updateNewsDisplay() {
+  const container = document.getElementById('newsContainer');
+  
+  // Filter news by current category
+  const filteredNews = currentNewsCategory === 'all' 
+    ? newsData 
+    : newsData.filter(item => item.category === currentNewsCategory);
+  
+  if (filteredNews.length === 0) {
+    container.innerHTML = `
+      <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+        No news found for this category. Try refreshing or selecting a different category.
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = filteredNews.map(news => `
+    <div class="news-card">
+      <img src="${news.imageUrl}" alt="${news.title}" class="news-image" onerror="this.src='https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80'">
+      <div class="news-content">
+        <h3 class="news-title">${news.title}</h3>
+        <p class="news-description">${news.description.substring(0, 120)}${news.description.length > 120 ? '...' : ''}</p>
+        <div class="news-meta">
+          <span class="news-source">${news.source}</span>
+          <span class="news-date">${formatNewsDate(news.publishedAt)}</span>
+        </div>
+      </div>
+      <a href="${news.url}" target="_blank" rel="noopener noreferrer" class="news-link"></a>
+    </div>
+  `).join('');
+}
+
+// Format news date
+function formatNewsDate(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
+  
+  if (diffHours < 1) {
+    return 'Just now';
+  }
+  if (diffHours < 24) {
+    return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+  }
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// Set up news filters
+function setupNewsFilters() {
+  const filterButtons = document.querySelectorAll('.news-filters .btn');
+  
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // Update active state
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      // Update category and refresh display
+      currentNewsCategory = button.dataset.category;
+      updateNewsDisplay();
+    });
+  });
+}
+
+// Initialize news section when DOM is loaded
+document.addEventListener('DOMContentLoaded', initNewsSection);
 
       // Get platform logo
       function getPlatformLogo(platform) {
