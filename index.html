@@ -1514,52 +1514,53 @@
       </div>
     </div>
 
-    <!-- Market Stats Section -->
-<div class="market-stats-grid">
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-users"></i>
-      <div class="stat-label">Total Traders</div>
-    </div>
-    <div class="stat-value" id="totalTraders">Loading...</div>
-    <div class="stat-meta">
-      <span class="stat-change positive">
-        <i class="fas fa-arrow-up"></i>
-        <span id="tradersChange">0</span>
-      </span>
-      <span class="stat-time" id="tradersTime">updating now</span>
-    </div>
-  </div>
+    <!-- Stats Section -->
+    <div class="market-stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-users"></i>
+          <div class="stat-label">Total Traders</div>
+        </div>
+        <div class="stat-value" id="totalTraders">8,654,545</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="tradersChange">0</span>
+          </span>
+          <span class="stat-time" id="tradersTime">updating now</span>
+        </div>
+      </div>
 
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-chart-line"></i>
-      <div class="stat-label">24h Volume</div>
-    </div>
-    <div class="stat-value" id="dailyVolume">Loading...</div>
-    <div class="stat-meta">
-      <span class="stat-change positive">
-        <i class="fas fa-arrow-up"></i>
-        <span id="volumeChange">$0</span>
-      </span>
-      <span class="stat-time" id="volumeTime">updating now</span>
-    </div>
-  </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-chart-line"></i>
+          <div class="stat-label">24h Volume</div>
+        </div>
+        <div class="stat-value" id="dailyVolume">$2,754,896,125.40</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="volumeChange">$0</span>
+          </span>
+          <span class="stat-time" id="volumeTime">updating now</span>
+        </div>
+      </div>
 
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-coins"></i>
-      <div class="stat-label">Total Assets</div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-coins"></i>
+          <div class="stat-label">Total Assets</div>
+        </div>
+        <div class="stat-value">100+</div>
+        <div class="stat-meta">
+          <span class="stat-change neutral">
+            <i class="fas fa-lock"></i>
+            <span>fixed</span>
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="stat-value" id="totalAssets">Loading...</div>
-    <div class="stat-meta">
-      <span class="stat-change neutral">
-        <i class="fas fa-lock"></i>
-        <span>fixed</span>
-      </span>
-    </div>
-  </div>
-</div>
+
     <!-- Gainers & Trending Section -->
     <div class="gainers-trending">
       <div class="section gainers">
@@ -2466,28 +2467,66 @@
         });
       }
 
-// Market Stats Dashboard - Plain JavaScript Version
-function MarketStatsDashboard() {
-  // Initialize state
-  this.stats = {
+    import React, { useState, useEffect } from 'react';
+
+const MarketStatsDashboard = () => {
+  const [stats, setStats] = useState({
     totalTraders: 0,
     dailyVolume: 0,
     totalAssets: 0,
     isLoading: true,
     error: null
-  };
-  
-  // DOM elements
-  this.statsContainer = document.createElement('div');
-  this.statsContainer.className = 'market-stats-grid';
-  
+  });
+
+  // Fetch market stats from backend
+  useEffect(() => {
+    const fetchMarketStats = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/market-stats`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to fetch market stats');
+        }
+
+        setStats({
+          totalTraders: data.data.totalTraders,
+          dailyVolume: data.data.dailyVolume,
+          totalAssets: data.data.totalAssets,
+          isLoading: false,
+          error: null
+        });
+      } catch (error) {
+        console.error('Error fetching market stats:', error);
+        setStats(prev => ({
+          ...prev,
+          isLoading: false,
+          error: error.message
+        }));
+      }
+    };
+
+    fetchMarketStats();
+
+    // Set up auto-refresh every 30 seconds
+    const intervalId = setInterval(fetchMarketStats, 30000);
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   // Format numbers with proper commas and decimals
-  this.formatNumber = function(num) {
+  const formatNumber = (num) => {
     return new Intl.NumberFormat('en-US').format(num);
   };
-  
+
   // Format currency with proper symbols
-  this.formatCurrency = function(amount) {
+  const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
@@ -2495,177 +2534,101 @@ function MarketStatsDashboard() {
       maximumFractionDigits: 2
     }).format(amount);
   };
-  
-  // Render loading state
-  this.renderLoading = function() {
-    this.statsContainer.innerHTML = '';
-    
-    for (let i = 1; i <= 3; i++) {
-      const statCard = document.createElement('div');
-      statCard.className = 'stat-card';
-      
-      const iconClass = i === 1 ? 'fa-users' : i === 2 ? 'fa-chart-line' : 'fa-coins';
-      const labelText = i === 1 ? 'Total Traders' : i === 2 ? '24h Volume' : 'Total Assets';
-      
-      statCard.innerHTML = `
-        <div class="stat-header">
-          <i class="stat-icon fas ${iconClass}"></i>
-          <div class="stat-label">${labelText}</div>
+
+  if (stats.isLoading) {
+    return (
+      <div className="market-stats-grid">
+        {[1, 2, 3].map((item) => (
+          <div key={item} className="stat-card">
+            <div className="stat-header">
+              <i className={`stat-icon fas ${item === 1 ? 'fa-users' : item === 2 ? 'fa-chart-line' : 'fa-coins'}`}></i>
+              <div className="stat-label">
+                {item === 1 ? 'Total Traders' : item === 2 ? '24h Volume' : 'Total Assets'}
+              </div>
+            </div>
+            <div className="stat-value">--</div>
+            <div className="stat-meta">
+              <span className="stat-change neutral">
+                <i className="fas fa-sync-alt fa-spin"></i>
+                <span>Loading</span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (stats.error) {
+    return (
+      <div className="market-stats-grid">
+        <div className="stat-card" style={{ gridColumn: '1 / -1', textAlign: 'center' }}>
+          <div className="stat-value" style={{ color: 'var(--negative)' }}>
+            Error Loading Data
+          </div>
+          <button 
+            className="btn btn-outline" 
+            onClick={() => setStats(prev => ({ ...prev, isLoading: true, error: null }))}
+            style={{ marginTop: '10px' }}
+          >
+            <i className="fas fa-sync-alt"></i> Retry
+          </button>
         </div>
-        <div class="stat-value">--</div>
-        <div class="stat-meta">
-          <span class="stat-change neutral">
-            <i class="fas fa-sync-alt fa-spin"></i>
-            <span>Loading</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="market-stats-grid">
+      {/* Total Traders Card */}
+      <div className="stat-card">
+        <div className="stat-header">
+          <i className="stat-icon fas fa-users"></i>
+          <div className="stat-label">Total Traders</div>
+        </div>
+        <div className="stat-value">{formatNumber(stats.totalTraders)}</div>
+        <div className="stat-meta">
+          <span className="stat-change positive">
+            <i className="fas fa-arrow-up"></i>
+            <span>Live</span>
+          </span>
+          <span className="stat-time">updating now</span>
+        </div>
+      </div>
+
+      {/* 24h Volume Card */}
+      <div className="stat-card">
+        <div className="stat-header">
+          <i className="stat-icon fas fa-chart-line"></i>
+          <div className="stat-label">24h Volume</div>
+        </div>
+        <div className="stat-value">{formatCurrency(stats.dailyVolume)}</div>
+        <div className="stat-meta">
+          <span className="stat-change positive">
+            <i className="fas fa-arrow-up"></i>
+            <span>Live</span>
+          </span>
+          <span className="stat-time">updating now</span>
+        </div>
+      </div>
+
+      {/* Total Assets Card */}
+      <div className="stat-card">
+        <div className="stat-header">
+          <i className="stat-icon fas fa-coins"></i>
+          <div className="stat-label">Total Assets</div>
+        </div>
+        <div className="stat-value">{stats.totalAssets}+</div>
+        <div className="stat-meta">
+          <span className="stat-change neutral">
+            <i className="fas fa-lock"></i>
+            <span>fixed</span>
           </span>
         </div>
-      `;
-      
-      this.statsContainer.appendChild(statCard);
-    }
-  };
-  
-  // Render error state
-  this.renderError = function() {
-    this.statsContainer.innerHTML = `
-      <div class="stat-card" style="grid-column: 1 / -1; text-align: center;">
-        <div class="stat-value" style="color: var(--negative);">
-          Error Loading Data
-        </div>
-        <button 
-          class="btn btn-outline" 
-          onclick="marketStatsDashboard.fetchMarketStats()"
-          style="margin-top: 10px;"
-        >
-          <i class="fas fa-sync-alt"></i> Retry
-        </button>
       </div>
-    `;
-  };
-  
-  // Render stats
-  this.renderStats = function() {
-    this.statsContainer.innerHTML = '';
-    
-    // Total Traders Card
-    const tradersCard = document.createElement('div');
-    tradersCard.className = 'stat-card';
-    tradersCard.innerHTML = `
-      <div class="stat-header">
-        <i class="stat-icon fas fa-users"></i>
-        <div class="stat-label">Total Traders</div>
-      </div>
-      <div class="stat-value">${this.formatNumber(this.stats.totalTraders)}</div>
-      <div class="stat-meta">
-        <span class="stat-change positive">
-          <i class="fas fa-arrow-up"></i>
-          <span>Live</span>
-        </span>
-        <span class="stat-time">updating now</span>
-      </div>
-    `;
-    this.statsContainer.appendChild(tradersCard);
-    
-    // 24h Volume Card
-    const volumeCard = document.createElement('div');
-    volumeCard.className = 'stat-card';
-    volumeCard.innerHTML = `
-      <div class="stat-header">
-        <i class="stat-icon fas fa-chart-line"></i>
-        <div class="stat-label">24h Volume</div>
-      </div>
-      <div class="stat-value">${this.formatCurrency(this.stats.dailyVolume)}</div>
-      <div class="stat-meta">
-        <span class="stat-change positive">
-          <i class="fas fa-arrow-up"></i>
-          <span>Live</span>
-        </span>
-        <span class="stat-time">updating now</span>
-      </div>
-    `;
-    this.statsContainer.appendChild(volumeCard);
-    
-    // Total Assets Card
-    const assetsCard = document.createElement('div');
-    assetsCard.className = 'stat-card';
-    assetsCard.innerHTML = `
-      <div class="stat-header">
-        <i class="stat-icon fas fa-coins"></i>
-        <div class="stat-label">Total Assets</div>
-      </div>
-      <div class="stat-value">${this.stats.totalAssets}+</div>
-      <div class="stat-meta">
-        <span class="stat-change neutral">
-          <i class="fas fa-lock"></i>
-          <span>fixed</span>
-        </span>
-      </div>
-    `;
-    this.statsContainer.appendChild(assetsCard);
-  };
-  
-  // Fetch market stats from backend
-  this.fetchMarketStats = async function() {
-    try {
-      this.stats.isLoading = true;
-      this.stats.error = null;
-      this.renderLoading();
-      
-      const response = await fetch(`${API_BASE_URL}/market-stats`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch market stats');
-      }
-
-      this.stats = {
-        totalTraders: data.data.totalTraders,
-        dailyVolume: data.data.dailyVolume,
-        totalAssets: data.data.totalAssets,
-        isLoading: false,
-        error: null
-      };
-      
-      this.renderStats();
-    } catch (error) {
-      console.error('Error fetching market stats:', error);
-      this.stats.isLoading = false;
-      this.stats.error = error.message;
-      this.renderError();
-    }
-  };
-  
-  // Initialize
-  this.init = function() {
-    this.fetchMarketStats();
-    
-    // Set up auto-refresh every 30 seconds
-    this.intervalId = setInterval(() => this.fetchMarketStats(), 30000);
-    
-    // Return the container element
-    return this.statsContainer;
-  };
-}
-
-// Initialize and add to DOM
-document.addEventListener('DOMContentLoaded', () => {
-  const marketStatsDashboard = new MarketStatsDashboard();
-  const statsContainer = marketStatsDashboard.init();
-  
-  // Find where to insert the stats - you may need to adjust this selector
-  const statsSection = document.querySelector('.market-stats-grid');
-  if (statsSection) {
-    statsSection.replaceWith(statsContainer);
-  }
-  
-  // Make the instance available globally if needed
-  window.marketStatsDashboard = marketStatsDashboard;
-});
+    </div>
+  );
+};
 
 export default MarketStatsDashboard;
       // Update gainers list
@@ -3505,4 +3468,4 @@ function showNewsDetail(article) {
       };
     </script>
 </body>
-</html>  
+</html>
