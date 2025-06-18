@@ -2419,111 +2419,157 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Load reviews
-      async function loadReviews() {
-        const container = document.getElementById('reviewsContainer');
-        
-        try {
-          // Show loading state
-          container.innerHTML = `
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-            <div class="review-skeleton">
-              <div class="skeleton-avatar"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-                <div class="skeleton-line"></div>
-              </div>
-            </div>
-          `;
-          
-          const response = await fetch(`${API_BASE_URL}/reviews`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid reviews data structure');
-          }
-          
-          container.innerHTML = '';
-          
-          data.data.forEach(review => {
-            const reviewElement = document.createElement('div');
-            reviewElement.className = 'review-card';
-            reviewElement.innerHTML = `
-              <div class="review-header">
-                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
-                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
-                <div class="review-user">
-                  <div class="review-name">
-                    ${review.name}
-                    ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
-                  </div>
-                  <div class="review-date">${formatReviewDate(review.date)}</div>
-                </div>
-                <div class="review-rating">
-                  <span class="stars">${getStarRating(review.rating)}</span>
-                  <span>${review.rating.toFixed(1)}</span>
-                </div>
-              </div>
-              <div class="review-content">${review.content}</div>
-              <div class="review-platform">
-                <img src="${getPlatformLogo(review.platform)}" 
-                     alt="${review.platform}" 
-                     onerror="this.style.display='none'">
-                ${review.platform}
-              </div>
-            `;
-            container.appendChild(reviewElement);
-          });
-        } catch (error) {
-          console.error('Failed to load reviews:', error);
-          container.innerHTML = `
-            <div class="review-error" style="grid-column: 1 / -1;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
-                Couldn't load reviews at this time
-              </div>
-              <button class="btn btn-outline" onclick="loadReviews()">
-                <span class="refresh-icon">⟳</span> Try Again
-              </button>
-            </div>
-          `;
-        }
-      }
+      // News System
+let currentNewsCategory = 'all';
 
-      // Format date as "Month Day, Year"
-      function formatReviewDate(dateString) {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('en-US', options);
-      }
+async function loadNews(category = 'all') {
+  try {
+    const container = document.getElementById('newsContainer');
+    
+    // Show loading state
+    container.innerHTML = `
+      <div class="news-skeleton">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+      <div class="news-skeleton">
+        <div class="skeleton-header"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+        <div class="skeleton-footer"></div>
+      </div>
+    `;
+    
+    const response = await fetch(`${API_BASE_URL}/news?category=${category}`);
+    if (!response.ok) throw new Error('Failed to fetch news');
+    
+    const { data } = await response.json();
+    
+    // Clear container
+    container.innerHTML = '';
+    
+    // Render news cards
+    data.forEach(newsItem => {
+      const card = document.createElement('div');
+      card.className = 'news-card';
+      card.innerHTML = `
+        <img src="${newsItem.imageUrl}" alt="${newsItem.title}" class="news-image" onerror="this.src='https://via.placeholder.com/600x400?text=Crypto+News'">
+        <div class="news-content">
+          <h3 class="news-title">${newsItem.title}</h3>
+          <p class="news-description">${newsItem.description}</p>
+        </div>
+        <div class="news-footer">
+          <span class="news-source">${newsItem.source}</span>
+          <span class="news-date">${formatNewsDate(newsItem.date)}</span>
+        </div>
+      `;
+      
+      card.addEventListener('click', () => showNewsDetail(newsItem));
+      container.appendChild(card);
+    });
+    
+    currentNewsCategory = category;
+    updateActiveCategory();
+  } catch (error) {
+    console.error('Error loading news:', error);
+    const container = document.getElementById('newsContainer');
+    container.innerHTML = `
+      <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 20px;">
+        <p style="margin-bottom: 12px; color: var(--text-secondary);">
+          Couldn't load news at this time. Please try again later.
+        </p>
+        <button class="btn btn-outline" onclick="loadNews('${currentNewsCategory}')">
+          <i class="fas fa-sync-alt"></i> Retry
+        </button>
+      </div>
+    `;
+  }
+}
 
-      // Generate star rating display
-      function getStarRating(rating) {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 >= 0.5;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-        
-        return '★'.repeat(fullStars) + 
-               (hasHalfStar ? '½' : '') + 
-               '☆'.repeat(emptyStars);
-      }
+function formatNewsDate(dateString) {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date);
+}
+
+function updateActiveCategory() {
+  document.querySelectorAll('.news-categories .category').forEach(cat => {
+    if (cat.dataset.category === currentNewsCategory) {
+      cat.classList.add('active');
+    } else {
+      cat.classList.remove('active');
+    }
+  });
+}
+
+async function showNewsDetail(newsItem) {
+  const modal = document.getElementById('newsModal');
+  const title = document.getElementById('newsModalTitle');
+  const source = document.getElementById('newsSource');
+  const date = document.getElementById('newsDate');
+  const content = document.getElementById('newsContent');
+  const readMore = document.getElementById('newsReadMore');
+  
+  // Set basic info
+  title.textContent = newsItem.title;
+  source.textContent = newsItem.source;
+  date.textContent = formatNewsDate(newsItem.date);
+  readMore.href = newsItem.url;
+  
+  // Set content - in a real app you might fetch full content here
+  content.innerHTML = `
+    <img src="${newsItem.imageUrl}" alt="${newsItem.title}" onerror="this.src='https://via.placeholder.com/800x400?text=Crypto+News'">
+    <p>${newsItem.content || newsItem.description}</p>
+  `;
+  
+  // Show modal
+  modal.style.display = 'block';
+  
+  // Close modal when clicking outside
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  };
+  
+  // Close button
+  document.querySelector('.news-modal .close-modal').onclick = function() {
+    modal.style.display = 'none';
+  };
+}
+
+// Initialize news system
+function setupNewsSystem() {
+  // Load initial news
+  loadNews();
+  
+  // Category click handlers
+  document.querySelectorAll('.news-categories .category').forEach(cat => {
+    cat.addEventListener('click', () => {
+      loadNews(cat.dataset.category);
+    });
+  });
+  
+  // Refresh button
+  document.getElementById('refreshNewsBtn').addEventListener('click', () => {
+    loadNews(currentNewsCategory);
+  });
+}
+
+// Add this to your DOMContentLoaded event listener:
+// setupNewsSystem();
 
       // Get platform logo
       function getPlatformLogo(platform) {
