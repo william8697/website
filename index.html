@@ -1396,32 +1396,32 @@
       </div>
     </div>
 
-    <!-- Reviews Section -->
-    <section class="reviews-section">
-      <div class="section-header">
-        <h2 class="section-title">What Our Traders Say</h2>
-        <div class="section-subtitle">Trusted by thousands of crypto enthusiasts worldwide</div>
+  <!-- Replace the entire reviews-section div with this: -->
+<section class="news-section">
+  <div class="section-header">
+    <h2 class="section-title">Latest Crypto News</h2>
+    <div class="section-subtitle">Stay updated with professional market analysis</div>
+  </div>
+  
+  <div class="news-container" id="newsContainer">
+    <!-- Loading skeleton -->
+    <div class="news-skeleton">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
       </div>
-      
-      <div class="reviews-container" id="reviewsContainer">
-        <!-- Loading skeleton will appear here initially -->
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="reviews-footer">
-        <button class="btn btn-outline" id="refreshReviewsBtn">
-          <span class="refresh-icon">⟳</span> Refresh Reviews
-        </button>
-      </div>
-    </section>
-
+    </div>
+  </div>
+  
+  <div class="news-footer">
+    <button class="btn btn-outline" id="refreshNewsBtn">
+      <span class="refresh-icon">⟳</span> Refresh News
+    </button>
+    <div class="news-update-time" id="newsUpdateTime"></div>
+  </div>
+</section>
     <!-- Withdrawals Feed -->
     <div class="withdrawals-feed" id="withdrawalsFeed">
       <div class="withdrawals-header">
