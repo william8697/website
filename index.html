@@ -1452,30 +1452,80 @@
     </div>
 
     <!-- Reviews Section -->
-    <section class="reviews-section">
-      <div class="section-header">
-        <h2 class="section-title">What Our Traders Say</h2>
-        <div class="section-subtitle">Trusted by thousands of crypto enthusiasts worldwide</div>
+    <!-- Crypto News Section -->
+<section class="news-section">
+  <div class="section-header">
+    <h2 class="section-title">Latest Crypto News</h2>
+    <div class="section-subtitle">Stay updated with the most relevant cryptocurrency market news</div>
+    <button class="btn btn-outline" id="refreshNewsBtn">
+      <span class="refresh-icon">⟳</span> Refresh News
+    </button>
+  </div>
+  
+  <div class="news-container" id="newsContainer">
+    <!-- Loading skeleton will appear here initially -->
+    <div class="news-skeleton">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line" style="width: 80%"></div>
+        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line" style="width: 40%"></div>
       </div>
-      
-      <div class="reviews-container" id="reviewsContainer">
-        <!-- Loading skeleton will appear here initially -->
-        <div class="review-skeleton">
-          <div class="skeleton-avatar"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-            <div class="skeleton-line"></div>
-          </div>
+    </div>
+    <div class="news-skeleton">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line" style="width: 80%"></div>
+        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line" style="width: 40%"></div>
+      </div>
+    </div>
+    <div class="news-skeleton">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line" style="width: 80%"></div>
+        <div class="skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-line" style="width: 40%"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="news-footer">
+    <div class="news-sources">
+      <span>Sources:</span>
+      <img src="https://cryptocompare.com/media/20562/favicon.png" alt="CryptoCompare">
+      <img src="https://newsapi.org/images/n-logo-border.png" alt="NewsAPI">
+      <img src="https://static.coingecko.com/s/coingecko-logo-8903d34ce19ca4be1c81f0db30e924154750d208683fad7ae6f2ce06c76d0a56.png" alt="CoinGecko">
+    </div>
+  </div>
+</section>
+
+<!-- News Detail Modal -->
+<div class="modal" id="newsModal">
+  <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-header">
+      <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
+      <span class="close-modal" onclick="closeModal('newsModal')">&times;</span>
+    </div>
+    <div class="news-modal-content" id="newsModalContent">
+      <div class="news-detail-header">
+        <img id="newsDetailImage" class="news-detail-image" src="" alt="News Image">
+        <div class="news-meta">
+          <span id="newsSource" class="news-source"></span>
+          <span id="newsDate" class="news-date"></span>
+          <span id="newsAuthor" class="news-author"></span>
         </div>
       </div>
-      
-      <div class="reviews-footer">
-        <button class="btn btn-outline" id="refreshReviewsBtn">
-          <span class="refresh-icon">⟳</span> Refresh Reviews
-        </button>
+      <h3 id="newsDetailTitle" class="news-detail-title"></h3>
+      <div id="newsDetailContent" class="news-detail-content"></div>
+      <div class="news-detail-footer">
+        <a id="newsOriginalLink" href="#" target="_blank" class="btn btn-outline">
+          <i class="fas fa-external-link-alt"></i> Read Full Article
+        </a>
       </div>
-    </section>
+    </div>
+  </div>
+</div>
 
     <!-- Withdrawals Feed -->
     <div class="withdrawals-feed" id="withdrawalsFeed">
