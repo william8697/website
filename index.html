@@ -571,238 +571,224 @@
       }
     }
 
-  /* News Section Styles */
-.news-section {
-  background-color: var(--secondary-bg);
-  border-radius: 8px;
-  padding: 24px;
-  margin: 32px 0;
-  border: 1px solid var(--border-color);
-}
+    /* Reviews Section */
+    .reviews-section {
+      background-color: var(--secondary-bg);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 32px 0;
+      border: 1px solid var(--border-color);
+    }
 
-.news-section .section-header {
-  margin-bottom: 24px;
-  text-align: center;
-}
+    .reviews-section .section-header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
 
-.news-section .section-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-}
+    .reviews-section .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
 
-.news-section .section-subtitle {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
+    .reviews-section .section-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
 
-.news-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
+    .reviews-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
 
-.news-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
+    .review-card {
+      background-color: var(--card-bg);
+      border-radius: 6px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
 
-.news-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  border-color: var(--primary-accent);
-}
+    .review-card:hover {
+      border-color: var(--primary-accent);
+      transform: translateY(-2px);
+    }
 
-.news-image-container {
-  height: 180px;
-  overflow: hidden;
-  position: relative;
-}
+    .review-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-.news-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 2px solid rgba(240, 185, 11, 0.3);
+    }
 
-.news-card:hover .news-image {
-  transform: scale(1.05);
-}
+    .review-user {
+      flex: 1;
+    }
 
-.news-content {
-  padding: 16px;
-}
+    .review-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 15px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+    }
 
-.news-source {
-  font-size: 12px;
-  color: var(--primary-accent);
-  font-weight: 500;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-}
+    .review-date {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
 
-.news-source:before {
-  content: "•";
-  margin-right: 6px;
-  color: var(--text-secondary);
-}
+    .review-rating {
+      display: flex;
+      align-items: center;
+    }
 
-.news-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    .stars {
+      color: #FFD700;
+      letter-spacing: 1px;
+      margin-right: 6px;
+      font-size: 14px;
+    }
 
-.news-description {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    .review-rating span:last-child {
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+    }
 
-.news-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
+    .review-content {
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 12px 0;
+    }
 
-.news-date {
-  font-size: 12px;
-}
+    .review-platform {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+    }
 
-.news-category {
-  background-color: rgba(240, 185, 11, 0.1);
-  color: var(--primary-accent);
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 500;
-}
+    .review-platform img {
+      height: 14px;
+      margin-right: 6px;
+      opacity: 0.8;
+    }
 
-/* News Detail Modal */
-.news-detail-content {
-  padding: 20px;
-}
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      background-color: rgba(0, 182, 122, 0.1);
+      color: #00b67a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      margin-left: 8px;
+      font-weight: 500;
+    }
 
-.news-detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
+    .verified-badge:before {
+      content: "✓";
+      margin-right: 3px;
+      font-size: 10px;
+    }
 
-.news-detail-source {
-  font-size: 14px;
-  color: var(--primary-accent);
-  font-weight: 500;
-}
+    .reviews-footer {
+      text-align: center;
+      margin-top: 24px;
+    }
 
-.news-detail-date {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
+    #refreshReviewsBtn {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      font-size: 14px;
+      color: var(--primary-accent);
+    }
 
-.news-detail-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  line-height: 1.3;
-}
+    .refresh-icon {
+      margin-right: 6px;
+      transition: transform 0.3s ease;
+      font-size: 16px;
+    }
 
-.news-detail-image-container {
-  margin-bottom: 20px;
-  border-radius: 6px;
-  overflow: hidden;
-  max-height: 400px;
-}
+    #refreshReviewsBtn:hover .refresh-icon {
+      transform: rotate(180deg);
+    }
 
-.news-detail-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
+    /* Loading Skeletons */
+    .review-skeleton {
+      background-color: var(--card-bg);
+      border-radius: 6px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      display: flex;
+    }
 
-.news-detail-body {
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--text-primary);
-  margin-bottom: 24px;
-}
+    .skeleton-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.05);
+      margin-right: 12px;
+    }
 
-.news-detail-body p {
-  margin-bottom: 16px;
-}
+    .skeleton-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-.news-detail-footer {
-  text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-}
+    .skeleton-line {
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
 
-/* Loading Skeletons */
-.news-skeleton {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-}
+    .skeleton-line:last-child {
+      width: 70%;
+    }
 
-.skeleton-image {
-  height: 180px;
-  background-color: rgba(255, 255, 255, 0.05);
-  animation: pulse 1.5s infinite ease-in-out;
-}
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 0.3; }
+    }
 
-.skeleton-content {
-  padding: 16px;
-}
+    /* Error State */
+    .review-error {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 30px;
+      color: var(--text-primary);
+    }
 
-.skeleton-line {
-  height: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  margin-bottom: 8px;
-  animation: pulse 1.5s infinite ease-in-out;
-}
+    /* Responsive */
+    @media (max-width: 768px) {
+      .reviews-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .reviews-section {
+        padding: 20px;
+      }
+    }
 
-.skeleton-line:last-child {
-  width: 70%;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .news-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .news-section {
-    padding: 20px;
-  }
-  
-  .news-detail-title {
-    font-size: 20px;
-  }
-}
     /* Withdrawals Feed Styles */
     .withdrawals-feed {
       position: fixed;
@@ -1465,71 +1451,31 @@
       </div>
     </div>
 
-  <!-- News Section -->
-<section class="news-section">
-  <div class="section-header">
-    <h2 class="section-title">Latest Crypto News</h2>
-    <div class="section-subtitle">Stay updated with the most relevant cryptocurrency news</div>
-  </div>
-  
-  <div class="news-container" id="newsContainer">
-    <!-- Loading skeleton will appear here initially -->
-    <div class="news-skeleton">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-content">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+      <div class="section-header">
+        <h2 class="section-title">What Our Traders Say</h2>
+        <div class="section-subtitle">Trusted by thousands of crypto enthusiasts worldwide</div>
       </div>
-    </div>
-    <div class="news-skeleton">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-content">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
+      
+      <div class="reviews-container" id="reviewsContainer">
+        <!-- Loading skeleton will appear here initially -->
+        <div class="review-skeleton">
+          <div class="skeleton-avatar"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="news-skeleton">
-      <div class="skeleton-image"></div>
-      <div class="skeleton-content">
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
+      
+      <div class="reviews-footer">
+        <button class="btn btn-outline" id="refreshReviewsBtn">
+          <span class="refresh-icon">⟳</span> Refresh Reviews
+        </button>
       </div>
-    </div>
-  </div>
-  
-  <div class="news-footer">
-    <button class="btn btn-outline" id="refreshNewsBtn">
-      <span class="refresh-icon">⟳</span> Refresh News
-    </button>
-  </div>
-</section>
-
-<!-- News Detail Modal -->
-<div class="modal" id="newsModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
-      <span class="close-modal" onclick="closeModal('newsModal')">&times;</span>
-    </div>
-    <div class="news-detail-content" id="newsModalContent">
-      <div class="news-detail-header">
-        <div class="news-source" id="newsDetailSource"></div>
-        <div class="news-date" id="newsDetailDate"></div>
-      </div>
-      <h3 class="news-detail-title" id="newsDetailTitle"></h3>
-      <div class="news-detail-image-container">
-        <img id="newsDetailImage" class="news-detail-image" src="" alt="News Image">
-      </div>
-      <div class="news-detail-body" id="newsDetailBody"></div>
-      <div class="news-detail-footer">
-        <a href="#" target="_blank" class="btn btn-primary" id="newsDetailLink">Read Full Article</a>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
 
     <!-- Withdrawals Feed -->
     <div class="withdrawals-feed" id="withdrawalsFeed">
@@ -2473,174 +2419,123 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-// News System
-let newsData = [];
-let lastNewsUpdate = 0;
+      // Load reviews
+      async function loadReviews() {
+        const container = document.getElementById('reviewsContainer');
+        
+        try {
+          // Show loading state
+          container.innerHTML = `
+            <div class="review-skeleton">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+              </div>
+            </div>
+            <div class="review-skeleton">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+              </div>
+            </div>
+            <div class="review-skeleton">
+              <div class="skeleton-avatar"></div>
+              <div class="skeleton-content">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line"></div>
+              </div>
+            </div>
+          `;
+          
+          const response = await fetch(`${API_BASE_URL}/reviews`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          if (!data.success || !Array.isArray(data.data)) {
+            throw new Error('Invalid reviews data structure');
+          }
+          
+          container.innerHTML = '';
+          
+          data.data.forEach(review => {
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'review-card';
+            reviewElement.innerHTML = `
+              <div class="review-header">
+                <img src="${review.avatar}" alt="${review.name}" class="review-avatar" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=random&color=fff'">
+                <div class="review-user">
+                  <div class="review-name">
+                    ${review.name}
+                    ${review.verified ? '<span class="verified-badge">Verified</span>' : ''}
+                  </div>
+                  <div class="review-date">${formatReviewDate(review.date)}</div>
+                </div>
+                <div class="review-rating">
+                  <span class="stars">${getStarRating(review.rating)}</span>
+                  <span>${review.rating.toFixed(1)}</span>
+                </div>
+              </div>
+              <div class="review-content">${review.content}</div>
+              <div class="review-platform">
+                <img src="${getPlatformLogo(review.platform)}" 
+                     alt="${review.platform}" 
+                     onerror="this.style.display='none'">
+                ${review.platform}
+              </div>
+            `;
+            container.appendChild(reviewElement);
+          });
+        } catch (error) {
+          console.error('Failed to load reviews:', error);
+          container.innerHTML = `
+            <div class="review-error" style="grid-column: 1 / -1;">
+              <div style="margin-bottom: 12px; color: var(--text-secondary);">
+                Couldn't load reviews at this time
+              </div>
+              <button class="btn btn-outline" onclick="loadReviews()">
+                <span class="refresh-icon">⟳</span> Try Again
+              </button>
+            </div>
+          `;
+        }
+      }
 
-// Load news data
-async function loadNews() {
-  const container = document.getElementById('newsContainer');
-  
-  try {
-    // Show loading state
-    container.innerHTML = `
-      <div class="news-skeleton">
-        <div class="skeleton-image"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-      <div class="news-skeleton">
-        <div class="skeleton-image"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        <div class="skeleton-line"></div>
-        </div>
-      </div>
-      <div class="news-skeleton">
-        <div class="skeleton-image"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-    `;
-    
-    const response = await fetch(`${API_BASE_URL}/news`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    if (!data.success || !Array.isArray(data.data.news)) {
-      throw new Error('Invalid news data structure');
-    }
-    
-    newsData = data.data.news;
-    lastNewsUpdate = data.data.lastUpdated;
-    
-    renderNews();
-  } catch (error) {
-    console.error('Failed to load news:', error);
-    container.innerHTML = `
-      <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-        <div style="margin-bottom: 12px; color: var(--text-secondary);">
-          Couldn't load news at this time
-        </div>
-        <button class="btn btn-outline" onclick="loadNews()">
-          <span class="refresh-icon">⟳</span> Try Again
-        </button>
-      </div>
-    `;
-  }
-}
+      // Format date as "Month Day, Year"
+      function formatReviewDate(dateString) {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-US', options);
+      }
 
-// Render news cards
-function renderNews() {
-  const container = document.getElementById('newsContainer');
-  container.innerHTML = '';
-  
-  newsData.forEach(newsItem => {
-    const newsElement = document.createElement('div');
-    newsElement.className = 'news-card';
-    newsElement.innerHTML = `
-      <div class="news-image-container">
-        <img src="${newsItem.imageUrl || 'https://via.placeholder.com/300x200?text=Crypto+News'}" 
-             alt="${newsItem.title}" 
-             class="news-image"
-             onerror="this.src='https://via.placeholder.com/300x200?text=Crypto+News'">
-      </div>
-      <div class="news-content">
-        <div class="news-source">${newsItem.source}</div>
-        <h3 class="news-title">${newsItem.title}</h3>
-        <p class="news-description">${newsItem.description}</p>
-        <div class="news-footer">
-          <div class="news-date">${formatNewsDate(newsItem.publishedAt)}</div>
-          <div class="news-category">${newsItem.category || 'General'}</div>
-        </div>
-      </div>
-    `;
-    
-    newsElement.addEventListener('click', () => showNewsDetail(newsItem.id));
-    container.appendChild(newsElement);
-  });
-}
+      // Generate star rating display
+      function getStarRating(rating) {
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        
+        return '★'.repeat(fullStars) + 
+               (hasHalfStar ? '½' : '') + 
+               '☆'.repeat(emptyStars);
+      }
 
-// Format news date
-function formatNewsDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'short', 
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-}
-
-// Show news detail modal
-async function showNewsDetail(newsId) {
-  const modal = document.getElementById('newsModal');
-  const content = document.getElementById('newsModalContent');
-  const title = document.getElementById('newsModalTitle');
-  
-  try {
-    const response = await fetch(`${API_BASE_URL}/news/${newsId}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    if (!data.success || !data.data.article) {
-      throw new Error('Invalid article data');
-    }
-    
-    const article = data.data.article;
-    
-    // Update modal content
-    title.textContent = 'Crypto News Detail';
-    document.getElementById('newsDetailSource').textContent = article.source;
-    document.getElementById('newsDetailDate').textContent = formatNewsDate(article.publishedAt);
-    document.getElementById('newsDetailTitle').textContent = article.title;
-    document.getElementById('newsDetailImage').src = article.imageUrl || 'https://via.placeholder.com/300x200?text=Crypto+News';
-    document.getElementById('newsDetailImage').alt = article.title;
-    document.getElementById('newsDetailBody').innerHTML = `
-      <p>${article.content}</p>
-      <p><strong>Author:</strong> ${article.author || 'Unknown'}</p>
-      <p><strong>Category:</strong> ${article.category || 'General'}</p>
-    `;
-    document.getElementById('newsDetailLink').href = article.url;
-    
-    modal.style.display = 'block';
-  } catch (error) {
-    console.error('Error loading news detail:', error);
-    showToast('Failed to load news details', 'error');
-  }
-}
-
-// Initialize news on page load
-document.addEventListener('DOMContentLoaded', () => {
-  // Add this to your existing DOMContentLoaded event listener
-  loadNews();
-  
-  // Refresh news button
-  document.getElementById('refreshNewsBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    loadNews();
-  });
-  
-  // Auto-refresh news every hour
-  setInterval(() => {
-    const now = Date.now();
-    if (now - lastNewsUpdate > 60 * 60 * 1000) {
-      loadNews();
-    }
-  }, 60 * 60 * 1000);
-});
+      // Get platform logo
+      function getPlatformLogo(platform) {
+        const platformLogos = {
+          'Trustpilot': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Trustpilot_Logo_%282022%29.svg/1200px-Trustpilot_Logo_%282022%29.svg.png',
+          'Google': 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png',
+          'SiteJabber': 'https://www.sitejabber.com/images/v2/logo.png',
+          'CryptoCompare': 'https://www.cryptocompare.com/media/20562/favicon.png'
+        };
+        
+        return platformLogos[platform] || platformLogos['Trustpilot'];
+      }
 
       // Load withdrawals
       async function loadWithdrawals() {
@@ -3168,4 +3063,4 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     </script>
 </body>
-</html>
+</html>  
