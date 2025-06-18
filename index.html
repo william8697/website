@@ -571,7 +571,7 @@
       }
     }
 
-   /* News Section Styles */
+  /* News Section Styles */
 .news-section {
   background-color: var(--secondary-bg);
   border-radius: 8px;
@@ -582,10 +582,7 @@
 
 .news-section .section-header {
   margin-bottom: 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  text-align: center;
 }
 
 .news-section .section-title {
@@ -595,67 +592,15 @@
   margin-bottom: 4px;
 }
 
-.news-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.news-refresh {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.news-section .section-subtitle {
   font-size: 14px;
-  color: var(--primary-accent);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.news-refresh:hover {
-  color: #f8d33a;
-}
-
-.news-refresh i {
-  transition: transform 0.3s ease;
-}
-
-.news-refresh:hover i {
-  transform: rotate(180deg);
-}
-
-.news-tabs {
-  display: flex;
-  gap: 8px;
-  background-color: var(--card-bg);
-  padding: 4px;
-  border-radius: 6px;
-}
-
-.news-tab {
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 500;
   color: var(--text-secondary);
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-}
-
-.news-tab.active {
-  background-color: var(--primary-accent);
-  color: #000;
-}
-
-.news-tab:hover:not(.active) {
-  background-color: rgba(240, 185, 11, 0.1);
-  color: var(--text-primary);
 }
 
 .news-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-  margin-bottom: 24px;
 }
 
 .news-card {
@@ -663,20 +608,31 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-color);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .news-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   border-color: var(--primary-accent);
+}
+
+.news-image-container {
+  height: 180px;
+  overflow: hidden;
+  position: relative;
 }
 
 .news-image {
   width: 100%;
-  height: 200px;
+  height: 100%;
   object-fit: cover;
-  border-bottom: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover .news-image {
+  transform: scale(1.05);
 }
 
 .news-content {
@@ -684,18 +640,18 @@
 }
 
 .news-source {
+  font-size: 12px;
+  color: var(--primary-accent);
+  font-weight: 500;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  font-size: 12px;
-  color: var(--text-secondary);
 }
 
-.news-source img {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
+.news-source:before {
+  content: "•";
+  margin-right: 6px;
+  color: var(--text-secondary);
 }
 
 .news-title {
@@ -710,7 +666,7 @@
   overflow: hidden;
 }
 
-.news-excerpt {
+.news-description {
   font-size: 14px;
   color: var(--text-secondary);
   margin-bottom: 12px;
@@ -721,7 +677,7 @@
   overflow: hidden;
 }
 
-.news-meta {
+.news-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -730,18 +686,77 @@
 }
 
 .news-date {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+  font-size: 12px;
 }
 
 .news-category {
   background-color: rgba(240, 185, 11, 0.1);
   color: var(--primary-accent);
-  padding: 3px 8px;
+  padding: 2px 8px;
   border-radius: 4px;
   font-size: 11px;
   font-weight: 500;
+}
+
+/* News Detail Modal */
+.news-detail-content {
+  padding: 20px;
+}
+
+.news-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.news-detail-source {
+  font-size: 14px;
+  color: var(--primary-accent);
+  font-weight: 500;
+}
+
+.news-detail-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.news-detail-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.news-detail-image-container {
+  margin-bottom: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+  max-height: 400px;
+}
+
+.news-detail-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.news-detail-body {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.news-detail-body p {
+  margin-bottom: 16px;
+}
+
+.news-detail-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
 }
 
 /* Loading Skeletons */
@@ -750,19 +765,16 @@
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
 }
 
 .skeleton-image {
-  width: 100%;
-  height: 200px;
+  height: 180px;
   background-color: rgba(255, 255, 255, 0.05);
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 .skeleton-content {
   padding: 16px;
-  flex: 1;
 }
 
 .skeleton-line {
@@ -773,238 +785,8 @@
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-.skeleton-line:first-child {
-  width: 80%;
-}
-
-.skeleton-line:nth-child(2) {
-  width: 90%;
-}
-
 .skeleton-line:last-child {
-  width: 60%;
-}
-
-/* News Modal Styles */
-.news-modal-content {
-  padding: 20px 0;
-}
-
-.news-modal-image {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.news-modal-source {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.news-modal-source img {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
-
-.news-modal-source span {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.news-modal-date {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-  display: block;
-}
-
-.news-modal-body {
-  line-height: 1.8;
-  color: var(--text-primary);
-}
-
-.news-modal-body p {
-  margin-bottom: 16px;
-}
-
-.news-modal-body img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin: 16px 0;
-}
-
-.news-modal-footer {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.news-modal-tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.news-modal-tag {
-  background-color: rgba(240, 185, 11, 0.1);
-  color: var(--primary-accent);
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.news-modal-link {
-  color: var(--primary-accent);
-  text-decoration: none;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-  .news-container {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .news-section .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-  
-  .news-controls {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .news-tabs {
-    overflow-x: auto;
-    padding-bottom: 8px;
-    width: 100%;
-  }
-  
-  .news-tabs::-webkit-scrollbar {
-    height: 4px;
-  }
-  
-  .news-tabs::-webkit-scrollbar-thumb {
-    background-color: var(--primary-accent);
-    border-radius: 2px;
-  }
-  
-  .news-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .news-modal-image {
-    max-height: 250px;
-  }
-}
-.news-modal .close-modal {
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: all 0.2s;
-}
-
-.news-modal .close-modal:hover {
-  color: var(--text-primary);
-}
-
-.news-meta {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.modal-body {
-  line-height: 1.6;
-  color: var(--text-primary);
-}
-
-.modal-body img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-  margin: 16px 0;
-}
-
-.modal-body p {
-  margin-bottom: 16px;
-}
-
-.modal-body a {
-  color: var(--primary-accent);
-  text-decoration: none;
-}
-
-.modal-body a:hover {
-  text-decoration: underline;
-}
-
-/* Loading Skeletons */
-.news-skeleton {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
-}
-
-.skeleton-header {
-  height: 160px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  margin-bottom: 12px;
-}
-
-.skeleton-content {
-  margin-bottom: 12px;
-}
-
-.skeleton-line {
-  height: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  margin-bottom: 8px;
-}
-
-.skeleton-line:first-child {
-  width: 80%;
-}
-
-.skeleton-line:nth-child(2) {
-  width: 100%;
-}
-
-.skeleton-line:nth-child(3) {
-  width: 60%;
-}
-
-.skeleton-footer {
-  display: flex;
-  justify-content: space-between;
-}
-
-.skeleton-footer div {
-  height: 10px;
-  width: 60px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
+  width: 70%;
 }
 
 /* Responsive */
@@ -1017,15 +799,8 @@
     padding: 20px;
   }
   
-  .news-controls {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  
-  .news-modal .modal-content {
-    width: 95%;
-    padding: 16px;
+  .news-detail-title {
+    font-size: 20px;
   }
 }
     /* Withdrawals Feed Styles */
@@ -1690,26 +1465,23 @@
       </div>
     </div>
 
-   <!-- News Section -->
+  <!-- News Section -->
 <section class="news-section">
   <div class="section-header">
     <h2 class="section-title">Latest Crypto News</h2>
-    <div class="news-controls">
-      <div class="news-refresh" id="refreshNewsBtn">
-        <i class="fas fa-sync-alt"></i> Refresh
-      </div>
-      <div class="news-tabs">
-        <div class="news-tab active" data-category="all">All News</div>
-        <div class="news-tab" data-category="bitcoin">Bitcoin</div>
-        <div class="news-tab" data-category="ethereum">Ethereum</div>
-        <div class="news-tab" data-category="altcoins">Altcoins</div>
-        <div class="news-tab" data-category="regulation">Regulation</div>
-      </div>
-    </div>
+    <div class="section-subtitle">Stay updated with the most relevant cryptocurrency news</div>
   </div>
   
   <div class="news-container" id="newsContainer">
-    <!-- Loading skeleton -->
+    <!-- Loading skeleton will appear here initially -->
+    <div class="news-skeleton">
+      <div class="skeleton-image"></div>
+      <div class="skeleton-content">
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </div>
+    </div>
     <div class="news-skeleton">
       <div class="skeleton-image"></div>
       <div class="skeleton-content">
@@ -1729,8 +1501,8 @@
   </div>
   
   <div class="news-footer">
-    <button class="btn btn-outline" id="loadMoreNewsBtn">
-      Load More News
+    <button class="btn btn-outline" id="refreshNewsBtn">
+      <span class="refresh-icon">⟳</span> Refresh News
     </button>
   </div>
 </section>
@@ -1739,11 +1511,22 @@
 <div class="modal" id="newsModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 class="modal-title" id="newsModalTitle">News Details</h2>
+      <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
       <span class="close-modal" onclick="closeModal('newsModal')">&times;</span>
     </div>
-    <div class="news-modal-content" id="newsModalContent">
-      <!-- News content will be loaded here -->
+    <div class="news-detail-content" id="newsModalContent">
+      <div class="news-detail-header">
+        <div class="news-source" id="newsDetailSource"></div>
+        <div class="news-date" id="newsDetailDate"></div>
+      </div>
+      <h3 class="news-detail-title" id="newsDetailTitle"></h3>
+      <div class="news-detail-image-container">
+        <img id="newsDetailImage" class="news-detail-image" src="" alt="News Image">
+      </div>
+      <div class="news-detail-body" id="newsDetailBody"></div>
+      <div class="news-detail-footer">
+        <a href="#" target="_blank" class="btn btn-primary" id="newsDetailLink">Read Full Article</a>
+      </div>
     </div>
   </div>
 </div>
@@ -2690,57 +2473,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-// News Configuration
-const NEWS_CONFIG = {
-  API_BASE_URL: '/api/v1/news',
-  DEFAULT_CATEGORY: 'all',
-  ITEMS_PER_PAGE: 6,
-  CACHE_TTL: 60 * 60 * 1000, // 1 hour
-  SOURCE_ICONS: {
-    'coindesk': 'https://www.coindesk.com/favicon.ico',
-    'cointelegraph': 'https://cointelegraph.com/favicon.ico',
-    'decrypt': 'https://decrypt.co/favicon.ico',
-    'theblock': 'https://www.theblock.co/favicon.ico',
-    'cryptonews': 'https://cryptonews.com/favicon.ico',
-    'default': 'https://cryptotradingmarket.com/favicon.ico'
-  }
-};
+// News System
+let newsData = [];
+let lastNewsUpdate = 0;
 
-// News State
-let newsState = {
-  currentCategory: NEWS_CONFIG.DEFAULT_CATEGORY,
-  currentPage: 1,
-  isLoading: false,
-  hasMore: true,
-  newsData: []
-};
-
-// Initialize news functionality
-function initNews() {
-  // Load initial news
-  loadNews();
-  
-  // Set up event listeners
-  document.getElementById('refreshNewsBtn').addEventListener('click', refreshNews);
-  document.getElementById('loadMoreNewsBtn').addEventListener('click', loadMoreNews);
-  
-  // Set up category tabs
-  document.querySelectorAll('.news-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      const category = tab.dataset.category;
-      changeNewsCategory(category);
-    });
-  });
-  
-  // Set up periodic refresh (every hour)
-  setInterval(refreshNews, NEWS_CONFIG.CACHE_TTL);
-}
-
-// Load news with current filters
+// Load news data
 async function loadNews() {
-  if (newsState.isLoading) return;
-  
-  newsState.isLoading = true;
   const container = document.getElementById('newsContainer');
   
   try {
@@ -2758,8 +2496,8 @@ async function loadNews() {
         <div class="skeleton-image"></div>
         <div class="skeleton-content">
           <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
         </div>
       </div>
       <div class="news-skeleton">
@@ -2772,92 +2510,57 @@ async function loadNews() {
       </div>
     `;
     
-    const response = await fetch(`${NEWS_CONFIG.API_BASE_URL}?category=${newsState.currentCategory}&page=${newsState.currentPage}&limit=${NEWS_CONFIG.ITEMS_PER_PAGE}`);
-    
+    const response = await fetch(`${API_BASE_URL}/news`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const data = await response.json();
-    
-    if (!data.success || !Array.isArray(data.data)) {
+    if (!data.success || !Array.isArray(data.data.news)) {
       throw new Error('Invalid news data structure');
     }
     
-    // Update state
-    newsState.hasMore = data.data.length === NEWS_CONFIG.ITEMS_PER_PAGE;
-    newsState.newsData = newsState.currentPage === 1 ? 
-      data.data : [...newsState.newsData, ...data.data];
+    newsData = data.data.news;
+    lastNewsUpdate = data.data.lastUpdated;
     
-    // Render news
     renderNews();
-    
   } catch (error) {
-    console.error('Error loading news:', error);
+    console.error('Failed to load news:', error);
     container.innerHTML = `
       <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-        <div style="margin-bottom: 16px; color: var(--text-secondary);">
+        <div style="margin-bottom: 12px; color: var(--text-secondary);">
           Couldn't load news at this time
         </div>
         <button class="btn btn-outline" onclick="loadNews()">
-          <i class="fas fa-redo"></i> Try Again
+          <span class="refresh-icon">⟳</span> Try Again
         </button>
       </div>
     `;
-  } finally {
-    newsState.isLoading = false;
   }
 }
 
-// Render news to the DOM
+// Render news cards
 function renderNews() {
   const container = document.getElementById('newsContainer');
+  container.innerHTML = '';
   
-  if (newsState.currentPage === 1) {
-    container.innerHTML = '';
-  }
-  
-  if (newsState.newsData.length === 0) {
-    container.innerHTML = `
-      <div class="news-empty" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-        <div style="margin-bottom: 16px; color: var(--text-secondary);">
-          No news found for this category
-        </div>
-        <button class="btn btn-outline" onclick="refreshNews()">
-          <i class="fas fa-redo"></i> Refresh
-        </button>
-      </div>
-    `;
-    return;
-  }
-  
-  newsState.newsData.forEach(newsItem => {
+  newsData.forEach(newsItem => {
     const newsElement = document.createElement('div');
     newsElement.className = 'news-card';
     newsElement.innerHTML = `
       <div class="news-image-container">
-        <img src="${newsItem.image || 'https://via.placeholder.com/600x400?text=Crypto+News'}" 
+        <img src="${newsItem.imageUrl || 'https://via.placeholder.com/300x200?text=Crypto+News'}" 
              alt="${newsItem.title}" 
              class="news-image"
-             onerror="this.src='https://via.placeholder.com/600x400?text=Crypto+News'">
+             onerror="this.src='https://via.placeholder.com/300x200?text=Crypto+News'">
       </div>
       <div class="news-content">
-        <div class="news-source">
-          <img src="${NEWS_CONFIG.SOURCE_ICONS[newsItem.source.toLowerCase()] || NEWS_CONFIG.SOURCE_ICONS.default}" 
-               alt="${newsItem.source}"
-               onerror="this.src='${NEWS_CONFIG.SOURCE_ICONS.default}'">
-          <span>${newsItem.source}</span>
-        </div>
+        <div class="news-source">${newsItem.source}</div>
         <h3 class="news-title">${newsItem.title}</h3>
-        <p class="news-excerpt">${newsItem.description || ''}</p>
-        <div class="news-meta">
-          <div class="news-date">
-            <i class="far fa-clock"></i>
-            ${formatNewsDate(newsItem.publishedAt)}
-          </div>
-          <div class="news-category">
-            ${newsItem.category || 'General'}
-          </div>
+        <p class="news-description">${newsItem.description}</p>
+        <div class="news-footer">
+          <div class="news-date">${formatNewsDate(newsItem.publishedAt)}</div>
+          <div class="news-category">${newsItem.category || 'General'}</div>
         </div>
       </div>
     `;
@@ -2865,141 +2568,79 @@ function renderNews() {
     newsElement.addEventListener('click', () => showNewsDetail(newsItem.id));
     container.appendChild(newsElement);
   });
-  
-  // Update load more button visibility
-  document.getElementById('loadMoreNewsBtn').style.display = 
-    newsState.hasMore ? 'block' : 'none';
 }
 
 // Format news date
 function formatNewsDate(dateString) {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'short', 
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  }).format(date);
-}
-
-// Refresh news
-function refreshNews() {
-  newsState.currentPage = 1;
-  loadNews();
-}
-
-// Load more news
-function loadMoreNews() {
-  if (newsState.isLoading || !newsState.hasMore) return;
-  
-  newsState.currentPage++;
-  loadNews();
-}
-
-// Change news category
-function changeNewsCategory(category) {
-  if (newsState.isLoading || newsState.currentCategory === category) return;
-  
-  // Update UI
-  document.querySelectorAll('.news-tab').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.category === category);
   });
-  
-  // Update state and load news
-  newsState.currentCategory = category;
-  newsState.currentPage = 1;
-  loadNews();
 }
 
-// Show news detail in modal
+// Show news detail modal
 async function showNewsDetail(newsId) {
   const modal = document.getElementById('newsModal');
   const content = document.getElementById('newsModalContent');
   const title = document.getElementById('newsModalTitle');
   
   try {
-    // Show loading state
-    content.innerHTML = `
-      <div class="news-skeleton">
-        <div class="skeleton-image"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-          <div class="skeleton-line"></div>
-        </div>
-      </div>
-    `;
-    
-    modal.style.display = 'block';
-    
-    const response = await fetch(`${NEWS_CONFIG.API_BASE_URL}/${newsId}`);
-    
+    const response = await fetch(`${API_BASE_URL}/news/${newsId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const { data: newsItem } = await response.json();
-    
-    if (!newsItem) {
-      throw new Error('News item not found');
+    const data = await response.json();
+    if (!data.success || !data.data.article) {
+      throw new Error('Invalid article data');
     }
     
-    // Set modal title
-    title.textContent = newsItem.title;
+    const article = data.data.article;
     
-    // Format content
-    content.innerHTML = `
-      <img src="${newsItem.image || 'https://via.placeholder.com/1200x600?text=Crypto+News'}" 
-           alt="${newsItem.title}" 
-           class="news-modal-image"
-           onerror="this.src='https://via.placeholder.com/1200x600?text=Crypto+News'">
-      
-      <div class="news-modal-source">
-        <img src="${NEWS_CONFIG.SOURCE_ICONS[newsItem.source.toLowerCase()] || NEWS_CONFIG.SOURCE_ICONS.default}" 
-             alt="${newsItem.source}"
-             onerror="this.src='${NEWS_CONFIG.SOURCE_ICONS.default}'">
-        <span>${newsItem.source}</span>
-      </div>
-      
-      <span class="news-modal-date">
-        ${formatNewsDate(newsItem.publishedAt)}
-      </span>
-      
-      <div class="news-modal-body">
-        ${newsItem.content || newsItem.description || 'No content available'}
-      </div>
-      
-      <div class="news-modal-footer">
-        <div class="news-modal-tags">
-          ${(newsItem.tags || []).map(tag => `
-            <span class="news-modal-tag">${tag}</span>
-          `).join('')}
-        </div>
-        <a href="${newsItem.url}" target="_blank" class="news-modal-link">
-          Read full story <i class="fas fa-external-link-alt"></i>
-        </a>
-      </div>
+    // Update modal content
+    title.textContent = 'Crypto News Detail';
+    document.getElementById('newsDetailSource').textContent = article.source;
+    document.getElementById('newsDetailDate').textContent = formatNewsDate(article.publishedAt);
+    document.getElementById('newsDetailTitle').textContent = article.title;
+    document.getElementById('newsDetailImage').src = article.imageUrl || 'https://via.placeholder.com/300x200?text=Crypto+News';
+    document.getElementById('newsDetailImage').alt = article.title;
+    document.getElementById('newsDetailBody').innerHTML = `
+      <p>${article.content}</p>
+      <p><strong>Author:</strong> ${article.author || 'Unknown'}</p>
+      <p><strong>Category:</strong> ${article.category || 'General'}</p>
     `;
+    document.getElementById('newsDetailLink').href = article.url;
     
+    modal.style.display = 'block';
   } catch (error) {
     console.error('Error loading news detail:', error);
-    content.innerHTML = `
-      <div class="news-error" style="text-align: center; padding: 30px;">
-        <div style="margin-bottom: 16px; color: var(--text-secondary);">
-          Couldn't load this news article
-        </div>
-        <button class="btn btn-outline" onclick="showNewsDetail('${newsId}')">
-          <i class="fas fa-redo"></i> Try Again
-        </button>
-      </div>
-    `;
+    showToast('Failed to load news details', 'error');
   }
 }
 
-// Initialize news when DOM is loaded
-document.addEventListener('DOMContentLoaded', initNews);
+// Initialize news on page load
+document.addEventListener('DOMContentLoaded', () => {
+  // Add this to your existing DOMContentLoaded event listener
+  loadNews();
+  
+  // Refresh news button
+  document.getElementById('refreshNewsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    loadNews();
+  });
+  
+  // Auto-refresh news every hour
+  setInterval(() => {
+    const now = Date.now();
+    if (now - lastNewsUpdate > 60 * 60 * 1000) {
+      loadNews();
+    }
+  }, 60 * 60 * 1000);
+});
 
       // Load withdrawals
       async function loadWithdrawals() {
