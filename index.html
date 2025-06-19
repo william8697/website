@@ -2598,97 +2598,88 @@
 
       // Load market data
       async function loadMarketData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets`);
-          if (!response.ok) {
-            throw new Error('Failed to fetch market data');
-          }
-          
-          const data = await response.json();
-          marketData = data.marketData || [];
-          gainersData = data.gainers || [];
-          trendingData = data.trending || [];
-          
-          // Initialize coin prices
-          marketData.forEach(coin => {
-            coinPrices[coin.id] = {
-              currentPrice: coin.currentPrice,
-              originalPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-          });
-          
-          gainersData.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                currentPrice: coin.currentPrice,
-                originalPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
-          trendingData.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                currentPrice: coin.currentPrice,
-                originalPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
-          // Update UI
-          updateMarketTable();
-          updateGainersList();
-          updateTrendingList();
-          
-          // Initialize market stats dashboard
-          new MarketStatsDashboard();
-        } catch (error) {
-          console.error('Error loading market data:', error);
-          showToast('Failed to load market data. Please try again.', 'error');
-        }
-      }
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets`);
+    if (!response.ok) throw new Error('Failed to fetch market data');
+    
+    const { marketData } = await response.json();
+    updateMarketTable(marketData);
+  } catch (error) {
+    console.error('Error loading market data:', error);
+    showToast('Failed to load market data', 'error');
+  }
+}
 
-      // Update market table
-      function updateMarketTable() {
-        const tableBody = document.getElementById('marketTable');
-        tableBody.innerHTML = '';
-        
-        marketData.forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>
-              <div class="coin-cell">
-                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                <span class="coin-name">${coin.name}</span>
-                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-              </div>
-            </td>
-            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-            </td>
-            <td>$${(coin.volume / 1000000).toFixed(2)}M</td>
-            <td>$${(coin.marketCap / 1000000000).toFixed(2)}B</td>
-            <td>
-              <div class="action-buttons">
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-                <button class="btn btn-outline btn-sm" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-              </div>
-            </td>
-          `;
-          
-          row.addEventListener('click', () => showCoinDetail(coin.id));
-          tableBody.appendChild(row);
-        });
+function updateMarketTable(data) {
+  const tableBody = document.getElementById('marketTable');
+  tableBody.innerHTML = '';
+
+  data.forEach(asset => {
+    const row = document.createElement('tr');
+    row.className = 'asset-row';
+    
+    // Generate random changes for demo
+    const change1h = (Math.random() * 2 - 1).toFixed(2);
+    const change24h = asset.change24h;
+    const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+    
+    // Determine trend direction
+    const isUpwardTrend = Math.random() > 0.5;
+    
+    row.innerHTML = `
+      <td class="asset-cell">
+        <img src="${asset.image}" alt="${asset.name}" class="asset-icon" width="24">
+        <div class="asset-info">
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+        </div>
+      </td>
+      <td class="price-cell">$${asset.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+      <td>
+        <div class="change-container">
+          <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+            ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+          </span>
+          <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+            ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+          </span>
+          <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+            ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
+          </span>
+        </div>
+      </td>
+      <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+      <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+      <td>
+        <div class="supply-container">
+          <span>${(asset.marketCap / asset.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+          <div class="supply-bar-container">
+            <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+          ${isUpwardTrend ? '↗' : '↘'}
+        </div>
+      </td>
+      <td>
+        <div class="action-buttons">
+          <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+          <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+        </div>
+      </td>
+    `;
+    
+    row.addEventListener('click', (e) => {
+      if (!e.target.closest('.action-buttons')) {
+        showCoinDetail(asset.id);
       }
+    });
+    
+    tableBody.appendChild(row);
+  });
+}
 
   // Market Stats Dashboard
   document.addEventListener('DOMContentLoaded', function() {
@@ -3404,108 +3395,86 @@ function showNewsDetail(article) {
       }
 
       // Show all gainers modal
-      async function showAllGainers() {
-        const modal = document.getElementById('allGainersModal');
-        modal.style.display = 'block';
-        
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) {
-            throw new Error('Failed to load all gainers');
-          }
-          
-          const coins = await response.json();
-          const tableBody = document.getElementById('allGainersTable');
-          tableBody.innerHTML = '';
-          
-          coins.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allGainersModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
-        } catch (error) {
-          console.error('Error loading all gainers:', error);
-          showToast('Failed to load all gainers', 'error');
-        }
-      }
+      async function loadGainersData() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+    if (!response.ok) throw new Error('Failed to fetch gainers');
+    
+    const { gainers } = await response.json();
+    updateGainersList(gainers);
+  } catch (error) {
+    console.error('Error loading gainers:', error);
+    showToast('Failed to load top gainers', 'error');
+  }
+}
+
+function updateGainersList(gainers) {
+  const container = document.getElementById('gainersList');
+  container.innerHTML = '';
+
+  gainers.slice(0, 5).forEach(gainer => {
+    const card = document.createElement('div');
+    card.className = 'gainer-card';
+    
+    card.innerHTML = `
+      <div class="gainer-info">
+        <img src="${gainer.image}" alt="${gainer.name}" width="28">
+        <div class="gainer-details">
+          <span class="gainer-name">${gainer.name}</span>
+          <span class="gainer-symbol">${gainer.symbol.toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="gainer-stats">
+        <div class="gainer-price">$${gainer.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 4})}</div>
+        <div class="gainer-change">
+          ${gainer.change24h >= 0 ? '▲' : '▼'} ${Math.abs(gainer.change24h).toFixed(2)}%
+        </div>
+      </div>
+    `;
+    
+    card.addEventListener('click', () => showCoinDetail(gainer.id));
+    container.appendChild(card);
+  });
+}
 
       // Show all trending modal
-      async function showAllTrending() {
-        const modal = document.getElementById('allTrendingModal');
-        modal.style.display = 'block';
-        
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) {
-            throw new Error('Failed to load all trending coins');
-          }
-          
-          const coins = await response.json();
-          const tableBody = document.getElementById('allTrendingTable');
-          tableBody.innerHTML = '';
-          
-          coins.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allTrendingModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
-        } catch (error) {
-          console.error('Error loading all trending coins:', error);
-          showToast('Failed to load all trending coins', 'error');
-        }
-      }
+      async function loadTrendingData() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets/trending`);
+    if (!response.ok) throw new Error('Failed to fetch trending');
+    
+    const { trending } = await response.json();
+    updateTrendingList(trending);
+  } catch (error) {
+    console.error('Error loading trending:', error);
+    showToast('Failed to load trending assets', 'error');
+  }
+}
+
+function updateTrendingList(trending) {
+  const container = document.getElementById('trendingList');
+  container.innerHTML = '';
+
+  trending.slice(0, 5).forEach(coin => {
+    const card = document.createElement('div');
+    card.className = 'trending-card';
+    
+    card.innerHTML = `
+      <div class="trending-info">
+        <img src="${coin.image}" alt="${coin.name}" class="trending-icon">
+        <span class="trending-name">${coin.name}</span>
+        <span class="trending-symbol">${coin.symbol.toUpperCase()}</span>
+        <span class="trending-price">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 4})}</span>
+        <span class="trending-change ${coin.change24h >= 0 ? 'positive' : 'negative'}">
+          ${coin.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.change24h).toFixed(2)}%
+        </span>
+      </div>
+    `;
+    
+    card.addEventListener('click', () => showCoinDetail(coin.id));
+    container.appendChild(card);
+  });
+}
 
       // Change trading chart
       function changeChart(symbol) {
