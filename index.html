@@ -296,20 +296,20 @@
     }
 
     /* Market Overview Table Styles */
-    .market-overview {
+    .market-table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .market-overview th, 
-    .market-overview td {
+    .market-table th, 
+    .market-table td {
       padding: 12px 16px;
       text-align: left;
       font-size: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
-    .market-overview th {
+    .market-table th {
       font-weight: 500;
       color: var(--text-secondary);
       background-color: var(--secondary-bg);
@@ -317,7 +317,7 @@
       top: var(--header-height);
     }
 
-    .market-overview tr:hover {
+    .market-table tr:hover {
       background-color: rgba(240, 185, 11, 0.03);
     }
 
@@ -325,6 +325,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      padding: 8px 0;
     }
 
     .asset-icon {
@@ -348,7 +349,7 @@
     }
 
     .price-cell {
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .change-container {
@@ -357,20 +358,22 @@
     }
 
     .change-pill {
-      padding: 2px 6px;
-      border-radius: 4px;
       font-size: 12px;
-      font-weight: 500;
+      padding: 3px 6px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
     }
 
     .positive {
       color: var(--positive);
-      background-color: rgba(14, 203, 129, 0.1);
+      background-color: rgba(14, 203, 129, 0.15);
     }
 
     .negative {
       color: var(--negative);
-      background-color: rgba(246, 70, 93, 0.1);
+      background-color: rgba(246, 70, 93, 0.15);
     }
 
     .supply-container {
@@ -380,8 +383,9 @@
     }
 
     .supply-bar-container {
+      width: 100%;
       height: 4px;
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.05);
       border-radius: 2px;
       overflow: hidden;
     }
@@ -393,43 +397,17 @@
     }
 
     .trend-sparkline {
-      width: 80px;
-      height: 30px;
-      position: relative;
-    }
-
-    .trend-sparkline::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      background-color: currentColor;
-      bottom: 0;
-    }
-
-    .trend-sparkline::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to right, 
-        rgba(14, 203, 129, 0.1) 0%, 
-        rgba(14, 203, 129, 0) 100%);
-      bottom: 0;
-      opacity: 0.5;
-    }
-
-    .trend-sparkline.positive {
-      color: var(--positive);
-    }
-
-    .trend-sparkline.negative {
-      color: var(--negative);
+      width: 60px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
     }
 
     .action-buttons {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn-trade {
@@ -443,23 +421,23 @@
     }
 
     .btn-buy {
-      background-color: rgba(14, 203, 129, 0.1);
+      background-color: rgba(14, 203, 129, 0.15);
       color: var(--positive);
       border-color: var(--positive);
     }
 
     .btn-buy:hover {
-      background-color: rgba(14, 203, 129, 0.2);
+      background-color: rgba(14, 203, 129, 0.25);
     }
 
     .btn-sell {
-      background-color: rgba(246, 70, 93, 0.1);
+      background-color: rgba(246, 70, 93, 0.15);
       color: var(--negative);
       border-color: var(--negative);
     }
 
     .btn-sell:hover {
-      background-color: rgba(246, 70, 93, 0.2);
+      background-color: rgba(246, 70, 93, 0.25);
     }
 
     /* Stats Box */
@@ -534,7 +512,7 @@
       font-size: 0.75rem;
     }
 
-    /* Gainers/Trending Section */
+    /* Gainers & Trending Section */
     .gainers-trending {
       display: flex;
       gap: 16px;
@@ -1414,18 +1392,57 @@
       }
     }
 
-    /* Pagination Controls */
-    .pagination-controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-top: 20px;
-      padding: 12px 0;
+    /* Sparkline Chart */
+    .sparkline {
+      width: 60px;
+      height: 24px;
+      position: relative;
     }
 
-    .pagination-btn {
-      padding: 8px 16px;
+    .sparkline-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--positive);
+    }
+
+    .sparkline-line.negative {
+      background-color: var(--negative);
+    }
+
+    .sparkline-points {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+    }
+
+    .sparkline-point {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background-color: var(--positive);
+      transform: translateY(-50%);
+    }
+
+    .sparkline-point.negative {
+      background-color: var(--negative);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 8px;
+    }
+
+    .page-btn {
+      padding: 6px 12px;
       border-radius: 4px;
       background-color: var(--card-bg);
       color: var(--text-primary);
@@ -1434,26 +1451,19 @@
       transition: all 0.2s;
     }
 
-    .pagination-btn:hover {
+    .page-btn.active {
+      background-color: var(--primary-accent);
+      color: #000;
+      border-color: var(--primary-accent);
+    }
+
+    .page-btn:hover:not(.active) {
       background-color: rgba(240, 185, 11, 0.1);
     }
 
-    .pagination-btn:disabled {
+    .page-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-    }
-
-    .pagination-info {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    /* Loading Indicator */
-    .loading-indicator {
-      color: var(--positive);
-      font-size: 14px;
-      padding: 12px;
-      text-align: center;
     }
   </style>
 </head>
@@ -1524,12 +1534,14 @@
       </div>
       
       <div class="table-container">
-        <table class="market-overview">
+        <table class="market-table">
           <thead>
             <tr>
               <th>Asset</th>
               <th>Price</th>
-              <th>Change</th>
+              <th>1h</th>
+              <th>24h</th>
+              <th>7d</th>
               <th>Volume (24h)</th>
               <th>Market Cap</th>
               <th>Supply</th>
@@ -1538,21 +1550,14 @@
             </tr>
           </thead>
           <tbody id="marketTable">
-            <!-- Loading indicator -->
-            <tr>
-              <td colspan="8" class="loading-indicator">
-                Loading market data, please wait...
-              </td>
-            </tr>
+            <!-- Data will be populated here -->
           </tbody>
         </table>
       </div>
-
-      <!-- Pagination Controls -->
-      <div class="pagination-controls" id="marketPagination" style="display: none;">
-        <button class="pagination-btn" id="prevMarketPage" disabled>Previous</button>
-        <span class="pagination-info" id="marketPageInfo">Page 1 of 1</span>
-        <button class="pagination-btn" id="nextMarketPage">Next</button>
+      <div class="pagination" id="marketPagination">
+        <button class="page-btn" id="prevMarketPage" disabled>Previous</button>
+        <span class="page-indicator" id="marketPageIndicator">1/1</span>
+        <button class="page-btn" id="nextMarketPage">Next</button>
       </div>
     </div>
 
@@ -1610,12 +1615,9 @@
           <h2 class="section-title">Top Gainers</h2>
           <a href="#" class="section-link" id="viewAllGainers">View All</a>
         </div>
-        <ul class="coin-list" id="gainersList">
-          <!-- Loading indicator -->
-          <li class="coin-list-item">
-            <div class="loading-indicator">Loading top gainers...</div>
-          </li>
-        </ul>
+        <div class="gainers-container" id="gainersList">
+          <!-- Data will be populated here -->
+        </div>
       </div>
       
       <div class="section trending">
@@ -1623,12 +1625,9 @@
           <h2 class="section-title">Trending</h2>
           <a href="#" class="section-link" id="viewAllTrending">View All</a>
         </div>
-        <ul class="coin-list" id="trendingList">
-          <!-- Loading indicator -->
-          <li class="coin-list-item">
-            <div class="loading-indicator">Loading trending assets...</div>
-          </li>
-        </ul>
+        <div class="trending-container" id="trendingList">
+          <!-- Data will be populated here -->
+        </div>
       </div>
     </div>
 
@@ -1772,6 +1771,68 @@
       </div>
     </div>
 
+    <!-- All Gainers Modal -->
+    <div class="modal" id="allGainersModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Top Gainers (24h)</h2>
+          <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allGainersTable">
+              <!-- All gainers data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="gainersPagination">
+          <button class="page-btn" id="prevGainersPage" disabled>Previous</button>
+          <span class="page-indicator" id="gainersPageIndicator">1/1</span>
+          <button class="page-btn" id="nextGainersPage">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Trending Modal -->
+    <div class="modal" id="allTrendingModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Trending Coins</h2>
+          <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allTrendingTable">
+              <!-- All trending data will be loaded here -->
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="trendingPagination">
+          <button class="page-btn" id="prevTrendingPage" disabled>Previous</button>
+          <span class="page-indicator" id="trendingPageIndicator">1/1</span>
+          <button class="page-btn" id="nextTrendingPage">Next</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Trade Modal -->
     <div class="modal" id="tradeModal">
       <div class="modal-content">
@@ -1850,7 +1911,7 @@
       let adminMessages = [];
       let viewedMessages = [];
       let currentMarketPage = 1;
-      const MARKET_PAGE_SIZE = 15;
+      const itemsPerPage = 15;
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
@@ -1869,8 +1930,10 @@
         // Load market data
         await loadMarketData();
         
-        // Load gainers and trending
+        // Load gainers data
         await loadGainersData();
+        
+        // Load trending data
         await loadTrendingData();
         
         // Load news
@@ -1902,8 +1965,19 @@
         });
         
         // Close menu when clicking outside
-        document.addEventListener('click', (event) => {
-          if (!event.target.closest('.nav-container') && navLinks.classList.contains('show')) {
+        document.addEventListener('click', function(event) {
+          const dropdown = document.getElementById('dropdownMenu');
+          const avatar = document.getElementById('userAvatar');
+          
+          if (dropdown.classList.contains('show') && 
+              !dropdown.contains(event.target) && 
+              !avatar.contains(event.target)) {
+            dropdown.classList.remove('show');
+          }
+          
+          if (navLinks.classList.contains('show') && 
+              !navLinks.contains(event.target) && 
+              !mobileMenuBtn.contains(event.target)) {
             navLinks.classList.remove('show');
           }
         });
@@ -1950,8 +2024,7 @@
         // View All links
         document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
           e.preventDefault();
-          currentMarketPage = 1;
-          loadMarketData(true);
+          showAllCoins();
         });
         
         document.getElementById('viewAllGainers').addEventListener('click', (e) => {
@@ -1964,21 +2037,24 @@
           showAllTrending();
         });
         
+        // Trade amount input
+        document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
+        
         // Pagination controls
         document.getElementById('prevMarketPage').addEventListener('click', () => {
           if (currentMarketPage > 1) {
             currentMarketPage--;
-            loadMarketData();
+            updateMarketTable();
           }
         });
         
         document.getElementById('nextMarketPage').addEventListener('click', () => {
-          currentMarketPage++;
-          loadMarketData();
+          const totalPages = Math.ceil(marketData.length / itemsPerPage);
+          if (currentMarketPage < totalPages) {
+            currentMarketPage++;
+            updateMarketTable();
+          }
         });
-        
-        // Trade amount input
-        document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
       }
 
       // Load trade content in main view
@@ -2375,18 +2451,6 @@
         document.getElementById('dropdownMenu').classList.toggle('show');
       }
 
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdownMenu');
-        const avatar = document.getElementById('userAvatar');
-        
-        if (dropdown.classList.contains('show') && 
-            !dropdown.contains(event.target) && 
-            !avatar.contains(event.target)) {
-          dropdown.classList.remove('show');
-        }
-      });
-
       // Logout user
       async function logout() {
         try {
@@ -2580,79 +2644,50 @@
         }
       }
 
-      // Load market data with pagination
-      async function loadMarketData(showAll = false) {
+      // Load market data
+      async function loadMarketData() {
         try {
-          const response = await fetch(`${API_BASE_URL}/markets${showAll ? '/all' : `?page=${currentMarketPage}&limit=${MARKET_PAGE_SIZE}`}`);
+          const response = await fetch(`${API_BASE_URL}/markets`);
           if (!response.ok) throw new Error('Failed to fetch market data');
           
-          const { marketData, total } = await response.json();
+          const { marketData } = await response.json();
           
           // Store market data
           marketData = marketData;
           
-          // Update coin prices
+          // Initialize coin prices
           marketData.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                originalPrice: coin.currentPrice,
-                currentPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
+            coinPrices[coin.id] = {
+              currentPrice: coin.currentPrice,
+              originalPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
           });
           
           // Update UI
           updateMarketTable();
-          
-          // Show pagination controls if not showing all
-          const pagination = document.getElementById('marketPagination');
-          if (showAll) {
-            pagination.style.display = 'none';
-          } else {
-            pagination.style.display = 'flex';
-            const totalPages = Math.ceil(total / MARKET_PAGE_SIZE);
-            document.getElementById('marketPageInfo').textContent = `Page ${currentMarketPage} of ${totalPages}`;
-            document.getElementById('prevMarketPage').disabled = currentMarketPage <= 1;
-            document.getElementById('nextMarketPage').disabled = currentMarketPage >= totalPages;
-          }
         } catch (error) {
           console.error('Error loading market data:', error);
-          document.getElementById('marketTable').innerHTML = `
-            <tr>
-              <td colspan="8" class="loading-indicator">
-                Error loading market data. Please try again.
-              </td>
-            </tr>
-          `;
           showToast('Failed to load market data', 'error');
         }
       }
 
-      // Update market table with current data
+      // Update market table
       function updateMarketTable() {
         const tableBody = document.getElementById('marketTable');
-        
-        // If no data yet, show loading
-        if (marketData.length === 0) {
-          tableBody.innerHTML = `
-            <tr>
-              <td colspan="8" class="loading-indicator">
-                Loading market data, please wait...
-              </td>
-            </tr>
-          `;
-          return;
-        }
-        
         tableBody.innerHTML = '';
         
-        // Show only the current page's data
-        const startIdx = (currentMarketPage - 1) * MARKET_PAGE_SIZE;
-        const endIdx = startIdx + MARKET_PAGE_SIZE;
-        const visibleData = marketData.slice(startIdx, endIdx);
+        const startIdx = (currentMarketPage - 1) * itemsPerPage;
+        const endIdx = startIdx + itemsPerPage;
+        const assetsToShow = marketData.slice(startIdx, endIdx);
+        const totalPages = Math.ceil(marketData.length / itemsPerPage);
         
-        visibleData.forEach(asset => {
+        // Update pagination controls
+        document.getElementById('marketPageIndicator').textContent = `${currentMarketPage}/${totalPages}`;
+        document.getElementById('prevMarketPage').disabled = currentMarketPage <= 1;
+        document.getElementById('nextMarketPage').disabled = currentMarketPage >= totalPages;
+        
+        assetsToShow.forEach(asset => {
           const coinData = coinPrices[asset.id] || {
             currentPrice: asset.currentPrice,
             change24h: asset.change24h || 0
@@ -2702,8 +2737,11 @@
               </div>
             </td>
             <td>
-              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
-                ${isUpwardTrend ? '↗' : '↘'}
+              <div class="sparkline">
+                <div class="sparkline-line ${isUpwardTrend ? 'positive' : 'negative'}"></div>
+                <div class="sparkline-points">
+                  ${generateSparklinePoints(isUpwardTrend)}
+                </div>
               </div>
             </td>
             <td>
@@ -2714,7 +2752,6 @@
             </td>
           `;
           
-          // Make entire row clickable except for action buttons
           row.addEventListener('click', (e) => {
             if (!e.target.closest('.action-buttons')) {
               showCoinDetail(asset.id);
@@ -2723,6 +2760,25 @@
           
           tableBody.appendChild(row);
         });
+      }
+
+      // Generate sparkline points
+      function generateSparklinePoints(isUpwardTrend) {
+        let points = '';
+        const pointCount = 6;
+        const baseHeight = 10;
+        
+        for (let i = 0; i < pointCount; i++) {
+          const x = (i / (pointCount - 1)) * 100;
+          const y = isUpwardTrend ? 
+            baseHeight + (Math.random() * 10) : 
+            baseHeight - (Math.random() * 10);
+          
+          points += `<div class="sparkline-point ${isUpwardTrend ? 'positive' : 'negative'}" 
+                     style="left: ${x}%; bottom: ${y}px;"></div>`;
+        }
+        
+        return points;
       }
 
       // Load gainers data
@@ -2734,25 +2790,10 @@
           const { gainers } = await response.json();
           gainersData = gainers;
           
-          // Update coin prices
-          gainers.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                originalPrice: coin.currentPrice,
-                currentPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
+          // Update UI
           updateGainersList();
         } catch (error) {
           console.error('Error loading gainers:', error);
-          document.getElementById('gainersList').innerHTML = `
-            <li class="coin-list-item">
-              <div class="loading-indicator">Error loading top gainers</div>
-            </li>
-          `;
           showToast('Failed to load top gainers', 'error');
         }
       }
@@ -2760,31 +2801,20 @@
       // Update gainers list
       function updateGainersList() {
         const gainersList = document.getElementById('gainersList');
-        
-        if (gainersData.length === 0) {
-          gainersList.innerHTML = `
-            <li class="coin-list-item">
-              <div class="loading-indicator">Loading top gainers...</div>
-            </li>
-          `;
-          return;
-        }
-        
         gainersList.innerHTML = '';
         
-        // Show top 5 gainers
-        gainersData.slice(0, 5).forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
+        gainersData.slice(0, 5).forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
           };
           
-          const item = document.createElement('li');
+          const item = document.createElement('div');
           item.className = 'coin-list-item';
           item.innerHTML = `
             <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
+              <img src="${gainer.image}" alt="${gainer.name}" width="24">
+              <span>${gainer.name}</span>
             </div>
             <div class="price-info">
               <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
@@ -2794,88 +2824,9 @@
             </div>
           `;
           
-          item.addEventListener('click', () => showCoinDetail(coin.id));
+          item.addEventListener('click', () => showCoinDetail(gainer.id));
           gainersList.appendChild(item);
         });
-      }
-
-      // Show all gainers modal
-      async function showAllGainers() {
-        const modal = document.getElementById('coinModal');
-        const content = document.getElementById('coinModalContent');
-        const title = document.getElementById('coinModalTitle');
-        
-        title.textContent = 'Top Gainers (24h)';
-        
-        // Create table for all gainers
-        content.innerHTML = `
-          <div class="table-container">
-            <table class="market-overview">
-              <thead>
-                <tr>
-                  <th>Asset</th>
-                  <th>Price</th>
-                  <th>24h Change</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allGainersTable">
-                <!-- Gainers will be loaded here -->
-              </tbody>
-            </table>
-          </div>
-        `;
-        
-        const tableBody = document.getElementById('allGainersTable');
-        
-        if (gainersData.length === 0) {
-          tableBody.innerHTML = `
-            <tr>
-              <td colspan="4" class="loading-indicator">
-                Loading gainers data, please wait...
-              </td>
-            </tr>
-          `;
-        } else {
-          gainersData.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.className = 'asset-row';
-            row.innerHTML = `
-              <td class="asset-cell">
-                <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
-                <div class="asset-info">
-                  <span class="asset-name">${coin.name}</span>
-                  <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-                  <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-                </div>
-              </td>
-            `;
-            
-            row.addEventListener('click', (e) => {
-              if (!e.target.closest('.action-buttons')) {
-                showCoinDetail(coin.id);
-              }
-            });
-            
-            tableBody.appendChild(row);
-          });
-        }
-        
-        modal.style.display = 'block';
       }
 
       // Load trending data
@@ -2887,25 +2838,10 @@
           const { trending } = await response.json();
           trendingData = trending;
           
-          // Update coin prices
-          trending.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                originalPrice: coin.currentPrice,
-                currentPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
+          // Update UI
           updateTrendingList();
         } catch (error) {
           console.error('Error loading trending:', error);
-          document.getElementById('trendingList').innerHTML = `
-            <li class="coin-list-item">
-              <div class="loading-indicator">Error loading trending assets</div>
-            </li>
-          `;
           showToast('Failed to load trending assets', 'error');
         }
       }
@@ -2913,26 +2849,15 @@
       // Update trending list
       function updateTrendingList() {
         const trendingList = document.getElementById('trendingList');
-        
-        if (trendingData.length === 0) {
-          trendingList.innerHTML = `
-            <li class="coin-list-item">
-              <div class="loading-indicator">Loading trending assets...</div>
-            </li>
-          `;
-          return;
-        }
-        
         trendingList.innerHTML = '';
         
-        // Show top 5 trending
         trendingData.slice(0, 5).forEach(coin => {
           const coinData = coinPrices[coin.id] || {
             currentPrice: coin.currentPrice,
             change24h: coin.change24h || 0
           };
           
-          const item = document.createElement('li');
+          const item = document.createElement('div');
           item.className = 'coin-list-item';
           item.innerHTML = `
             <div class="coin-info">
@@ -2952,96 +2877,18 @@
         });
       }
 
-      // Show all trending modal
-      async function showAllTrending() {
-        const modal = document.getElementById('coinModal');
-        const content = document.getElementById('coinModalContent');
-        const title = document.getElementById('coinModalTitle');
-        
-        title.textContent = 'Trending Coins';
-        
-        // Create table for all trending
-        content.innerHTML = `
-          <div class="table-container">
-            <table class="market-overview">
-              <thead>
-                <tr>
-                  <th>Asset</th>
-                  <th>Price</th>
-                  <th>24h Change</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allTrendingTable">
-                <!-- Trending will be loaded here -->
-              </tbody>
-            </table>
-          </div>
-        `;
-        
-        const tableBody = document.getElementById('allTrendingTable');
-        
-        if (trendingData.length === 0) {
-          tableBody.innerHTML = `
-            <tr>
-              <td colspan="4" class="loading-indicator">
-                Loading trending data, please wait...
-              </td>
-            </tr>
-          `;
-        } else {
-          trendingData.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.className = 'asset-row';
-            row.innerHTML = `
-              <td class="asset-cell">
-                <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
-                <div class="asset-info">
-                  <span class="asset-name">${coin.name}</span>
-                  <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
-              </td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-                  <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-                </div>
-              </td>
-            `;
-            
-            row.addEventListener('click', (e) => {
-              if (!e.target.closest('.action-buttons')) {
-                showCoinDetail(coin.id);
-              }
-            });
-            
-            tableBody.appendChild(row);
-          });
-        }
-        
-        modal.style.display = 'block';
-      }
-
       // Load news
       async function loadNews() {
+        const container = document.getElementById('newsContainer');
+        
         try {
           const response = await fetch(`${API_BASE_URL}/news`);
           if (!response.ok) throw new Error('Failed to fetch news');
           
-          const { articles } = await response.json();
+          const { data } = await response.json();
           
           // Process and categorize articles
-          const processedArticles = articles.map(article => {
-            // Extract category from title/content or assign default
+          const articles = data.articles.map(article => {
             let category = 'market';
             const title = article.title.toLowerCase();
             
@@ -3061,11 +2908,23 @@
             };
           });
           
-          // Update news container
-          updateNewsContainer(processedArticles);
+          // Render news
+          renderNews(articles);
+          
+          // Set up filter buttons
+          document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+              document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              filterNews(articles, btn.dataset.category);
+            });
+          });
+          
+          // Set up pagination
+          setupNewsPagination(articles);
         } catch (error) {
           console.error('Error loading news:', error);
-          document.getElementById('newsContainer').innerHTML = `
+          container.innerHTML = `
             <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
               <div style="margin-bottom: 12px; color: var(--text-secondary);">
                 Couldn't load news at this time
@@ -3078,23 +2937,27 @@
         }
       }
 
-      // Update news container with articles
-      function updateNewsContainer(articles) {
+      // Render news
+      function renderNews(articles, page = 1) {
         const container = document.getElementById('newsContainer');
+        const itemsPerPage = 6;
+        const startIdx = (page - 1) * itemsPerPage;
+        const endIdx = startIdx + itemsPerPage;
+        const articlesToShow = articles.slice(startIdx, endIdx);
+        
         container.innerHTML = '';
         
-        if (articles.length === 0) {
+        if (articlesToShow.length === 0) {
           container.innerHTML = `
             <div class="no-news" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
               <i class="far fa-newspaper" style="font-size: 40px; color: var(--text-secondary); margin-bottom: 16px;"></i>
-              <div style="color: var(--text-secondary);">No news articles found</div>
+              <div style="color: var(--text-secondary);">No news found for this category</div>
             </div>
           `;
           return;
         }
         
-        // Show first 6 articles
-        articles.slice(0, 6).forEach(article => {
+        articlesToShow.forEach(article => {
           const newsCard = document.createElement('div');
           newsCard.className = 'news-card';
           newsCard.innerHTML = `
@@ -3120,6 +2983,16 @@
         });
       }
 
+      // Filter news by category
+      function filterNews(articles, category) {
+        if (category === 'all') {
+          renderNews(articles);
+        } else {
+          const filtered = articles.filter(article => article.category === category);
+          renderNews(filtered);
+        }
+      }
+
       // Format news date
       function formatNewsDate(dateString) {
         const date = new Date(dateString);
@@ -3129,6 +3002,37 @@
           hour: '2-digit',
           minute: '2-digit'
         });
+      }
+
+      // Setup news pagination
+      function setupNewsPagination(articles) {
+        const totalPages = Math.ceil(articles.length / 6);
+        let currentPage = 1;
+        
+        document.getElementById('prevNewsBtn').addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderNews(articles, currentPage);
+            updateNewsPagination(currentPage, totalPages);
+          }
+        });
+        
+        document.getElementById('nextNewsBtn').addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderNews(articles, currentPage);
+            updateNewsPagination(currentPage, totalPages);
+          }
+        });
+        
+        updateNewsPagination(currentPage, totalPages);
+      }
+
+      // Update news pagination
+      function updateNewsPagination(currentPage, totalPages) {
+        document.getElementById('pageIndicator').textContent = `${currentPage}/${totalPages}`;
+        document.getElementById('prevNewsBtn').disabled = currentPage <= 1;
+        document.getElementById('nextNewsBtn').disabled = currentPage >= totalPages;
       }
 
       // Show detailed news view
@@ -3168,7 +3072,7 @@
         
         modal.style.display = 'block';
       }
-      
+
       // Load withdrawals
       async function loadWithdrawals() {
         try {
@@ -3428,6 +3332,110 @@
         }
         
         modal.style.display = 'block';
+      }
+
+      // Show all gainers modal
+      async function showAllGainers() {
+        const modal = document.getElementById('allGainersModal');
+        modal.style.display = 'block';
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) {
+            throw new Error('Failed to load all gainers');
+          }
+          
+          const { gainers } = await response.json();
+          const tableBody = document.getElementById('allGainersTable');
+          tableBody.innerHTML = '';
+          
+          gainers.forEach(gainer => {
+            const coinData = coinPrices[gainer.id] || {
+              currentPrice: gainer.currentPrice,
+              change24h: gainer.change24h || 0
+            };
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>
+                <div class="coin-cell">
+                  <img src="${gainer.image}" alt="${gainer.name}" class="coin-icon">
+                  <span class="coin-name">${gainer.name}</span>
+                  <span class="coin-symbol">${gainer.symbol.toUpperCase()}</span>
+                </div>
+              </td>
+              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${gainer.id}', 'buy', event)">Trade</button>
+              </td>
+            `;
+            
+            row.addEventListener('click', () => {
+              closeModal('allGainersModal');
+              showCoinDetail(gainer.id);
+            });
+            
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading all gainers:', error);
+          showToast('Failed to load all gainers', 'error');
+        }
+      }
+
+      // Show all trending modal
+      async function showAllTrending() {
+        const modal = document.getElementById('allTrendingModal');
+        modal.style.display = 'block';
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trending`);
+          if (!response.ok) {
+            throw new Error('Failed to load all trending');
+          }
+          
+          const { trending } = await response.json();
+          const tableBody = document.getElementById('allTrendingTable');
+          tableBody.innerHTML = '';
+          
+          trending.forEach(coin => {
+            const coinData = coinPrices[coin.id] || {
+              currentPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>
+                <div class="coin-cell">
+                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                  <span class="coin-name">${coin.name}</span>
+                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+                </div>
+              </td>
+              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+              </td>
+            `;
+            
+            row.addEventListener('click', () => {
+              closeModal('allTrendingModal');
+              showCoinDetail(coin.id);
+            });
+            
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading all trending:', error);
+          showToast('Failed to load all trending', 'error');
+        }
       }
 
       // Change trading chart
