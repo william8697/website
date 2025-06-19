@@ -1496,29 +1496,31 @@
 
     <!-- Market Data Section -->
     <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Market Overview</h2>
-        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
-      </div>
-      
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>24h Change</th>
-              <th>24h Volume</th>
-              <th>Market Cap</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="marketTable">
-            <!-- Market data will be loaded here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="section-header">
+    <h2 class="section-title">Market Overview</h2>
+    <a href="#" class="section-link" id="viewAllMarkets">View All</a>
+  </div>
+  
+  <div class="table-container">
+    <table class="market-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Price</th>
+          <th>Change</th>
+          <th>Volume (24h)</th>
+          <th>Market Cap</th>
+          <th>Supply</th>
+          <th>Trend</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="marketTable">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+</div>
 
     <!-- Stats Section -->
     <div class="market-stats-grid">
@@ -1568,27 +1570,25 @@
     </div>
 
     <!-- Gainers & Trending Section -->
-    <div class="gainers-trending">
-      <div class="section gainers">
-        <div class="section-header">
-          <h2 class="section-title">Top Gainers</h2>
-          <a href="#" class="section-link" id="viewAllGainers">View All</a>
-        </div>
-        <ul class="coin-list" id="gainersList">
-          <!-- Gainers data will be loaded here -->
-        </ul>
-      </div>
+    <div class="section gainers">
+  <div class="section-header">
+    <h2 class="section-title">Top Gainers</h2>
+    <a href="#" class="section-link" id="viewAllGainers">View All</a>
+  </div>
+  <div class="gainers-container" id="gainersList">
+    <!-- Data will be populated here -->
+  </div>
+</div>
       
       <div class="section trending">
-        <div class="section-header">
-          <h2 class="section-title">Trending</h2>
-          <a href="#" class="section-link" id="viewAllTrending">View All</a>
-        </div>
-        <ul class="coin-list" id="trendingList">
-          <!-- Trending data will be loaded here -->
-        </ul>
-      </div>
-    </div>
+  <div class="section-header">
+    <h2 class="section-title">Trending</h2>
+    <a href="#" class="section-link" id="viewAllTrending">View All</a>
+  </div>
+  <div class="trending-container" id="trendingList">
+    <!-- Data will be populated here -->
+  </div>
+</div>
 
     <!-- Trading View -->
     <div class="section trading-view">
