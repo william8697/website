@@ -296,24 +296,20 @@
     }
 
     /* Market Overview Table Styles */
-    .market-table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .market-table {
+    .market-overview {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .market-table th, .market-table td {
+    .market-overview th, 
+    .market-overview td {
       padding: 12px 16px;
       text-align: left;
       font-size: 14px;
       border-bottom: 1px solid var(--border-color);
     }
 
-    .market-table th {
+    .market-overview th {
       font-weight: 500;
       color: var(--text-secondary);
       background-color: var(--secondary-bg);
@@ -321,7 +317,7 @@
       top: var(--header-height);
     }
 
-    .market-table tr:hover {
+    .market-overview tr:hover {
       background-color: rgba(240, 185, 11, 0.03);
     }
 
@@ -368,13 +364,13 @@
     }
 
     .positive {
-      background-color: rgba(14, 203, 129, 0.15);
       color: var(--positive);
+      background-color: rgba(14, 203, 129, 0.1);
     }
 
     .negative {
-      background-color: rgba(246, 70, 93, 0.15);
       color: var(--negative);
+      background-color: rgba(246, 70, 93, 0.1);
     }
 
     .supply-container {
@@ -384,9 +380,8 @@
     }
 
     .supply-bar-container {
-      width: 100%;
       height: 4px;
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: rgba(255, 255, 255, 0.1);
       border-radius: 2px;
       overflow: hidden;
     }
@@ -398,12 +393,30 @@
     }
 
     .trend-sparkline {
-      width: 60px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
+      width: 80px;
+      height: 30px;
+      position: relative;
+    }
+
+    .trend-sparkline::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: currentColor;
+      bottom: 0;
+    }
+
+    .trend-sparkline::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, 
+        rgba(14, 203, 129, 0.1) 0%, 
+        rgba(14, 203, 129, 0) 100%);
+      bottom: 0;
+      opacity: 0.5;
     }
 
     .trend-sparkline.positive {
@@ -420,19 +433,19 @@
     }
 
     .btn-trade {
-      padding: 4px 8px;
-      font-size: 12px;
-      min-width: 60px;
+      padding: 6px 12px;
       border-radius: 4px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s;
+      border: 1px solid transparent;
     }
 
     .btn-buy {
       background-color: rgba(14, 203, 129, 0.1);
       color: var(--positive);
-      border: 1px solid var(--positive);
+      border-color: var(--positive);
     }
 
     .btn-buy:hover {
@@ -442,7 +455,7 @@
     .btn-sell {
       background-color: rgba(246, 70, 93, 0.1);
       color: var(--negative);
-      border: 1px solid var(--negative);
+      border-color: var(--negative);
     }
 
     .btn-sell:hover {
@@ -521,10 +534,16 @@
       font-size: 0.75rem;
     }
 
-    /* Gainers & Trending Section */
+    /* Gainers/Trending Section */
     .gainers-trending {
       display: flex;
       gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .gainers-trending {
+        flex-direction: column;
+      }
     }
 
     .gainers, .trending {
@@ -910,96 +929,6 @@
       justify-content: flex-end;
     }
 
-    /* Loading Skeletons */
-    .news-skeleton {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .skeleton-image {
-      height: 180px;
-      background-color: rgba(255, 255, 255, 0.05);
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-
-    .skeleton-content {
-      padding: 16px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .skeleton-line {
-      height: 12px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 4px;
-      animation: pulse 1.5s infinite ease-in-out;
-    }
-
-    /* Responsive */
-    @media (max-width: 992px) {
-      .news-container {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .news-section {
-        padding: 20px;
-      }
-      
-      .news-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .news-filters {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 8px;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      .news-detail-title {
-        font-size: 20px;
-      }
-      
-      .news-detail-content {
-        font-size: 15px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .news-section .section-title {
-        font-size: 20px;
-      }
-      
-      .news-section .section-subtitle {
-        font-size: 14px;
-      }
-      
-      .news-pagination {
-        gap: 8px;
-      }
-      
-      .news-pagination .btn {
-        padding: 6px 12px;
-        font-size: 13px;
-      }
-      
-      .news-detail-image {
-        max-height: 250px;
-      }
-      
-      .news-detail-title {
-        font-size: 18px;
-      }
-    }
-    
     /* Withdrawals Feed Styles */
     .withdrawals-feed {
       position: fixed;
@@ -1485,35 +1414,18 @@
       }
     }
 
-    /* Animation */
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.6; }
-      100% { opacity: 1; }
-    }
-
-    .updating {
-      animation: pulse 1s infinite;
-      color: #f0b90b;
-    }
-
-    .number-roll {
-      display: inline-block;
-      transition: all 0.5s ease-out;
-    }
-
-    /* Pagination Styles */
-    .pagination {
+    /* Pagination Controls */
+    .pagination-controls {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      padding: 16px 0;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 12px 0;
     }
 
-    .page-btn {
-      padding: 8px 12px;
+    .pagination-btn {
+      padding: 8px 16px;
       border-radius: 4px;
       background-color: var(--card-bg);
       color: var(--text-primary);
@@ -1522,44 +1434,26 @@
       transition: all 0.2s;
     }
 
-    .page-btn:hover {
+    .pagination-btn:hover {
       background-color: rgba(240, 185, 11, 0.1);
     }
 
-    .page-btn.active {
-      background-color: var(--primary-accent);
-      color: #000;
-      border-color: var(--primary-accent);
-    }
-
-    .page-btn:disabled {
+    .pagination-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    /* Sparkline Chart */
-    .sparkline {
-      width: 60px;
-      height: 24px;
-      position: relative;
+    .pagination-info {
+      font-size: 14px;
+      color: var(--text-secondary);
     }
 
-    .sparkline-line {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      stroke-width: 2;
-      fill: none;
-    }
-
-    .sparkline-line.positive {
-      stroke: var(--positive);
-    }
-
-    .sparkline-line.negative {
-      stroke: var(--negative);
+    /* Loading Indicator */
+    .loading-indicator {
+      color: var(--positive);
+      font-size: 14px;
+      padding: 12px;
+      text-align: center;
     }
   </style>
 </head>
@@ -1629,15 +1523,13 @@
         <a href="#" class="section-link" id="viewAllMarkets">View All</a>
       </div>
       
-      <div class="market-table-container">
-        <table class="market-table">
+      <div class="table-container">
+        <table class="market-overview">
           <thead>
             <tr>
               <th>Asset</th>
               <th>Price</th>
-              <th>1h</th>
-              <th>24h</th>
-              <th>7d</th>
+              <th>Change</th>
               <th>Volume (24h)</th>
               <th>Market Cap</th>
               <th>Supply</th>
@@ -1646,15 +1538,21 @@
             </tr>
           </thead>
           <tbody id="marketTable">
-            <!-- Data will be populated here -->
+            <!-- Loading indicator -->
+            <tr>
+              <td colspan="8" class="loading-indicator">
+                Loading market data, please wait...
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
-      
-      <div class="pagination" id="marketPagination">
-        <button class="page-btn" id="prevMarketPage" disabled>Previous</button>
-        <span id="marketPageIndicator">1/1</span>
-        <button class="page-btn" id="nextMarketPage">Next</button>
+
+      <!-- Pagination Controls -->
+      <div class="pagination-controls" id="marketPagination" style="display: none;">
+        <button class="pagination-btn" id="prevMarketPage" disabled>Previous</button>
+        <span class="pagination-info" id="marketPageInfo">Page 1 of 1</span>
+        <button class="pagination-btn" id="nextMarketPage">Next</button>
       </div>
     </div>
 
@@ -1713,13 +1611,11 @@
           <a href="#" class="section-link" id="viewAllGainers">View All</a>
         </div>
         <ul class="coin-list" id="gainersList">
-          <!-- Data will be populated here -->
+          <!-- Loading indicator -->
+          <li class="coin-list-item">
+            <div class="loading-indicator">Loading top gainers...</div>
+          </li>
         </ul>
-        <div class="pagination" id="gainersPagination">
-          <button class="page-btn" id="prevGainersPage" disabled>Previous</button>
-          <span id="gainersPageIndicator">1/1</span>
-          <button class="page-btn" id="nextGainersPage">Next</button>
-        </div>
       </div>
       
       <div class="section trending">
@@ -1728,13 +1624,11 @@
           <a href="#" class="section-link" id="viewAllTrending">View All</a>
         </div>
         <ul class="coin-list" id="trendingList">
-          <!-- Data will be populated here -->
+          <!-- Loading indicator -->
+          <li class="coin-list-item">
+            <div class="loading-indicator">Loading trending assets...</div>
+          </li>
         </ul>
-        <div class="pagination" id="trendingPagination">
-          <button class="page-btn" id="prevTrendingPage" disabled>Previous</button>
-          <span id="trendingPageIndicator">1/1</span>
-          <button class="page-btn" id="nextTrendingPage">Next</button>
-        </div>
       </div>
     </div>
 
@@ -1878,58 +1772,6 @@
       </div>
     </div>
 
-    <!-- All Gainers Modal -->
-    <div class="modal" id="allGainersModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Top Gainers (24h)</h2>
-          <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
-        </div>
-        
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>24h Change</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="allGainersTable">
-              <!-- All gainers data will be loaded here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- All Trending Modal -->
-    <div class="modal" id="allTrendingModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Trending Coins</h2>
-          <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
-        </div>
-        
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>24h Change</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="allTrendingTable">
-              <!-- All trending data will be loaded here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <!-- Trade Modal -->
     <div class="modal" id="tradeModal">
       <div class="modal-content">
@@ -2007,25 +1849,8 @@
       let socket = null;
       let adminMessages = [];
       let viewedMessages = [];
-      
-      // Pagination state
-      const paginationState = {
-        market: {
-          currentPage: 1,
-          itemsPerPage: 15,
-          totalPages: 1
-        },
-        gainers: {
-          currentPage: 1,
-          itemsPerPage: 5,
-          totalPages: 1
-        },
-        trending: {
-          currentPage: 1,
-          itemsPerPage: 5,
-          totalPages: 1
-        }
-      };
+      let currentMarketPage = 1;
+      const MARKET_PAGE_SIZE = 15;
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
@@ -2044,10 +1869,8 @@
         // Load market data
         await loadMarketData();
         
-        // Load gainers data
+        // Load gainers and trending
         await loadGainersData();
-        
-        // Load trending data
         await loadTrendingData();
         
         // Load news
@@ -2127,7 +1950,8 @@
         // View All links
         document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
           e.preventDefault();
-          showAllCoins();
+          currentMarketPage = 1;
+          loadMarketData(true);
         });
         
         document.getElementById('viewAllGainers').addEventListener('click', (e) => {
@@ -2140,47 +1964,17 @@
           showAllTrending();
         });
         
-        // Pagination buttons
+        // Pagination controls
         document.getElementById('prevMarketPage').addEventListener('click', () => {
-          if (paginationState.market.currentPage > 1) {
-            paginationState.market.currentPage--;
-            updateMarketTable();
+          if (currentMarketPage > 1) {
+            currentMarketPage--;
+            loadMarketData();
           }
         });
         
         document.getElementById('nextMarketPage').addEventListener('click', () => {
-          if (paginationState.market.currentPage < paginationState.market.totalPages) {
-            paginationState.market.currentPage++;
-            updateMarketTable();
-          }
-        });
-        
-        document.getElementById('prevGainersPage').addEventListener('click', () => {
-          if (paginationState.gainers.currentPage > 1) {
-            paginationState.gainers.currentPage--;
-            updateGainersList();
-          }
-        });
-        
-        document.getElementById('nextGainersPage').addEventListener('click', () => {
-          if (paginationState.gainers.currentPage < paginationState.gainers.totalPages) {
-            paginationState.gainers.currentPage++;
-            updateGainersList();
-          }
-        });
-        
-        document.getElementById('prevTrendingPage').addEventListener('click', () => {
-          if (paginationState.trending.currentPage > 1) {
-            paginationState.trending.currentPage--;
-            updateTrendingList();
-          }
-        });
-        
-        document.getElementById('nextTrendingPage').addEventListener('click', () => {
-          if (paginationState.trending.currentPage < paginationState.trending.totalPages) {
-            paginationState.trending.currentPage++;
-            updateTrendingList();
-          }
+          currentMarketPage++;
+          loadMarketData();
         });
         
         // Trade amount input
@@ -2272,362 +2066,347 @@
         }
       }
 
-      // Load market data
-      async function loadMarketData() {
+      // Load futures content in main view
+      function loadFuturesContent() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Futures Trading</h2>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Contract</th>
+                    <th>Price</th>
+                    <th>24h Change</th>
+                    <th>Funding Rate</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="futuresTable">
+                  <!-- Futures data will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        // Load futures data
+        loadFuturesData();
+      }
+
+      // Load futures data
+      async function loadFuturesData() {
         try {
-          const response = await fetch(`${API_BASE_URL}/markets`);
-          if (!response.ok) throw new Error('Failed to fetch market data');
+          const response = await fetch(`${API_BASE_URL}/markets/futures`);
+          if (!response.ok) throw new Error('Failed to load futures data');
           
-          const { marketData } = await response.json();
+          const futures = await response.json();
+          const tableBody = document.getElementById('futuresTable');
+          tableBody.innerHTML = '';
           
-          // Store market data
-          marketData = marketData;
-          
-          // Initialize coin prices
-          marketData.forEach(coin => {
-            coinPrices[coin.id] = {
-              currentPrice: coin.currentPrice,
-              originalPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
+          futures.forEach(future => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${future.symbol}</td>
+              <td>$${future.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td class="${future.change24h >= 0 ? 'positive' : 'negative'}">
+                ${future.change24h >= 0 ? '+' : ''}${future.change24h.toFixed(2)}%
+              </td>
+              <td class="${future.fundingRate >= 0 ? 'positive' : 'negative'}">
+                ${future.fundingRate >= 0 ? '+' : ''}${future.fundingRate.toFixed(4)}%
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showFuturesTradeForm('${future.symbol}', 'long', event)">Trade</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
           });
-          
-          // Calculate total pages
-          paginationState.market.totalPages = Math.ceil(marketData.length / paginationState.market.itemsPerPage);
-          
-          // Update UI
-          updateMarketTable();
         } catch (error) {
-          console.error('Error loading market data:', error);
-          showToast('Failed to load market data', 'error');
+          console.error('Error loading futures data:', error);
+          showToast('Failed to load futures data', 'error');
         }
       }
 
-      // Update market table with pagination
-      function updateMarketTable() {
-        const tableBody = document.getElementById('marketTable');
-        tableBody.innerHTML = '';
-        
-        // Calculate start and end index for current page
-        const startIndex = (paginationState.market.currentPage - 1) * paginationState.market.itemsPerPage;
-        const endIndex = startIndex + paginationState.market.itemsPerPage;
-        const currentPageData = marketData.slice(startIndex, endIndex);
-        
-        currentPageData.forEach(asset => {
-          const coinData = coinPrices[asset.id] || {
-            currentPrice: asset.currentPrice,
-            change24h: asset.change24h || 0
-          };
-          
-          // Generate random changes for demo
-          const change1h = (Math.random() * 2 - 1).toFixed(2);
-          const change24h = coinData.change24h;
-          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
-          
-          // Generate sparkline data (simplified for demo)
-          const sparklineData = generateSparklineData(change24h >= 0);
-          
-          const row = document.createElement('tr');
-          row.className = 'asset-row';
-          
-          row.innerHTML = `
-            <td class="asset-cell">
-              <img src="${asset.image}" alt="${asset.name}" class="asset-icon">
-              <div class="asset-info">
-                <span class="asset-name">${asset.name}</span>
-                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
-              </div>
-            </td>
-            <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-            <td class="${change1h >= 0 ? 'positive' : 'negative'}">${change1h >= 0 ? '+' : ''}${Math.abs(change1h)}%</td>
-            <td class="${change24h >= 0 ? 'positive' : 'negative'}">${change24h >= 0 ? '+' : ''}${Math.abs(change24h).toFixed(2)}%</td>
-            <td class="${change7d >= 0 ? 'positive' : 'negative'}">${change7d >= 0 ? '+' : ''}${Math.abs(change7d)}%</td>
-            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
-            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
-            <td>
-              <div class="supply-container">
-                <span>${(asset.marketCap / asset.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
-                <div class="supply-bar-container">
-                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+      // Load earn content in main view
+      function loadEarnContent() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Earn Products</h2>
+            </div>
+            <div class="market-stats-grid">
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-piggy-bank"></i>
+                  <div class="stat-label">Flexible Savings</div>
+                </div>
+                <div class="stat-value">Up to 10% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Flexible</span>
+                  </span>
                 </div>
               </div>
-            </td>
-            <td>
-              <div class="sparkline">
-                <svg viewBox="0 0 60 24" class="sparkline-line ${change24h >= 0 ? 'positive' : 'negative'}">
-                  <polyline points="${sparklineData}" fill="none" stroke-width="2" />
-                </svg>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-lock"></i>
+                  <div class="stat-label">Locked Staking</div>
+                </div>
+                <div class="stat-value">Up to 15% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>30-90 Days</span>
+                  </span>
+                </div>
               </div>
-            </td>
-            <td>
-              <div class="action-buttons">
-                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-chart-pie"></i>
+                  <div class="stat-label">DeFi Mining</div>
+                </div>
+                <div class="stat-value">Up to 25% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Variable</span>
+                  </span>
+                </div>
               </div>
-            </td>
-          `;
+            </div>
+            
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Asset</th>
+                    <th>APY</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="earnProductsTable">
+                  <!-- Earn products will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        // Load earn products data
+        loadEarnProducts();
+      }
+
+      // Load earn products data
+      async function loadEarnProducts() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/earn/products`);
+          if (!response.ok) throw new Error('Failed to load earn products');
           
-          // Make entire row clickable except for action buttons
-          row.addEventListener('click', (e) => {
-            if (!e.target.closest('.action-buttons')) {
-              showCoinDetail(asset.id);
+          const products = await response.json();
+          const tableBody = document.getElementById('earnProductsTable');
+          tableBody.innerHTML = '';
+          
+          products.forEach(product => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${product.name}</td>
+              <td>
+                <div class="coin-cell">
+                  <img src="${product.image}" alt="${product.asset}" class="coin-icon">
+                  <span>${product.asset}</span>
+                </div>
+              </td>
+              <td class="positive">${product.apy}%</td>
+              <td>${product.duration || 'Flexible'}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showEarnForm('${product.id}', event)">Stake</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading earn products:', error);
+          showToast('Failed to load earn products', 'error');
+        }
+      }
+
+      // Start periodic updates
+      function startPeriodicUpdates() {
+        // Update prices every 30 seconds
+        setInterval(updatePrices, 30000);
+        
+        // Update withdrawals feed every 5 seconds
+        setInterval(loadWithdrawals, 5000);
+        
+        // Check for admin messages every minute
+        setInterval(checkAdminMessages, 60000);
+      }
+
+      // Check authentication status
+      async function checkAuthStatus() {
+        try {
+          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+          if (!token) {
+            updateAuthUI();
+            return;
+          }
+          
+          const response = await fetch(`${API_BASE_URL}/auth/status`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
             }
           });
           
-          tableBody.appendChild(row);
-        });
-        
-        // Update pagination controls
-        document.getElementById('marketPageIndicator').textContent = `${paginationState.market.currentPage}/${paginationState.market.totalPages}`;
-        document.getElementById('prevMarketPage').disabled = paginationState.market.currentPage <= 1;
-        document.getElementById('nextMarketPage').disabled = paginationState.market.currentPage >= paginationState.market.totalPages;
-      }
-
-      // Generate simplified sparkline data
-      function generateSparklineData(isPositive) {
-        const points = [];
-        const baseValue = isPositive ? 10 : 14;
-        
-        for (let i = 0; i < 10; i++) {
-          const x = i * 6;
-          const y = baseValue + (isPositive ? -Math.random() * 4 : Math.random() * 4);
-          points.push(`${x},${y}`);
-        }
-        
-        return points.join(' ');
-      }
-
-      // Load gainers data
-      async function loadGainersData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to fetch gainers');
-          
-          const { gainers } = await response.json();
-          
-          // Store gainers data
-          gainersData = gainers;
-          
-          // Calculate total pages
-          paginationState.gainers.totalPages = Math.ceil(gainers.length / paginationState.gainers.itemsPerPage);
-          
-          // Update UI
-          updateGainersList();
-        } catch (error) {
-          console.error('Error loading gainers:', error);
-          showToast('Failed to load top gainers', 'error');
-        }
-      }
-
-      // Update gainers list with pagination
-      function updateGainersList() {
-        const gainersList = document.getElementById('gainersList');
-        gainersList.innerHTML = '';
-        
-        // Calculate start and end index for current page
-        const startIndex = (paginationState.gainers.currentPage - 1) * paginationState.gainers.itemsPerPage;
-        const endIndex = startIndex + paginationState.gainers.itemsPerPage;
-        const currentPageData = gainersData.slice(startIndex, endIndex);
-        
-        currentPageData.forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          const item = document.createElement('li');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          gainersList.appendChild(item);
-        });
-        
-        // Update pagination controls
-        document.getElementById('gainersPageIndicator').textContent = `${paginationState.gainers.currentPage}/${paginationState.gainers.totalPages}`;
-        document.getElementById('prevGainersPage').disabled = paginationState.gainers.currentPage <= 1;
-        document.getElementById('nextGainersPage').disabled = paginationState.gainers.currentPage >= paginationState.gainers.totalPages;
-      }
-
-      // Load trending data
-      async function loadTrendingData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) throw new Error('Failed to fetch trending');
-          
-          const { trending } = await response.json();
-          
-          // Store trending data
-          trendingData = trending;
-          
-          // Calculate total pages
-          paginationState.trending.totalPages = Math.ceil(trending.length / paginationState.trending.itemsPerPage);
-          
-          // Update UI
-          updateTrendingList();
-        } catch (error) {
-          console.error('Error loading trending:', error);
-          showToast('Failed to load trending assets', 'error');
-        }
-      }
-
-      // Update trending list with pagination
-      function updateTrendingList() {
-        const trendingList = document.getElementById('trendingList');
-        trendingList.innerHTML = '';
-        
-        // Calculate start and end index for current page
-        const startIndex = (paginationState.trending.currentPage - 1) * paginationState.trending.itemsPerPage;
-        const endIndex = startIndex + paginationState.trending.itemsPerPage;
-        const currentPageData = trendingData.slice(startIndex, endIndex);
-        
-        currentPageData.forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          const item = document.createElement('li');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          trendingList.appendChild(item);
-        });
-        
-        // Update pagination controls
-        document.getElementById('trendingPageIndicator').textContent = `${paginationState.trending.currentPage}/${paginationState.trending.totalPages}`;
-        document.getElementById('prevTrendingPage').disabled = paginationState.trending.currentPage <= 1;
-        document.getElementById('nextTrendingPage').disabled = paginationState.trending.currentPage >= paginationState.trending.totalPages;
-      }
-
-      // Show all gainers modal
-      async function showAllGainers() {
-        const modal = document.getElementById('allGainersModal');
-        modal.style.display = 'block';
-        
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to load all gainers');
-          
-          const { gainers } = await response.json();
-          const tableBody = document.getElementById('allGainersTable');
-          tableBody.innerHTML = '';
-          
-          gainers.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
+          if (response.ok) {
+            const data = await response.json();
+            currentUser = data.user;
+            userBalance = data.balance || 0;
+            userPortfolio = data.portfolio || [];
             
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
+            updateAuthUI();
+            showWelcomeMessage();
             
-            row.addEventListener('click', () => {
-              closeModal('allGainersModal');
-              showCoinDetail(coin.id);
+            // Connect to WebSocket with authentication
+            if (socket) {
+              socket.send(JSON.stringify({
+                type: 'AUTHENTICATE',
+                token: token
+              }));
+            }
+          } else {
+            clearAuthData();
+          }
+        } catch (error) {
+          console.error('Error checking auth status:', error);
+          clearAuthData();
+        }
+      }
+
+      // Update UI based on authentication status
+      function updateAuthUI() {
+        const authButtons = document.getElementById('authButtons');
+        const userMenu = document.getElementById('userMenuContainer');
+        
+        if (currentUser) {
+          authButtons.style.display = 'none';
+          userMenu.style.display = 'flex';
+          
+          // Set user avatar initial
+          const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
+                         currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
+          document.getElementById('userAvatar').textContent = initial;
+          
+          // Update balance display
+          document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
+          
+          // Hide guest alert
+          document.getElementById('guestAlert').style.display = 'none';
+        } else {
+          authButtons.style.display = 'flex';
+          userMenu.style.display = 'none';
+          
+          // Show guest alert
+          document.getElementById('guestAlert').style.display = 'flex';
+          document.getElementById('welcomeAlert').style.display = 'none';
+        }
+      }
+
+      // Show welcome message for logged in users
+      function showWelcomeMessage() {
+        if (!currentUser) return;
+        
+        const username = currentUser.username || currentUser.email.split('@')[0];
+        document.getElementById('welcomeUsername').textContent = username;
+        
+        // Calculate portfolio change
+        const portfolioChange = calculatePortfolioChange();
+        document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
+        document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+        
+        document.getElementById('welcomeAlert').style.display = 'flex';
+      }
+
+      // Calculate portfolio change percentage
+      function calculatePortfolioChange() {
+        if (!userPortfolio || userPortfolio.length === 0) return 0;
+        
+        let totalValue = 0;
+        let totalChange = 0;
+        
+        userPortfolio.forEach(item => {
+          const coinData = coinPrices[item.coinId];
+          if (coinData) {
+            const value = item.amount * coinData.currentPrice;
+            totalValue += value;
+            totalChange += value * (coinData.change24h / 100);
+          }
+        });
+        
+        return totalValue > 0 ? (totalChange / totalValue) * 100 : 0;
+      }
+
+      // Clear authentication data
+      function clearAuthData() {
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        currentUser = null;
+        userBalance = 0;
+        userPortfolio = [];
+        updateAuthUI();
+        
+        // Close WebSocket connection if exists
+        if (socket) {
+          socket.close();
+          socket = null;
+        }
+      }
+
+      // Toggle dropdown menu
+      function toggleDropdown() {
+        document.getElementById('dropdownMenu').classList.toggle('show');
+      }
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('dropdownMenu');
+        const avatar = document.getElementById('userAvatar');
+        
+        if (dropdown.classList.contains('show') && 
+            !dropdown.contains(event.target) && 
+            !avatar.contains(event.target)) {
+          dropdown.classList.remove('show');
+        }
+      });
+
+      // Logout user
+      async function logout() {
+        try {
+          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+          if (token) {
+            await fetch(`${API_BASE_URL}/auth/logout`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
             });
-            
-            tableBody.appendChild(row);
-          });
+          }
+          
+          clearAuthData();
+          showToast('You have been logged out successfully');
         } catch (error) {
-          console.error('Error loading all gainers:', error);
-          showToast('Failed to load all gainers', 'error');
+          console.error('Error logging out:', error);
+          showToast('Error logging out. Please try again.', 'error');
         }
       }
-
-      // Show all trending modal
-      async function showAllTrending() {
-        const modal = document.getElementById('allTrendingModal');
-        modal.style.display = 'block';
-        
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) throw new Error('Failed to load all trending');
-          
-          const { trending } = await response.json();
-          const tableBody = document.getElementById('allTrendingTable');
-          tableBody.innerHTML = '';
-          
-          trending.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allTrendingModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
-        } catch (error) {
-          console.error('Error loading all trending:', error);
-          showToast('Failed to load all trending', 'error');
-        }
-      }
-
-      // [Rest of your existing JavaScript functions...]
-      // (Note: I've included all the remaining functions from your original code,
-      // but had to truncate here due to length limitations. The complete implementation
-      // would include all the remaining functions exactly as in your original file,
-      // with only the modifications specified in your instructions.)
 
       // Initialize WebSocket connection
       function initWebSocket() {
@@ -2801,161 +2580,455 @@
         }
       }
 
-      // Check authentication status
-      async function checkAuthStatus() {
+      // Load market data with pagination
+      async function loadMarketData(showAll = false) {
         try {
-          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-          if (!token) {
-            updateAuthUI();
-            return;
-          }
+          const response = await fetch(`${API_BASE_URL}/markets${showAll ? '/all' : `?page=${currentMarketPage}&limit=${MARKET_PAGE_SIZE}`}`);
+          if (!response.ok) throw new Error('Failed to fetch market data');
           
-          const response = await fetch(`${API_BASE_URL}/auth/status`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
+          const { marketData, total } = await response.json();
+          
+          // Store market data
+          marketData = marketData;
+          
+          // Update coin prices
+          marketData.forEach(coin => {
+            if (!coinPrices[coin.id]) {
+              coinPrices[coin.id] = {
+                originalPrice: coin.currentPrice,
+                currentPrice: coin.currentPrice,
+                change24h: coin.change24h || 0
+              };
             }
           });
           
-          if (response.ok) {
-            const data = await response.json();
-            currentUser = data.user;
-            userBalance = data.balance || 0;
-            userPortfolio = data.portfolio || [];
-            
-            updateAuthUI();
-            showWelcomeMessage();
-            
-            // Connect to WebSocket with authentication
-            if (socket) {
-              socket.send(JSON.stringify({
-                type: 'AUTHENTICATE',
-                token: token
-              }));
-            }
+          // Update UI
+          updateMarketTable();
+          
+          // Show pagination controls if not showing all
+          const pagination = document.getElementById('marketPagination');
+          if (showAll) {
+            pagination.style.display = 'none';
           } else {
-            clearAuthData();
+            pagination.style.display = 'flex';
+            const totalPages = Math.ceil(total / MARKET_PAGE_SIZE);
+            document.getElementById('marketPageInfo').textContent = `Page ${currentMarketPage} of ${totalPages}`;
+            document.getElementById('prevMarketPage').disabled = currentMarketPage <= 1;
+            document.getElementById('nextMarketPage').disabled = currentMarketPage >= totalPages;
           }
         } catch (error) {
-          console.error('Error checking auth status:', error);
-          clearAuthData();
+          console.error('Error loading market data:', error);
+          document.getElementById('marketTable').innerHTML = `
+            <tr>
+              <td colspan="8" class="loading-indicator">
+                Error loading market data. Please try again.
+              </td>
+            </tr>
+          `;
+          showToast('Failed to load market data', 'error');
         }
       }
 
-      // Update UI based on authentication status
-      function updateAuthUI() {
-        const authButtons = document.getElementById('authButtons');
-        const userMenu = document.getElementById('userMenuContainer');
+      // Update market table with current data
+      function updateMarketTable() {
+        const tableBody = document.getElementById('marketTable');
         
-        if (currentUser) {
-          authButtons.style.display = 'none';
-          userMenu.style.display = 'flex';
-          
-          // Set user avatar initial
-          const initial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 
-                         currentUser.email ? currentUser.email.charAt(0).toUpperCase() : 'U';
-          document.getElementById('userAvatar').textContent = initial;
-          
-          // Update balance display
-          document.getElementById('userBalanceDisplay').textContent = `$${userBalance.toFixed(2)}`;
-          
-          // Hide guest alert
-          document.getElementById('guestAlert').style.display = 'none';
-        } else {
-          authButtons.style.display = 'flex';
-          userMenu.style.display = 'none';
-          
-          // Show guest alert
-          document.getElementById('guestAlert').style.display = 'flex';
-          document.getElementById('welcomeAlert').style.display = 'none';
+        // If no data yet, show loading
+        if (marketData.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" class="loading-indicator">
+                Loading market data, please wait...
+              </td>
+            </tr>
+          `;
+          return;
         }
-      }
-
-      // Show welcome message for logged in users
-      function showWelcomeMessage() {
-        if (!currentUser) return;
         
-        const username = currentUser.username || currentUser.email.split('@')[0];
-        document.getElementById('welcomeUsername').textContent = username;
+        tableBody.innerHTML = '';
         
-        // Calculate portfolio change
-        const portfolioChange = calculatePortfolioChange();
-        document.getElementById('portfolioChange').textContent = `${portfolioChange.toFixed(2)}%`;
-        document.getElementById('portfolioChange').className = portfolioChange >= 0 ? 'positive' : 'negative';
+        // Show only the current page's data
+        const startIdx = (currentMarketPage - 1) * MARKET_PAGE_SIZE;
+        const endIdx = startIdx + MARKET_PAGE_SIZE;
+        const visibleData = marketData.slice(startIdx, endIdx);
         
-        document.getElementById('welcomeAlert').style.display = 'flex';
-      }
-
-      // Calculate portfolio change percentage
-      function calculatePortfolioChange() {
-        if (!userPortfolio || userPortfolio.length === 0) return 0;
-        
-        let totalValue = 0;
-        let totalChange = 0;
-        
-        userPortfolio.forEach(item => {
-          const coinData = coinPrices[item.coinId];
-          if (coinData) {
-            const value = item.amount * coinData.currentPrice;
-            totalValue += value;
-            totalChange += value * (coinData.change24h / 100);
-          }
+        visibleData.forEach(asset => {
+          const coinData = coinPrices[asset.id] || {
+            currentPrice: asset.currentPrice,
+            change24h: asset.change24h || 0
+          };
+          
+          // Generate random changes for demo
+          const change1h = (Math.random() * 2 - 1).toFixed(2);
+          const change24h = coinData.change24h;
+          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+          
+          // Determine trend direction
+          const isUpwardTrend = Math.random() > 0.5;
+          
+          const row = document.createElement('tr');
+          row.className = 'asset-row';
+          
+          row.innerHTML = `
+            <td class="asset-cell">
+              <img src="${asset.image}" alt="${asset.name}" class="asset-icon">
+              <div class="asset-info">
+                <span class="asset-name">${asset.name}</span>
+                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+            <td>
+              <div class="change-container">
+                <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+                  ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+                </span>
+                <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+                  ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+                </span>
+                <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+                  ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
+                </span>
+              </div>
+            </td>
+            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+            <td>
+              <div class="supply-container">
+                <span>${(asset.marketCap / coinData.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+                <div class="supply-bar-container">
+                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+                ${isUpwardTrend ? '↗' : '↘'}
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              </div>
+            </td>
+          `;
+          
+          // Make entire row clickable except for action buttons
+          row.addEventListener('click', (e) => {
+            if (!e.target.closest('.action-buttons')) {
+              showCoinDetail(asset.id);
+            }
+          });
+          
+          tableBody.appendChild(row);
         });
-        
-        return totalValue > 0 ? (totalChange / totalValue) * 100 : 0;
       }
 
-      // Clear authentication data
-      function clearAuthData() {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-        currentUser = null;
-        userBalance = 0;
-        userPortfolio = [];
-        updateAuthUI();
-        
-        // Close WebSocket connection if exists
-        if (socket) {
-          socket.close();
-          socket = null;
-        }
-      }
-
-      // Toggle dropdown menu
-      function toggleDropdown() {
-        document.getElementById('dropdownMenu').classList.toggle('show');
-      }
-
-      // Close dropdown when clicking outside
-      document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdownMenu');
-        const avatar = document.getElementById('userAvatar');
-        
-        if (dropdown.classList.contains('show') && 
-            !dropdown.contains(event.target) && 
-            !avatar.contains(event.target)) {
-          dropdown.classList.remove('show');
-        }
-      });
-
-      // Logout user
-      async function logout() {
+      // Load gainers data
+      async function loadGainersData() {
         try {
-          const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-          if (token) {
-            await fetch(`${API_BASE_URL}/auth/logout`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) throw new Error('Failed to fetch gainers');
+          
+          const { gainers } = await response.json();
+          gainersData = gainers;
+          
+          // Update coin prices
+          gainers.forEach(coin => {
+            if (!coinPrices[coin.id]) {
+              coinPrices[coin.id] = {
+                originalPrice: coin.currentPrice,
+                currentPrice: coin.currentPrice,
+                change24h: coin.change24h || 0
+              };
+            }
+          });
+          
+          updateGainersList();
+        } catch (error) {
+          console.error('Error loading gainers:', error);
+          document.getElementById('gainersList').innerHTML = `
+            <li class="coin-list-item">
+              <div class="loading-indicator">Error loading top gainers</div>
+            </li>
+          `;
+          showToast('Failed to load top gainers', 'error');
+        }
+      }
+
+      // Update gainers list
+      function updateGainersList() {
+        const gainersList = document.getElementById('gainersList');
+        
+        if (gainersData.length === 0) {
+          gainersList.innerHTML = `
+            <li class="coin-list-item">
+              <div class="loading-indicator">Loading top gainers...</div>
+            </li>
+          `;
+          return;
+        }
+        
+        gainersList.innerHTML = '';
+        
+        // Show top 5 gainers
+        gainersData.slice(0, 5).forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const item = document.createElement('li');
+          item.className = 'coin-list-item';
+          item.innerHTML = `
+            <div class="coin-info">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
+              <span>${coin.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          item.addEventListener('click', () => showCoinDetail(coin.id));
+          gainersList.appendChild(item);
+        });
+      }
+
+      // Show all gainers modal
+      async function showAllGainers() {
+        const modal = document.getElementById('coinModal');
+        const content = document.getElementById('coinModalContent');
+        const title = document.getElementById('coinModalTitle');
+        
+        title.textContent = 'Top Gainers (24h)';
+        
+        // Create table for all gainers
+        content.innerHTML = `
+          <div class="table-container">
+            <table class="market-overview">
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th>Price</th>
+                  <th>24h Change</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="allGainersTable">
+                <!-- Gainers will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        const tableBody = document.getElementById('allGainersTable');
+        
+        if (gainersData.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" class="loading-indicator">
+                Loading gainers data, please wait...
+              </td>
+            </tr>
+          `;
+        } else {
+          gainersData.forEach(coin => {
+            const coinData = coinPrices[coin.id] || {
+              currentPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
+            
+            const row = document.createElement('tr');
+            row.className = 'asset-row';
+            row.innerHTML = `
+              <td class="asset-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
+                <div class="asset-info">
+                  <span class="asset-name">${coin.name}</span>
+                  <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+                </div>
+              </td>
+              <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
+                  <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
+                </div>
+              </td>
+            `;
+            
+            row.addEventListener('click', (e) => {
+              if (!e.target.closest('.action-buttons')) {
+                showCoinDetail(coin.id);
               }
             });
-          }
-          
-          clearAuthData();
-          showToast('You have been logged out successfully');
-        } catch (error) {
-          console.error('Error logging out:', error);
-          showToast('Error logging out. Please try again.', 'error');
+            
+            tableBody.appendChild(row);
+          });
         }
+        
+        modal.style.display = 'block';
+      }
+
+      // Load trending data
+      async function loadTrendingData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trending`);
+          if (!response.ok) throw new Error('Failed to fetch trending');
+          
+          const { trending } = await response.json();
+          trendingData = trending;
+          
+          // Update coin prices
+          trending.forEach(coin => {
+            if (!coinPrices[coin.id]) {
+              coinPrices[coin.id] = {
+                originalPrice: coin.currentPrice,
+                currentPrice: coin.currentPrice,
+                change24h: coin.change24h || 0
+              };
+            }
+          });
+          
+          updateTrendingList();
+        } catch (error) {
+          console.error('Error loading trending:', error);
+          document.getElementById('trendingList').innerHTML = `
+            <li class="coin-list-item">
+              <div class="loading-indicator">Error loading trending assets</div>
+            </li>
+          `;
+          showToast('Failed to load trending assets', 'error');
+        }
+      }
+
+      // Update trending list
+      function updateTrendingList() {
+        const trendingList = document.getElementById('trendingList');
+        
+        if (trendingData.length === 0) {
+          trendingList.innerHTML = `
+            <li class="coin-list-item">
+              <div class="loading-indicator">Loading trending assets...</div>
+            </li>
+          `;
+          return;
+        }
+        
+        trendingList.innerHTML = '';
+        
+        // Show top 5 trending
+        trendingData.slice(0, 5).forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const item = document.createElement('li');
+          item.className = 'coin-list-item';
+          item.innerHTML = `
+            <div class="coin-info">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
+              <span>${coin.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          item.addEventListener('click', () => showCoinDetail(coin.id));
+          trendingList.appendChild(item);
+        });
+      }
+
+      // Show all trending modal
+      async function showAllTrending() {
+        const modal = document.getElementById('coinModal');
+        const content = document.getElementById('coinModalContent');
+        const title = document.getElementById('coinModalTitle');
+        
+        title.textContent = 'Trending Coins';
+        
+        // Create table for all trending
+        content.innerHTML = `
+          <div class="table-container">
+            <table class="market-overview">
+              <thead>
+                <tr>
+                  <th>Asset</th>
+                  <th>Price</th>
+                  <th>24h Change</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="allTrendingTable">
+                <!-- Trending will be loaded here -->
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        const tableBody = document.getElementById('allTrendingTable');
+        
+        if (trendingData.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" class="loading-indicator">
+                Loading trending data, please wait...
+              </td>
+            </tr>
+          `;
+        } else {
+          trendingData.forEach(coin => {
+            const coinData = coinPrices[coin.id] || {
+              currentPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
+            
+            const row = document.createElement('tr');
+            row.className = 'asset-row';
+            row.innerHTML = `
+              <td class="asset-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
+                <div class="asset-info">
+                  <span class="asset-name">${coin.name}</span>
+                  <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+                </div>
+              </td>
+              <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
+                  <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
+                </div>
+              </td>
+            `;
+            
+            row.addEventListener('click', (e) => {
+              if (!e.target.closest('.action-buttons')) {
+                showCoinDetail(coin.id);
+              }
+            });
+            
+            tableBody.appendChild(row);
+          });
+        }
+        
+        modal.style.display = 'block';
       }
 
       // Load news
@@ -2964,43 +3037,101 @@
           const response = await fetch(`${API_BASE_URL}/news`);
           if (!response.ok) throw new Error('Failed to fetch news');
           
-          const { data } = await response.json();
+          const { articles } = await response.json();
           
-          // Process news data
-          const newsContainer = document.getElementById('newsContainer');
-          newsContainer.innerHTML = '';
-          
-          data.articles.forEach(article => {
-            const newsCard = document.createElement('div');
-            newsCard.className = 'news-card';
-            newsCard.innerHTML = `
-              <div class="news-image-container">
-                <img src="${article.urlToImage || 'https://via.placeholder.com/300x180?text=Crypto+News'}" 
-                     alt="${article.title}" 
-                     class="news-image"
-                     onerror="this.src='https://via.placeholder.com/300x180?text=Crypto+News'">
-              </div>
-              <div class="news-content">
-                <span class="news-category">${article.source.name || 'CRYPTO'}</span>
-                <h3 class="news-title">${article.title}</h3>
-                <p class="news-excerpt">${article.description || 'No description available'}</p>
-                <div class="news-meta">
-                  <span class="news-source">${article.source.name}</span>
-                  <span class="news-date">${new Date(article.publishedAt).toLocaleDateString()}</span>
-                </div>
-              </div>
-            `;
+          // Process and categorize articles
+          const processedArticles = articles.map(article => {
+            // Extract category from title/content or assign default
+            let category = 'market';
+            const title = article.title.toLowerCase();
             
-            newsCard.addEventListener('click', () => showNewsDetail(article));
-            newsContainer.appendChild(newsCard);
+            if (title.includes('bitcoin') || title.includes('btc')) {
+              category = 'btc';
+            } else if (title.includes('ethereum') || title.includes('eth')) {
+              category = 'eth';
+            } else if (title.includes('defi') || title.includes('decentralized')) {
+              category = 'defi';
+            } else if (title.includes('regulation') || title.includes('legal') || title.includes('law')) {
+              category = 'regulation';
+            }
+            
+            return {
+              ...article,
+              category: category
+            };
           });
+          
+          // Update news container
+          updateNewsContainer(processedArticles);
         } catch (error) {
           console.error('Error loading news:', error);
-          showToast('Failed to load news', 'error');
+          document.getElementById('newsContainer').innerHTML = `
+            <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+              <div style="margin-bottom: 12px; color: var(--text-secondary);">
+                Couldn't load news at this time
+              </div>
+              <button class="btn btn-outline" onclick="loadNews()">
+                <i class="fas fa-sync-alt"></i> Try Again
+              </button>
+            </div>
+          `;
         }
       }
 
-      // Show news detail
+      // Update news container with articles
+      function updateNewsContainer(articles) {
+        const container = document.getElementById('newsContainer');
+        container.innerHTML = '';
+        
+        if (articles.length === 0) {
+          container.innerHTML = `
+            <div class="no-news" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+              <i class="far fa-newspaper" style="font-size: 40px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+              <div style="color: var(--text-secondary);">No news articles found</div>
+            </div>
+          `;
+          return;
+        }
+        
+        // Show first 6 articles
+        articles.slice(0, 6).forEach(article => {
+          const newsCard = document.createElement('div');
+          newsCard.className = 'news-card';
+          newsCard.innerHTML = `
+            <div class="news-image-container">
+              <img src="${article.imageUrl || 'https://via.placeholder.com/300x180?text=Crypto+News'}" 
+                   alt="${article.title}" 
+                   class="news-image"
+                   onerror="this.src='https://via.placeholder.com/300x180?text=Crypto+News'">
+            </div>
+            <div class="news-content">
+              <span class="news-category">${article.category.toUpperCase()}</span>
+              <h3 class="news-title">${article.title}</h3>
+              <p class="news-excerpt">${article.description || 'No description available'}</p>
+              <div class="news-meta">
+                <span class="news-source">${article.sourceName || article.source}</span>
+                <span class="news-date">${formatNewsDate(article.publishedAt)}</span>
+              </div>
+            </div>
+          `;
+          
+          newsCard.addEventListener('click', () => showNewsDetail(article));
+          container.appendChild(newsCard);
+        });
+      }
+
+      // Format news date
+      function formatNewsDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      // Show detailed news view
       function showNewsDetail(article) {
         const modal = document.getElementById('newsModal');
         const title = document.getElementById('newsModalTitle');
@@ -3008,10 +3139,12 @@
         const content = document.getElementById('newsDetailContent');
         const source = document.getElementById('newsSource');
         const date = document.getElementById('newsDate');
+        const author = document.getElementById('newsAuthor');
         const originalLink = document.getElementById('newsOriginalLink');
+        const categoryBadge = document.getElementById('newsCategoryBadge');
         
-        title.textContent = article.source.name;
-        image.src = article.urlToImage || 'https://via.placeholder.com/800x400?text=Crypto+News';
+        title.textContent = article.sourceName || article.source;
+        image.src = article.imageUrl || 'https://via.placeholder.com/800x400?text=Crypto+News';
         image.onerror = () => {
           image.src = 'https://via.placeholder.com/800x400?text=Crypto+News';
         };
@@ -3022,13 +3155,20 @@
           ${article.content ? `<p>${article.content}</p>` : ''}
         `;
         
-        source.textContent = article.source.name;
-        date.textContent = new Date(article.publishedAt).toLocaleDateString();
+        source.textContent = article.sourceName || article.source;
+        date.textContent = formatNewsDate(article.publishedAt);
+        author.textContent = article.author ? `By ${article.author}` : '';
+        author.style.display = article.author ? 'inline-block' : 'none';
+        
         originalLink.href = article.url;
+        
+        // Set category badge
+        categoryBadge.textContent = article.category.toUpperCase();
+        categoryBadge.style.display = 'block';
         
         modal.style.display = 'block';
       }
-
+      
       // Load withdrawals
       async function loadWithdrawals() {
         try {
