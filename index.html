@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Professional Crypto Trading Platform with real-time market data">
   <meta name="keywords" content="crypto, trading, bitcoin, ethereum, cryptocurrency">
-  <title>Crypto Trading Market</title>
+  <title>Bitluxo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -77,6 +77,12 @@
     .logo-title {
       font-size: 18px;
       font-weight: 600;
+      font-family: 'Arial Black', Gadget, sans-serif;
+      letter-spacing: 1px;
+      background: linear-gradient(45deg, #f0b90b, #f8d33a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(240, 185, 11, 0.3);
     }
 
     @media (max-width: 768px) {
@@ -814,7 +820,7 @@
   padding: 4px 10px;
   border-radius: 4px;
   background-color: rgba(240, 185, 11, 0.1);
-  color: var(--primary-accent);
+  color: #f0b90b;
 }
 
 .news-detail-header {
@@ -1439,8 +1445,8 @@
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img id="platformLogo" class="logo" alt="Crypto Trading Market">
-      <h1 class="logo-title">Crypto Trading Market</h1>
+      <img id="platformLogo" class="logo" src="https://www.dropbox.com/scl/fi/pnch85ra17rw68fcve1d1/ChatGPT-Image-Jun-18-2025-07_15_23-PM.png?rlkey=3vggfoohs1fnb5pu15ciwkc0p&raw=1" alt="Crypto Trading Market">
+      <h1 class="logo-title">BITLUXO</h1>
     </div>
     
     <div class="nav-container">
@@ -1854,7 +1860,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-      <p>© 2023 Crypto Trading Market. All rights reserved.</p>
+      <p>© 2025 Bitluxo. All rights reserved.</p>
     </footer>
 
     <script>
@@ -1882,8 +1888,14 @@
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
-        // Load platform logo from backend
-        await loadPlatformLogo();
+        // Set platform logo directly
+        const logoImg = document.getElementById('platformLogo');
+        logoImg.src = 'https://www.dropbox.com/scl/fi/pnch85ra17rw68fcve1d1/ChatGPT-Image-Jun-18-2025-07_15_23-PM.png?rlkey=3vggfoohs1fnb5pu15ciwkc0p&raw=1';
+        logoImg.style.borderRadius = '50%';
+        logoImg.style.border = '2px solid transparent';
+        logoImg.style.width = '40px';
+        logoImg.style.height = '40px';
+        logoImg.style.objectFit = 'cover';
         
         // Check authentication status
         await checkAuthStatus();
@@ -1891,8 +1903,8 @@
         // Load market data
         await loadMarketData();
         
-        // Load reviews
-        await loadReviews();
+        // Load news
+        await loadNews();
         
         // Load withdrawals
         await loadWithdrawals();
@@ -1927,50 +1939,6 @@
         });
       }
 
-      // Load platform logo from backend
-      async function loadPlatformLogo() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/platform/logo`);
-          if (!response.ok) throw new Error('Failed to fetch logo');
-          
-          const data = await response.json();
-          const logoImg = document.getElementById('platformLogo');
-          
-          // Set logo source
-          logoImg.src = data.data.default;
-          
-          // Apply circular styling
-          logoImg.style.borderRadius = '50%';
-          logoImg.style.border = data.data.styling.border.width + ' solid ' + data.data.styling.border.color;
-          logoImg.style.width = data.data.styling.dimensions.width;
-          logoImg.style.height = data.data.styling.dimensions.height;
-          logoImg.style.objectFit = 'cover';
-          
-          // Add hover effect
-          logoImg.addEventListener('mouseenter', () => {
-            logoImg.style.borderColor = data.data.styling.border.hoverColor;
-          });
-          logoImg.addEventListener('mouseleave', () => {
-            logoImg.style.borderColor = data.data.styling.border.color;
-          });
-          
-          // Fallback if image fails to load
-          logoImg.onerror = () => {
-            logoImg.src = data.data.styling.fallback.svg;
-            console.warn('Logo image failed to load, using SVG fallback');
-          };
-          
-        } catch (error) {
-          console.error('Error loading logo:', error);
-          // Use fallback SVG directly
-          const logoImg = document.getElementById('platformLogo');
-          logoImg.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMTgiIHN0cm9rZT0iI2YwYjkwYiIgc3Ryb2tlLXdpZHRoPSIyIi8+CjxwYXRoIGQ9Ik0yMCAxMGM1LjUyMyAwIDEwIDQuNDc3IDEwIDEwcy00LjQ3NyAxMC0xMCAxMCIgc3Ryb2tlPSIjZjBkYzNhIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+';
-          logoImg.style.borderRadius = '50%';
-          logoImg.style.width = '40px';
-          logoImg.style.height = '40px';
-        }
-      }
-
       // Set up event listeners
       function setupEventListeners() {
         // Navigation links
@@ -1985,7 +1953,8 @@
             showToast('Please login to access the trading platform', 'error');
             return;
           }
-          window.location.href = 'dashboard.html';
+          // Load trade content in main view
+          loadTradeContent();
         });
         
         document.getElementById('futuresLink').addEventListener('click', (e) => {
@@ -1994,7 +1963,8 @@
             showToast('Please login to access futures trading', 'error');
             return;
           }
-          window.location.href = 'dashboard.html?tab=futures';
+          // Load futures content in main view
+          loadFuturesContent();
         });
         
         document.getElementById('earnLink').addEventListener('click', (e) => {
@@ -2003,7 +1973,8 @@
             showToast('Please login to access earn products', 'error');
             return;
           }
-          window.location.href = 'dashboard.html?tab=earn';
+          // Load earn content in main view
+          loadEarnContent();
         });
         
         // View All links
@@ -2024,12 +1995,264 @@
         
         // Trade amount input
         document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
+      }
+
+      // Load trade content in main view
+      function loadTradeContent() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Trade</h2>
+            </div>
+            <div class="trading-view">
+              <div class="trading-tabs">
+                <div class="trading-tab active" onclick="changeChart('BTCUSDT')">BTC/USDT</div>
+                <div class="trading-tab" onclick="changeChart('ETHUSDT')">ETH/USDT</div>
+                <div class="trading-tab" onclick="changeChart('BNBUSDT')">BNB/USDT</div>
+              </div>
+              
+              <div class="trading-content active" id="btcChart">
+                <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:BTCUSDT&interval=1&hidesidetoolbar=1&theme=dark"></iframe>
+              </div>
+              
+              <div class="trading-content" id="ethChart">
+                <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:ETHUSDT&interval=1&hidesidetoolbar=1&theme=dark"></iframe>
+              </div>
+              
+              <div class="trading-content" id="bnbChart">
+                <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:BNBUSDT&interval=1&hidesidetoolbar=1&theme=dark"></iframe>
+              </div>
+            </div>
+          </div>
+          
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Available Pairs</h2>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Pair</th>
+                    <th>Price</th>
+                    <th>24h Change</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="tradePairsTable">
+                  <!-- Trade pairs will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
         
-        // Refresh reviews button
-        document.getElementById('refreshReviewsBtn').addEventListener('click', (e) => {
-          e.preventDefault();
-          loadReviews();
-        });
+        // Load trade pairs data
+        loadTradePairs();
+      }
+
+      // Load trade pairs data
+      async function loadTradePairs() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trade-pairs`);
+          if (!response.ok) throw new Error('Failed to load trade pairs');
+          
+          const pairs = await response.json();
+          const tableBody = document.getElementById('tradePairsTable');
+          tableBody.innerHTML = '';
+          
+          pairs.forEach(pair => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${pair.base}/${pair.quote}</td>
+              <td>$${pair.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td class="${pair.change24h >= 0 ? 'positive' : 'negative'}">
+                ${pair.change24h >= 0 ? '+' : ''}${pair.change24h.toFixed(2)}%
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${pair.baseId}', 'buy', event)">Trade</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading trade pairs:', error);
+          showToast('Failed to load trade pairs', 'error');
+        }
+      }
+
+      // Load futures content in main view
+      function loadFuturesContent() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Futures Trading</h2>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Contract</th>
+                    <th>Price</th>
+                    <th>24h Change</th>
+                    <th>Funding Rate</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="futuresTable">
+                  <!-- Futures data will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        // Load futures data
+        loadFuturesData();
+      }
+
+      // Load futures data
+      async function loadFuturesData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/futures`);
+          if (!response.ok) throw new Error('Failed to load futures data');
+          
+          const futures = await response.json();
+          const tableBody = document.getElementById('futuresTable');
+          tableBody.innerHTML = '';
+          
+          futures.forEach(future => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${future.symbol}</td>
+              <td>$${future.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+              <td class="${future.change24h >= 0 ? 'positive' : 'negative'}">
+                ${future.change24h >= 0 ? '+' : ''}${future.change24h.toFixed(2)}%
+              </td>
+              <td class="${future.fundingRate >= 0 ? 'positive' : 'negative'}">
+                ${future.fundingRate >= 0 ? '+' : ''}${future.fundingRate.toFixed(4)}%
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showFuturesTradeForm('${future.symbol}', 'long', event)">Trade</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading futures data:', error);
+          showToast('Failed to load futures data', 'error');
+        }
+      }
+
+      // Load earn content in main view
+      function loadEarnContent() {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+          <div class="section">
+            <div class="section-header">
+              <h2 class="section-title">Earn Products</h2>
+            </div>
+            <div class="market-stats-grid">
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-piggy-bank"></i>
+                  <div class="stat-label">Flexible Savings</div>
+                </div>
+                <div class="stat-value">Up to 10% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Flexible</span>
+                  </span>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-lock"></i>
+                  <div class="stat-label">Locked Staking</div>
+                </div>
+                <div class="stat-value">Up to 15% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>30-90 Days</span>
+                  </span>
+                </div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <i class="stat-icon fas fa-chart-pie"></i>
+                  <div class="stat-label">DeFi Mining</div>
+                </div>
+                <div class="stat-value">Up to 25% APY</div>
+                <div class="stat-meta">
+                  <span class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Variable</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Asset</th>
+                    <th>APY</th>
+                    <th>Duration</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="earnProductsTable">
+                  <!-- Earn products will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        
+        // Load earn products data
+        loadEarnProducts();
+      }
+
+      // Load earn products data
+      async function loadEarnProducts() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/earn/products`);
+          if (!response.ok) throw new Error('Failed to load earn products');
+          
+          const products = await response.json();
+          const tableBody = document.getElementById('earnProductsTable');
+          tableBody.innerHTML = '';
+          
+          products.forEach(product => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${product.name}</td>
+              <td>
+                <div class="coin-cell">
+                  <img src="${product.image}" alt="${product.asset}" class="coin-icon">
+                  <span>${product.asset}</span>
+                </div>
+              </td>
+              <td class="positive">${product.apy}%</td>
+              <td>${product.duration || 'Flexible'}</td>
+              <td>
+                <button class="btn btn-primary btn-sm" onclick="showEarnForm('${product.id}', event)">Stake</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error('Error loading earn products:', error);
+          showToast('Failed to load earn products', 'error');
+        }
       }
 
       // Start periodic updates
@@ -2866,7 +3089,6 @@ function showNewsDetail(article) {
   modal.style.display = 'block';
 }
 
-
       
       // Load withdrawals
       async function loadWithdrawals() {
@@ -3394,4 +3616,4 @@ function showNewsDetail(article) {
       };
     </script>
 </body>
-</html>
+</html> 
