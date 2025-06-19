@@ -295,77 +295,155 @@
       text-decoration: underline;
     }
 
-    /* Table Styles */
-    .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+   /* Market Table Styles */
+.market-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+.market-table th {
+  position: sticky;
+  top: var(--header-height);
+  background: var(--secondary-bg);
+  z-index: 10;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
 
-    th, td {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 14px;
-      border-bottom: 1px solid var(--border-color);
-    }
+.market-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
 
-    th {
-      font-weight: 500;
-      color: var(--text-secondary);
-      background-color: var(--secondary-bg);
-      position: sticky;
-      top: var(--header-height);
-    }
+.asset-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+}
 
-    tr:hover {
-      background-color: rgba(240, 185, 11, 0.03);
-    }
+.asset-info {
+  display: flex;
+  flex-direction: column;
+}
 
-    .coin-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.asset-name {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-primary);
+}
 
-    .coin-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-    }
+.asset-symbol {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
 
-    .coin-name {
-      font-weight: 500;
-    }
+.price-cell {
+  font-weight: 600;
+  font-size: 14px;
+}
 
-    .coin-symbol {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-left: 4px;
-    }
+.change-container {
+  display: flex;
+  gap: 8px;
+}
 
-    .positive {
-      color: var(--positive);
-    }
+.change-pill {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
 
-    .negative {
-      color: var(--negative);
-    }
+.positive {
+  color: var(--positive);
+  background-color: rgba(14, 203, 129, 0.1);
+}
 
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
+.negative {
+  color: var(--negative);
+  background-color: rgba(246, 70, 93, 0.1);
+}
 
-    .btn-sm {
-      padding: 4px 8px;
-      font-size: 12px;
-      min-width: 60px;
-    }
+.supply-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
+.supply-bar-container {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.supply-bar {
+  height: 100%;
+  background: var(--primary-accent);
+  border-radius: 2px;
+}
+
+.trend-sparkline {
+  width: 80px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-sparkline.positive {
+  background: rgba(14, 203, 129, 0.1);
+}
+
+.trend-sparkline.negative {
+  background: rgba(246, 70, 93, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-trade {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-buy {
+  background: var(--positive);
+  color: #000;
+  border: 1px solid var(--positive);
+}
+
+.btn-buy:hover {
+  background: rgba(14, 203, 129, 0.8);
+}
+
+.btn-sell {
+  background: transparent;
+  color: var(--negative);
+  border: 1px solid var(--negative);
+}
+
+.btn-sell:hover {
+  background: rgba(246, 70, 93, 0.1);
+}
     /* Stats Box */
     .market-stats-grid {
       display: grid;
@@ -1495,30 +1573,32 @@
     </div>
 
     <!-- Market Data Section -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Market Overview</h2>
-        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
-      </div>
-      
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Coin</th>
-              <th>Price</th>
-              <th>24h Change</th>
-              <th>24h Volume</th>
-              <th>Market Cap</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="marketTable">
-            <!-- Market data will be loaded here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
+   <div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Market Overview</h2>
+    <a href="#" class="section-link" id="viewAllMarkets">View All</a>
+  </div>
+  
+  <div class="table-container">
+    <table class="market-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Price</th>
+          <th>Change</th>
+          <th>Volume (24h)</th>
+          <th>Market Cap</th>
+          <th>Supply</th>
+          <th>Trend</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="marketTable">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+  </div>
+</div>
 
     <!-- Stats Section -->
     <div class="market-stats-grid">
