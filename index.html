@@ -1396,36 +1396,16 @@
     </div>
 
     <!-- Market Data Section -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">Market Overview</h2>
-        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
-      </div>
-      
-      <div class="table-container">
-        <table class="market-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Price</th>
-              <th>Change</th>
-              <th>Volume (24h)</th>
-              <th>Market Cap</th>
-              <th>Supply</th>
-              <th>Trend</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="marketTable">
-            <!-- Data will be populated here -->
-            <tr>
-              <td colspan="8" style="text-align: center; padding: 20px; color: var(--positive);">Loading, please wait...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
+    <div class="market-section">
+  <div class="section-header">
+    <h2>Market Overview</h2>
+    <a href="/market/all" class="view-all">View All</a>
+  </div>
+  <div class="assets-grid" id="marketOverview">
+    <!-- Assets will be loaded here -->
+  </div>
+</div>
+    
     <!-- Stats Section -->
     <div class="market-stats-grid">
       <div class="stat-card">
