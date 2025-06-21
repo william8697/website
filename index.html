@@ -2520,121 +2520,114 @@
     }
 
     // Load market data
-    async function loadMarketData() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/markets`);
-        if (!response.ok) throw new Error('Failed to fetch market data');
-        
-        const { marketData } = await response.json();
-        
-        // Store market data
-        marketData = marketData;
-        
-        // Initialize coin prices
-        marketData.forEach(coin => {
-          coinPrices[coin.id] = {
-            currentPrice: coin.currentPrice,
-            originalPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-        });
-        
-        // Update UI
-        updateMarketTable();
-      } catch (error) {
-        console.error('Error loading market data:', error);
-        showToast('Failed to load market data', 'error');
-      }
+   // Fetch market overview data
+async function fetchMarketOverview() {
+  try {
+    const response = await fetch('/api/v1/market/overview');
+    const data = await response.json();
+    
+    if (data.success) {
+      renderMarketOverview(data.data.overview);
+    } else {
+      console.error('Failed to load market overview:', data.error);
     }
+  } catch (error) {
+    console.error('Error fetching market overview:', error);
+  }
+}
 
-    // Update market table
-    function updateMarketTable() {
-      const tableBody = document.getElementById('marketTable');
-      tableBody.innerHTML = '';
-      
-      if (!marketData || marketData.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="8" style="text-align: center; padding: 20px; color: var(--positive);">Loading, please wait...</td>
-          </tr>
-        `;
-        return;
+// Render market overview
+function renderMarketOverview(assets) {
+  const container = document.getElementById('marketOverview');
+  container.innerHTML = '';
+  
+  assets.forEach(asset => {
+    const assetCard = document.createElement('div');
+    assetCard.className = 'asset-card';
+    
+    assetCard.innerHTML = `
+      <div class="asset-header">
+        <img src="${asset.image}" alt="${asset.name}" class="asset-logo">
+        <div>
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+        </div>
+      </div>
+      <div class="asset-price">$${asset.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</div>
+      <div class="price-change-container">
+        <div class="price-change">
+          <span class="time-label">1h</span>
+          <span class="change-value ${asset.priceChangePercentage1h >= 0 ? 'change-positive' : 'change-negative'}">
+            ${asset.priceChangePercentage1h >= 0 ? '▲' : '▼'} ${Math.abs(asset.priceChangePercentage1h).toFixed(2)}%
+          </span>
+        </div>
+        <div class="price-change">
+          <span class="time-label">24h</span>
+          <span class="change-value ${asset.priceChangePercentage24h >= 0 ? 'change-positive' : 'change-negative'}">
+            ${asset.priceChangePercentage24h >= 0 ? '▲' : '▼'} ${Math.abs(asset.priceChangePercentage24h).toFixed(2)}%
+          </span>
+        </div>
+        <div class="price-change">
+          <span class="time-label">7d</span>
+          <span class="change-value ${asset.priceChangePercentage7d >= 0 ? 'change-positive' : 'change-negative'}">
+            ${asset.priceChangePercentage7d >= 0 ? '▲' : '▼'} ${Math.abs(asset.priceChangePercentage7d).toFixed(2)}%
+          </span>
+        </div>
+      </div>
+      <div class="asset-actions">
+        <button class="action-btn buy-btn">Buy</button>
+        <button class="action-btn sell-btn">Sell</button>
+      </div>
+      <div class="sparkline-container">
+        <canvas class="sparkline-chart" data-sparkline="${JSON.stringify(asset.sparkline)}"></canvas>
+      </div>
+    `;
+    
+    container.appendChild(assetCard);
+  });
+  
+  // Initialize sparkline charts
+  initSparklineCharts();
+}
+
+// Initialize sparkline charts
+function initSparklineCharts() {
+  const sparklineElements = document.querySelectorAll('.sparkline-chart');
+  
+  sparklineElements.forEach(element => {
+    const sparklineData = JSON.parse(element.getAttribute('data-sparkline'));
+    const ctx = element.getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(sparklineData.length).fill(''),
+        datasets: [{
+          data: sparklineData,
+          borderColor: sparklineData[0] <= sparklineData[sparklineData.length - 1] ? '#0ecb81' : '#f6465d',
+          borderWidth: 2,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { display: false },
+          y: { display: false }
+        },
+        plugins: {
+          legend: { display: false }
+        }
       }
-      
-      // Show only first 5 assets by default
-      const assetsToShow = marketData.slice(0, 5);
-      
-      assetsToShow.forEach(coin => {
-        const coinData = coinPrices[coin.id] || {
-          currentPrice: coin.currentPrice,
-          change24h: coin.change24h || 0
-        };
-        
-        const row = document.createElement('tr');
-        row.className = 'asset-row';
-        
-        // Generate random changes for demo
-        const change1h = (Math.random() * 2 - 1).toFixed(2);
-        const change24h = coinData.change24h;
-        const change7d = (Math.random() * 5 - 2.5).toFixed(2);
-        
-        // Determine trend direction
-        const isUpwardTrend = Math.random() > 0.5;
-        
-        row.innerHTML = `
-          <td class="asset-cell">
-            <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
-            <div class="asset-info">
-              <span class="asset-name">${coin.name}</span>
-              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
-            </div>
-          </td>
-          <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-          <td>
-            <div class="change-container">
-              <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
-                ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
-              </span>
-              <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
-                ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
-              </span>
-              <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
-                ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
-              </span>
-            </div>
-          </td>
-          <td>$${(coin.volume / 1000000).toFixed(2)}M</td>
-          <td>$${(coin.marketCap / 1000000000).toFixed(2)}B</td>
-          <td>
-            <div class="supply-container">
-              <span>${(coin.marketCap / coinData.currentPrice / 1000000).toFixed(1)}M ${coin.symbol.toUpperCase()}</span>
-              <div class="supply-bar-container">
-                <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
-              </div>
-            </div>
-          </td>
-          <td>
-            <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
-              ${isUpwardTrend ? '↗' : '↘'}
-            </div>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-              <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-            </div>
-          </td>
-        `;
-        
-        row.addEventListener('click', (e) => {
-          if (!e.target.closest('.action-buttons')) {
-            showCoinDetail(coin.id);
-          }
-        });
-        
-        tableBody.appendChild(row);
-      });
-    }
+    });
+  });
+}
+
+// Load market overview on page load
+document.addEventListener('DOMContentLoaded', fetchMarketOverview);
 
     // Load gainers data
     async function loadGainersData() {
