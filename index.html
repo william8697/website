@@ -276,7 +276,7 @@
       text-decoration: underline;
     }
 
-    /* Market Overview Styles */
+  /* Market Overview Styles */
 .market-overview {
   background-color: #1e1e2d;
   border-radius: 12px;
@@ -289,7 +289,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .market-overview-title {
@@ -300,24 +300,22 @@
 
 .view-all-btn {
   background: transparent;
-  border: 1px solid #3699ff;
-  color: #3699ff;
-  padding: 6px 12px;
-  border-radius: 6px;
+  border: none;
+  color: #6c757d;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.2s;
 }
 
 .view-all-btn:hover {
-  background: rgba(54, 153, 255, 0.1);
+  color: #fff;
 }
 
 .asset-row {
   display: flex;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #2b2b3a;
+  border-bottom: 1px solid #2d2d3a;
 }
 
 .asset-row:last-child {
@@ -325,8 +323,8 @@
 }
 
 .asset-logo {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   margin-right: 12px;
   border-radius: 50%;
 }
@@ -340,38 +338,38 @@
 .asset-symbol {
   font-weight: 600;
   color: #fff;
-  font-size: 14px;
+  margin-bottom: 2px;
 }
 
 .asset-fullname {
   font-size: 12px;
-  color: #92929d;
+  color: #6c757d;
 }
 
 .asset-price {
   font-weight: 600;
   color: #fff;
   margin-right: 20px;
-  min-width: 80px;
+  min-width: 100px;
   text-align: right;
 }
 
 .price-change-container {
   display: flex;
-  min-width: 180px;
-  justify-content: space-between;
+  margin-right: 20px;
+  min-width: 120px;
 }
 
 .price-change-column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 5px;
+  margin: 0 8px;
 }
 
 .price-change-label {
   font-size: 10px;
-  color: #92929d;
+  color: #6c757d;
   margin-bottom: 4px;
 }
 
@@ -381,55 +379,70 @@
 }
 
 .price-up {
-  color: #0abb87;
+  color: #0ecb81;
 }
 
 .price-down {
-  color: #f64e60;
+  color: #f6465d;
 }
 
 .asset-actions {
   display: flex;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .action-btn {
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  margin: 0 5px;
+  margin: 0 4px;
+  border: 1px solid transparent;
+  transition: all 0.2s;
 }
 
 .buy-btn {
-  background-color: #0abb87;
-  color: #fff;
-  border: none;
+  background-color: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  border-color: #0ecb81;
+}
+
+.buy-btn:hover {
+  background-color: rgba(14, 203, 129, 0.2);
 }
 
 .sell-btn {
-  background-color: #f64e60;
-  color: #fff;
-  border: none;
+  background-color: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+  border-color: #f6465d;
+}
+
+.sell-btn:hover {
+  background-color: rgba(246, 70, 93, 0.2);
 }
 
 .asset-stats {
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
+  margin-right: 20px;
   min-width: 120px;
 }
 
 .asset-stat {
   font-size: 12px;
-  color: #92929d;
+  color: #6c757d;
   margin-bottom: 4px;
+}
+
+.asset-stat-value {
+  color: #fff;
+  font-weight: 600;
 }
 
 .supply-bar {
   height: 4px;
-  background-color: #2b2b3a;
+  background-color: #2d2d3a;
   border-radius: 2px;
   margin-top: 4px;
   overflow: hidden;
@@ -437,14 +450,14 @@
 
 .supply-progress {
   height: 100%;
-  background-color: #3699ff;
+  background-color: #0ecb81;
   border-radius: 2px;
 }
 
 .sparkline-container {
   width: 100px;
   height: 40px;
-  margin-left: 20px;
+  margin-left: auto;
 }
 
 /* Modal Styles */
@@ -469,13 +482,22 @@
   max-height: 90vh;
   overflow-y: auto;
   padding: 24px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .modal-title {
@@ -484,31 +506,27 @@
   color: #fff;
 }
 
-.close-modal {
-  background: none;
-  border: none;
-  color: #92929d;
-  font-size: 24px;
-  cursor: pointer;
+.asset-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.all-assets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
+.asset-table th {
+  text-align: left;
+  padding: 12px;
+  font-size: 14px;
+  color: #6c757d;
+  border-bottom: 1px solid #2d2d3a;
 }
 
-.asset-card {
-  background-color: #2b2b3a;
-  border-radius: 8px;
-  padding: 16px;
-  transition: transform 0.2s ease;
+.asset-table td {
+  padding: 12px;
+  border-bottom: 1px solid #2d2d3a;
 }
 
-.asset-card:hover {
-  transform: translateY(-4px);
+.asset-table tr:last-child td {
+  border-bottom: none;
 }
-
     /* Stats Section */
     .market-stats-grid {
       display: grid;
@@ -586,8 +604,8 @@
       color: #f0b90b;
     }
 
-    /* Gainers & Trending Section */
-    .top-gainers {
+    /* Top Gainers Styles */
+.top-gainers {
   background-color: #1e1e2d;
   border-radius: 12px;
   padding: 20px;
@@ -599,7 +617,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .top-gainers-title {
@@ -608,58 +626,25 @@
   color: #fff;
 }
 
-.gainer-card {
+.top-gainer-row {
   display: flex;
   align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: #2b2b3a;
-  margin-bottom: 10px;
-  transition: transform 0.2s ease;
+  padding: 12px 0;
+  border-bottom: 1px solid #2d2d3a;
 }
 
-.gainer-card:hover {
-  transform: translateY(-2px);
-}
-
-.gainer-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 12px;
-  border-radius: 50%;
-}
-
-.gainer-info {
-  flex: 1;
-}
-
-.gainer-name {
-  font-weight: 600;
-  color: #fff;
-  font-size: 14px;
-}
-
-.gainer-symbol {
-  font-size: 12px;
-  color: #92929d;
-}
-
-.gainer-price {
-  font-weight: 600;
-  color: #fff;
-  margin-right: 12px;
-  text-align: right;
+.top-gainer-row:last-child {
+  border-bottom: none;
 }
 
 .gainer-change {
   font-weight: 600;
-  color: #0abb87;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: rgba(10, 187, 135, 0.1);
+  margin-right: 20px;
+  min-width: 80px;
+  text-align: right;
 }
-
-    .trending {
+    /* Trending Styles */
+.trending {
   background-color: #1e1e2d;
   border-radius: 12px;
   padding: 20px;
@@ -671,7 +656,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .trending-title {
@@ -680,55 +665,16 @@
   color: #fff;
 }
 
-.trending-card {
+.trending-row {
   display: flex;
   align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: #2b2b3a;
-  margin-bottom: 10px;
-  transition: transform 0.2s ease;
+  padding: 12px 0;
+  border-bottom: 1px solid #2d2d3a;
 }
 
-.trending-card:hover {
-  transform: translateY(-2px);
+.trending-row:last-child {
+  border-bottom: none;
 }
-
-.trending-logo {
-  width: 32px;
-  height: 32px;
-  margin-right: 12px;
-  border-radius: 50%;
-}
-
-.trending-info {
-  flex: 1;
-}
-
-.trending-name {
-  font-weight: 600;
-  color: #fff;
-  font-size: 14px;
-}
-
-.trending-symbol {
-  font-size: 12px;
-  color: #92929d;
-}
-
-.trending-price {
-  font-weight: 600;
-  color: #fff;
-  margin-right: 12px;
-  text-align: right;
-}
-
-.trending-volume {
-  font-size: 12px;
-  color: #92929d;
-  text-align: right;
-}
-
     /* Trading View */
     .trading-view {
       margin-top: 16px;
@@ -1548,26 +1494,43 @@
       </div>
     </div>
 
-    <!-- Market Data Section -->
-   <div class="market-overview">
+    <!-- Market Overview Section -->
+<div class="market-overview">
   <div class="market-overview-header">
     <h2 class="market-overview-title">Market Overview</h2>
     <button class="view-all-btn" id="view-all-overview">View All</button>
   </div>
   <div id="market-overview-container">
-    <!-- Assets will be loaded here dynamically -->
+    <!-- Assets will be dynamically inserted here -->
   </div>
 </div>
 
-<!-- Modal for View All -->
-<div id="overview-modal" class="modal-overlay" style="display: none;">
+<!-- Modal Structure -->
+<div id="market-modal" class="modal-overlay" style="display: none;">
   <div class="modal-content">
+    <button class="modal-close">&times;</button>
     <div class="modal-header">
-      <h2 class="modal-title">All Assets</h2>
-      <button class="close-modal" id="close-overview-modal">&times;</button>
+      <h2 class="modal-title" id="modal-title">Market Overview</h2>
     </div>
-    <div class="all-assets-grid" id="all-assets-container">
-      <!-- All assets will be loaded here -->
+    <div class="modal-body">
+      <table class="asset-table">
+        <thead>
+          <tr>
+            <th>Asset</th>
+            <th>Price</th>
+            <th>1h</th>
+            <th>24h</th>
+            <th>7d</th>
+            <th>Market Cap</th>
+            <th>Volume (24h)</th>
+            <th>Circulating Supply</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="modal-assets-container">
+          <!-- Modal assets will be inserted here -->
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1619,24 +1582,25 @@
       </div>
     </div>
 
-    <!-- Gainers & Trending Section -->
-    <div class="top-gainers">
+    <!-- Top Gainers Section -->
+<div class="top-gainers">
   <div class="top-gainers-header">
     <h2 class="top-gainers-title">Top Gainers</h2>
     <button class="view-all-btn" id="view-all-gainers">View All</button>
   </div>
   <div id="top-gainers-container">
-    <!-- Top gainers will be loaded here dynamically -->
+    <!-- Gainers will be dynamically inserted here -->
   </div>
 </div>
       
-      <div class="trending">
+      <!-- Trending Section -->
+<div class="trending">
   <div class="trending-header">
     <h2 class="trending-title">Trending</h2>
     <button class="view-all-btn" id="view-all-trending">View All</button>
   </div>
   <div id="trending-container">
-    <!-- Trending coins will be loaded here dynamically -->
+    <!-- Trending assets will be dynamically inserted here -->
   </div>
 </div>
 
@@ -2684,291 +2648,338 @@
     }
 
 // Fetch and display market overview
-async function loadMarketOverview() {
-  try {
-    const response = await fetch('/api/v1/markets/overview');
-    const data = await response.json();
-    
-    if (data.success) {
-      const container = document.getElementById('market-overview-container');
-      container.innerHTML = '';
-      
-      // Display top 5 assets
-      data.data.overview.forEach(asset => {
-        const assetRow = createAssetRow(asset);
-        container.appendChild(assetRow);
-      });
-      
-      // Store all assets for modal
-      window.allAssetsData = data.data.allAssets;
-      
-      // Set up view all button
-      document.getElementById('view-all-overview').addEventListener('click', () => {
-        displayAllAssetsModal('All Assets', window.allAssetsData);
-      });
-    }
-  } catch (error) {
-    console.error('Error loading market overview:', error);
-  }
+// Market Overview JS
+document.addEventListener('DOMContentLoaded', function() {
+  // Fetch market overview data
+  fetchMarketOverview();
+  
+  // Set up view all button
+  document.getElementById('view-all-overview').addEventListener('click', function() {
+    fetchAllAssets('overview');
+  });
+  
+  // Set up modal close button
+  document.querySelector('.modal-close').addEventListener('click', function() {
+    document.getElementById('market-modal').style.display = 'none';
+  });
+});
+
+function fetchMarketOverview() {
+  fetch('/api/v1/market/overview')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderMarketOverview(data.data);
+      } else {
+        console.error('Failed to fetch market overview:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching market overview:', error);
+    });
 }
 
-// Create asset row HTML
-function createAssetRow(asset) {
-  const row = document.createElement('div');
-  row.className = 'asset-row';
-  
-  // Format price changes
-  const change1h = parseFloat(asset.price_change_percentage_1h || 0);
-  const change24h = parseFloat(asset.price_change_percentage_24h || 0);
-  const change7d = parseFloat(asset.price_change_percentage_7d || 0);
-  
-  row.innerHTML = `
-    <img src="${asset.image}" alt="${asset.name}" class="asset-logo">
-    <div class="asset-name">
-      <span class="asset-symbol">${asset.symbol}</span>
-      <span class="asset-fullname">${asset.name}</span>
-    </div>
-    <div class="asset-price">$${asset.current_price.toLocaleString()}</div>
-    <div class="price-change-container">
-      <div class="price-change-column">
-        <span class="price-change-label">1h</span>
-        <span class="price-change-value ${change1h >= 0 ? 'price-up' : 'price-down'}">
-          ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h).toFixed(2)}%
-        </span>
-      </div>
-      <div class="price-change-column">
-        <span class="price-change-label">24h</span>
-        <span class="price-change-value ${change24h >= 0 ? 'price-up' : 'price-down'}">
-          ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
-        </span>
-      </div>
-      <div class="price-change-column">
-        <span class="price-change-label">7d</span>
-        <span class="price-change-value ${change7d >= 0 ? 'price-up' : 'price-down'}">
-          ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d).toFixed(2)}%
-        </span>
-      </div>
-    </div>
-    <div class="asset-actions">
-      <button class="action-btn buy-btn">Buy</button>
-      <button class="action-btn sell-btn">Sell</button>
-    </div>
-    <div class="asset-stats">
-      <span class="asset-stat">MCap: $${(asset.market_cap / 1000000000).toFixed(2)}B</span>
-      <span class="asset-stat">Vol: $${(asset.total_volume / 1000000).toFixed(2)}M</span>
-      <span class="asset-stat">Circ: ${(asset.circulating_supply / 1000000).toFixed(2)}M ${asset.symbol}</span>
-      <div class="supply-bar">
-        <div class="supply-progress" style="width: ${Math.min(100, (asset.circulating_supply / asset.max_supply) * 100 || 0}%"></div>
-      </div>
-    </div>
-    <div class="sparkline-container">
-      <canvas class="sparkline-chart" width="100" height="40" data-sparkline="${JSON.stringify(asset.sparkline)}"></canvas>
-    </div>
-  `;
-  
-  return row;
-}
-
-// Display all assets in modal
-function displayAllAssetsModal(title, assets) {
-  const modal = document.getElementById('overview-modal');
-  const titleElement = document.querySelector('.modal-title');
-  const container = document.getElementById('all-assets-container');
-  
-  titleElement.textContent = title;
+function renderMarketOverview(assets) {
+  const container = document.getElementById('market-overview-container');
   container.innerHTML = '';
   
   assets.forEach(asset => {
-    const card = document.createElement('div');
-    card.className = 'asset-card';
+    const assetElement = document.createElement('div');
+    assetElement.className = 'asset-row';
     
-    const change24h = parseFloat(asset.price_change_percentage_24h || 0);
-    
-    card.innerHTML = `
-      <div style="display: flex; align-items: center; margin-bottom: 12px;">
-        <img src="${asset.image}" alt="${asset.name}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;">
-        <div>
-          <div style="font-weight: 600; color: #fff;">${asset.symbol}</div>
-          <div style="font-size: 12px; color: #92929d;">${asset.name}</div>
+    assetElement.innerHTML = `
+      <img src="${asset.image}" alt="${asset.name}" class="asset-logo">
+      <div class="asset-name">
+        <span class="asset-symbol">${asset.symbol}</span>
+        <span class="asset-fullname">${asset.name}</span>
+      </div>
+      <div class="asset-price">$${asset.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6})}</div>
+      <div class="price-change-container">
+        <div class="price-change-column">
+          <span class="price-change-label">1h</span>
+          <span class="price-change-value ${asset.price_change_percentage_1h_in_currency >= 0 ? 'price-up' : 'price-down'}">
+            ${asset.price_change_percentage_1h_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_1h_in_currency).toFixed(2)}%
+          </span>
+        </div>
+        <div class="price-change-column">
+          <span class="price-change-label">24h</span>
+          <span class="price-change-value ${asset.price_change_percentage_24h >= 0 ? 'price-up' : 'price-down'}">
+            ${asset.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_24h).toFixed(2)}%
+          </span>
+        </div>
+        <div class="price-change-column">
+          <span class="price-change-label">7d</span>
+          <span class="price-change-value ${asset.price_change_percentage_7d_in_currency >= 0 ? 'price-up' : 'price-down'}">
+            ${asset.price_change_percentage_7d_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_7d_in_currency).toFixed(2)}%
+          </span>
         </div>
       </div>
-      <div style="margin-bottom: 8px;">
-        <div style="font-size: 16px; font-weight: 600; color: #fff;">$${asset.current_price.toLocaleString()}</div>
-        <div style="font-size: 12px; color: ${change24h >= 0 ? '#0abb87' : '#f64e60'}">
-          ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+      <div class="asset-actions">
+        <button class="action-btn buy-btn">Buy</button>
+        <button class="action-btn sell-btn">Sell</button>
+      </div>
+      <div class="asset-stats">
+        <div class="asset-stat">Market Cap <span class="asset-stat-value">$${(asset.market_cap / 1000000000).toFixed(2)}B</span></div>
+        <div class="asset-stat">Volume (24h) <span class="asset-stat-value">$${(asset.total_volume / 1000000).toFixed(2)}M</span></div>
+      </div>
+      <div class="asset-stats">
+        <div class="asset-stat">Circulating Supply <span class="asset-stat-value">${(asset.circulating_supply / 1000000).toFixed(2)}M ${asset.symbol}</span></div>
+        <div class="supply-bar">
+          <div class="supply-progress" style="width: ${Math.min(100, (asset.circulating_supply / asset.total_supply * 100) || 100)}%"></div>
         </div>
       </div>
-      <div style="display: flex; justify-content: space-between; font-size: 12px; color: #92929d;">
-        <div>MCap: $${(asset.market_cap / 1000000000).toFixed(2)}B</div>
-        <div>Vol: $${(asset.total_volume / 1000000).toFixed(2)}M</div>
+      <div class="sparkline-container">
+        <canvas class="sparkline-chart" width="100" height="40" data-sparkline="${JSON.stringify(asset.sparkline)}"></canvas>
       </div>
     `;
     
-    container.appendChild(card);
+    container.appendChild(assetElement);
   });
   
-  modal.style.display = 'flex';
-  
-  // Close modal handler
-  document.getElementById('close-overview-modal').addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
+  // Initialize sparkline charts
+  initSparklines();
 }
 
-// Initialize sparkline charts
-function initSparklineCharts() {
-  document.querySelectorAll('.sparkline-chart').forEach(canvas => {
-    const ctx = canvas.getContext('2d');
-    const data = JSON.parse(canvas.dataset.sparkline);
+function fetchAllAssets(type) {
+  fetch(`/api/v1/market/all?type=${type}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showModal(type, data.data);
+      } else {
+        console.error('Failed to fetch all assets:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching all assets:', error);
+    });
+}
+
+function showModal(type, assets) {
+  const modal = document.getElementById('market-modal');
+  const title = document.getElementById('modal-title');
+  const container = document.getElementById('modal-assets-container');
+  
+  // Set modal title based on type
+  if (type === 'overview') {
+    title.textContent = 'Market Overview - All Assets';
+  } else if (type === 'gainers') {
+    title.textContent = 'Top Gainers - All Assets';
+  } else if (type === 'trending') {
+    title.textContent = 'Trending - All Assets';
+  }
+  
+  // Clear previous content
+  container.innerHTML = '';
+  
+  // Add assets to modal
+  assets.forEach(asset => {
+    const row = document.createElement('tr');
     
-    if (data && data.length > 0) {
+    row.innerHTML = `
+      <td>
+        <div style="display: flex; align-items: center;">
+          <img src="${asset.image}" alt="${asset.name}" style="width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;">
+          <div>
+            <div style="font-weight: 600;">${asset.symbol}</div>
+            <div style="font-size: 12px; color: #6c757d;">${asset.name}</div>
+          </div>
+        </div>
+      </td>
+      <td>$${asset.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6})}</td>
+      <td class="${asset.price_change_percentage_1h_in_currency >= 0 ? 'price-up' : 'price-down'}">
+        ${asset.price_change_percentage_1h_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_1h_in_currency || 0).toFixed(2)}%
+      </td>
+      <td class="${asset.price_change_percentage_24h >= 0 ? 'price-up' : 'price-down'}">
+        ${asset.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_24h).toFixed(2)}%
+      </td>
+      <td class="${asset.price_change_percentage_7d_in_currency >= 0 ? 'price-up' : 'price-down'}">
+        ${asset.price_change_percentage_7d_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_7d_in_currency || 0).toFixed(2)}%
+      </td>
+      <td>$${(asset.market_cap / 1000000000).toFixed(2)}B</td>
+      <td>$${(asset.total_volume / 1000000).toFixed(2)}M</td>
+      <td>
+        <div>${(asset.circulating_supply / 1000000).toFixed(2)}M ${asset.symbol}</div>
+        <div style="height: 4px; background-color: #2d2d3a; border-radius: 2px; margin-top: 4px;">
+          <div style="height: 100%; background-color: #0ecb81; border-radius: 2px; width: ${Math.min(100, (asset.circulating_supply / asset.total_supply * 100) || 100)}%;"></div>
+        </div>
+      </td>
+      <td>
+        <button style="padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; background-color: rgba(14, 203, 129, 0.1); color: #0ecb81; border: 1px solid #0ecb81; margin-right: 4px;">Buy</button>
+        <button style="padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; cursor: pointer; background-color: rgba(246, 70, 93, 0.1); color: #f6465d; border: 1px solid #f6465d;">Sell</button>
+      </td>
+    `;
+    
+    container.appendChild(row);
+  });
+  
+  // Show modal
+  modal.style.display = 'flex';
+}
+
+function initSparklines() {
+  const sparklines = document.querySelectorAll('.sparkline-chart');
+  
+  sparklines.forEach(canvas => {
+    const sparklineData = JSON.parse(canvas.getAttribute('data-sparkline'));
+    const ctx = canvas.getContext('2d');
+    
+    if (sparklineData && sparklineData.length > 0) {
       // Normalize data to fit canvas height
-      const min = Math.min(...data);
-      const max = Math.max(...data);
-      const normalized = data.map(val => 40 - ((val - min) / (max - min)) * 40);
+      const min = Math.min(...sparklineData);
+      const max = Math.max(...sparklineData);
+      const range = max - min;
       
+      const points = sparklineData.map((value, index) => {
+        return {
+          x: (index / (sparklineData.length - 1)) * canvas.width,
+          y: canvas.height - ((value - min) / range) * canvas.height
+        };
+      });
+      
+      // Draw sparkline
       ctx.beginPath();
-      ctx.moveTo(0, normalized[0]);
+      ctx.moveTo(points[0].x, points[0].y);
       
-      for (let i = 1; i < normalized.length; i++) {
-        const x = (i / normalized.length) * 100;
-        ctx.lineTo(x, normalized[i]);
+      for (let i = 1; i < points.length; i++) {
+        ctx.lineTo(points[i].x, points[i].y);
       }
       
-      // Determine line color based on price change
-      const firstPrice = data[0];
-      const lastPrice = data[data.length - 1];
-      ctx.strokeStyle = lastPrice >= firstPrice ? '#0abb87' : '#f64e60';
+      // Determine line color based on first vs last value
+      const isUp = sparklineData[sparklineData.length - 1] >= sparklineData[0];
+      ctx.strokeStyle = isUp ? '#0ecb81' : '#f6465d';
       ctx.lineWidth = 2;
       ctx.stroke();
     }
   });
 }
-
-// Load market overview when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  loadMarketOverview();
-  
-  // Refresh data every 60 seconds
-  setInterval(loadMarketOverview, 60000);
-});
-
     // Load gainers data
    // Fetch and display top gainers
-async function loadTopGainers() {
-  try {
-    const response = await fetch('/api/v1/markets/gainers');
-    const data = await response.json();
-    
-    if (data.success) {
-      const container = document.getElementById('top-gainers-container');
-      container.innerHTML = '';
-      
-      // Display top 5 gainers
-      data.data.topGainers.forEach(gainer => {
-        const gainerCard = createGainerCard(gainer);
-        container.appendChild(gainerCard);
-      });
-      
-      // Store all gainers for modal
-      window.allGainersData = data.data.allGainers;
-      
-      // Set up view all button
-      document.getElementById('view-all-gainers').addEventListener('click', () => {
-        displayAllAssetsModal('All Gainers', window.allGainersData);
-      });
-    }
-  } catch (error) {
-    console.error('Error loading top gainers:', error);
-  }
-}
-
-// Create gainer card HTML
-function createGainerCard(gainer) {
-  const card = document.createElement('div');
-  card.className = 'gainer-card';
+// Top Gainers JS
+document.addEventListener('DOMContentLoaded', function() {
+  // Fetch top gainers data
+  fetchTopGainers();
   
-  const change24h = parseFloat(gainer.price_change_percentage_24h || 0);
-  
-  card.innerHTML = `
-    <img src="${gainer.image}" alt="${gainer.name}" class="gainer-logo">
-    <div class="gainer-info">
-      <div class="gainer-name">${gainer.name}</div>
-      <div class="gainer-symbol">${gainer.symbol}</div>
-    </div>
-    <div class="gainer-price">$${gainer.current_price.toLocaleString()}</div>
-    <div class="gainer-change">▲ ${change24h.toFixed(2)}%</div>
-  `;
-  
-  return card;
-}
-
-// Load top gainers when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  loadTopGainers();
-  
-  // Refresh data every 60 seconds
-  setInterval(loadTopGainers, 60000);
+  // Set up view all button
+  document.getElementById('view-all-gainers').addEventListener('click', function() {
+    fetchAllAssets('gainers');
+  });
 });
+
+function fetchTopGainers() {
+  fetch('/api/v1/market/top-gainers')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderTopGainers(data.data);
+      } else {
+        console.error('Failed to fetch top gainers:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching top gainers:', error);
+    });
+}
+
+function renderTopGainers(gainers) {
+  const container = document.getElementById('top-gainers-container');
+  container.innerHTML = '';
+  
+  gainers.forEach(gainer => {
+    const gainerElement = document.createElement('div');
+    gainerElement.className = 'top-gainer-row';
+    
+    gainerElement.innerHTML = `
+      <img src="${gainer.image}" alt="${gainer.name}" class="asset-logo">
+      <div class="asset-name">
+        <span class="asset-symbol">${gainer.symbol}</span>
+        <span class="asset-fullname">${gainer.name}</span>
+      </div>
+      <div class="asset-price">$${gainer.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6})}</div>
+      <div class="gainer-change price-up">
+        ▲ ${gainer.price_change_percentage_24h.toFixed(2)}%
+      </div>
+      <div class="asset-actions">
+        <button class="action-btn buy-btn">Buy</button>
+        <button class="action-btn sell-btn">Sell</button>
+      </div>
+      <div class="sparkline-container">
+        <canvas class="sparkline-chart" width="100" height="40" data-sparkline="${JSON.stringify(gainer.sparkline)}"></canvas>
+      </div>
+    `;
+    
+    container.appendChild(gainerElement);
+  });
+  
+  // Initialize sparkline charts
+  initSparklines();
+}
 
     // Load trending data
-   // Fetch and display trending coins
-async function loadTrendingCoins() {
-  try {
-    const response = await fetch('/api/v1/markets/trending');
-    const data = await response.json();
-    
-    if (data.success) {
-      const container = document.getElementById('trending-container');
-      container.innerHTML = '';
-      
-      // Display top 5 trending
-      data.data.trending.forEach(coin => {
-        const trendingCard = createTrendingCard(coin);
-        container.appendChild(trendingCard);
-      });
-      
-      // Store all trending for modal
-      window.allTrendingData = data.data.allTrending;
-      
-      // Set up view all button
-      document.getElementById('view-all-trending').addEventListener('click', () => {
-        displayAllAssetsModal('All Trending', window.allTrendingData);
-      });
-    }
-  } catch (error) {
-    console.error('Error loading trending coins:', error);
-  }
-}
-
-// Create trending card HTML
-function createTrendingCard(coin) {
-  const card = document.createElement('div');
-  card.className = 'trending-card';
+ // Trending JS
+document.addEventListener('DOMContentLoaded', function() {
+  // Fetch trending data
+  fetchTrending();
   
-  card.innerHTML = `
-    <img src="${coin.image}" alt="${coin.name}" class="trending-logo">
-    <div class="trending-info">
-      <div class="trending-name">${coin.name}</div>
-      <div class="trending-symbol">${coin.symbol}</div>
-    </div>
-    <div>
-      <div class="trending-price">$${coin.current_price.toLocaleString()}</div>
-      <div class="trending-volume">Vol: $${(coin.total_volume / 1000000).toFixed(2)}M</div>
-    </div>
-  `;
-  
-  return card;
-}
-
-// Load trending coins when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  loadTrendingCoins();
-  
-  // Refresh data every 60 seconds
-  setInterval(loadTrendingCoins, 60000);
+  // Set up view all button
+  document.getElementById('view-all-trending').addEventListener('click', function() {
+    fetchAllAssets('trending');
+  });
 });
 
+function fetchTrending() {
+  fetch('/api/v1/market/trending')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderTrending(data.data);
+      } else {
+        console.error('Failed to fetch trending:', data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching trending:', error);
+    });
+}
+
+function renderTrending(trending) {
+  const container = document.getElementById('trending-container');
+  container.innerHTML = '';
+  
+  trending.forEach(asset => {
+    const assetElement = document.createElement('div');
+    assetElement.className = 'trending-row';
+    
+    assetElement.innerHTML = `
+      <img src="${asset.image}" alt="${asset.name}" class="asset-logo">
+      <div class="asset-name">
+        <span class="asset-symbol">${asset.symbol}</span>
+        <span class="asset-fullname">${asset.name}</span>
+      </div>
+      <div class="asset-price">$${asset.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 6})}</div>
+      <div class="price-change-container">
+        <div class="price-change-column">
+          <span class="price-change-label">24h</span>
+          <span class="price-change-value ${asset.price_change_percentage_24h >= 0 ? 'price-up' : 'price-down'}">
+            ${asset.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(asset.price_change_percentage_24h).toFixed(2)}%
+          </span>
+        </div>
+      </div>
+      <div class="asset-actions">
+        <button class="action-btn buy-btn">Buy</button>
+        <button class="action-btn sell-btn">Sell</button>
+      </div>
+      <div class="sparkline-container">
+        <canvas class="sparkline-chart" width="100" height="40" data-sparkline="${JSON.stringify(asset.sparkline)}"></canvas>
+      </div>
+    `;
+    
+    container.appendChild(assetElement);
+  });
+  
+  // Initialize sparkline charts
+  initSparklines();
+}
     // News State Management
     let newsState = {
       allArticles: [],
