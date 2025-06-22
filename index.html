@@ -296,270 +296,76 @@
       text-decoration: underline;
     }
 
-.market-overview {
-  background-color: #1e2026;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
-}
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-.market-overview-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-.market-overview-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #f8f9fa;
-}
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
 
-.view-all-btn {
-  background-color: transparent;
-  border: 1px solid #474d57;
-  color: #848e9c;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+    th {
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: var(--secondary-bg);
+      position: sticky;
+      top: var(--header-height);
+    }
 
-.view-all-btn:hover {
-  background-color: #2b3139;
-  color: #eaecef;
-}
+    tr:hover {
+      background-color: rgba(240, 185, 11, 0.03);
+    }
 
-.asset-row {
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1fr 1fr;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #2b3139;
-}
+    .coin-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.asset-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
 
-.asset-logo {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
+    .coin-name {
+      font-weight: 500;
+    }
 
-.asset-name {
-  font-weight: 500;
-  color: #f8f9fa;
-}
+    .coin-symbol {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-left: 4px;
+    }
 
-.asset-symbol {
-  color: #848e9c;
-  font-size: 14px;
-}
+    .positive {
+      color: var(--positive);
+    }
 
-.asset-price {
-  font-weight: 600;
-  color: #f8f9fa;
-}
+    .negative {
+      color: var(--negative);
+    }
 
-.price-change-container {
-  display: flex;
-  gap: 16px;
-}
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
 
-.price-change-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.price-change-label {
-  font-size: 12px;
-  color: #848e9c;
-  margin-bottom: 4px;
-}
-
-.price-change-value {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.price-change-up {
-  color: #0ecb81;
-}
-
-.price-change-down {
-  color: #f6465d;
-}
-
-.asset-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.asset-stat {
-  font-size: 14px;
-  color: #eaecef;
-}
-
-.asset-stat-label {
-  color: #848e9c;
-  font-size: 12px;
-}
-
-.supply-bar {
-  height: 4px;
-  background-color: #2b3139;
-  border-radius: 2px;
-  margin-top: 4px;
-  overflow: hidden;
-}
-
-.supply-bar-fill {
-  height: 100%;
-  background-color: #f0b90b;
-}
-
-.trade-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.trade-btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-}
-
-.buy-btn {
-  background-color: rgba(14, 203, 129, 0.1);
-  color: #0ecb81;
-}
-
-.buy-btn:hover {
-  background-color: rgba(14, 203, 129, 0.2);
-}
-
-.sell-btn {
-  background-color: rgba(246, 70, 93, 0.1);
-  color: #f6465d;
-}
-
-.sell-btn:hover {
-  background-color: rgba(246, 70, 93, 0.2);
-}
-
-.sparkline-container {
-  width: 100px;
-  height: 40px;
-}
-
-/* Modal Styles */
-.asset-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-.modal-content {
-  background-color: #1e2026;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 900px;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.modal-header {
-  padding: 20px;
-  border-bottom: 1px solid #2b3139;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 600;
-  color: #f8f9fa;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  color: #848e9c;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.modal-body {
-  padding: 20px;
-}
-
-.modal-chart {
-  height: 300px;
-  background-color: #2b3139;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.modal-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.stat-card {
-  background-color: #2b3139;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.stat-title {
-  color: #848e9c;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.stat-value {
-  color: #f8f9fa;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .asset-row {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  }
-  
-  .asset-stats {
-    display: none;
-  }
-  
-  .modal-stats {
-    grid-template-columns: 1fr;
-  }
-}
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+      min-width: 60px;
+    }
 
     /* Stats Box */
     .market-stats-grid {
@@ -1689,57 +1495,33 @@
       </div>
     </div>
 
-   <div class="market-overview">
-  <div class="market-overview-header">
-    <h2 class="market-overview-title">Market Overview</h2>
-    <button class="view-all-btn" id="viewAllMarket">View All</button>
+    <!-- Market Data Section -->
+    <div class="section">
+  <div class="section-header">
+    <h2 class="section-title">Market Overview</h2>
+    <a href="#" class="section-link" id="viewAllMarkets">View All</a>
   </div>
   
-  <div id="marketOverviewContent">
-    <!-- Dynamic content will be inserted here -->
-  </div>
-</div>
-
-<!-- Modal Structure -->
-<div class="asset-modal" id="assetModal" style="display: none;">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title">
-        <img id="modalAssetLogo" src="" alt="" class="asset-logo">
-        <span id="modalAssetName"></span>
-        <span id="modalAssetSymbol" class="asset-symbol"></span>
-      </div>
-      <button class="modal-close" id="modalClose">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-chart" id="modalChart"></div>
-      <div class="modal-stats">
-        <div class="stat-card">
-          <div class="stat-title">Price</div>
-          <div class="stat-value" id="modalPrice"></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">24h Change</div>
-          <div class="stat-value" id="modal24hChange"></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">Market Cap</div>
-          <div class="stat-value" id="modalMarketCap"></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">24h Volume</div>
-          <div class="stat-value" id="modalVolume"></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">Circulating Supply</div>
-          <div class="stat-value" id="modalSupply"></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-title">All Time High</div>
-          <div class="stat-value" id="modalATH"></div>
-        </div>
-      </div>
-    </div>
+  <div class="table-container">
+    <table class="market-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Price</th>
+           <th>1h</th>
+             <th>24h</th>
+           <th>7d</th>
+          <th>Volume (24h)</th>
+          <th>Market Cap</th>
+          <th>Supply</th>
+          <th>Trend</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="marketTable">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -1789,6 +1571,27 @@
         </div>
       </div>
     </div>
+
+    <!-- Gainers & Trending Section -->
+    <div class="section gainers">
+  <div class="section-header">
+    <h2 class="section-title">Top Gainers</h2>
+    <a href="#" class="section-link" id="viewAllGainers">View All</a>
+  </div>
+  <div class="gainers-container" id="gainersList">
+    <!-- Data will be populated here -->
+  </div>
+</div>
+      
+      <div class="section trending">
+  <div class="section-header">
+    <h2 class="section-title">Trending</h2>
+    <a href="#" class="section-link" id="viewAllTrending">View All</a>
+  </div>
+  <div class="trending-container" id="trendingList">
+    <!-- Data will be populated here -->
+  </div>
+</div>
 
     <!-- Trading View -->
     <div class="section trading-view">
@@ -2796,189 +2599,92 @@
         }
       }
 
- document.addEventListener('DOMContentLoaded', function() {
-  // Fetch market overview data
-  fetchMarketOverview();
-  
-  // Set up event listeners
-  document.getElementById('viewAllMarket').addEventListener('click', function() {
-    fetchAllCoins();
-  });
-  
-  document.getElementById('modalClose').addEventListener('click', function() {
-    document.getElementById('assetModal').style.display = 'none';
-  });
-});
-
-function fetchMarketOverview() {
-  fetch('/api/v1/market/overview')
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        renderMarketOverview(data.data.coins.slice(0, 5));
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching market overview:', error);
-    });
+      // Load market data
+      async function loadMarketData() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets`);
+    if (!response.ok) throw new Error('Failed to fetch market data');
+    
+    const { marketData } = await response.json();
+    updateMarketTable(marketData);
+  } catch (error) {
+    console.error('Error loading market data:', error);
+    showToast('Failed to load market data', 'error');
+  }
 }
 
-function renderMarketOverview(coins) {
-  const container = document.getElementById('marketOverviewContent');
-  container.innerHTML = '';
-  
-  coins.forEach(coin => {
-    const row = document.createElement('div');
+function updateMarketTable(data) {
+  const tableBody = document.getElementById('marketTable');
+  tableBody.innerHTML = '';
+
+  data.forEach(asset => {
+    const row = document.createElement('tr');
     row.className = 'asset-row';
+    
+    // Generate random changes for demo
+    const change1h = (Math.random() * 2 - 1).toFixed(2);
+    const change24h = asset.change24h;
+    const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+    
+    // Determine trend direction
+    const isUpwardTrend = Math.random() > 0.5;
+    
     row.innerHTML = `
-      <div class="asset-info">
-        <img src="${coin.logo}" alt="${coin.name}" class="asset-logo">
-        <div>
-          <span class="asset-name">${coin.name}</span>
-          <span class="asset-symbol">${coin.symbol}</span>
+      <td class="asset-cell">
+        <img src="${asset.image}" alt="${asset.name}" class="asset-icon" width="24">
+        <div class="asset-info">
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
         </div>
-      </div>
-      <div class="asset-price">$${coin.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</div>
-      <div class="price-change-container">
-        <div class="price-change-col">
-          <span class="price-change-label">1h</span>
-          <span class="price-change-value ${coin.priceChange['1h'] >= 0 ? 'price-change-up' : 'price-change-down'}">
-            ${coin.priceChange['1h'] >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange['1h']).toFixed(2)}%
+      </td>
+      <td class="price-cell">$${asset.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+      <td>
+        <div class="change-container">
+          <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+            ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+          </span>
+          <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+            ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+          </span>
+          <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+            ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
           </span>
         </div>
-        <div class="price-change-col">
-          <span class="price-change-label">24h</span>
-          <span class="price-change-value ${coin.priceChange['24h'] >= 0 ? 'price-change-up' : 'price-change-down'}">
-            ${coin.priceChange['24h'] >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange['24h']).toFixed(2)}%
-          </span>
+      </td>
+      <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+      <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+      <td>
+        <div class="supply-container">
+          <span>${(asset.marketCap / asset.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+          <div class="supply-bar-container">
+            <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+          </div>
         </div>
-        <div class="price-change-col">
-          <span class="price-change-label">7d</span>
-          <span class="price-change-value ${coin.priceChange['7d'] >= 0 ? 'price-change-up' : 'price-change-down'}">
-            ${coin.priceChange['7d'] >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange['7d']).toFixed(2)}%
-          </span>
+      </td>
+      <td>
+        <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+          ${isUpwardTrend ? '↗' : '↘'}
         </div>
-      </div>
-      <div class="asset-stats">
-        <div class="asset-stat">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
-        <div class="asset-stat-label">Market Cap</div>
-      </div>
-      <div class="trade-buttons">
-        <button class="trade-btn buy-btn">Buy</button>
-        <button class="trade-btn sell-btn">Sell</button>
-      </div>
-      <div class="sparkline-container" id="sparkline-${coin.id}"></div>
+      </td>
+      <td>
+        <div class="action-buttons">
+          <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+          <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+        </div>
+      </td>
     `;
     
-    container.appendChild(row);
+    row.addEventListener('click', (e) => {
+      if (!e.target.closest('.action-buttons')) {
+        showCoinDetail(asset.id);
+      }
+    });
     
-    // Render sparkline
-    renderSparkline(`sparkline-${coin.id}`, coin.sparkline);
-    
-    // Add click event to open modal
-    row.addEventListener('click', () => {
-      openAssetModal(coin.id);
-    });
+    tableBody.appendChild(row);
   });
-}
-
-function fetchAllCoins() {
-  fetch('/api/v1/market/all-coins?page=1&perPage=50')
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // This would open a modal or new view with all coins
-        console.log('All coins data:', data);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching all coins:', error);
-    });
-}
-
-function openAssetModal(assetId) {
-  fetch(`/api/v1/market/asset/${assetId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        const asset = data.data;
-        document.getElementById('modalAssetLogo').src = asset.logo;
-        document.getElementById('modalAssetName').textContent = asset.name;
-        document.getElementById('modalAssetSymbol').textContent = asset.symbol;
-        document.getElementById('modalPrice').textContent = `$${asset.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`;
-        
-        const change24h = asset.priceChange['24h'];
-        const changeElement = document.getElementById('modal24hChange');
-        changeElement.textContent = `${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%`;
-        changeElement.className = `stat-value ${change24h >= 0 ? 'price-change-up' : 'price-change-down'}`;
-        
-        document.getElementById('modalMarketCap').textContent = `$${(asset.marketCap / 1000000000).toFixed(2)}B`;
-        document.getElementById('modalVolume').textContent = `$${(asset.volume24h / 1000000).toFixed(2)}M`;
-        document.getElementById('modalSupply').textContent = `${(asset.circulatingSupply / 1000000).toFixed(2)}M ${asset.symbol}`;
-        document.getElementById('modalATH').textContent = `$${asset.allTimeHigh.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`;
-        
-        // Render chart (using a charting library like Chart.js)
-        renderModalChart('modalChart', asset.chartData.prices);
-        
-        document.getElementById('assetModal').style.display = 'flex';
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching asset details:', error);
-    });
-}
-
-function renderSparkline(containerId, sparklineData) {
-  // Implementation using a charting library like Chart.js or TradingView Lightweight Charts
-  // This is a simplified example
-  const container = document.getElementById(containerId);
-  if (!container || !sparklineData || sparklineData.length === 0) return;
-  
-  // In a real implementation, you would use a proper charting library
-  const canvas = document.createElement('canvas');
-  container.appendChild(canvas);
-  
-  // Example using Chart.js
-  new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: sparklineData.map((_, i) => i),
-      datasets: [{
-        data: sparklineData.map(p => p.value),
-        borderColor: sparklineData[0].value <= sparklineData[sparklineData.length - 1].value ? '#0ecb81' : '#f6465d',
-        borderWidth: 2,
-        fill: false,
-        pointRadius: 0,
-        tension: 0.1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          display: false
-        },
-        y: {
-          display: false
-        }
-      }
-    }
-  });
-}
-
-function renderModalChart(containerId, priceData) {
-  // Similar implementation but for the larger modal chart
-  // Would use a more sophisticated charting solution in production
 }
 
  // Market Stats Section - Frontend Implementation
-      
 document.addEventListener('DOMContentLoaded', async () => {
   // Initialize stats with loading state
   initStatsLoadingState();
