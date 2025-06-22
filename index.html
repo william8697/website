@@ -296,76 +296,176 @@
       text-decoration: underline;
     }
 
-    /* Table Styles */
-    .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
+    .market-overview {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+.market-overview .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-    th, td {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 14px;
-      border-bottom: 1px solid var(--border-color);
-    }
+.market-overview .section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 
-    th {
-      font-weight: 500;
-      color: var(--text-secondary);
-      background-color: var(--secondary-bg);
-      position: sticky;
-      top: var(--header-height);
-    }
+.market-overview .view-all {
+  color: #6b8afd;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
 
-    tr:hover {
-      background-color: rgba(240, 185, 11, 0.03);
-    }
+.market-overview .assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
 
-    .coin-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.market-overview .asset-card {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
 
-    .coin-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-    }
+.market-overview .asset-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-    .coin-name {
-      font-weight: 500;
-    }
+.market-overview .asset-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-    .coin-symbol {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-left: 4px;
-    }
+.market-overview .asset-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
 
-    .positive {
-      color: var(--positive);
-    }
+.market-overview .asset-name {
+  font-weight: 600;
+  margin-right: 6px;
+}
 
-    .negative {
-      color: var(--negative);
-    }
+.market-overview .asset-symbol {
+  color: #a1a1a1;
+  font-size: 0.9rem;
+}
 
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
+.market-overview .asset-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 8px 0;
+}
 
-    .btn-sm {
-      padding: 4px 8px;
-      font-size: 12px;
-      min-width: 60px;
-    }
+.market-overview .price-change-container {
+  display: flex;
+  gap: 15px;
+  margin: 12px 0;
+}
+
+.market-overview .price-change-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.market-overview .price-change-label {
+  font-size: 0.8rem;
+  color: #a1a1a1;
+  margin-bottom: 4px;
+}
+
+.market-overview .price-change-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.market-overview .price-up {
+  color: #0ecb81;
+}
+
+.market-overview .price-down {
+  color: #f6465d;
+}
+
+.market-overview .asset-stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.market-overview .stat-label {
+  color: #a1a1a1;
+}
+
+.market-overview .stat-value {
+  font-weight: 500;
+}
+
+.market-overview .supply-bar {
+  height: 4px;
+  background-color: #3a3a3a;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.market-overview .supply-progress {
+  height: 100%;
+  background-color: #6b8afd;
+}
+
+.market-overview .asset-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.market-overview .action-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.market-overview .buy-btn {
+  background-color: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  border: 1px solid #0ecb81;
+}
+
+.market-overview .sell-btn {
+  background-color: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+  border: 1px solid #f6465d;
+}
+
+.market-overview .action-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.market-overview .sparkline-container {
+  height: 50px;
+  margin-top: 15px;
+}
 
     /* Stats Box */
     .market-stats-grid {
@@ -472,57 +572,478 @@
     }
 
     /* Gainers/Trending Section */
-    .gainers-trending {
-      display: flex;
-      gap: 16px;
-    }
+    .top-gainers {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
 
-    .gainers, .trending {
-      flex: 1;
-      background-color: var(--secondary-bg);
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-    }
+.top-gainers .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-    .coin-list {
-      list-style: none;
-    }
+.top-gainers .section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 
-    .coin-list-item {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+.top-gainers .view-all {
+  color: #6b8afd;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
 
-    .coin-list-item:last-child {
-      border-bottom: none;
-    }
+.top-gainers .assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
 
-    .coin-list-item:hover {
-      background-color: rgba(240, 185, 11, 0.05);
-    }
+.top-gainers .asset-card {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
 
-    .coin-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.top-gainers .asset-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
 
-    .price-info {
-      text-align: right;
-    }
+.top-gainers .asset-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
 
-    .price {
-      font-weight: 500;
-    }
+.top-gainers .asset-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
 
-    .price-change {
-      font-size: 13px;
-    }
+.top-gainers .asset-name {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.top-gainers .asset-symbol {
+  color: #a1a1a1;
+  font-size: 0.9rem;
+}
+
+.top-gainers .asset-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 8px 0;
+}
+
+.top-gainers .price-change-container {
+  display: flex;
+  gap: 15px;
+  margin: 12px 0;
+}
+
+.top-gainers .price-change-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-gainers .price-change-label {
+  font-size: 0.8rem;
+  color: #a1a1a1;
+  margin-bottom: 4px;
+}
+
+.top-gainers .price-change-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.top-gainers .price-up {
+  color: #0ecb81;
+}
+
+.top-gainers .price-down {
+  color: #f6465d;
+}
+
+.top-gainers .asset-stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.top-gainers .stat-label {
+  color: #a1a1a1;
+}
+
+.top-gainers .stat-value {
+  font-weight: 500;
+}
+
+.top-gainers .supply-bar {
+  height: 4px;
+  background-color: #3a3a3a;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.top-gainers .supply-progress {
+  height: 100%;
+  background-color: #6b8afd;
+}
+
+.top-gainers .asset-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.top-gainers .action-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.top-gainers .buy-btn {
+  background-color: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  border: 1px solid #0ecb81;
+}
+
+.top-gainers .sell-btn {
+  background-color: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+  border: 1px solid #f6465d;
+}
+
+.top-gainers .action-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.top-gainers .sparkline-container {
+  height: 50px;
+  margin-top: 15px;
+}
+    //treading
+
+    .trending {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.trending .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.trending .section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.trending .view-all {
+  color: #6b8afd;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.trending .assets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.trending .asset-card {
+  background-color: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.trending .asset-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.trending .asset-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.trending .asset-logo {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+
+.trending .asset-name {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.trending .asset-symbol {
+  color: #a1a1a1;
+  font-size: 0.9rem;
+}
+
+.trending .asset-price {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 8px 0;
+}
+
+.trending .price-change-container {
+  display: flex;
+  gap: 15px;
+  margin: 12px 0;
+}
+
+.trending .price-change-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.trending .price-change-label {
+  font-size: 0.8rem;
+  color: #a1a1a1;
+  margin-bottom: 4px;
+}
+
+.trending .price-change-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.trending .price-up {
+  color: #0ecb81;
+}
+
+.trending .price-down {
+  color: #f6465d;
+}
+
+.trending .asset-stats {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  font-size: 0.85rem;
+}
+
+.trending .stat-label {
+  color: #a1a1a1;
+}
+
+.trending .stat-value {
+  font-weight: 500;
+}
+
+.trending .supply-bar {
+  height: 4px;
+  background-color: #3a3a3a;
+  border-radius: 2px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.trending .supply-progress {
+  height: 100%;
+  background-color: #6b8afd;
+}
+
+.trending .asset-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.trending .action-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.trending .buy-btn {
+  background-color: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  border: 1px solid #0ecb81;
+}
+
+.trending .sell-btn {
+  background-color: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+  border: 1px solid #f6465d;
+}
+
+.trending .action-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.trending .sparkline-container {
+  height: 50px;
+  margin-top: 15px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 25px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #a1a1a1;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.modal-chart {
+  grid-column: 1 / -1;
+  height: 300px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.modal-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.stat-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.stat-title {
+  color: #a1a1a1;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.modal-action-btn {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.modal-action-buy {
+  background-color: rgba(14, 203, 129, 0.1);
+  color: #0ecb81;
+  border: 1px solid #0ecb81;
+}
+
+.modal-action-sell {
+  background-color: rgba(246, 70, 93, 0.1);
+  color: #f6465d;
+  border: 1px solid #f6465d;
+}
+
+@media (max-width: 768px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+    
 
     /* Trading View */
     .trading-view {
@@ -1494,37 +2015,18 @@
         Welcome back, <span id="welcomeUsername"></span>! Your portfolio is up <span id="portfolioChange" class="positive">0%</span> today.
       </div>
     </div>
-
-    <!-- Market Data Section -->
-    <div class="section">
+    
+ // MARKET OVERVIEW
+   <div class="market-overview">
   <div class="section-header">
     <h2 class="section-title">Market Overview</h2>
-    <a href="#" class="section-link" id="viewAllMarkets">View All</a>
+    <div class="view-all" id="view-all-overview">View All</div>
   </div>
-  
-  <div class="table-container">
-    <table class="market-table">
-      <thead>
-        <tr>
-          <th>Asset</th>
-          <th>Price</th>
-           <th>1h</th>
-             <th>24h</th>
-           <th>7d</th>
-          <th>Volume (24h)</th>
-          <th>Market Cap</th>
-          <th>Supply</th>
-          <th>Trend</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="marketTable">
-        <!-- Data will be populated here -->
-      </tbody>
-    </table>
+  <div class="assets-grid" id="market-overview-container">
+    <!-- Assets will be inserted here by JS -->
   </div>
 </div>
-
+    
     <!-- Stats Section -->
     <div class="market-stats-grid">
       <div class="stat-card">
@@ -1573,23 +2075,23 @@
     </div>
 
     <!-- Gainers & Trending Section -->
-    <div class="section gainers">
+    <div class="top-gainers">
   <div class="section-header">
     <h2 class="section-title">Top Gainers</h2>
-    <a href="#" class="section-link" id="viewAllGainers">View All</a>
+    <div class="view-all" id="view-all-gainers">View All</div>
   </div>
-  <div class="gainers-container" id="gainersList">
-    <!-- Data will be populated here -->
+  <div class="assets-grid" id="top-gainers-container">
+    <!-- Assets will be inserted here by JS -->
   </div>
 </div>
       
-      <div class="section trending">
+     <div class="trending">
   <div class="section-header">
     <h2 class="section-title">Trending</h2>
-    <a href="#" class="section-link" id="viewAllTrending">View All</a>
+    <div class="view-all" id="view-all-trending">View All</div>
   </div>
-  <div class="trending-container" id="trendingList">
-    <!-- Data will be populated here -->
+  <div class="assets-grid" id="trending-container">
+    <!-- Assets will be inserted here by JS -->
   </div>
 </div>
 
@@ -2600,89 +3102,105 @@
       }
 
       // Load market data
-      async function loadMarketData() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/markets`);
-    if (!response.ok) throw new Error('Failed to fetch market data');
-    
-    const { marketData } = await response.json();
-    updateMarketTable(marketData);
-  } catch (error) {
-    console.error('Error loading market data:', error);
-    showToast('Failed to load market data', 'error');
-  }
-}
-
-function updateMarketTable(data) {
-  const tableBody = document.getElementById('marketTable');
-  tableBody.innerHTML = '';
-
-  data.forEach(asset => {
-    const row = document.createElement('tr');
-    row.className = 'asset-row';
-    
-    // Generate random changes for demo
-    const change1h = (Math.random() * 2 - 1).toFixed(2);
-    const change24h = asset.change24h;
-    const change7d = (Math.random() * 5 - 2.5).toFixed(2);
-    
-    // Determine trend direction
-    const isUpwardTrend = Math.random() > 0.5;
-    
-    row.innerHTML = `
-      <td class="asset-cell">
-        <img src="${asset.image}" alt="${asset.name}" class="asset-icon" width="24">
-        <div class="asset-info">
-          <span class="asset-name">${asset.name}</span>
-          <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
-        </div>
-      </td>
-      <td class="price-cell">$${asset.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-      <td>
-        <div class="change-container">
-          <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
-            ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
-          </span>
-          <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
-            ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
-          </span>
-          <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
-            ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
-          </span>
-        </div>
-      </td>
-      <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
-      <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
-      <td>
-        <div class="supply-container">
-          <span>${(asset.marketCap / asset.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
-          <div class="supply-bar-container">
-            <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
-          </div>
-        </div>
-      </td>
-      <td>
-        <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
-          ${isUpwardTrend ? '↗' : '↘'}
-        </div>
-      </td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-          <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
-        </div>
-      </td>
-    `;
-    
-    row.addEventListener('click', (e) => {
-      if (!e.target.closest('.action-buttons')) {
-        showCoinDetail(asset.id);
+      document.addEventListener('DOMContentLoaded', function() {
+  // Fetch market overview data
+  fetch('https://website-backendd-1.onrender.com/api/v1/market/overview')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderMarketOverview(data.data.slice(0, 5)); // Show first 5 assets
+        setupViewAll('view-all-overview', data.data);
       }
     });
-    
-    tableBody.appendChild(row);
-  });
-}
+
+  function renderMarketOverview(assets) {
+    const container = document.getElementById('market-overview-container');
+    container.innerHTML = '';
+
+    assets.forEach(asset => {
+      const assetCard = document.createElement('div');
+      assetCard.className = 'asset-card';
+      assetCard.innerHTML = `
+        <div class="asset-header">
+          <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol}</span>
+        </div>
+        <div class="asset-price">$${asset.current_price.toLocaleString()}</div>
+        <div class="price-change-container">
+          <div class="price-change-item">
+            <span class="price-change-label">1h</span>
+            ${renderPriceChange(asset.price_change_percentage_1h)}
+          </div>
+          <div class="price-change-item">
+            <span class="price-change-label">24h</span>
+            ${renderPriceChange(asset.price_change_percentage_24h)}
+          </div>
+          <div class="price-change-item">
+            <span class="price-change-label">7d</span>
+            ${renderPriceChange(asset.price_change_percentage_7d)}
+          </div>
+        </div>
+        <div class="asset-stats">
+          <div>
+            <div class="stat-label">Market Cap</div>
+            <div class="stat-value">$${(asset.market_cap / 1000000000).toFixed(2)}B</div>
+          </div>
+          <div>
+            <div class="stat-label">Volume (24h)</div>
+            <div class="stat-value">$${(asset.total_volume / 1000000).toFixed(2)}M</div>
+          </div>
+        </div>
+        <div>
+          <div class="stat-label">Circulating Supply</div>
+          <div class="stat-value">${formatSupply(asset.circulating_supply, asset.symbol)}</div>
+          <div class="supply-bar">
+            <div class="supply-progress" style="width: ${(asset.circulating_supply / asset.total_supply) * 100}%"></div>
+          </div>
+        </div>
+        <div class="asset-actions">
+          <button class="action-btn buy-btn">Buy</button>
+          <button class="action-btn sell-btn">Sell</button>
+        </div>
+        <div class="sparkline-container" id="sparkline-${asset.id}"></div>
+      `;
+      container.appendChild(assetCard);
+      
+      // Render sparkline
+      renderSparkline(`sparkline-${asset.id}`, asset.sparkline_in_7d.price);
+      
+      // Add click event for modal
+      assetCard.addEventListener('click', () => openAssetModal(asset));
+    });
+  }
+
+  function renderPriceChange(change) {
+    const isPositive = change >= 0;
+    const arrow = isPositive ? '▲' : '▼';
+    return `
+      <span class="price-change-value ${isPositive ? 'price-up' : 'price-down'}">
+        ${arrow} ${Math.abs(change).toFixed(2)}%
+      </span>
+    `;
+  }
+
+  function formatSupply(supply, symbol) {
+    if (supply >= 1000000000) {
+      return `${(supply / 1000000000).toFixed(2)}B ${symbol}`;
+    } else if (supply >= 1000000) {
+      return `${(supply / 1000000).toFixed(2)}M ${symbol}`;
+    } else if (supply >= 1000) {
+      return `${(supply / 1000).toFixed(2)}K ${symbol}`;
+    }
+    return `${supply} ${symbol}`;
+  }
+
+  function setupViewAll(buttonId, allAssets) {
+    document.getElementById(buttonId).addEventListener('click', () => {
+      openViewAllModal('Market Overview', allAssets);
+    });
+  }
+});
 
  // Market Stats Section - Frontend Implementation
 document.addEventListener('DOMContentLoaded', async () => {
@@ -2788,68 +3306,136 @@ function formatNumber(value, isCurrency = false) {
 function getRandomInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+      
       // Update gainers list
-      function updateGainersList() {
-        const gainersList = document.getElementById('gainersList');
-        gainersList.innerHTML = '';
-        
-        gainersData.forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          const item = document.createElement('li');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          gainersList.appendChild(item);
-        });
+      document.addEventListener('DOMContentLoaded', function() {
+  // Fetch top gainers data
+  fetch('https://website-backendd-1.onrender.com/api/v1/market/top-gainers')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderTopGainers(data.data.slice(0, 5)); // Show first 5 gainers
+        setupViewAll('view-all-gainers', data.data, 'Top Gainers');
       }
+    });
 
+  function renderTopGainers(assets) {
+    const container = document.getElementById('top-gainers-container');
+    container.innerHTML = '';
+
+    assets.forEach(asset => {
+      const assetCard = document.createElement('div');
+      assetCard.className = 'asset-card';
+      assetCard.innerHTML = `
+        <div class="asset-header">
+          <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol}</span>
+        </div>
+        <div class="asset-price">$${asset.current_price.toLocaleString()}</div>
+        <div class="price-change-container">
+          <div class="price-change-item">
+            <span class="price-change-label">24h</span>
+            <span class="price-change-value price-up">▲ ${asset.price_change_percentage_24h.toFixed(2)}%</span>
+          </div>
+        </div>
+        <div class="asset-stats">
+          <div>
+            <div class="stat-label">Market Cap</div>
+            <div class="stat-value">$${(asset.market_cap / 1000000000).toFixed(2)}B</div>
+          </div>
+          <div>
+            <div class="stat-label">Volume (24h)</div>
+            <div class="stat-value">$${(asset.total_volume / 1000000).toFixed(2)}M</div>
+          </div>
+        </div>
+        <div class="asset-actions">
+          <button class="action-btn buy-btn">Buy</button>
+          <button class="action-btn sell-btn">Sell</button>
+        </div>
+        <div class="sparkline-container" id="sparkline-${asset.id}"></div>
+      `;
+      container.appendChild(assetCard);
+      
+      // Render sparkline
+      renderSparkline(`sparkline-${asset.id}`, asset.sparkline_in_7d.price);
+      
+      // Add click event for modal
+      assetCard.addEventListener('click', () => openAssetModal(asset));
+    });
+  }
+
+  function setupViewAll(buttonId, allAssets, title) {
+    document.getElementById(buttonId).addEventListener('click', () => {
+      openViewAllModal(title, allAssets);
+    });
+  }
+});
       // Update trending list
-      function updateTrendingList() {
-        const trendingList = document.getElementById('trendingList');
-        trendingList.innerHTML = '';
-        
-        trendingData.forEach(coin => {
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          const item = document.createElement('li');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          trendingList.appendChild(item);
-        });
+      document.addEventListener('DOMContentLoaded', function() {
+  // Fetch trending data
+  fetch('https://website-backendd-1.onrender.com/api/v1/market/trending')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        renderTrending(data.data.slice(0, 5)); // Show first 5 trending
+        setupViewAll('view-all-trending', data.data, 'Trending');
       }
+    });
 
+  function renderTrending(assets) {
+    const container = document.getElementById('trending-container');
+    container.innerHTML = '';
+
+    assets.forEach(asset => {
+      const assetCard = document.createElement('div');
+      assetCard.className = 'asset-card';
+      assetCard.innerHTML = `
+        <div class="asset-header">
+          <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
+          <span class="asset-name">${asset.name}</span>
+          <span class="asset-symbol">${asset.symbol}</span>
+        </div>
+        <div class="asset-price">$${asset.current_price.toLocaleString()}</div>
+        <div class="price-change-container">
+          <div class="price-change-item">
+            <span class="price-change-label">24h</span>
+            ${renderPriceChange(asset.price_change_percentage_24h)}
+          </div>
+        </div>
+        <div class="asset-actions">
+          <button class="action-btn buy-btn">Buy</button>
+          <button class="action-btn sell-btn">Sell</button>
+        </div>
+        <div class="sparkline-container" id="sparkline-${asset.id}"></div>
+      `;
+      container.appendChild(assetCard);
+      
+      // Render sparkline
+      renderSparkline(`sparkline-${asset.id}`, asset.sparkline_in_7d.price);
+      
+      // Add click event for modal
+      assetCard.addEventListener('click', () => openAssetModal(asset));
+    });
+  }
+
+  function renderPriceChange(change) {
+    const isPositive = change >= 0;
+    const arrow = isPositive ? '▲' : '▼';
+    return `
+      <span class="price-change-value ${isPositive ? 'price-up' : 'price-down'}">
+        ${arrow} ${Math.abs(change).toFixed(2)}%
+      </span>
+    `;
+  }
+
+  function setupViewAll(buttonId, allAssets, title) {
+    document.getElementById(buttonId).addEventListener('click', () => {
+      openViewAllModal(title, allAssets);
+    });
+  }
+});
 
 // News State Management
 let newsState = {
