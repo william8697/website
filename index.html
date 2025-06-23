@@ -264,44 +264,13 @@
       text-decoration: underline;
     }
 
-    /* Section Styles */
-    .section {
-      background-color: var(--secondary-bg);
-      border-radius: 4px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border-color);
-    }
-
-    .section-header {
-      padding: 16px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .section-link {
-      color: var(--primary-accent);
-      font-size: 14px;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .section-link:hover {
-      text-decoration: underline;
-    }
-
     /* Market Overview Section */
     .market-overview {
       background-color: var(--secondary-bg);
-      padding: 20px;
       border-radius: 8px;
+      padding: 20px;
       margin-bottom: 30px;
+      border: 1px solid var(--border-color);
     }
 
     .market-overview .section-header {
@@ -334,6 +303,7 @@
       padding: 15px;
       transition: transform 0.2s;
       cursor: pointer;
+      border: 1px solid var(--border-color);
     }
 
     .market-overview .asset-card:hover {
@@ -379,7 +349,7 @@
     .market-overview .price-change-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .market-overview .price-change-label {
@@ -468,6 +438,11 @@
       position: relative;
     }
 
+    .market-overview .sparkline {
+      width: 100%;
+      height: 100%;
+    }
+
     /* Stats Box */
     .market-stats-grid {
       display: grid;
@@ -499,11 +474,11 @@
 
     .stat-icon {
       font-size: 1.25rem;
-      color: var(--primary-accent);
+      color: #f0b90b;
     }
 
     .stat-label {
-      color: var(--text-secondary);
+      color: #848e9c;
       font-size: 0.875rem;
       font-weight: 500;
       text-transform: uppercase;
@@ -511,7 +486,7 @@
     }
 
     .stat-value {
-      color: var(--text-primary);
+      color: #eaecef;
       font-size: 1.75rem;
       font-weight: 600;
       margin: 0.5rem 0;
@@ -537,30 +512,31 @@
 
     .positive {
       background-color: rgba(14, 203, 129, 0.15);
-      color: var(--positive);
+      color: #0ecb81;
     }
 
     .negative {
       background-color: rgba(246, 70, 93, 0.15);
-      color: var(--negative);
+      color: #f6465d;
     }
 
     .neutral {
       background-color: rgba(240, 185, 11, 0.15);
-      color: var(--primary-accent);
+      color: #f0b90b;
     }
 
     .stat-time {
-      color: var(--text-secondary);
+      color: #848e9c;
       font-size: 0.75rem;
     }
 
     /* Top Gainers Section */
     .top-gainers {
       background-color: var(--secondary-bg);
-      padding: 20px;
       border-radius: 8px;
+      padding: 20px;
       margin-bottom: 30px;
+      border: 1px solid var(--border-color);
     }
 
     .top-gainers .section-header {
@@ -593,6 +569,7 @@
       padding: 15px;
       transition: transform 0.2s;
       cursor: pointer;
+      border: 1px solid var(--border-color);
     }
 
     .top-gainers .asset-card:hover {
@@ -638,7 +615,7 @@
     .top-gainers .price-change-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .top-gainers .price-change-label {
@@ -727,12 +704,18 @@
       position: relative;
     }
 
+    .top-gainers .sparkline {
+      width: 100%;
+      height: 100%;
+    }
+
     /* Trending Section */
     .trending {
       background-color: var(--secondary-bg);
-      padding: 20px;
       border-radius: 8px;
+      padding: 20px;
       margin-bottom: 30px;
+      border: 1px solid var(--border-color);
     }
 
     .trending .section-header {
@@ -765,6 +748,7 @@
       padding: 15px;
       transition: transform 0.2s;
       cursor: pointer;
+      border: 1px solid var(--border-color);
     }
 
     .trending .asset-card:hover {
@@ -810,7 +794,7 @@
     .trending .price-change-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
     }
 
     .trending .price-change-label {
@@ -899,6 +883,11 @@
       position: relative;
     }
 
+    .trending .sparkline {
+      width: 100%;
+      height: 100%;
+    }
+
     /* Modal Styles */
     .modal-overlay {
       position: fixed;
@@ -914,7 +903,7 @@
     }
 
     .modal-content {
-      background-color: var(--card-bg);
+      background-color: var(--secondary-bg);
       border-radius: 12px;
       width: 90%;
       max-width: 800px;
@@ -922,6 +911,7 @@
       overflow-y: auto;
       padding: 25px;
       position: relative;
+      border: 1px solid var(--border-color);
     }
 
     .modal-close {
@@ -945,6 +935,7 @@
       width: 40px;
       height: 40px;
       margin-right: 15px;
+      border-radius: 50%;
     }
 
     .modal-title {
@@ -961,9 +952,10 @@
     .modal-chart {
       grid-column: 1 / -1;
       height: 300px;
-      background-color: var(--secondary-bg);
+      background-color: var(--card-bg);
       border-radius: 8px;
       padding: 15px;
+      border: 1px solid var(--border-color);
     }
 
     .modal-stats {
@@ -973,9 +965,10 @@
     }
 
     .modal-stat-card {
-      background-color: var(--secondary-bg);
+      background-color: var(--card-bg);
       border-radius: 8px;
       padding: 15px;
+      border: 1px solid var(--border-color);
     }
 
     .modal-stat-title {
@@ -1002,6 +995,7 @@
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .modal-action-buy {
@@ -1014,6 +1008,11 @@
       background-color: rgba(246, 70, 93, 0.1);
       color: var(--negative);
       border: 1px solid var(--negative);
+    }
+
+    .modal-action-btn:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
     }
 
     /* Trading View */
@@ -1265,6 +1264,33 @@
       margin-left: auto;
     }
 
+    .news-footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .news-sources {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .news-sources img {
+      height: 20px;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      filter: grayscale(100%);
+    }
+
+    .news-sources img:hover {
+      opacity: 1;
+      filter: grayscale(0%);
+    }
+
     /* Withdrawals Feed */
     .withdrawals-feed {
       position: fixed;
@@ -1334,6 +1360,66 @@
       margin-top: 2px;
     }
 
+    /* Notification Banner */
+    .notification-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--primary-accent);
+      color: #000;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .notification-content {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .notification-close {
+      cursor: pointer;
+      font-size: 18px;
+      margin-left: 12px;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--secondary-bg);
+      color: var(--text-primary);
+      padding: 12px 24px;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 1100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-left: 4px solid var(--positive);
+    }
+
+    .toast.error {
+      border-left: 4px solid var(--negative);
+    }
+
+    .toast.info {
+      border-left: 4px solid var(--primary-accent);
+    }
+
     /* Footer */
     .footer {
       text-align: center;
@@ -1344,7 +1430,7 @@
       margin-top: 40px;
     }
 
-    /* Mobile Menu */
+    /* Mobile Menu Button */
     .mobile-menu-btn {
       display: none;
       background: none;
@@ -1405,10 +1491,16 @@
         display: none;
       }
 
+      .withdrawals-feed {
+        width: 250px;
+        bottom: 10px;
+        right: 10px;
+      }
+
       .mobile-menu-btn {
         display: block;
       }
-
+      
       .nav-links {
         display: none;
         position: absolute;
@@ -1427,24 +1519,14 @@
         flex-direction: column;
         gap: 8px;
       }
-
-      .withdrawals-feed {
-        width: 250px;
-        bottom: 10px;
-        right: 10px;
-      }
-
-      .modal-content {
-        width: 95%;
-        padding: 16px;
+      
+      .nav-links .nav-link {
+        display: block;
+        padding: 8px 12px;
       }
 
       .trading-chart {
         height: 300px;
-      }
-
-      .news-container {
-        grid-template-columns: 1fr;
       }
     }
 
@@ -1472,6 +1554,16 @@
         align-self: flex-end;
       }
 
+      .stats-box {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
       .withdrawals-feed {
         width: 200px;
         font-size: 12px;
@@ -1482,7 +1574,7 @@
       }
     }
 
-    /* Animations */
+    /* Animation */
     @keyframes pulse {
       0% { opacity: 1; }
       50% { opacity: 0.6; }
@@ -1491,17 +1583,17 @@
 
     .updating {
       animation: pulse 1s infinite;
-      color: var(--primary-accent);
+      color: #f0b90b;
     }
 
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .number-roll {
+      display: inline-block;
+      transition: all 0.5s ease-out;
     }
   </style>
 </head>
 <body>
-  <!-- Notification Banner -->
+  <!-- Notification Banner for Admin Messages -->
   <div class="notification-banner" id="adminNotification" style="display: none;">
     <div class="notification-content" id="adminNotificationContent"></div>
     <div class="notification-close" onclick="closeAdminNotification()">×</div>
@@ -1544,7 +1636,7 @@
 
   <!-- Main Content -->
   <div class="main-content">
-    <!-- Alert Banners -->
+    <!-- Alert Banner -->
     <div class="alert-banner warning" id="guestAlert">
       <div class="alert-icon">⚠️</div>
       <div class="alert-content">
@@ -1559,18 +1651,18 @@
       </div>
     </div>
     
-    <!-- Market Overview -->
+    <!-- Market Overview Section -->
     <div class="market-overview">
       <div class="section-header">
         <h2 class="section-title">Market Overview</h2>
         <div class="view-all" id="view-all-overview">View All</div>
       </div>
       <div class="assets-grid" id="market-overview-container">
-        <!-- Assets loaded by JavaScript -->
+        <!-- Assets will be inserted here by JS -->
       </div>
     </div>
     
-    <!-- Market Stats -->
+    <!-- Stats Section -->
     <div class="market-stats-grid">
       <div class="stat-card">
         <div class="stat-header">
@@ -1617,25 +1709,25 @@
       </div>
     </div>
 
-    <!-- Top Gainers -->
+    <!-- Top Gainers Section -->
     <div class="top-gainers">
       <div class="section-header">
         <h2 class="section-title">Top Gainers</h2>
         <div class="view-all" id="view-all-gainers">View All</div>
       </div>
       <div class="assets-grid" id="top-gainers-container">
-        <!-- Gainers loaded by JavaScript -->
+        <!-- Gainers will be inserted here by JS -->
       </div>
     </div>
       
-    <!-- Trending -->
+    <!-- Trending Section -->
     <div class="trending">
       <div class="section-header">
         <h2 class="section-title">Trending</h2>
         <div class="view-all" id="view-all-trending">View All</div>
       </div>
       <div class="assets-grid" id="trending-container">
-        <!-- Trending loaded by JavaScript -->
+        <!-- Trending assets will be inserted here by JS -->
       </div>
     </div>
 
@@ -1660,12 +1752,13 @@
       </div>
     </div>
 
-    <!-- Crypto News -->
+    <!-- Crypto News Section -->
     <section class="news-section">
       <div class="section-header">
         <h2 class="section-title">Crypto Market Intelligence</h2>
         <div class="section-subtitle">Stay ahead with real-time cryptocurrency news and analysis</div>
         
+        <!-- News Filter Controls -->
         <div class="news-controls">
           <div class="news-filters">
             <button class="filter-btn active" data-category="all">All News</button>
@@ -1688,8 +1781,32 @@
         </div>
       </div>
       
+      <!-- News Container with Loading State -->
       <div class="news-container" id="newsContainer">
-        <!-- News loaded by JavaScript -->
+        <div class="news-skeleton">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 40%"></div>
+          </div>
+        </div>
+        <div class="news-skeleton">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 40%"></div>
+          </div>
+        </div>
+        <div class="news-skeleton">
+          <div class="skeleton-image"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+            <div class="skeleton-line" style="width: 40%"></div>
+          </div>
+        </div>
       </div>
       
       <div class="news-footer">
@@ -1702,6 +1819,36 @@
       </div>
     </section>
 
+    <!-- News Detail Modal -->
+    <div class="modal-overlay" id="newsModal" style="display: none;">
+      <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+          <div class="news-modal-header">
+            <div class="news-category-badge" id="newsCategoryBadge"></div>
+            <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
+          </div>
+          <span class="modal-close" onclick="closeModal('newsModal')">&times;</span>
+        </div>
+        <div class="news-modal-content" id="newsModalContent">
+          <div class="news-detail-header">
+            <img id="newsDetailImage" class="news-detail-image" src="" alt="News Image">
+            <div class="news-meta">
+              <span id="newsSource" class="news-source"></span>
+              <span id="newsDate" class="news-date"></span>
+              <span id="newsAuthor" class="news-author"></span>
+            </div>
+          </div>
+          <h3 id="newsDetailTitle" class="news-detail-title"></h3>
+          <div id="newsDetailContent" class="news-detail-content"></div>
+          <div class="news-detail-footer">
+            <a id="newsOriginalLink" href="#" target="_blank" class="btn btn-outline">
+              <i class="fas fa-external-link-alt"></i> Read Full Article
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Withdrawals Feed -->
     <div class="withdrawals-feed" id="withdrawalsFeed">
       <div class="withdrawals-header">
@@ -1709,113 +1856,107 @@
         <div class="withdrawals-close" onclick="toggleWithdrawalsFeed()">×</div>
       </div>
       <div id="withdrawalsList">
-        <!-- Withdrawals loaded by JavaScript -->
+        <!-- Withdrawals will be loaded here -->
       </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Coin Detail Modal -->
     <div class="modal-overlay" id="coinModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('coinModal')">×</button>
         <div class="modal-header">
-          <div class="modal-logo" id="modalCoinLogo"></div>
-          <h2 class="modal-title" id="modalCoinTitle"></h2>
+          <h2 class="modal-title" id="coinModalTitle">Coin Details</h2>
+          <span class="modal-close" onclick="closeModal('coinModal')">&times;</span>
         </div>
-        <div class="modal-body">
-          <div class="modal-chart" id="modalCoinChart"></div>
-          <div class="modal-stats" id="modalCoinStats"></div>
-        </div>
-        <div class="modal-actions">
-          <button class="modal-action-btn modal-action-buy" onclick="showTradeForm(selectedCoinId, 'buy')">Buy</button>
-          <button class="modal-action-btn modal-action-sell" onclick="showTradeForm(selectedCoinId, 'sell')">Sell</button>
-        </div>
+        <div id="coinModalContent"></div>
       </div>
     </div>
 
+    <!-- All Coins Modal -->
     <div class="modal-overlay" id="allCoinsModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('allCoinsModal')">×</button>
         <div class="modal-header">
           <h2 class="modal-title">All Cryptocurrencies</h2>
+          <span class="modal-close" onclick="closeModal('allCoinsModal')">&times;</span>
         </div>
-        <div class="modal-body">
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Coin</th>
-                  <th>Price</th>
-                  <th>24h Change</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allCoinsTable">
-                <!-- All coins loaded by JavaScript -->
-              </tbody>
-            </table>
-          </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allCoinsTable">
+              <!-- All coins data will be loaded here -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
+    <!-- All Gainers Modal -->
     <div class="modal-overlay" id="allGainersModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('allGainersModal')">×</button>
         <div class="modal-header">
           <h2 class="modal-title">Top Gainers (24h)</h2>
+          <span class="modal-close" onclick="closeModal('allGainersModal')">&times;</span>
         </div>
-        <div class="modal-body">
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Coin</th>
-                  <th>Price</th>
-                  <th>24h Change</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allGainersTable">
-                <!-- All gainers loaded by JavaScript -->
-              </tbody>
-            </table>
-          </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allGainersTable">
+              <!-- All gainers data will be loaded here -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
+    <!-- All Trending Modal -->
     <div class="modal-overlay" id="allTrendingModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('allTrendingModal')">×</button>
         <div class="modal-header">
           <h2 class="modal-title">Trending Coins</h2>
+          <span class="modal-close" onclick="closeModal('allTrendingModal')">&times;</span>
         </div>
-        <div class="modal-body">
-          <div class="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>Coin</th>
-                  <th>Price</th>
-                  <th>24h Change</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody id="allTrendingTable">
-                <!-- All trending loaded by JavaScript -->
-              </tbody>
-            </table>
-          </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allTrendingTable">
+              <!-- All trending data will be loaded here -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
+    <!-- Trade Modal -->
     <div class="modal-overlay" id="tradeModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('tradeModal')">×</button>
         <div class="modal-header">
           <h2 class="modal-title" id="tradeModalTitle">Trade</h2>
+          <span class="modal-close" onclick="closeModal('tradeModal')">&times;</span>
         </div>
+        
         <div id="tradeModalContent">
           <div class="form-group">
             <label class="form-label">Amount (USDT)</label>
@@ -1839,9 +1980,14 @@
       </div>
     </div>
 
+    <!-- Success Modal -->
     <div class="modal-overlay" id="successModal" style="display: none;">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('successModal')">×</button>
+        <div class="modal-header">
+          <h2 class="modal-title">Trade Successful</h2>
+          <span class="modal-close" onclick="closeModal('successModal')">&times;</span>
+        </div>
+        
         <div style="text-align: center; padding: 24px 0;">
           <div style="font-size: 48px; color: var(--positive); margin-bottom: 16px;">✓</div>
           <h3 style="margin-bottom: 8px;" id="successTitle">Trade Completed</h3>
@@ -1853,41 +1999,17 @@
       </div>
     </div>
 
-    <div class="modal-overlay" id="newsModal" style="display: none;">
-      <div class="modal-content" style="max-width: 800px;">
-        <button class="modal-close" onclick="closeModal('newsModal')">×</button>
-        <div class="modal-header">
-          <div class="news-modal-header">
-            <div class="news-category-badge" id="newsCategoryBadge"></div>
-            <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
-          </div>
-        </div>
-        <div class="news-modal-content" id="newsModalContent">
-          <div class="news-detail-header">
-            <img id="newsDetailImage" class="news-detail-image" src="" alt="News Image">
-            <div class="news-meta">
-              <span id="newsSource" class="news-source"></span>
-              <span id="newsDate" class="news-date"></span>
-              <span id="newsAuthor" class="news-author"></span>
-            </div>
-          </div>
-          <h3 id="newsDetailTitle" class="news-detail-title"></h3>
-          <div id="newsDetailContent" class="news-detail-content"></div>
-          <div class="news-detail-footer">
-            <a id="newsOriginalLink" href="#" target="_blank" class="btn btn-outline">
-              <i class="fas fa-external-link-alt"></i> Read Full Article
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Footer -->
     <footer class="footer">
       <p>© 2025 Bitluxo. All rights reserved.</p>
     </footer>
 
     <script>
+      // API Configuration
+      const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
+      const JWT_SECRET = '17581758Na.%';
+      const JWT_EXPIRES_IN = '30d';
+      
       // Global State
       let currentUser = null;
       let userBalance = 0;
@@ -1896,7 +2018,6 @@
       let gainersData = [];
       let trendingData = [];
       let coinPrices = {};
-      let selectedCoinId = null;
       let currentTrade = {
         coin: null,
         type: null,
@@ -1905,31 +2026,25 @@
       let socket = null;
       let adminMessages = [];
       let viewedMessages = [];
-      let newsState = {
-        allArticles: [],
-        filteredArticles: [],
-        currentCategory: 'all',
-        currentPage: 1,
-        itemsPerPage: 6,
-        isLoading: false
-      };
-
-      // API Configuration
-      const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
-      const JWT_SECRET = '17581758Na.%';
-      const JWT_EXPIRES_IN = '30d';
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
-        // Set platform logo
+        // Set platform logo directly
         const logoImg = document.getElementById('platformLogo');
         logoImg.src = 'https://www.dropbox.com/scl/fi/pnch85ra17rw68fcve1d1/ChatGPT-Image-Jun-18-2025-07_15_23-PM.png?rlkey=3vggfoohs1fnb5pu15ciwkc0p&raw=1';
+        logoImg.style.borderRadius = '50%';
+        logoImg.style.border = '2px solid transparent';
+        logoImg.style.width = '40px';
+        logoImg.style.height = '40px';
+        logoImg.style.objectFit = 'cover';
         
         // Check authentication status
         await checkAuthStatus();
         
         // Load market data
         await loadMarketData();
+        await loadGainersData();
+        await loadTrendingData();
         
         // Load news
         await loadNews();
@@ -2020,31 +2135,6 @@
         
         // Trade amount input
         document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
-        
-        // News filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filterNews(btn.dataset.category);
-          });
-        });
-        
-        // News pagination
-        document.getElementById('prevNewsBtn').addEventListener('click', () => {
-          if (newsState.currentPage > 1) {
-            newsState.currentPage--;
-            renderNews();
-          }
-        });
-        
-        document.getElementById('nextNewsBtn').addEventListener('click', () => {
-          const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
-          if (newsState.currentPage < totalPages) {
-            newsState.currentPage++;
-            renderNews();
-          }
-        });
       }
 
       // Load trade content in main view
@@ -2649,18 +2739,15 @@
       // Load market data
       async function loadMarketData() {
         try {
-          // Show loading state
-          document.getElementById('market-overview-container').innerHTML = '<div class="loading">Loading market data...</div>';
-          
           const response = await fetch(`${API_BASE_URL}/markets/overview`);
           if (!response.ok) throw new Error('Failed to load market data');
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
+          const result = await response.json();
+          if (!result.success || !Array.isArray(result.data)) {
             throw new Error('Invalid market data structure');
           }
           
-          marketData = data.data;
+          marketData = result.data;
           
           // Initialize coin prices
           marketData.forEach(coin => {
@@ -2672,12 +2759,7 @@
           });
           
           // Render market overview
-          renderMarketOverview(marketData.slice(0, 5));
-          
-          // Load gainers and trending
-          await loadGainersData();
-          await loadTrendingData();
-          
+          renderMarketOverview();
         } catch (error) {
           console.error('Error loading market data:', error);
           showToast('Failed to load market data', 'error');
@@ -2685,82 +2767,76 @@
       }
 
       // Render market overview
-      function renderMarketOverview(assets) {
+      function renderMarketOverview() {
         const container = document.getElementById('market-overview-container');
         container.innerHTML = '';
         
-        assets.forEach(asset => {
-          const coinData = coinPrices[asset.id] || {
-            currentPrice: asset.currentPrice,
-            change24h: asset.change24h || 0
-          };
+        marketData.slice(0, 5).forEach(coin => {
+          const coinData = coinPrices[coin.id];
           
-          const assetCard = document.createElement('div');
-          assetCard.className = 'asset-card';
-          assetCard.innerHTML = `
+          const card = document.createElement('div');
+          card.className = 'asset-card';
+          card.innerHTML = `
             <div class="asset-header">
-              <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
-              <span class="asset-name">${asset.name}</span>
-              <span class="asset-symbol">${asset.symbol}</span>
+              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
+              <span class="asset-name">${coin.name}</span>
+              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
             </div>
             <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
             <div class="price-change-container">
               <div class="price-change-item">
                 <span class="price-change-label">1h</span>
-                ${renderPriceChange(asset.priceChange1h)}
+                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
+                </span>
               </div>
               <div class="price-change-item">
                 <span class="price-change-label">24h</span>
-                ${renderPriceChange(coinData.change24h)}
+                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+                </span>
               </div>
               <div class="price-change-item">
                 <span class="price-change-label">7d</span>
-                ${renderPriceChange(asset.priceChange7d)}
+                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
+                </span>
               </div>
             </div>
             <div class="asset-stats">
               <div>
                 <div class="stat-label">Market Cap</div>
-                <div class="stat-value">$${(asset.marketCap / 1000000000).toFixed(2)}B</div>
+                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
               </div>
               <div>
                 <div class="stat-label">Volume (24h)</div>
-                <div class="stat-value">$${(asset.volume / 1000000).toFixed(2)}M</div>
+                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
               </div>
             </div>
             <div>
               <div class="stat-label">Circulating Supply</div>
-              <div class="stat-value">${formatSupply(asset.circulatingSupply, asset.symbol)}</div>
+              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
               <div class="supply-bar">
-                <div class="supply-progress" style="width: ${(asset.circulatingSupply / asset.totalSupply) * 100}%"></div>
+                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
               </div>
             </div>
             <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
+              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
             </div>
-            <div class="sparkline-container" id="sparkline-${asset.id}"></div>
+            <div class="sparkline-container" id="sparkline-${coin.id}">
+              <canvas class="sparkline"></canvas>
+            </div>
           `;
           
-          container.appendChild(assetCard);
+          container.appendChild(card);
           
           // Render sparkline
-          renderSparkline(`sparkline-${asset.id}`, asset.sparkline);
+          renderSparkline(`sparkline-${coin.id}`, coin.sparkline);
           
           // Add click event for modal
-          assetCard.addEventListener('click', () => showCoinDetail(asset.id));
+          card.addEventListener('click', () => showCoinDetail(coin.id));
         });
-      }
-
-      // Render price change with arrow
-      function renderPriceChange(change) {
-        const isPositive = change >= 0;
-        const arrow = isPositive ? '▲' : '▼';
-        return `
-          <span class="price-change-value ${isPositive ? 'price-up' : 'price-down'}">
-            ${arrow} ${Math.abs(change).toFixed(2)}%
-          </span>
-        `;
       }
 
       // Format supply numbers
@@ -2776,45 +2852,42 @@
       }
 
       // Render sparkline chart
-      function renderSparkline(containerId, prices) {
-        if (!prices || prices.length === 0) return;
+      function renderSparkline(elementId, data) {
+        const container = document.getElementById(elementId);
+        if (!container || !data || data.length === 0) return;
         
-        const container = document.getElementById(containerId);
-        if (!container) return;
-        
-        // Create canvas for sparkline
-        const canvas = document.createElement('canvas');
-        canvas.width = container.offsetWidth;
-        canvas.height = container.offsetHeight;
-        container.innerHTML = '';
-        container.appendChild(canvas);
+        const canvas = container.querySelector('canvas');
+        if (!canvas) return;
         
         const ctx = canvas.getContext('2d');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
         
-        // Determine if price went up or down overall
-        const firstPrice = prices[0];
-        const lastPrice = prices[prices.length - 1];
-        const isPositive = lastPrice >= firstPrice;
+        canvas.width = width;
+        canvas.height = height;
         
-        // Normalize prices to fit canvas height
-        const minPrice = Math.min(...prices);
-        const maxPrice = Math.max(...prices);
-        const range = maxPrice - minPrice || 1; // Avoid division by zero
+        // Find min and max values
+        const min = Math.min(...data);
+        const max = Math.max(...data);
+        const range = max - min;
         
-        const normalizedPrices = prices.map(price => {
-          return ((price - minPrice) / range) * (canvas.height - 4) + 2;
-        });
+        // Normalize data
+        const normalized = data.map(value => (value - min) / range);
         
         // Draw sparkline
         ctx.beginPath();
-        ctx.moveTo(0, canvas.height - normalizedPrices[0]);
+        ctx.moveTo(0, height - (normalized[0] * height));
         
-        for (let i = 1; i < normalizedPrices.length; i++) {
-          const x = (i / (normalizedPrices.length - 1)) * canvas.width;
-          ctx.lineTo(x, canvas.height - normalizedPrices[i]);
+        for (let i = 1; i < normalized.length; i++) {
+          const x = (i / (normalized.length - 1)) * width;
+          const y = height - (normalized[i] * height);
+          ctx.lineTo(x, y);
         }
         
-        ctx.strokeStyle = isPositive ? 'var(--positive)' : 'var(--negative)';
+        // Determine line color based on first vs last value
+        const lineColor = data[data.length - 1] >= data[0] ? 'var(--positive)' : 'var(--negative)';
+        
+        ctx.strokeStyle = lineColor;
         ctx.lineWidth = 2;
         ctx.stroke();
       }
@@ -2823,72 +2896,104 @@
       async function loadGainersData() {
         try {
           const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to load gainers');
+          if (!response.ok) throw new Error('Failed to load gainers data');
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
+          const result = await response.json();
+          if (!result.success || !Array.isArray(result.data)) {
             throw new Error('Invalid gainers data structure');
           }
           
-          gainersData = data.data;
-          updateGainersList(gainersData.slice(0, 5));
+          gainersData = result.data;
           
+          // Update coin prices
+          gainersData.forEach(coin => {
+            if (!coinPrices[coin.id]) {
+              coinPrices[coin.id] = {
+                originalPrice: coin.currentPrice,
+                currentPrice: coin.currentPrice,
+                change24h: coin.change24h || 0
+              };
+            }
+          });
+          
+          // Render gainers list
+          renderGainersList();
         } catch (error) {
-          console.error('Error loading gainers:', error);
+          console.error('Error loading gainers data:', error);
           showToast('Failed to load top gainers', 'error');
         }
       }
 
-      // Update gainers list
-      function updateGainersList(gainers) {
+      // Render gainers list
+      function renderGainersList() {
         const container = document.getElementById('top-gainers-container');
         container.innerHTML = '';
         
-        gainers.forEach(asset => {
-          const coinData = coinPrices[asset.id] || {
-            currentPrice: asset.currentPrice,
-            change24h: asset.change24h || 0
-          };
+        gainersData.slice(0, 5).forEach(coin => {
+          const coinData = coinPrices[coin.id];
           
-          const assetCard = document.createElement('div');
-          assetCard.className = 'asset-card';
-          assetCard.innerHTML = `
+          const card = document.createElement('div');
+          card.className = 'asset-card';
+          card.innerHTML = `
             <div class="asset-header">
-              <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
-              <span class="asset-name">${asset.name}</span>
-              <span class="asset-symbol">${asset.symbol}</span>
+              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
+              <span class="asset-name">${coin.name}</span>
+              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
             </div>
             <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
             <div class="price-change-container">
               <div class="price-change-item">
+                <span class="price-change-label">1h</span>
+                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
+                </span>
+              </div>
+              <div class="price-change-item">
                 <span class="price-change-label">24h</span>
-                ${renderPriceChange(coinData.change24h)}
+                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+                </span>
+              </div>
+              <div class="price-change-item">
+                <span class="price-change-label">7d</span>
+                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
+                </span>
               </div>
             </div>
             <div class="asset-stats">
               <div>
                 <div class="stat-label">Market Cap</div>
-                <div class="stat-value">$${(asset.marketCap / 1000000000).toFixed(2)}B</div>
+                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
               </div>
               <div>
                 <div class="stat-label">Volume (24h)</div>
-                <div class="stat-value">$${(asset.volume / 1000000).toFixed(2)}M</div>
+                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
+              </div>
+            </div>
+            <div>
+              <div class="stat-label">Circulating Supply</div>
+              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
+              <div class="supply-bar">
+                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
               </div>
             </div>
             <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
+              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
             </div>
-            <div class="sparkline-container" id="sparkline-gainer-${asset.id}"></div>
+            <div class="sparkline-container" id="sparkline-gainers-${coin.id}">
+              <canvas class="sparkline"></canvas>
+            </div>
           `;
           
-          container.appendChild(assetCard);
+          container.appendChild(card);
           
           // Render sparkline
-          renderSparkline(`sparkline-gainer-${asset.id}`, asset.sparkline);
+          renderSparkline(`sparkline-gainers-${coin.id}`, coin.sparkline);
           
           // Add click event for modal
-          assetCard.addEventListener('click', () => showCoinDetail(asset.id));
+          card.addEventListener('click', () => showCoinDetail(coin.id));
         });
       }
 
@@ -2896,200 +3001,134 @@
       async function loadTrendingData() {
         try {
           const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) throw new Error('Failed to load trending');
+          if (!response.ok) throw new Error('Failed to load trending data');
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
+          const result = await response.json();
+          if (!result.success || !Array.isArray(result.data)) {
             throw new Error('Invalid trending data structure');
           }
           
-          trendingData = data.data;
-          updateTrendingList(trendingData.slice(0, 5));
+          trendingData = result.data;
           
+          // Update coin prices
+          trendingData.forEach(coin => {
+            if (!coinPrices[coin.id]) {
+              coinPrices[coin.id] = {
+                originalPrice: coin.currentPrice,
+                currentPrice: coin.currentPrice,
+                change24h: coin.change24h || 0
+              };
+            }
+          });
+          
+          // Render trending list
+          renderTrendingList();
         } catch (error) {
-          console.error('Error loading trending:', error);
+          console.error('Error loading trending data:', error);
           showToast('Failed to load trending assets', 'error');
         }
       }
 
-      // Update trending list
-      function updateTrendingList(trending) {
+      // Render trending list
+      function renderTrendingList() {
         const container = document.getElementById('trending-container');
         container.innerHTML = '';
         
-        trending.forEach(asset => {
-          const coinData = coinPrices[asset.id] || {
-            currentPrice: asset.currentPrice,
-            change24h: asset.change24h || 0
-          };
+        trendingData.slice(0, 5).forEach(coin => {
+          const coinData = coinPrices[coin.id];
           
-          const assetCard = document.createElement('div');
-          assetCard.className = 'asset-card';
-          assetCard.innerHTML = `
+          const card = document.createElement('div');
+          card.className = 'asset-card';
+          card.innerHTML = `
             <div class="asset-header">
-              <img class="asset-logo" src="${asset.image}" alt="${asset.name}">
-              <span class="asset-name">${asset.name}</span>
-              <span class="asset-symbol">${asset.symbol}</span>
+              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
+              <span class="asset-name">${coin.name}</span>
+              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
             </div>
             <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
             <div class="price-change-container">
               <div class="price-change-item">
+                <span class="price-change-label">1h</span>
+                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
+                </span>
+              </div>
+              <div class="price-change-item">
                 <span class="price-change-label">24h</span>
-                ${renderPriceChange(coinData.change24h)}
+                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
+                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
+                </span>
+              </div>
+              <div class="price-change-item">
+                <span class="price-change-label">7d</span>
+                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
+                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
+                </span>
+              </div>
+            </div>
+            <div class="asset-stats">
+              <div>
+                <div class="stat-label">Market Cap</div>
+                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
+              </div>
+              <div>
+                <div class="stat-label">Volume (24h)</div>
+                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
+              </div>
+            </div>
+            <div>
+              <div class="stat-label">Circulating Supply</div>
+              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
+              <div class="supply-bar">
+                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
               </div>
             </div>
             <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
+              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
             </div>
-            <div class="sparkline-container" id="sparkline-trending-${asset.id}"></div>
+            <div class="sparkline-container" id="sparkline-trending-${coin.id}">
+              <canvas class="sparkline"></canvas>
+            </div>
           `;
           
-          container.appendChild(assetCard);
+          container.appendChild(card);
           
           // Render sparkline
-          renderSparkline(`sparkline-trending-${asset.id}`, asset.sparkline);
+          renderSparkline(`sparkline-trending-${coin.id}`, coin.sparkline);
           
           // Add click event for modal
-          assetCard.addEventListener('click', () => showCoinDetail(asset.id));
+          card.addEventListener('click', () => showCoinDetail(coin.id));
         });
       }
 
       // Load news
       async function loadNews() {
-        const container = document.getElementById('newsContainer');
-        newsState.isLoading = true;
-        
         try {
-          // Show loading state
-          container.innerHTML = `
-            <div class="news-skeleton">
-              <div class="skeleton-image"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line" style="width: 80%"></div>
-                <div class="skeleton-line" style="width: 60%"></div>
-                <div class="skeleton-line" style="width: 40%"></div>
-              </div>
-            </div>
-            <div class="news-skeleton">
-              <div class="skeleton-image"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line" style="width: 80%"></div>
-                <div class="skeleton-line" style="width: 60%"></div>
-                <div class="skeleton-line" style="width: 40%"></div>
-              </div>
-            </div>
-            <div class="news-skeleton">
-              <div class="skeleton-image"></div>
-              <div class="skeleton-content">
-                <div class="skeleton-line" style="width: 80%"></div>
-                <div class="skeleton-line" style="width: 60%"></div>
-                <div class="skeleton-line" style="width: 40%"></div>
-              </div>
-            </div>
-          `;
-          
           const response = await fetch(`${API_BASE_URL}/news`);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error('Failed to load news');
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data.articles)) {
+          const result = await response.json();
+          if (!result.success || !Array.isArray(result.data.articles)) {
             throw new Error('Invalid news data structure');
           }
           
-          // Process and categorize articles
-          newsState.allArticles = data.data.articles.map(article => {
-            // Extract category from title/content or assign default
-            let category = 'market';
-            const title = article.title.toLowerCase();
-            
-            if (title.includes('bitcoin') || title.includes('btc')) {
-              category = 'btc';
-            } else if (title.includes('ethereum') || title.includes('eth')) {
-              category = 'eth';
-            } else if (title.includes('defi') || title.includes('decentralized')) {
-              category = 'defi';
-            } else if (title.includes('regulation') || title.includes('legal') || title.includes('law')) {
-              category = 'regulation';
-            }
-            
-            return {
-              ...article,
-              category: category
-            };
-          });
-          
-          // Initialize filtered articles
-          newsState.filteredArticles = [...newsState.allArticles];
-          newsState.currentPage = 1;
-          renderNews();
-          
+          renderNews(result.data.articles);
         } catch (error) {
-          console.error('Failed to load news:', error);
-          container.innerHTML = `
-            <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
-                Couldn't load news at this time
-              </div>
-              <button class="btn btn-outline" onclick="loadNews()">
-                <i class="fas fa-sync-alt"></i> Try Again
-              </button>
-            </div>
-          `;
-        } finally {
-          newsState.isLoading = false;
+          console.error('Error loading news:', error);
+          showToast('Failed to load news', 'error');
         }
       }
 
-      // Filter news by category
-      function filterNews(category) {
-        newsState.currentCategory = category;
-        newsState.currentPage = 1;
-        
-        if (category === 'all') {
-          newsState.filteredArticles = [...newsState.allArticles];
-        } else {
-          newsState.filteredArticles = newsState.allArticles.filter(
-            article => article.category === category
-          );
-        }
-        
-        renderNews();
-      }
-
-      // Render news based on current state
-      function renderNews() {
+      // Render news
+      function renderNews(articles) {
         const container = document.getElementById('newsContainer');
-        const startIdx = (newsState.currentPage - 1) * newsState.itemsPerPage;
-        const endIdx = startIdx + newsState.itemsPerPage;
-        const articlesToShow = newsState.filteredArticles.slice(startIdx, endIdx);
-        const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
-        
-        // Update pagination controls
-        document.getElementById('pageIndicator').textContent = `${newsState.currentPage}/${totalPages}`;
-        document.getElementById('prevNewsBtn').disabled = newsState.currentPage <= 1;
-        document.getElementById('nextNewsBtn').disabled = newsState.currentPage >= totalPages;
-        
-        // Clear container
         container.innerHTML = '';
         
-        if (articlesToShow.length === 0) {
-          container.innerHTML = `
-            <div class="no-news" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-              <i class="far fa-newspaper" style="font-size: 40px; color: var(--text-secondary); margin-bottom: 16px;"></i>
-              <div style="color: var(--text-secondary);">No news found for this category</div>
-            </div>
-          `;
-          return;
-        }
-        
-        // Render articles
-        articlesToShow.forEach(article => {
-          const newsCard = document.createElement('div');
-          newsCard.className = 'news-card';
-          newsCard.innerHTML = `
+        articles.slice(0, 3).forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'news-card';
+          card.innerHTML = `
             <div class="news-image-container">
               <img src="${article.imageUrl || 'https://via.placeholder.com/300x180?text=Crypto+News'}" 
                    alt="${article.title}" 
@@ -3097,33 +3136,32 @@
                    onerror="this.src='https://via.placeholder.com/300x180?text=Crypto+News'">
             </div>
             <div class="news-content">
-              <span class="news-category">${article.category.toUpperCase()}</span>
+              <span class="news-category">${article.source.name || 'CRYPTO'}</span>
               <h3 class="news-title">${article.title}</h3>
               <p class="news-excerpt">${article.description || 'No description available'}</p>
               <div class="news-meta">
-                <span class="news-source">${article.sourceName || article.source}</span>
-                <span class="news-date">${formatNewsDate(article.publishedAt)}</span>
+                <span class="news-source">${article.source.name || 'Unknown'}</span>
+                <span class="news-date">${formatDate(article.publishedAt)}</span>
               </div>
             </div>
           `;
           
-          newsCard.addEventListener('click', () => showNewsDetail(article));
-          container.appendChild(newsCard);
+          card.addEventListener('click', () => showNewsDetail(article));
+          container.appendChild(card);
         });
       }
 
-      // Format news date
-      function formatNewsDate(dateString) {
+      // Format date
+      function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
+          year: 'numeric'
         });
       }
 
-      // Show detailed news view
+      // Show news detail
       function showNewsDetail(article) {
         const modal = document.getElementById('newsModal');
         const title = document.getElementById('newsModalTitle');
@@ -3135,7 +3173,7 @@
         const originalLink = document.getElementById('newsOriginalLink');
         const categoryBadge = document.getElementById('newsCategoryBadge');
         
-        title.textContent = article.sourceName || article.source;
+        title.textContent = article.source.name || 'News Detail';
         image.src = article.imageUrl || 'https://via.placeholder.com/800x400?text=Crypto+News';
         image.onerror = () => {
           image.src = 'https://via.placeholder.com/800x400?text=Crypto+News';
@@ -3147,18 +3185,18 @@
           ${article.content ? `<p>${article.content}</p>` : ''}
         `;
         
-        source.textContent = article.sourceName || article.source;
-        date.textContent = formatNewsDate(article.publishedAt);
+        source.textContent = article.source.name || 'Unknown';
+        date.textContent = formatDate(article.publishedAt);
         author.textContent = article.author ? `By ${article.author}` : '';
         author.style.display = article.author ? 'inline-block' : 'none';
         
         originalLink.href = article.url;
         
         // Set category badge
-        categoryBadge.textContent = article.category.toUpperCase();
+        categoryBadge.textContent = article.source.name || 'CRYPTO';
         categoryBadge.style.display = 'block';
         
-        modal.style.display = 'block';
+        modal.style.display = 'flex';
       }
 
       // Load withdrawals
@@ -3207,7 +3245,9 @@
 
       // Show coin detail modal
       async function showCoinDetail(coinId) {
-        selectedCoinId = coinId;
+        const modal = document.getElementById('coinModal');
+        const content = document.getElementById('coinModalContent');
+        const title = document.getElementById('coinModalTitle');
         
         // Find coin data
         let coin = marketData.find(c => c.id === coinId);
@@ -3228,52 +3268,61 @@
           change24h: coin.change24h || 0
         };
         
-        // Set modal title and logo
-        document.getElementById('modalCoinTitle').textContent = `${coin.name} (${coin.symbol.toUpperCase()})`;
-        document.getElementById('modalCoinLogo').innerHTML = `<img src="${coin.image}" alt="${coin.name}" width="40" height="40">`;
+        // Set modal title
+        title.textContent = `${coin.name} (${coin.symbol.toUpperCase()})`;
         
         // Load chart symbol (use USDT for stablecoins)
         const chartSymbol = coin.symbol === 'usdt' ? 'USDTUSD' : `${coin.symbol.toUpperCase()}USDT`;
         
-        // Prepare modal stats
-        const statsContainer = document.getElementById('modalCoinStats');
-        statsContainer.innerHTML = `
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">Price</div>
-            <div class="modal-stat-value">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-          </div>
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">24h Change</div>
-            <div class="modal-stat-value ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+        // Prepare modal content
+        content.innerHTML = `
+          <div class="modal-body">
+            <div class="modal-header">
+              <img src="${coin.image}" alt="${coin.name}" class="modal-logo">
+              <h2 class="modal-title">${coin.name} (${coin.symbol.toUpperCase()})</h2>
+            </div>
+            
+            <div class="modal-chart">
+              <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${chartSymbol}&interval=D&hidesidetoolbar=1&theme=dark"></iframe>
+            </div>
+            
+            <div class="modal-stats">
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">Price</div>
+                <div class="modal-stat-value">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
+              </div>
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">24h Change</div>
+                <div class="modal-stat-value ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                  ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+                </div>
+              </div>
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">Market Cap</div>
+                <div class="modal-stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
+              </div>
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">24h Volume</div>
+                <div class="modal-stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
+              </div>
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">Circulating Supply</div>
+                <div class="modal-stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
+              </div>
+              <div class="modal-stat-card">
+                <div class="modal-stat-title">Total Supply</div>
+                <div class="modal-stat-value">${formatSupply(coin.totalSupply, coin.symbol)}</div>
+              </div>
+            </div>
+            
+            <div class="modal-actions">
+              <button class="modal-action-btn modal-action-buy" onclick="showTradeForm('${coin.id}', 'buy')">Buy</button>
+              <button class="modal-action-btn modal-action-sell" onclick="showTradeForm('${coin.id}', 'sell')">Sell</button>
             </div>
           </div>
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">Market Cap</div>
-            <div class="modal-stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
-          </div>
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">24h Volume</div>
-            <div class="modal-stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
-          </div>
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">Circulating Supply</div>
-            <div class="modal-stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
-          </div>
-          <div class="modal-stat-card">
-            <div class="modal-stat-title">Total Supply</div>
-            <div class="modal-stat-value">${formatSupply(coin.totalSupply, coin.symbol)}</div>
-          </div>
         `;
         
-        // Prepare chart
-        const chartContainer = document.getElementById('modalCoinChart');
-        chartContainer.innerHTML = `
-          <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${chartSymbol}&interval=D&hidesidetoolbar=1&theme=dark" style="width:100%;height:100%;"></iframe>
-        `;
-        
-        // Show modal
-        document.getElementById('coinModal').style.display = 'flex';
+        modal.style.display = 'flex';
       }
 
       // Show trade form
@@ -3313,6 +3362,7 @@
         };
         
         // Update modal
+        const modal = document.getElementById('tradeModal');
         const title = document.getElementById('tradeModalTitle');
         const priceInput = document.getElementById('tradePrice');
         const amountInput = document.getElementById('tradeAmount');
@@ -3326,7 +3376,7 @@
         confirmBtn.textContent = `${type === 'buy' ? 'Buy' : 'Sell'} ${coin.symbol.toUpperCase()}`;
         confirmBtn.onclick = () => executeTrade();
         
-        document.getElementById('tradeModal').style.display = 'flex';
+        modal.style.display = 'flex';
       }
 
       // Update trade total when amount changes
@@ -3399,6 +3449,7 @@
 
       // Show success modal after trade
       function showSuccessModal(profit) {
+        const modal = document.getElementById('successModal');
         const title = document.getElementById('successTitle');
         const message = document.getElementById('successMessage');
         
@@ -3410,26 +3461,25 @@
           message.textContent = 'Your trade has been executed successfully.';
         }
         
-        document.getElementById('successModal').style.display = 'flex';
+        modal.style.display = 'flex';
       }
 
       // Show all coins modal
       async function showAllCoins() {
+        const modal = document.getElementById('allCoinsModal');
+        modal.style.display = 'flex';
+        
         try {
           const response = await fetch(`${API_BASE_URL}/markets/all`);
           if (!response.ok) {
             throw new Error('Failed to load all coins');
           }
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid coins data structure');
-          }
-          
+          const coins = await response.json();
           const tableBody = document.getElementById('allCoinsTable');
           tableBody.innerHTML = '';
           
-          data.data.forEach(coin => {
+          coins.forEach(coin => {
             const coinData = coinPrices[coin.id] || {
               currentPrice: coin.currentPrice,
               change24h: coin.change24h || 0
@@ -3460,8 +3510,6 @@
             
             tableBody.appendChild(row);
           });
-          
-          document.getElementById('allCoinsModal').style.display = 'flex';
         } catch (error) {
           console.error('Error loading all coins:', error);
           showToast('Failed to load all coins', 'error');
@@ -3470,21 +3518,20 @@
 
       // Show all gainers modal
       async function showAllGainers() {
+        const modal = document.getElementById('allGainersModal');
+        modal.style.display = 'flex';
+        
         try {
           const response = await fetch(`${API_BASE_URL}/markets/gainers`);
           if (!response.ok) {
             throw new Error('Failed to load all gainers');
           }
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid gainers data structure');
-          }
-          
+          const gainers = await response.json();
           const tableBody = document.getElementById('allGainersTable');
           tableBody.innerHTML = '';
           
-          data.data.forEach(coin => {
+          gainers.data.forEach(coin => {
             const coinData = coinPrices[coin.id] || {
               currentPrice: coin.currentPrice,
               change24h: coin.change24h || 0
@@ -3515,8 +3562,6 @@
             
             tableBody.appendChild(row);
           });
-          
-          document.getElementById('allGainersModal').style.display = 'flex';
         } catch (error) {
           console.error('Error loading all gainers:', error);
           showToast('Failed to load all gainers', 'error');
@@ -3525,21 +3570,20 @@
 
       // Show all trending modal
       async function showAllTrending() {
+        const modal = document.getElementById('allTrendingModal');
+        modal.style.display = 'flex';
+        
         try {
           const response = await fetch(`${API_BASE_URL}/markets/trending`);
           if (!response.ok) {
             throw new Error('Failed to load all trending');
           }
           
-          const data = await response.json();
-          if (!data.success || !Array.isArray(data.data)) {
-            throw new Error('Invalid trending data structure');
-          }
-          
+          const trending = await response.json();
           const tableBody = document.getElementById('allTrendingTable');
           tableBody.innerHTML = '';
           
-          data.data.forEach(coin => {
+          trending.data.forEach(coin => {
             const coinData = coinPrices[coin.id] || {
               currentPrice: coin.currentPrice,
               change24h: coin.change24h || 0
@@ -3570,8 +3614,6 @@
             
             tableBody.appendChild(row);
           });
-          
-          document.getElementById('allTrendingModal').style.display = 'flex';
         } catch (error) {
           console.error('Error loading all trending:', error);
           showToast('Failed to load all trending', 'error');
@@ -3628,9 +3670,9 @@
         }
         
         // Update UI
-        updateMarketTable();
-        updateGainersList();
-        updateTrendingList();
+        renderMarketOverview();
+        renderGainersList();
+        renderTrendingList();
         
         // Update portfolio change if user is logged in
         if (currentUser) {
@@ -3652,123 +3694,6 @@
             }
           }
         }
-      }
-
-      // Update market table
-      function updateMarketTable() {
-        const container = document.getElementById('market-overview-container');
-        if (!container) return;
-        
-        const assetCards = container.querySelectorAll('.asset-card');
-        assetCards.forEach(card => {
-          const coinId = card.querySelector('.asset-logo').alt;
-          const coin = marketData.find(c => c.name === coinId);
-          if (!coin) return;
-          
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          // Update price
-          const priceElement = card.querySelector('.asset-price');
-          if (priceElement) {
-            priceElement.textContent = `$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`;
-          }
-          
-          // Update 24h change
-          const change24hElement = card.querySelector('.price-change-item:nth-child(2) .price-change-value');
-          if (change24hElement) {
-            const isPositive = coinData.change24h >= 0;
-            const arrow = isPositive ? '▲' : '▼';
-            change24hElement.className = `price-change-value ${isPositive ? 'price-up' : 'price-down'}`;
-            change24hElement.innerHTML = `${arrow} ${Math.abs(coinData.change24h).toFixed(2)}%`;
-          }
-          
-          // Update sparkline
-          const sparklineContainer = card.querySelector('.sparkline-container');
-          if (sparklineContainer) {
-            renderSparkline(sparklineContainer.id, coin.sparkline);
-          }
-        });
-      }
-
-      // Update gainers list
-      function updateGainersList() {
-        const container = document.getElementById('top-gainers-container');
-        if (!container) return;
-        
-        const assetCards = container.querySelectorAll('.asset-card');
-        assetCards.forEach(card => {
-          const coinId = card.querySelector('.asset-logo').alt;
-          const coin = gainersData.find(c => c.name === coinId);
-          if (!coin) return;
-          
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          // Update price
-          const priceElement = card.querySelector('.asset-price');
-          if (priceElement) {
-            priceElement.textContent = `$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`;
-          }
-          
-          // Update 24h change
-          const change24hElement = card.querySelector('.price-change-item .price-change-value');
-          if (change24hElement) {
-            const isPositive = coinData.change24h >= 0;
-            const arrow = isPositive ? '▲' : '▼';
-            change24hElement.className = `price-change-value ${isPositive ? 'price-up' : 'price-down'}`;
-            change24hElement.innerHTML = `${arrow} ${Math.abs(coinData.change24h).toFixed(2)}%`;
-          }
-          
-          // Update sparkline
-          const sparklineContainer = card.querySelector('.sparkline-container');
-          if (sparklineContainer) {
-            renderSparkline(sparklineContainer.id, coin.sparkline);
-          }
-        });
-      }
-
-      // Update trending list
-      function updateTrendingList() {
-        const container = document.getElementById('trending-container');
-        if (!container) return;
-        
-        const assetCards = container.querySelectorAll('.asset-card');
-        assetCards.forEach(card => {
-          const coinId = card.querySelector('.asset-logo').alt;
-          const coin = trendingData.find(c => c.name === coinId);
-          if (!coin) return;
-          
-          const coinData = coinPrices[coin.id] || {
-            currentPrice: coin.currentPrice,
-            change24h: coin.change24h || 0
-          };
-          
-          // Update price
-          const priceElement = card.querySelector('.asset-price');
-          if (priceElement) {
-            priceElement.textContent = `$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`;
-          }
-          
-          // Update 24h change
-          const change24hElement = card.querySelector('.price-change-item .price-change-value');
-          if (change24hElement) {
-            const isPositive = coinData.change24h >= 0;
-            const arrow = isPositive ? '▲' : '▼';
-            change24hElement.className = `price-change-value ${isPositive ? 'price-up' : 'price-down'}`;
-            change24hElement.innerHTML = `${arrow} ${Math.abs(coinData.change24h).toFixed(2)}%`;
-          }
-          
-          // Update sparkline
-          const sparklineContainer = card.querySelector('.sparkline-container');
-          if (sparklineContainer) {
-            renderSparkline(sparklineContainer.id, coin.sparkline);
-          }
-        });
       }
 
       // Close modal
@@ -3795,6 +3720,13 @@
           }, 300);
         }, 3000);
       }
+
+      // Close modals when clicking outside
+      window.onclick = function(event) {
+        if (event.target.className === 'modal-overlay') {
+          event.target.style.display = 'none';
+        }
+      };
     </script>
 </body>
 </html>
