@@ -444,102 +444,91 @@
     }
 
     /* Stats Box */
-   .market-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin: 2rem 0;
-}
+    .market-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 2rem 0;
+    }
 
-.stat-card {
-  background: linear-gradient(135deg, #1e2329 0%, #2b3139 100%);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid #3a424d;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+    .stat-card {
+      background: linear-gradient(135deg, #1e2329 0%, #2b3139 100%);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid #3a424d;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
 
-.stat-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 1rem;
-}
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
 
-.stat-icon {
-  font-size: 1.25rem;
-  color: #f0b90b;
-}
+    .stat-icon {
+      font-size: 1.25rem;
+      color: #f0b90b;
+    }
 
-.stat-label {
-  color: #848e9c;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+    .stat-label {
+      color: #848e9c;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-.stat-value {
-  color: #eaecef;
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin: 0.5rem 0;
-  font-feature-settings: "tnum";
-  transition: all 0.3s ease;
-}
+    .stat-value {
+      color: #eaecef;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+      font-feature-settings: "tnum";
+      transition: all 0.3s ease;
+    }
 
-.stat-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-}
+    .stat-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+    }
 
-.stat-change {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-}
+    .stat-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
 
-.positive {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: #0ecb81;
-}
+    .positive {
+      background-color: rgba(14, 203, 129, 0.15);
+      color: #0ecb81;
+    }
 
-.negative {
-  background-color: rgba(246, 70, 93, 0.15);
-  color: #f6465d;
-}
+    .negative {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: #f6465d;
+    }
 
-.neutral {
-  background-color: rgba(240, 185, 11, 0.15);
-  color: #f0b90b;
-}
+    .neutral {
+      background-color: rgba(240, 185, 11, 0.15);
+      color: #f0b90b;
+    }
 
-.stat-time {
-  color: #848e9c;
-  font-size: 0.75rem;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-.updating {
-  animation: pulse 1s infinite;
-  color: #f0b90b;
-}
+    .stat-time {
+      color: #848e9c;
+      font-size: 0.75rem;
+    }
 
     /* Top Gainers Section */
     .top-gainers {
@@ -1675,50 +1664,51 @@
     
     <!-- Stats Section -->
     <div class="market-stats-grid">
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-users"></i>
-      <div class="stat-label">Total Traders</div>
-    </div>
-    <div class="stat-value" id="totalTraders">8,654,545</div>
-    <div class="stat-meta">
-      <span class="stat-change positive">
-        <i class="fas fa-arrow-up"></i>
-        <span id="tradersChange">0</span>
-      </span>
-      <span class="stat-time" id="tradersTime">updating now</span>
-    </div>
-  </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-users"></i>
+          <div class="stat-label">Total Traders</div>
+        </div>
+        <div class="stat-value" id="totalTraders">8,654,545</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="tradersChange">0</span>
+          </span>
+          <span class="stat-time" id="tradersTime">updating now</span>
+        </div>
+      </div>
 
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-chart-line"></i>
-      <div class="stat-label">24h Volume</div>
-    </div>
-    <div class="stat-value" id="dailyVolume">$2,754,896,125.40</div>
-    <div class="stat-meta">
-      <span class="stat-change positive">
-        <i class="fas fa-arrow-up"></i>
-        <span id="volumeChange">$0</span>
-      </span>
-      <span class="stat-time" id="volumeTime">updating now</span>
-    </div>
-  </div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-chart-line"></i>
+          <div class="stat-label">24h Volume</div>
+        </div>
+        <div class="stat-value" id="dailyVolume">$2,754,896,125.40</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="volumeChange">$0</span>
+          </span>
+          <span class="stat-time" id="volumeTime">updating now</span>
+        </div>
+      </div>
 
-  <div class="stat-card">
-    <div class="stat-header">
-      <i class="stat-icon fas fa-coins"></i>
-      <div class="stat-label">Total Assets</div>
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-coins"></i>
+          <div class="stat-label">Total Assets</div>
+        </div>
+        <div class="stat-value">100+</div>
+        <div class="stat-meta">
+          <span class="stat-change neutral">
+            <i class="fas fa-lock"></i>
+            <span>fixed</span>
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="stat-value">100+</div>
-    <div class="stat-meta">
-      <span class="stat-change neutral">
-        <i class="fas fa-lock"></i>
-        <span>fixed</span>
-      </span>
-    </div>
-  </div>
-</div>
+
     <!-- Top Gainers Section -->
     <div class="top-gainers">
       <div class="section-header">
@@ -2745,98 +2735,7 @@
           console.error('Error fetching admin messages:', error);
         }
       }
-const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
 
-// Global state for market stats
-let marketStats = {
-  totalTraders: 8654545,
-  dailyVolume: 2754896125.40,
-  totalAssets: 100,
-  tradersChange: 0,
-  volumeChange: 0
-};
-
-// Initialize the application
-document.addEventListener('DOMContentLoaded', async () => {
-  // Load initial market stats
-  await loadMarketStats();
-  
-  // Set up periodic updates every 30 seconds
-  setInterval(loadMarketStats, 30000);
-});
-
-// Load market stats from API
-async function loadMarketStats() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/market-stats`);
-    if (!response.ok) throw new Error('Failed to load market stats');
-    
-    const result = await response.json();
-    if (!result.success) {
-      throw new Error('Invalid market stats response');
-    }
-    
-    // Update global state
-    marketStats = {
-      totalTraders: result.data.totalTraders,
-      dailyVolume: result.data.dailyVolume,
-      totalAssets: result.data.totalAssets,
-      tradersChange: result.data.tradersChange,
-      volumeChange: result.data.volumeChange
-    };
-    
-    // Update UI
-    updateMarketStatsUI();
-  } catch (error) {
-    console.error('Error loading market stats:', error);
-    // Use existing values if API fails
-    updateMarketStatsUI();
-  }
-}
-
-// Update UI with current market stats
-function updateMarketStatsUI() {
-  // Format numbers with commas
-  const formattedTraders = marketStats.totalTraders.toLocaleString('en-US');
-  const formattedVolume = marketStats.dailyVolume.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-  
-  // Format changes
-  const formattedTradersChange = marketStats.tradersChange.toLocaleString('en-US');
-  const formattedVolumeChange = marketStats.volumeChange.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-  
-  // Update DOM elements
-  document.getElementById('totalTraders').textContent = formattedTraders;
-  document.getElementById('dailyVolume').textContent = formattedVolume;
-  document.getElementById('tradersChange').textContent = formattedTradersChange;
-  document.getElementById('volumeChange').textContent = formattedVolumeChange;
-  
-  // Update time indicators
-  const now = new Date();
-  document.getElementById('tradersTime').textContent = now.toLocaleTimeString();
-  document.getElementById('volumeTime').textContent = now.toLocaleTimeString();
-  
-  // Add updating animation temporarily
-  const elements = [
-    'totalTraders', 'dailyVolume', 'tradersChange', 'volumeChange',
-    'tradersTime', 'volumeTime'
-  ];
-  
-  elements.forEach(id => {
-    const element = document.getElementById(id);
-    element.classList.add('updating');
-    setTimeout(() => element.classList.remove('updating'), 1000);
-  });
-}
       // Load market data
       async function loadMarketData() {
         try {
@@ -2992,6 +2891,8 @@ function updateMarketStatsUI() {
         ctx.lineWidth = 2;
         ctx.stroke();
       }
+
+
 
       // Load gainers data
       async function loadGainersData() {
