@@ -6,7 +6,6 @@
   <meta name="description" content="Professional Crypto Trading Platform with real-time market data">
   <meta name="keywords" content="crypto, trading, bitcoin, ethereum, cryptocurrency">
   <title>Bitluxo</title>
-  <link rel="icon" href="https://www.dropbox.com/scl/fi/1dq16nex1borvvknpcwox/circular_dark_background.png?rlkey=sq2ujl2oxxk9vyvg1j7oz0cdb&raw=1" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -264,183 +263,107 @@
       text-decoration: underline;
     }
 
-    /* Market Overview Section */
-    .market-overview {
+    /* Section Styles */
+    .section {
       background-color: var(--secondary-bg);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 30px;
+      border-radius: 4px;
+      margin-bottom: 16px;
       border: 1px solid var(--border-color);
     }
 
-    .market-overview .section-header {
+    .section-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
     }
 
-    .market-overview .section-title {
-      font-size: 1.5rem;
+    .section-title {
+      font-size: 18px;
       font-weight: 600;
     }
 
-    .market-overview .view-all {
+    .section-link {
       color: var(--primary-accent);
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .market-overview .assets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 15px;
-    }
-
-    .market-overview .asset-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 15px;
-      transition: transform 0.2s;
-      cursor: pointer;
-      border: 1px solid var(--border-color);
-    }
-
-    .market-overview .asset-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .market-overview .asset-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .market-overview .asset-logo {
-      width: 32px;
-      height: 32px;
-      margin-right: 12px;
-      border-radius: 50%;
-    }
-
-    .market-overview .asset-name {
-      font-weight: 600;
-      margin-right: 6px;
-    }
-
-    .market-overview .asset-symbol {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    .market-overview .asset-price {
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 8px 0;
-    }
-
-    .market-overview .price-change-container {
-      display: flex;
-      gap: 15px;
-      margin: 12px 0;
-    }
-
-    .market-overview .price-change-item {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .market-overview .price-change-label {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    .market-overview .price-change-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .market-overview .price-up {
-      color: var(--positive);
-    }
-
-    .market-overview .price-down {
-      color: var(--negative);
-    }
-
-    .market-overview .asset-stats {
-      display: flex;
-      justify-content: space-between;
-      margin: 12px 0;
-      font-size: 0.85rem;
-    }
-
-    .market-overview .stat-label {
-      color: var(--text-secondary);
-    }
-
-    .market-overview .stat-value {
+      font-size: 14px;
+      text-decoration: none;
       font-weight: 500;
     }
 
-    .market-overview .supply-bar {
-      height: 4px;
-      background-color: var(--border-color);
-      border-radius: 2px;
-      margin-top: 6px;
-      overflow: hidden;
+    .section-link:hover {
+      text-decoration: underline;
     }
 
-    .market-overview .supply-progress {
-      height: 100%;
-      background-color: var(--primary-accent);
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
-    .market-overview .asset-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .market-overview .action-btn {
-      flex: 1;
-      padding: 8px 0;
-      border-radius: 6px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .market-overview .buy-btn {
-      background-color: rgba(14, 203, 129, 0.1);
-      color: var(--positive);
-      border: 1px solid var(--positive);
-    }
-
-    .market-overview .sell-btn {
-      background-color: rgba(246, 70, 93, 0.1);
-      color: var(--negative);
-      border: 1px solid var(--negative);
-    }
-
-    .market-overview .action-btn:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-
-    .market-overview .sparkline-container {
-      height: 50px;
-      margin-top: 15px;
-      position: relative;
-    }
-
-    .market-overview .sparkline {
+    table {
       width: 100%;
-      height: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: var(--secondary-bg);
+      position: sticky;
+      top: var(--header-height);
+    }
+
+    tr:hover {
+      background-color: rgba(240, 185, 11, 0.03);
+    }
+
+    .coin-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .coin-name {
+      font-weight: 500;
+    }
+
+    .coin-symbol {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-left: 4px;
+    }
+
+    .positive {
+      color: var(--positive);
+    }
+
+    .negative {
+      color: var(--negative);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+      min-width: 60px;
     }
 
     /* Stats Box */
@@ -530,489 +453,74 @@
       font-size: 0.75rem;
     }
 
-    /* Top Gainers Section */
-    .top-gainers {
+    /* Animation */
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .updating {
+      animation: pulse 1s infinite;
+      color: #f0b90b;
+    }
+
+    .number-roll {
+      display: inline-block;
+      transition: all 0.5s ease-out;
+    }
+
+    /* Gainers/Trending Section */
+    .gainers-trending {
+      display: flex;
+      gap: 16px;
+    }
+
+    .gainers, .trending {
+      flex: 1;
       background-color: var(--secondary-bg);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 30px;
+      border-radius: 4px;
       border: 1px solid var(--border-color);
     }
 
-    .top-gainers .section-header {
+    .coin-list {
+      list-style: none;
+    }
+
+    .coin-list-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .top-gainers .section-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .top-gainers .view-all {
-      color: var(--primary-accent);
       cursor: pointer;
-      font-size: 0.9rem;
+      transition: all 0.2s;
     }
 
-    .top-gainers .assets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 15px;
+    .coin-list-item:last-child {
+      border-bottom: none;
     }
 
-    .top-gainers .asset-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 15px;
-      transition: transform 0.2s;
-      cursor: pointer;
-      border: 1px solid var(--border-color);
+    .coin-list-item:hover {
+      background-color: rgba(240, 185, 11, 0.05);
     }
 
-    .top-gainers .asset-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .top-gainers .asset-header {
+    .coin-info {
       display: flex;
       align-items: center;
-      margin-bottom: 12px;
+      gap: 8px;
     }
 
-    .top-gainers .asset-logo {
-      width: 32px;
-      height: 32px;
-      margin-right: 12px;
-      border-radius: 50%;
+    .price-info {
+      text-align: right;
     }
 
-    .top-gainers .asset-name {
-      font-weight: 600;
-      margin-right: 6px;
-    }
-
-    .top-gainers .asset-symbol {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    .top-gainers .asset-price {
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 8px 0;
-    }
-
-    .top-gainers .price-change-container {
-      display: flex;
-      gap: 15px;
-      margin: 12px 0;
-    }
-
-    .top-gainers .price-change-item {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .top-gainers .price-change-label {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    .top-gainers .price-change-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .top-gainers .price-up {
-      color: var(--positive);
-    }
-
-    .top-gainers .price-down {
-      color: var(--negative);
-    }
-
-    .top-gainers .asset-stats {
-      display: flex;
-      justify-content: space-between;
-      margin: 12px 0;
-      font-size: 0.85rem;
-    }
-
-    .top-gainers .stat-label {
-      color: var(--text-secondary);
-    }
-
-    .top-gainers .stat-value {
+    .price {
       font-weight: 500;
     }
 
-    .top-gainers .supply-bar {
-      height: 4px;
-      background-color: var(--border-color);
-      border-radius: 2px;
-      margin-top: 6px;
-      overflow: hidden;
-    }
-
-    .top-gainers .supply-progress {
-      height: 100%;
-      background-color: var(--primary-accent);
-    }
-
-    .top-gainers .asset-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .top-gainers .action-btn {
-      flex: 1;
-      padding: 8px 0;
-      border-radius: 6px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .top-gainers .buy-btn {
-      background-color: rgba(14, 203, 129, 0.1);
-      color: var(--positive);
-      border: 1px solid var(--positive);
-    }
-
-    .top-gainers .sell-btn {
-      background-color: rgba(246, 70, 93, 0.1);
-      color: var(--negative);
-      border: 1px solid var(--negative);
-    }
-
-    .top-gainers .action-btn:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-
-    .top-gainers .sparkline-container {
-      height: 50px;
-      margin-top: 15px;
-      position: relative;
-    }
-
-    .top-gainers .sparkline {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Trending Section */
-    .trending {
-      background-color: var(--secondary-bg);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 30px;
-      border: 1px solid var(--border-color);
-    }
-
-    .trending .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .trending .section-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .trending .view-all {
-      color: var(--primary-accent);
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .trending .assets-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 15px;
-    }
-
-    .trending .asset-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 15px;
-      transition: transform 0.2s;
-      cursor: pointer;
-      border: 1px solid var(--border-color);
-    }
-
-    .trending .asset-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .trending .asset-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .trending .asset-logo {
-      width: 32px;
-      height: 32px;
-      margin-right: 12px;
-      border-radius: 50%;
-    }
-
-    .trending .asset-name {
-      font-weight: 600;
-      margin-right: 6px;
-    }
-
-    .trending .asset-symbol {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-
-    .trending .asset-price {
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin: 8px 0;
-    }
-
-    .trending .price-change-container {
-      display: flex;
-      gap: 15px;
-      margin: 12px 0;
-    }
-
-    .trending .price-change-item {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .trending .price-change-label {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-bottom: 4px;
-    }
-
-    .trending .price-change-value {
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .trending .price-up {
-      color: var(--positive);
-    }
-
-    .trending .price-down {
-      color: var(--negative);
-    }
-
-    .trending .asset-stats {
-      display: flex;
-      justify-content: space-between;
-      margin: 12px 0;
-      font-size: 0.85rem;
-    }
-
-    .trending .stat-label {
-      color: var(--text-secondary);
-    }
-
-    .trending .stat-value {
-      font-weight: 500;
-    }
-
-    .trending .supply-bar {
-      height: 4px;
-      background-color: var(--border-color);
-      border-radius: 2px;
-      margin-top: 6px;
-      overflow: hidden;
-    }
-
-    .trending .supply-progress {
-      height: 100%;
-      background-color: var(--primary-accent);
-    }
-
-    .trending .asset-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .trending .action-btn {
-      flex: 1;
-      padding: 8px 0;
-      border-radius: 6px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .trending .buy-btn {
-      background-color: rgba(14, 203, 129, 0.1);
-      color: var(--positive);
-      border: 1px solid var(--positive);
-    }
-
-    .trending .sell-btn {
-      background-color: rgba(246, 70, 93, 0.1);
-      color: var(--negative);
-      border: 1px solid var(--negative);
-    }
-
-    .trending .action-btn:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
-    }
-
-    .trending .sparkline-container {
-      height: 50px;
-      margin-top: 15px;
-      position: relative;
-    }
-
-    .trending .sparkline {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background-color: var(--secondary-bg);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 800px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 25px;
-      position: relative;
-      border: 1px solid var(--border-color);
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .modal-logo {
-      width: 40px;
-      height: 40px;
-      margin-right: 15px;
-      border-radius: 50%;
-    }
-
-    .modal-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-
-    .modal-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .modal-chart {
-      grid-column: 1 / -1;
-      height: 300px;
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 15px;
-      border: 1px solid var(--border-color);
-    }
-
-    .modal-stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .modal-stat-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      padding: 15px;
-      border: 1px solid var(--border-color);
-    }
-
-    .modal-stat-title {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: 8px;
-    }
-
-    .modal-stat-value {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 15px;
-      margin-top: 25px;
-    }
-
-    .modal-action-btn {
-      flex: 1;
-      padding: 12px 0;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .modal-action-buy {
-      background-color: rgba(14, 203, 129, 0.1);
-      color: var(--positive);
-      border: 1px solid var(--positive);
-    }
-
-    .modal-action-sell {
-      background-color: rgba(246, 70, 93, 0.1);
-      color: var(--negative);
-      border: 1px solid var(--negative);
-    }
-
-    .modal-action-btn:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
+    .price-change {
+      font-size: 13px;
     }
 
     /* Trading View */
@@ -1063,7 +571,13 @@
       border: none;
     }
 
-    /* News Section */
+    @media (max-width: 768px) {
+      .trading-chart {
+        height: 300px;
+      }
+    }
+
+    /* News Section Styles */
     .news-section {
       background-color: var(--secondary-bg);
       border-radius: 8px;
@@ -1291,7 +805,151 @@
       filter: grayscale(0%);
     }
 
-    /* Withdrawals Feed */
+    /* News Detail Modal */
+    .news-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .news-category-badge {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background-color: rgba(240, 185, 11, 0.1);
+      color: #f0b90b;
+    }
+
+    .news-detail-header {
+      margin-bottom: 20px;
+    }
+
+    .news-detail-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .news-detail-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .news-detail-content {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .news-detail-content p {
+      margin-bottom: 16px;
+    }
+
+    .news-detail-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Loading Skeletons */
+    .news-skeleton {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .skeleton-image {
+      height: 180px;
+      background-color: rgba(255, 255, 255, 0.05);
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .skeleton-content {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skeleton-line {
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .news-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .news-section {
+        padding: 20px;
+      }
+      
+      .news-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .news-filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .news-detail-title {
+        font-size: 20px;
+      }
+      
+      .news-detail-content {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .news-section .section-title {
+        font-size: 20px;
+      }
+      
+      .news-section .section-subtitle {
+        font-size: 14px;
+      }
+      
+      .news-pagination {
+        gap: 8px;
+      }
+      
+      .news-pagination .btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+      
+      .news-detail-image {
+        max-height: 250px;
+      }
+      
+      .news-detail-title {
+        font-size: 18px;
+      }
+    }
+    
+    /* Withdrawals Feed Styles */
     .withdrawals-feed {
       position: fixed;
       bottom: 20px;
@@ -1358,6 +1016,307 @@
       font-size: 11px;
       color: var(--text-secondary);
       margin-top: 2px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .withdrawals-feed {
+        width: 250px;
+        bottom: 10px;
+        right: 10px;
+      }
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      overflow-y: auto;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: var(--secondary-bg);
+      margin: 5% auto;
+      padding: 24px;
+      border-radius: 4px;
+      width: 90%;
+      max-width: 800px;
+      border: 1px solid var(--border-color);
+      animation: modalFadeIn 0.3s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .close-modal {
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+    }
+
+    .close-modal:hover {
+      color: var(--text-primary);
+    }
+
+    /* Coin Detail */
+    .coin-detail {
+      margin-top: 16px;
+    }
+
+    .coin-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .coin-icon-lg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .coin-name-lg {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .coin-symbol-lg {
+      color: var(--text-secondary);
+      font-size: 16px;
+      margin-left: 8px;
+    }
+
+    .coin-price-lg {
+      font-size: 28px;
+      font-weight: 600;
+      margin: 8px 0;
+    }
+
+    .price-change-lg {
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .price-change-lg.positive {
+      background-color: rgba(14, 203, 129, 0.1);
+    }
+
+    .price-change-lg.negative {
+      background-color: rgba(246, 70, 93, 0.1);
+    }
+
+    .coin-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .stat-card {
+      background-color: var(--card-bg);
+      padding: 16px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .stat-label-lg {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .stat-value-lg {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .coin-chart-container {
+      margin-top: 24px;
+      height: 400px;
+      background-color: var(--card-bg);
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+
+    .trade-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    /* Portfolio Table */
+    .portfolio-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 12px;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .form-col {
+      flex: 1;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+      .main-content {
+        padding: 16px;
+        padding-top: calc(var(--header-height) + 16px);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .gainers-trending {
+        flex-direction: column;
+      }
+
+      .coin-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 12px;
+      }
+
+      .logo-title {
+        font-size: 16px;
+      }
+
+      .nav-container {
+        gap: 8px;
+      }
+
+      .nav-link {
+        padding: 6px 8px;
+        font-size: 13px;
+        display: none;
+      }
+
+      .nav-link.mobile-visible {
+        display: block;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+
+      .user-balance {
+        display: none;
+      }
+
+      .withdrawals-feed {
+        width: 250px;
+        bottom: 10px;
+        right: 10px;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 16px;
+      }
+
+      th, td {
+        padding: 10px 12px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .logo-title {
+        font-size: 14px;
+      }
+
+      .auth-buttons {
+        gap: 4px;
+      }
+
+      .btn {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .section-link {
+        align-self: flex-end;
+      }
+
+      .stats-box {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .withdrawals-feed {
+        width: 200px;
+        font-size: 12px;
+      }
     }
 
     /* Notification Banner */
@@ -1441,64 +1400,13 @@
       padding: 8px;
     }
 
-    /* Responsive Styles */
-    @media (max-width: 1200px) {
-      .main-content {
-        padding: 16px;
-        padding-top: calc(var(--header-height) + 16px);
-      }
-    }
-
-    @media (max-width: 992px) {
-      .modal-body {
-        grid-template-columns: 1fr;
-      }
-      
-      .modal-stats {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 768px) {
-      header {
-        padding: 0 12px;
-      }
-
-      .logo-title {
-        font-size: 16px;
-      }
-
-      .nav-container {
-        gap: 8px;
-      }
-
-      .nav-link {
-        padding: 6px 8px;
-        font-size: 13px;
-        display: none;
-      }
-
-      .nav-link.mobile-visible {
-        display: block;
-      }
-
-      .btn {
-        padding: 6px 12px;
-        font-size: 13px;
-      }
-
-      .user-balance {
-        display: none;
-      }
-
-      .withdrawals-feed {
-        width: 250px;
-        bottom: 10px;
-        right: 10px;
-      }
-
       .mobile-menu-btn {
         display: block;
+      }
+      
+      .nav-container {
+        position: relative;
       }
       
       .nav-links {
@@ -1524,71 +1432,167 @@
         display: block;
         padding: 8px 12px;
       }
-
-      .trading-chart {
-        height: 300px;
-      }
     }
 
-    @media (max-width: 576px) {
-      .logo-title {
-        font-size: 14px;
-      }
-
-      .auth-buttons {
-        gap: 4px;
-      }
-
-      .btn {
-        padding: 6px 8px;
-        font-size: 12px;
-      }
-
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-
-      .section-link {
-        align-self: flex-end;
-      }
-
-      .stats-box {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .form-row {
-        flex-direction: column;
-        gap: 0;
-      }
-
-      .withdrawals-feed {
-        width: 200px;
-        font-size: 12px;
-      }
-
-      .modal-actions {
-        flex-direction: column;
-      }
+    /* Asset Row Styles */
+    .asset-row {
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    /* Animation */
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.6; }
-      100% { opacity: 1; }
+    .asset-row:hover {
+      background-color: rgba(240, 185, 11, 0.05);
     }
 
-    .updating {
-      animation: pulse 1s infinite;
-      color: #f0b90b;
+    .asset-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .number-roll {
-      display: inline-block;
-      transition: all 0.5s ease-out;
+    .asset-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .asset-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .asset-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .asset-symbol {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .price-cell {
+      font-weight: 600;
+    }
+
+    .change-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .change-pill {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .change-pill.positive {
+      background-color: rgba(14, 203, 129, 0.15);
+      color: var(--positive);
+    }
+
+    .change-pill.negative {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: var(--negative);
+    }
+
+    .supply-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .supply-bar-container {
+      width: 100%;
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .supply-bar {
+      height: 100%;
+      background-color: var(--primary-accent);
+    }
+
+    .trend-sparkline {
+      width: 60px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .trend-sparkline.positive {
+      color: var(--positive);
+    }
+
+    .trend-sparkline.negative {
+      color: var(--negative);
+    }
+
+    .btn-trade {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      min-width: 50px;
+    }
+
+    .btn-buy {
+      background-color: rgba(14, 203, 129, 0.15);
+      color: var(--positive);
+    }
+
+    .btn-buy:hover {
+      background-color: rgba(14, 203, 129, 0.25);
+    }
+
+    .btn-sell {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: var(--negative);
+    }
+
+    .btn-sell:hover {
+      background-color: rgba(246, 70, 93, 0.25);
+    }
+
+    /* Pagination Controls */
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .page-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .page-btn:hover {
+      background-color: rgba(240, 185, 11, 0.1);
+    }
+
+    .page-btn.active {
+      background-color: var(--primary-accent);
+      color: #000;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -1602,7 +1606,7 @@
   <!-- Header -->
   <header>
     <div class="logo-container">
-      <img id="platformLogo" class="logo" src="https://www.dropbox.com/scl/fi/pnch85ra17rw68fcve1d1/ChatGPT-Image-Jun-18-2025-07_15_23-PM.png?rlkey=3vggfoohs1fnb5pu15ciwkc0p&raw=1" alt="Bitluxo Logo">
+      <img id="platformLogo" class="logo" src="https://www.dropbox.com/scl/fi/pnch85ra17rw68fcve1d1/ChatGPT-Image-Jun-18-2025-07_15_23-PM.png?rlkey=3vggfoohs1fnb5pu15ciwkc0p&raw=1" alt="Crypto Trading Market">
       <h1 class="logo-title">BITLUXO</h1>
     </div>
     
@@ -1650,18 +1654,46 @@
         Welcome back, <span id="welcomeUsername"></span>! Your portfolio is up <span id="portfolioChange" class="positive">0%</span> today.
       </div>
     </div>
-    
-    <!-- Market Overview Section -->
-    <div class="market-overview">
+
+    <!-- Market Data Section -->
+    <div class="section">
       <div class="section-header">
         <h2 class="section-title">Market Overview</h2>
-        <div class="view-all" id="view-all-overview">View All</div>
+        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
       </div>
-      <div class="assets-grid" id="market-overview-container">
-        <!-- Assets will be inserted here by JS -->
+      
+      <div class="table-container">
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>Volume (24h)</th>
+              <th>Market Cap</th>
+              <th>Supply</th>
+              <th>Trend</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="marketTable">
+            <!-- Data will be populated here -->
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px;">
+                <div style="color: var(--positive);">Loading market data, please wait...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="pagination-controls" id="marketPagination" style="display: none;">
+        <button class="page-btn" id="prevMarketPage" disabled>Previous</button>
+        <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentMarketPage">1</span></span>
+        <button class="page-btn" id="nextMarketPage">Next</button>
       </div>
     </div>
-    
+
     <!-- Stats Section -->
     <div class="market-stats-grid">
       <div class="stat-card">
@@ -1669,7 +1701,7 @@
           <i class="stat-icon fas fa-users"></i>
           <div class="stat-label">Total Traders</div>
         </div>
-        <div class="stat-value" id="totalTraders">8,654,545</div>
+        <div class="stat-value" id="totalTraders">Loading...</div>
         <div class="stat-meta">
           <span class="stat-change positive">
             <i class="fas fa-arrow-up"></i>
@@ -1684,7 +1716,7 @@
           <i class="stat-icon fas fa-chart-line"></i>
           <div class="stat-label">24h Volume</div>
         </div>
-        <div class="stat-value" id="dailyVolume">$2,754,896,125.40</div>
+        <div class="stat-value" id="dailyVolume">Loading...</div>
         <div class="stat-meta">
           <span class="stat-change positive">
             <i class="fas fa-arrow-up"></i>
@@ -1709,25 +1741,32 @@
       </div>
     </div>
 
-    <!-- Top Gainers Section -->
-    <div class="top-gainers">
-      <div class="section-header">
-        <h2 class="section-title">Top Gainers</h2>
-        <div class="view-all" id="view-all-gainers">View All</div>
+    <!-- Gainers & Trending Section -->
+    <div class="gainers-trending">
+      <div class="section gainers">
+        <div class="section-header">
+          <h2 class="section-title">Top Gainers</h2>
+          <a href="#" class="section-link" id="viewAllGainers">View All</a>
+        </div>
+        <div class="gainers-container" id="gainersList">
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading gainers data...
+          </div>
+        </div>
       </div>
-      <div class="assets-grid" id="top-gainers-container">
-        <!-- Gainers will be inserted here by JS -->
-      </div>
-    </div>
       
-    <!-- Trending Section -->
-    <div class="trending">
-      <div class="section-header">
-        <h2 class="section-title">Trending</h2>
-        <div class="view-all" id="view-all-trending">View All</div>
-      </div>
-      <div class="assets-grid" id="trending-container">
-        <!-- Trending assets will be inserted here by JS -->
+      <div class="section trending">
+        <div class="section-header">
+          <h2 class="section-title">Trending</h2>
+          <a href="#" class="section-link" id="viewAllTrending">View All</a>
+        </div>
+        <div class="trending-container" id="trendingList">
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading trending data...
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1820,14 +1859,14 @@
     </section>
 
     <!-- News Detail Modal -->
-    <div class="modal-overlay" id="newsModal" style="display: none;">
+    <div class="modal" id="newsModal">
       <div class="modal-content" style="max-width: 800px;">
         <div class="modal-header">
           <div class="news-modal-header">
             <div class="news-category-badge" id="newsCategoryBadge"></div>
             <h2 class="modal-title" id="newsModalTitle">News Detail</h2>
           </div>
-          <span class="modal-close" onclick="closeModal('newsModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('newsModal')">&times;</span>
         </div>
         <div class="news-modal-content" id="newsModalContent">
           <div class="news-detail-header">
@@ -1857,26 +1896,33 @@
       </div>
       <div id="withdrawalsList">
         <!-- Withdrawals will be loaded here -->
+        <div class="withdrawal-item">
+          <span class="withdrawal-icon">→</span>
+          <div class="withdrawal-details">
+            <div class="withdrawal-amount">Loading...</div>
+            <div class="withdrawal-time">please wait</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Coin Detail Modal -->
-    <div class="modal-overlay" id="coinModal" style="display: none;">
+    <div class="modal" id="coinModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title" id="coinModalTitle">Coin Details</h2>
-          <span class="modal-close" onclick="closeModal('coinModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('coinModal')">&times;</span>
         </div>
         <div id="coinModalContent"></div>
       </div>
     </div>
 
     <!-- All Coins Modal -->
-    <div class="modal-overlay" id="allCoinsModal" style="display: none;">
+    <div class="modal" id="allCoinsModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">All Cryptocurrencies</h2>
-          <span class="modal-close" onclick="closeModal('allCoinsModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('allCoinsModal')">&times;</span>
         </div>
         
         <div class="table-container">
@@ -1891,18 +1937,29 @@
             </thead>
             <tbody id="allCoinsTable">
               <!-- All coins data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading all coins, please wait...</div>
+                </td>
+              </tr>
             </tbody>
           </table>
+        </div>
+        
+        <div class="pagination-controls" id="allCoinsPagination" style="display: none;">
+          <button class="page-btn" id="prevAllCoinsPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllCoinsPage">1</span></span>
+          <button class="page-btn" id="nextAllCoinsPage">Next</button>
         </div>
       </div>
     </div>
 
     <!-- All Gainers Modal -->
-    <div class="modal-overlay" id="allGainersModal" style="display: none;">
+    <div class="modal" id="allGainersModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">Top Gainers (24h)</h2>
-          <span class="modal-close" onclick="closeModal('allGainersModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
         </div>
         
         <div class="table-container">
@@ -1917,18 +1974,29 @@
             </thead>
             <tbody id="allGainersTable">
               <!-- All gainers data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading gainers, please wait...</div>
+                </td>
+              </tr>
             </tbody>
           </table>
+        </div>
+        
+        <div class="pagination-controls" id="allGainersPagination" style="display: none;">
+          <button class="page-btn" id="prevAllGainersPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllGainersPage">1</span></span>
+          <button class="page-btn" id="nextAllGainersPage">Next</button>
         </div>
       </div>
     </div>
 
     <!-- All Trending Modal -->
-    <div class="modal-overlay" id="allTrendingModal" style="display: none;">
+    <div class="modal" id="allTrendingModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">Trending Coins</h2>
-          <span class="modal-close" onclick="closeModal('allTrendingModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
         </div>
         
         <div class="table-container">
@@ -1943,18 +2011,29 @@
             </thead>
             <tbody id="allTrendingTable">
               <!-- All trending data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading trending coins, please wait...</div>
+                </td>
+              </tr>
             </tbody>
           </table>
+        </div>
+        
+        <div class="pagination-controls" id="allTrendingPagination" style="display: none;">
+          <button class="page-btn" id="prevAllTrendingPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllTrendingPage">1</span></span>
+          <button class="page-btn" id="nextAllTrendingPage">Next</button>
         </div>
       </div>
     </div>
 
     <!-- Trade Modal -->
-    <div class="modal-overlay" id="tradeModal" style="display: none;">
+    <div class="modal" id="tradeModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title" id="tradeModalTitle">Trade</h2>
-          <span class="modal-close" onclick="closeModal('tradeModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('tradeModal')">&times;</span>
         </div>
         
         <div id="tradeModalContent">
@@ -1981,11 +2060,11 @@
     </div>
 
     <!-- Success Modal -->
-    <div class="modal-overlay" id="successModal" style="display: none;">
+    <div class="modal" id="successModal">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title">Trade Successful</h2>
-          <span class="modal-close" onclick="closeModal('successModal')">&times;</span>
+          <span class="close-modal" onclick="closeModal('successModal')">&times;</span>
         </div>
         
         <div style="text-align: center; padding: 24px 0;">
@@ -2026,6 +2105,31 @@
       let socket = null;
       let adminMessages = [];
       let viewedMessages = [];
+      
+      // Pagination state
+      let marketPagination = {
+        currentPage: 1,
+        itemsPerPage: 15,
+        totalPages: 1
+      };
+      
+      let allCoinsPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
+      
+      let allGainersPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
+      
+      let allTrendingPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
@@ -2043,7 +2147,11 @@
         
         // Load market data
         await loadMarketData();
+        
+        // Load gainers data
         await loadGainersData();
+        
+        // Load trending data
         await loadTrendingData();
         
         // Load news
@@ -2096,6 +2204,7 @@
             showToast('Please login to access the trading platform', 'error');
             return;
           }
+          // Load trade content in main view
           loadTradeContent();
         });
         
@@ -2105,6 +2214,7 @@
             showToast('Please login to access futures trading', 'error');
             return;
           }
+          // Load futures content in main view
           loadFuturesContent();
         });
         
@@ -2114,27 +2224,88 @@
             showToast('Please login to access earn products', 'error');
             return;
           }
+          // Load earn content in main view
           loadEarnContent();
         });
         
         // View All links
-        document.getElementById('view-all-overview').addEventListener('click', (e) => {
+        document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
           e.preventDefault();
           showAllCoins();
         });
         
-        document.getElementById('view-all-gainers').addEventListener('click', (e) => {
+        document.getElementById('viewAllGainers').addEventListener('click', (e) => {
           e.preventDefault();
           showAllGainers();
         });
         
-        document.getElementById('view-all-trending').addEventListener('click', (e) => {
+        document.getElementById('viewAllTrending').addEventListener('click', (e) => {
           e.preventDefault();
           showAllTrending();
         });
         
         // Trade amount input
         document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
+        
+        // Market pagination
+        document.getElementById('prevMarketPage').addEventListener('click', () => {
+          if (marketPagination.currentPage > 1) {
+            marketPagination.currentPage--;
+            updateMarketTable();
+          }
+        });
+        
+        document.getElementById('nextMarketPage').addEventListener('click', () => {
+          if (marketPagination.currentPage < marketPagination.totalPages) {
+            marketPagination.currentPage++;
+            updateMarketTable();
+          }
+        });
+        
+        // All coins pagination
+        document.getElementById('prevAllCoinsPage').addEventListener('click', () => {
+          if (allCoinsPagination.currentPage > 1) {
+            allCoinsPagination.currentPage--;
+            updateAllCoinsTable();
+          }
+        });
+        
+        document.getElementById('nextAllCoinsPage').addEventListener('click', () => {
+          if (allCoinsPagination.currentPage < allCoinsPagination.totalPages) {
+            allCoinsPagination.currentPage++;
+            updateAllCoinsTable();
+          }
+        });
+        
+        // All gainers pagination
+        document.getElementById('prevAllGainersPage').addEventListener('click', () => {
+          if (allGainersPagination.currentPage > 1) {
+            allGainersPagination.currentPage--;
+            updateAllGainersTable();
+          }
+        });
+        
+        document.getElementById('nextAllGainersPage').addEventListener('click', () => {
+          if (allGainersPagination.currentPage < allGainersPagination.totalPages) {
+            allGainersPagination.currentPage++;
+            updateAllGainersTable();
+          }
+        });
+        
+        // All trending pagination
+        document.getElementById('prevAllTrendingPage').addEventListener('click', () => {
+          if (allTrendingPagination.currentPage > 1) {
+            allTrendingPagination.currentPage--;
+            updateAllTrendingTable();
+          }
+        });
+        
+        document.getElementById('nextAllTrendingPage').addEventListener('click', () => {
+          if (allTrendingPagination.currentPage < allTrendingPagination.totalPages) {
+            allTrendingPagination.currentPage++;
+            updateAllTrendingTable();
+          }
+        });
       }
 
       // Load trade content in main view
@@ -2739,17 +2910,12 @@
       // Load market data
       async function loadMarketData() {
         try {
-          const response = await fetch(`${API_BASE_URL}/markets/overview`);
-          if (!response.ok) throw new Error('Failed to load market data');
+          const response = await fetch(`${API_BASE_URL}/markets`);
+          if (!response.ok) throw new Error('Failed to fetch market data');
           
-          const result = await response.json();
-          if (!result.success || !Array.isArray(result.data)) {
-            throw new Error('Invalid market data structure');
-          }
+          const { marketData } = await response.json();
           
-          marketData = result.data;
-          
-          // Initialize coin prices
+          // Store market data
           marketData.forEach(coin => {
             coinPrices[coin.id] = {
               originalPrice: coin.currentPrice,
@@ -2758,244 +2924,173 @@
             };
           });
           
-          // Render market overview
-          renderMarketOverview();
+          // Update pagination info
+          marketPagination.totalPages = Math.ceil(marketData.length / marketPagination.itemsPerPage);
+          document.getElementById('marketPagination').style.display = 'flex';
+          
+          // Update UI
+          updateMarketTable(marketData);
         } catch (error) {
           console.error('Error loading market data:', error);
           showToast('Failed to load market data', 'error');
+          
+          const tableBody = document.getElementById('marketTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load market data. Please try again later.
+              </td>
+            </tr>
+          `;
         }
       }
 
-      // Render market overview
-      function renderMarketOverview() {
-        const container = document.getElementById('market-overview-container');
-        container.innerHTML = '';
+      // Update market table with pagination
+      function updateMarketTable(data) {
+        const tableBody = document.getElementById('marketTable');
+        tableBody.innerHTML = '';
         
-        marketData.slice(0, 5).forEach(coin => {
-          const coinData = coinPrices[coin.id];
+        // Calculate pagination slice
+        const startIndex = (marketPagination.currentPage - 1) * marketPagination.itemsPerPage;
+        const endIndex = startIndex + marketPagination.itemsPerPage;
+        const visibleCoins = data.slice(startIndex, endIndex);
+        
+        visibleCoins.forEach(asset => {
+          const coinData = coinPrices[asset.id] || {
+            currentPrice: asset.currentPrice,
+            change24h: asset.change24h || 0
+          };
           
-          const card = document.createElement('div');
-          card.className = 'asset-card';
-          card.innerHTML = `
-            <div class="asset-header">
-              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
-              <span class="asset-name">${coin.name}</span>
-              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
-            </div>
-            <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-            <div class="price-change-container">
-              <div class="price-change-item">
-                <span class="price-change-label">1h</span>
-                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
+          // Generate random changes for demo
+          const change1h = (Math.random() * 2 - 1).toFixed(2);
+          const change24h = coinData.change24h;
+          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+          
+          // Determine trend direction
+          const isUpwardTrend = Math.random() > 0.5;
+          
+          const row = document.createElement('tr');
+          row.className = 'asset-row';
+          
+          row.innerHTML = `
+            <td class="asset-cell">
+              <img src="${asset.image}" alt="${asset.name}" class="asset-icon">
+              <div class="asset-info">
+                <span class="asset-name">${asset.name}</span>
+                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+            <td>
+              <div class="change-container">
+                <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+                  ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+                </span>
+                <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+                  ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+                </span>
+                <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+                  ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
                 </span>
               </div>
-              <div class="price-change-item">
-                <span class="price-change-label">24h</span>
-                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
-                </span>
+            </td>
+            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+            <td>
+              <div class="supply-container">
+                <span>${(asset.marketCap / coinData.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+                <div class="supply-bar-container">
+                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+                </div>
               </div>
-              <div class="price-change-item">
-                <span class="price-change-label">7d</span>
-                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
-                </span>
+            </td>
+            <td>
+              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+                ${isUpwardTrend ? '↗' : '↘'}
               </div>
-            </div>
-            <div class="asset-stats">
-              <div>
-                <div class="stat-label">Market Cap</div>
-                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
               </div>
-              <div>
-                <div class="stat-label">Volume (24h)</div>
-                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
-              </div>
-            </div>
-            <div>
-              <div class="stat-label">Circulating Supply</div>
-              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
-              <div class="supply-bar">
-                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
-              </div>
-            </div>
-            <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-            </div>
-            <div class="sparkline-container" id="sparkline-${coin.id}">
-              <canvas class="sparkline"></canvas>
-            </div>
+            </td>
           `;
           
-          container.appendChild(card);
+          row.addEventListener('click', (e) => {
+            if (!e.target.closest('.action-buttons')) {
+              showCoinDetail(asset.id);
+            }
+          });
           
-          // Render sparkline
-          renderSparkline(`sparkline-${coin.id}`, coin.sparkline);
-          
-          // Add click event for modal
-          card.addEventListener('click', () => showCoinDetail(coin.id));
+          tableBody.appendChild(row);
         });
+        
+        // Update pagination controls
+        document.getElementById('currentMarketPage').textContent = marketPagination.currentPage;
+        document.getElementById('prevMarketPage').disabled = marketPagination.currentPage <= 1;
+        document.getElementById('nextMarketPage').disabled = marketPagination.currentPage >= marketPagination.totalPages;
       }
-
-      // Format supply numbers
-      function formatSupply(supply, symbol) {
-        if (supply >= 1000000000) {
-          return `${(supply / 1000000000).toFixed(2)}B ${symbol}`;
-        } else if (supply >= 1000000) {
-          return `${(supply / 1000000).toFixed(2)}M ${symbol}`;
-        } else if (supply >= 1000) {
-          return `${(supply / 1000).toFixed(2)}K ${symbol}`;
-        }
-        return `${supply} ${symbol}`;
-      }
-
-      // Render sparkline chart
-      function renderSparkline(elementId, data) {
-        const container = document.getElementById(elementId);
-        if (!container || !data || data.length === 0) return;
-        
-        const canvas = container.querySelector('canvas');
-        if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        
-        canvas.width = width;
-        canvas.height = height;
-        
-        // Find min and max values
-        const min = Math.min(...data);
-        const max = Math.max(...data);
-        const range = max - min;
-        
-        // Normalize data
-        const normalized = data.map(value => (value - min) / range);
-        
-        // Draw sparkline
-        ctx.beginPath();
-        ctx.moveTo(0, height - (normalized[0] * height));
-        
-        for (let i = 1; i < normalized.length; i++) {
-          const x = (i / (normalized.length - 1)) * width;
-          const y = height - (normalized[i] * height);
-          ctx.lineTo(x, y);
-        }
-        
-        // Determine line color based on first vs last value
-        const lineColor = data[data.length - 1] >= data[0] ? 'var(--positive)' : 'var(--negative)';
-        
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-
-
 
       // Load gainers data
       async function loadGainersData() {
         try {
           const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to load gainers data');
+          if (!response.ok) throw new Error('Failed to fetch gainers');
           
-          const result = await response.json();
-          if (!result.success || !Array.isArray(result.data)) {
-            throw new Error('Invalid gainers data structure');
-          }
+          const { gainers } = await response.json();
+          gainersData = gainers;
           
-          gainersData = result.data;
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
           
-          // Update coin prices
-          gainersData.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                originalPrice: coin.currentPrice,
-                currentPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
-          // Render gainers list
-          renderGainersList();
+          // Update UI
+          updateGainersList(gainers);
         } catch (error) {
-          console.error('Error loading gainers data:', error);
+          console.error('Error loading gainers:', error);
           showToast('Failed to load top gainers', 'error');
+          
+          const container = document.getElementById('gainersList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load gainers data
+            </div>
+          `;
         }
       }
 
-      // Render gainers list
-      function renderGainersList() {
-        const container = document.getElementById('top-gainers-container');
+      // Update gainers list
+      function updateGainersList(gainers = gainersData) {
+        const container = document.getElementById('gainersList');
         container.innerHTML = '';
         
-        gainersData.slice(0, 5).forEach(coin => {
-          const coinData = coinPrices[coin.id];
+        // Show top 5 gainers by default
+        const topGainers = gainers.slice(0, 5);
+        
+        topGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
           
           const card = document.createElement('div');
-          card.className = 'asset-card';
+          card.className = 'coin-list-item';
+          
           card.innerHTML = `
-            <div class="asset-header">
-              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
-              <span class="asset-name">${coin.name}</span>
-              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+            <div class="coin-info">
+              <img src="${gainer.image}" alt="${gainer.name}" width="24">
+              <span>${gainer.name}</span>
             </div>
-            <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-            <div class="price-change-container">
-              <div class="price-change-item">
-                <span class="price-change-label">1h</span>
-                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
-                </span>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
               </div>
-              <div class="price-change-item">
-                <span class="price-change-label">24h</span>
-                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
-                </span>
-              </div>
-              <div class="price-change-item">
-                <span class="price-change-label">7d</span>
-                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
-                </span>
-              </div>
-            </div>
-            <div class="asset-stats">
-              <div>
-                <div class="stat-label">Market Cap</div>
-                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
-              </div>
-              <div>
-                <div class="stat-label">Volume (24h)</div>
-                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
-              </div>
-            </div>
-            <div>
-              <div class="stat-label">Circulating Supply</div>
-              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
-              <div class="supply-bar">
-                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
-              </div>
-            </div>
-            <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-            </div>
-            <div class="sparkline-container" id="sparkline-gainers-${coin.id}">
-              <canvas class="sparkline"></canvas>
             </div>
           `;
           
+          card.addEventListener('click', () => showCoinDetail(gainer.id));
           container.appendChild(card);
-          
-          // Render sparkline
-          renderSparkline(`sparkline-gainers-${coin.id}`, coin.sparkline);
-          
-          // Add click event for modal
-          card.addEventListener('click', () => showCoinDetail(coin.id));
         });
       }
 
@@ -3003,134 +3098,192 @@
       async function loadTrendingData() {
         try {
           const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) throw new Error('Failed to load trending data');
+          if (!response.ok) throw new Error('Failed to fetch trending');
           
-          const result = await response.json();
-          if (!result.success || !Array.isArray(result.data)) {
-            throw new Error('Invalid trending data structure');
-          }
+          const { trending } = await response.json();
+          trendingData = trending;
           
-          trendingData = result.data;
+          // Update pagination info
+          allTrendingPagination.totalPages = Math.ceil(trending.length / allTrendingPagination.itemsPerPage);
           
-          // Update coin prices
-          trendingData.forEach(coin => {
-            if (!coinPrices[coin.id]) {
-              coinPrices[coin.id] = {
-                originalPrice: coin.currentPrice,
-                currentPrice: coin.currentPrice,
-                change24h: coin.change24h || 0
-              };
-            }
-          });
-          
-          // Render trending list
-          renderTrendingList();
+          // Update UI
+          updateTrendingList(trending);
         } catch (error) {
-          console.error('Error loading trending data:', error);
+          console.error('Error loading trending:', error);
           showToast('Failed to load trending assets', 'error');
+          
+          const container = document.getElementById('trendingList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load trending data
+            </div>
+          `;
         }
       }
 
-      // Render trending list
-      function renderTrendingList() {
-        const container = document.getElementById('trending-container');
+      // Update trending list
+      function updateTrendingList(trending = trendingData) {
+        const container = document.getElementById('trendingList');
         container.innerHTML = '';
         
-        trendingData.slice(0, 5).forEach(coin => {
-          const coinData = coinPrices[coin.id];
+        // Show top 5 trending by default
+        const topTrending = trending.slice(0, 5);
+        
+        topTrending.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
           
           const card = document.createElement('div');
-          card.className = 'asset-card';
+          card.className = 'coin-list-item';
+          
           card.innerHTML = `
-            <div class="asset-header">
-              <img class="asset-logo" src="${coin.image}" alt="${coin.name}">
-              <span class="asset-name">${coin.name}</span>
-              <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+            <div class="coin-info">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
+              <span>${coin.name}</span>
             </div>
-            <div class="asset-price">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-            <div class="price-change-container">
-              <div class="price-change-item">
-                <span class="price-change-label">1h</span>
-                <span class="price-change-value ${coin.priceChange1h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
-                </span>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
               </div>
-              <div class="price-change-item">
-                <span class="price-change-label">24h</span>
-                <span class="price-change-value ${coinData.change24h >= 0 ? 'price-up' : 'price-down'}">
-                  ${coinData.change24h >= 0 ? '▲' : '▼'} ${Math.abs(coinData.change24h).toFixed(2)}%
-                </span>
-              </div>
-              <div class="price-change-item">
-                <span class="price-change-label">7d</span>
-                <span class="price-change-value ${coin.priceChange7d >= 0 ? 'price-up' : 'price-down'}">
-                  ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
-                </span>
-              </div>
-            </div>
-            <div class="asset-stats">
-              <div>
-                <div class="stat-label">Market Cap</div>
-                <div class="stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
-              </div>
-              <div>
-                <div class="stat-label">Volume (24h)</div>
-                <div class="stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
-              </div>
-            </div>
-            <div>
-              <div class="stat-label">Circulating Supply</div>
-              <div class="stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
-              <div class="supply-bar">
-                <div class="supply-progress" style="width: ${(coin.circulatingSupply / coin.totalSupply) * 100}%"></div>
-              </div>
-            </div>
-            <div class="asset-actions">
-              <button class="action-btn buy-btn" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-              <button class="action-btn sell-btn" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-            </div>
-            <div class="sparkline-container" id="sparkline-trending-${coin.id}">
-              <canvas class="sparkline"></canvas>
             </div>
           `;
           
-          container.appendChild(card);
-          
-          // Render sparkline
-          renderSparkline(`sparkline-trending-${coin.id}`, coin.sparkline);
-          
-          // Add click event for modal
           card.addEventListener('click', () => showCoinDetail(coin.id));
+          container.appendChild(card);
         });
       }
 
-      // Load news
+      // News State Management
+      let newsState = {
+        allArticles: [],
+        filteredArticles: [],
+        currentCategory: 'all',
+        currentPage: 1,
+        itemsPerPage: 6,
+        isLoading: false
+      };
+
+      // Load news from API
       async function loadNews() {
+        const container = document.getElementById('newsContainer');
+        newsState.isLoading = true;
+        
         try {
           const response = await fetch(`${API_BASE_URL}/news`);
-          if (!response.ok) throw new Error('Failed to load news');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
           
-          const result = await response.json();
-          if (!result.success || !Array.isArray(result.data.articles)) {
+          const data = await response.json();
+          if (!data.success || !Array.isArray(data.data.articles)) {
             throw new Error('Invalid news data structure');
           }
           
-          renderNews(result.data.articles);
+          // Process and categorize articles
+          newsState.allArticles = data.data.articles.map(article => {
+            // Extract category from title/content or assign default
+            let category = 'market';
+            const title = article.title.toLowerCase();
+            
+            if (title.includes('bitcoin') || title.includes('btc')) {
+              category = 'btc';
+            } else if (title.includes('ethereum') || title.includes('eth')) {
+              category = 'eth';
+            } else if (title.includes('defi') || title.includes('decentralized')) {
+              category = 'defi';
+            } else if (title.includes('regulation') || title.includes('legal') || title.includes('law')) {
+              category = 'regulation';
+            }
+            
+            return {
+              ...article,
+              category: category
+            };
+          });
+          
+          // Initialize filtered articles
+          newsState.filteredArticles = [...newsState.allArticles];
+          newsState.currentPage = 1;
+          
+          // Calculate total pages
+          const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
+          document.getElementById('pageIndicator').textContent = `1/${totalPages}`;
+          
+          renderNews();
+          
         } catch (error) {
-          console.error('Error loading news:', error);
-          showToast('Failed to load news', 'error');
+          console.error('Failed to load news:', error);
+          container.innerHTML = `
+            <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+              <div style="margin-bottom: 12px; color: var(--negative);">
+                Couldn't load news at this time
+              </div>
+              <button class="btn btn-outline" onclick="loadNews()">
+                <i class="fas fa-sync-alt"></i> Try Again
+              </button>
+            </div>
+          `;
+        } finally {
+          newsState.isLoading = false;
         }
       }
 
-      // Render news
-      function renderNews(articles) {
+      // Filter news by category
+      function filterNews(category) {
+        newsState.currentCategory = category;
+        newsState.currentPage = 1;
+        
+        if (category === 'all') {
+          newsState.filteredArticles = [...newsState.allArticles];
+        } else {
+          newsState.filteredArticles = newsState.allArticles.filter(
+            article => article.category === category
+          );
+        }
+        
+        // Update pagination info
+        const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
+        document.getElementById('pageIndicator').textContent = `1/${totalPages}`;
+        document.getElementById('prevNewsBtn').disabled = true;
+        document.getElementById('nextNewsBtn').disabled = totalPages <= 1;
+        
+        renderNews();
+      }
+
+      // Render news based on current state
+      function renderNews() {
         const container = document.getElementById('newsContainer');
+        const startIdx = (newsState.currentPage - 1) * newsState.itemsPerPage;
+        const endIdx = startIdx + newsState.itemsPerPage;
+        const articlesToShow = newsState.filteredArticles.slice(startIdx, endIdx);
+        const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
+        
+        // Update pagination controls
+        document.getElementById('pageIndicator').textContent = `${newsState.currentPage}/${totalPages}`;
+        document.getElementById('prevNewsBtn').disabled = newsState.currentPage <= 1;
+        document.getElementById('nextNewsBtn').disabled = newsState.currentPage >= totalPages;
+        
+        // Clear container
         container.innerHTML = '';
         
-        articles.slice(0, 3).forEach(article => {
-          const card = document.createElement('div');
-          card.className = 'news-card';
-          card.innerHTML = `
+        if (articlesToShow.length === 0) {
+          container.innerHTML = `
+            <div class="no-news" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
+              <i class="far fa-newspaper" style="font-size: 40px; color: var(--text-secondary); margin-bottom: 16px;"></i>
+              <div style="color: var(--text-secondary);">No news found for this category</div>
+            </div>
+          `;
+          return;
+        }
+        
+        // Render articles
+        articlesToShow.forEach(article => {
+          const newsCard = document.createElement('div');
+          newsCard.className = 'news-card';
+          newsCard.innerHTML = `
             <div class="news-image-container">
               <img src="${article.imageUrl || 'https://via.placeholder.com/300x180?text=Crypto+News'}" 
                    alt="${article.title}" 
@@ -3138,32 +3291,33 @@
                    onerror="this.src='https://via.placeholder.com/300x180?text=Crypto+News'">
             </div>
             <div class="news-content">
-              <span class="news-category">${article.source.name || 'CRYPTO'}</span>
+              <span class="news-category">${article.category.toUpperCase()}</span>
               <h3 class="news-title">${article.title}</h3>
               <p class="news-excerpt">${article.description || 'No description available'}</p>
               <div class="news-meta">
-                <span class="news-source">${article.source.name || 'Unknown'}</span>
-                <span class="news-date">${formatDate(article.publishedAt)}</span>
+                <span class="news-source">${article.sourceName || article.source}</span>
+                <span class="news-date">${formatNewsDate(article.publishedAt)}</span>
               </div>
             </div>
           `;
           
-          card.addEventListener('click', () => showNewsDetail(article));
-          container.appendChild(card);
+          newsCard.addEventListener('click', () => showNewsDetail(article));
+          container.appendChild(newsCard);
         });
       }
 
-      // Format date
-      function formatDate(dateString) {
+      // Format news date
+      function formatNewsDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
-          year: 'numeric'
+          hour: '2-digit',
+          minute: '2-digit'
         });
       }
 
-      // Show news detail
+      // Show detailed news view
       function showNewsDetail(article) {
         const modal = document.getElementById('newsModal');
         const title = document.getElementById('newsModalTitle');
@@ -3175,7 +3329,7 @@
         const originalLink = document.getElementById('newsOriginalLink');
         const categoryBadge = document.getElementById('newsCategoryBadge');
         
-        title.textContent = article.source.name || 'News Detail';
+        title.textContent = article.sourceName || article.source;
         image.src = article.imageUrl || 'https://via.placeholder.com/800x400?text=Crypto+News';
         image.onerror = () => {
           image.src = 'https://via.placeholder.com/800x400?text=Crypto+News';
@@ -3187,20 +3341,20 @@
           ${article.content ? `<p>${article.content}</p>` : ''}
         `;
         
-        source.textContent = article.source.name || 'Unknown';
-        date.textContent = formatDate(article.publishedAt);
+        source.textContent = article.sourceName || article.source;
+        date.textContent = formatNewsDate(article.publishedAt);
         author.textContent = article.author ? `By ${article.author}` : '';
         author.style.display = article.author ? 'inline-block' : 'none';
         
         originalLink.href = article.url;
         
         // Set category badge
-        categoryBadge.textContent = article.source.name || 'CRYPTO';
+        categoryBadge.textContent = article.category.toUpperCase();
         categoryBadge.style.display = 'block';
         
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
       }
-
+      
       // Load withdrawals
       async function loadWithdrawals() {
         try {
@@ -3278,53 +3432,49 @@
         
         // Prepare modal content
         content.innerHTML = `
-          <div class="modal-body">
-            <div class="modal-header">
-              <img src="${coin.image}" alt="${coin.name}" class="modal-logo">
-              <h2 class="modal-title">${coin.name} (${coin.symbol.toUpperCase()})</h2>
-            </div>
-            
-            <div class="modal-chart">
-              <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${chartSymbol}&interval=D&hidesidetoolbar=1&theme=dark"></iframe>
-            </div>
-            
-            <div class="modal-stats">
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">Price</div>
-                <div class="modal-stat-value">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              </div>
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">24h Change</div>
-                <div class="modal-stat-value ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+          <div class="coin-detail">
+            <div class="coin-header">
+              <img src="${coin.image}" alt="${coin.name}" class="coin-icon-lg">
+              <div>
+                <h2 class="coin-name-lg">${coin.name} <span class="coin-symbol-lg">${coin.symbol.toUpperCase()}</span></h2>
+                <div class="coin-price-lg">$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
+                <div class="price-change-lg ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
                   ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
                 </div>
               </div>
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">Market Cap</div>
-                <div class="modal-stat-value">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
+            </div>
+            
+            <div class="coin-stats">
+              <div class="stat-card">
+                <div class="stat-label-lg">Market Cap</div>
+                <div class="stat-value-lg">$${(coin.marketCap / 1000000000).toFixed(2)}B</div>
               </div>
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">24h Volume</div>
-                <div class="modal-stat-value">$${(coin.volume / 1000000).toFixed(2)}M</div>
+              <div class="stat-card">
+                <div class="stat-label-lg">24h Trading Volume</div>
+                <div class="stat-value-lg">$${(coin.volume / 1000000).toFixed(2)}M</div>
               </div>
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">Circulating Supply</div>
-                <div class="modal-stat-value">${formatSupply(coin.circulatingSupply, coin.symbol)}</div>
+              <div class="stat-card">
+                <div class="stat-label-lg">24h High</div>
+                <div class="stat-value-lg">$${coin.high24h?.toLocaleString('en-US') || 'N/A'}</div>
               </div>
-              <div class="modal-stat-card">
-                <div class="modal-stat-title">Total Supply</div>
-                <div class="modal-stat-value">${formatSupply(coin.totalSupply, coin.symbol)}</div>
+              <div class="stat-card">
+                <div class="stat-label-lg">24h Low</div>
+                <div class="stat-value-lg">$${coin.low24h?.toLocaleString('en-US') || 'N/A'}</div>
               </div>
             </div>
             
-            <div class="modal-actions">
-              <button class="modal-action-btn modal-action-buy" onclick="showTradeForm('${coin.id}', 'buy')">Buy</button>
-              <button class="modal-action-btn modal-action-sell" onclick="showTradeForm('${coin.id}', 'sell')">Sell</button>
+            <div class="coin-chart-container">
+              <iframe class="trading-chart" src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${chartSymbol}&interval=D&hidesidetoolbar=1&theme=dark"></iframe>
+            </div>
+            
+            <div class="trade-actions">
+              <button class="btn btn-primary" style="flex: 1;" onclick="showTradeForm('${coin.id}', 'buy')">Buy</button>
+              <button class="btn btn-outline" style="flex: 1;" onclick="showTradeForm('${coin.id}', 'sell')">Sell</button>
             </div>
           </div>
         `;
         
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
       }
 
       // Show trade form
@@ -3378,7 +3528,7 @@
         confirmBtn.textContent = `${type === 'buy' ? 'Buy' : 'Sell'} ${coin.symbol.toUpperCase()}`;
         confirmBtn.onclick = () => executeTrade();
         
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
       }
 
       // Update trade total when amount changes
@@ -3463,13 +3613,13 @@
           message.textContent = 'Your trade has been executed successfully.';
         }
         
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
       }
 
       // Show all coins modal
       async function showAllCoins() {
         const modal = document.getElementById('allCoinsModal');
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
         
         try {
           const response = await fetch(`${API_BASE_URL}/markets/all`);
@@ -3478,148 +3628,241 @@
           }
           
           const coins = await response.json();
-          const tableBody = document.getElementById('allCoinsTable');
-          tableBody.innerHTML = '';
+          marketData = coins;
           
-          coins.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allCoinsModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
+          // Update pagination info
+          allCoinsPagination.totalPages = Math.ceil(coins.length / allCoinsPagination.itemsPerPage);
+          document.getElementById('allCoinsPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllCoinsTable(coins);
         } catch (error) {
           console.error('Error loading all coins:', error);
           showToast('Failed to load all coins', 'error');
+          
+          const tableBody = document.getElementById('allCoinsTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load all coins. Please try again later.
+              </td>
+            </tr>
+          `;
         }
+      }
+
+      // Update all coins table with pagination
+      function updateAllCoinsTable(coins = marketData) {
+        const tableBody = document.getElementById('allCoinsTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allCoinsPagination.currentPage - 1) * allCoinsPagination.itemsPerPage;
+        const endIndex = startIndex + allCoinsPagination.itemsPerPage;
+        const visibleCoins = coins.slice(startIndex, endIndex);
+        
+        visibleCoins.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allCoinsModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllCoinsPage').textContent = allCoinsPagination.currentPage;
+        document.getElementById('prevAllCoinsPage').disabled = allCoinsPagination.currentPage <= 1;
+        document.getElementById('nextAllCoinsPage').disabled = allCoinsPagination.currentPage >= allCoinsPagination.totalPages;
       }
 
       // Show all gainers modal
       async function showAllGainers() {
         const modal = document.getElementById('allGainersModal');
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
         
         try {
           const response = await fetch(`${API_BASE_URL}/markets/gainers`);
           if (!response.ok) {
-            throw new Error('Failed to load all gainers');
+            throw new Error('Failed to load gainers');
           }
           
-          const gainers = await response.json();
-          const tableBody = document.getElementById('allGainersTable');
-          tableBody.innerHTML = '';
+          const { gainers } = await response.json();
+          gainersData = gainers;
           
-          gainers.data.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allGainersModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
+          document.getElementById('allGainersPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllGainersTable(gainers);
         } catch (error) {
-          console.error('Error loading all gainers:', error);
-          showToast('Failed to load all gainers', 'error');
+          console.error('Error loading gainers:', error);
+          showToast('Failed to load gainers', 'error');
+          
+          const tableBody = document.getElementById('allGainersTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load gainers. Please try again later.
+              </td>
+            </tr>
+          `;
         }
+      }
+
+      // Update all gainers table with pagination
+      function updateAllGainersTable(gainers = gainersData) {
+        const tableBody = document.getElementById('allGainersTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allGainersPagination.currentPage - 1) * allGainersPagination.itemsPerPage;
+        const endIndex = startIndex + allGainersPagination.itemsPerPage;
+        const visibleGainers = gainers.slice(startIndex, endIndex);
+        
+        visibleGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${gainer.image}" alt="${gainer.name}" class="coin-icon">
+                <span class="coin-name">${gainer.name}</span>
+                <span class="coin-symbol">${gainer.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${gainer.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allGainersModal');
+            showCoinDetail(gainer.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllGainersPage').textContent = allGainersPagination.currentPage;
+        document.getElementById('prevAllGainersPage').disabled = allGainersPagination.currentPage <= 1;
+        document.getElementById('nextAllGainersPage').disabled = allGainersPagination.currentPage >= allGainersPagination.totalPages;
       }
 
       // Show all trending modal
       async function showAllTrending() {
         const modal = document.getElementById('allTrendingModal');
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
         
         try {
           const response = await fetch(`${API_BASE_URL}/markets/trending`);
           if (!response.ok) {
-            throw new Error('Failed to load all trending');
+            throw new Error('Failed to load trending');
           }
           
-          const trending = await response.json();
-          const tableBody = document.getElementById('allTrendingTable');
-          tableBody.innerHTML = '';
+          const { trending } = await response.json();
+          trendingData = trending;
           
-          trending.data.forEach(coin => {
-            const coinData = coinPrices[coin.id] || {
-              currentPrice: coin.currentPrice,
-              change24h: coin.change24h || 0
-            };
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>
-                <div class="coin-cell">
-                  <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-                  <span class="coin-name">${coin.name}</span>
-                  <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
-                </div>
-              </td>
-              <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
-              <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </td>
-              <td>
-                <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
-              </td>
-            `;
-            
-            row.addEventListener('click', () => {
-              closeModal('allTrendingModal');
-              showCoinDetail(coin.id);
-            });
-            
-            tableBody.appendChild(row);
-          });
+          // Update pagination info
+          allTrendingPagination.totalPages = Math.ceil(trending.length / allTrendingPagination.itemsPerPage);
+          document.getElementById('allTrendingPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllTrendingTable(trending);
         } catch (error) {
-          console.error('Error loading all trending:', error);
-          showToast('Failed to load all trending', 'error');
+          console.error('Error loading trending:', error);
+          showToast('Failed to load trending', 'error');
+          
+          const tableBody = document.getElementById('allTrendingTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load trending. Please try again later.
+              </td>
+            </tr>
+          `;
         }
+      }
+
+      // Update all trending table with pagination
+      function updateAllTrendingTable(trending = trendingData) {
+        const tableBody = document.getElementById('allTrendingTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allTrendingPagination.currentPage - 1) * allTrendingPagination.itemsPerPage;
+        const endIndex = startIndex + allTrendingPagination.itemsPerPage;
+        const visibleTrending = trending.slice(startIndex, endIndex);
+        
+        visibleTrending.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allTrendingModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllTrendingPage').textContent = allTrendingPagination.currentPage;
+        document.getElementById('prevAllTrendingPage').disabled = allTrendingPagination.currentPage <= 1;
+        document.getElementById('nextAllTrendingPage').disabled = allTrendingPagination.currentPage >= allTrendingPagination.totalPages;
       }
 
       // Change trading chart
@@ -3672,9 +3915,9 @@
         }
         
         // Update UI
-        renderMarketOverview();
-        renderGainersList();
-        renderTrendingList();
+        updateMarketTable(marketData);
+        updateGainersList();
+        updateTrendingList();
         
         // Update portfolio change if user is logged in
         if (currentUser) {
@@ -3725,7 +3968,7 @@
 
       // Close modals when clicking outside
       window.onclick = function(event) {
-        if (event.target.className === 'modal-overlay') {
+        if (event.target.className === 'modal') {
           event.target.style.display = 'none';
         }
       };
