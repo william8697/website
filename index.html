@@ -2735,7 +2735,98 @@
           console.error('Error fetching admin messages:', error);
         }
       }
+const API_BASE_URL = 'https://website-backendd-1.onrender.com/api/v1';
 
+// Global state for market stats
+let marketStats = {
+  totalTraders: 8654545,
+  dailyVolume: 2754896125.40,
+  totalAssets: 100,
+  tradersChange: 0,
+  volumeChange: 0
+};
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load initial market stats
+  await loadMarketStats();
+  
+  // Set up periodic updates every 30 seconds
+  setInterval(loadMarketStats, 30000);
+});
+
+// Load market stats from API
+async function loadMarketStats() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/market-stats`);
+    if (!response.ok) throw new Error('Failed to load market stats');
+    
+    const result = await response.json();
+    if (!result.success) {
+      throw new Error('Invalid market stats response');
+    }
+    
+    // Update global state
+    marketStats = {
+      totalTraders: result.data.totalTraders,
+      dailyVolume: result.data.dailyVolume,
+      totalAssets: result.data.totalAssets,
+      tradersChange: result.data.tradersChange,
+      volumeChange: result.data.volumeChange
+    };
+    
+    // Update UI
+    updateMarketStatsUI();
+  } catch (error) {
+    console.error('Error loading market stats:', error);
+    // Use existing values if API fails
+    updateMarketStatsUI();
+  }
+}
+
+// Update UI with current market stats
+function updateMarketStatsUI() {
+  // Format numbers with commas
+  const formattedTraders = marketStats.totalTraders.toLocaleString('en-US');
+  const formattedVolume = marketStats.dailyVolume.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+  
+  // Format changes
+  const formattedTradersChange = marketStats.tradersChange.toLocaleString('en-US');
+  const formattedVolumeChange = marketStats.volumeChange.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+  
+  // Update DOM elements
+  document.getElementById('totalTraders').textContent = formattedTraders;
+  document.getElementById('dailyVolume').textContent = formattedVolume;
+  document.getElementById('tradersChange').textContent = formattedTradersChange;
+  document.getElementById('volumeChange').textContent = formattedVolumeChange;
+  
+  // Update time indicators
+  const now = new Date();
+  document.getElementById('tradersTime').textContent = now.toLocaleTimeString();
+  document.getElementById('volumeTime').textContent = now.toLocaleTimeString();
+  
+  // Add updating animation temporarily
+  const elements = [
+    'totalTraders', 'dailyVolume', 'tradersChange', 'volumeChange',
+    'tradersTime', 'volumeTime'
+  ];
+  
+  elements.forEach(id => {
+    const element = document.getElementById(id);
+    element.classList.add('updating');
+    setTimeout(() => element.classList.remove('updating'), 1000);
+  });
+}
       // Load market data
       async function loadMarketData() {
         try {
