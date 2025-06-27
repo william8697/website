@@ -576,57 +576,172 @@
     }
 
     /* Gainers/Trending Section */
-    .gainers-trending {
-      display: flex;
-      gap: 16px;
-    }
+    /* Top Gainers Styling */
+.gainers-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
 
-    .gainers, .trending {
-      flex: 1;
-      background-color: var(--secondary-bg);
-      border-radius: 4px;
-      border: 1px solid var(--border-color);
-    }
+.gainer-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s;
+  cursor: pointer;
+}
 
-    .coin-list {
-      list-style: none;
-    }
+.gainer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-accent);
+}
 
-    .coin-list-item {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+.gainer-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
 
-    .coin-list-item:last-child {
-      border-bottom: none;
-    }
+.gainer-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
 
-    .coin-list-item:hover {
-      background-color: rgba(240, 185, 11, 0.05);
-    }
+.gainer-name {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    .coin-info {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.gainer-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
 
-    .price-info {
-      text-align: right;
-    }
+.gainer-price {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0;
+}
 
-    .price {
-      font-weight: 500;
-    }
+.gainer-change {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
 
-    .price-change {
-      font-size: 13px;
-    }
+.gainer-change.positive {
+  background-color: rgba(14, 203, 129, 0.15);
+  color: var(--positive);
+}
+
+.gainer-sparkline {
+  width: 100%;
+  height: 60px;
+  margin-top: 12px;
+}
+
+    /* Trending Styling */
+.trending-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.trending-card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.trending-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-accent);
+}
+
+.trending-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--primary-accent);
+  color: #000;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-bottom-left-radius: 4px;
+}
+
+.trending-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.trending-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.trending-name {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trending-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.trending-price {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+.trending-change {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.trending-change.positive {
+  background-color: rgba(14, 203, 129, 0.15);
+  color: var(--positive);
+}
+
+.trending-change.negative {
+  background-color: rgba(246, 70, 93, 0.15);
+  color: var(--negative);
+}
+
+.trending-sparkline {
+  width: 100%;
+  height: 60px;
+  margin-top: 12px;
+}
 
     /* Trading View */
     .trading-view {
@@ -1841,33 +1956,37 @@
     </div>
 
     <!-- Gainers & Trending Section -->
-    <div class="gainers-trending">
-      <div class="section gainers">
-        <div class="section-header">
-          <h2 class="section-title">Top Gainers</h2>
-          <a href="#" class="section-link" id="viewAllGainers">View All</a>
-        </div>
-        <div class="gainers-container" id="gainersList">
-          <!-- Data will be populated here -->
-          <div style="padding: 20px; text-align: center; color: var(--positive);">
-            Loading gainers data...
-          </div>
-        </div>
-      </div>
-      
-      <div class="section trending">
-        <div class="section-header">
-          <h2 class="section-title">Trending</h2>
-          <a href="#" class="section-link" id="viewAllTrending">View All</a>
-        </div>
-        <div class="trending-container" id="trendingList">
-          <!-- Data will be populated here -->
-          <div style="padding: 20px; text-align: center; color: var(--positive);">
-            Loading trending data...
-          </div>
-        </div>
-      </div>
+    <!-- Top Gainers Section -->
+<div class="section gainers">
+  <div class="section-header">
+    <h2 class="section-title">Top Gainers</h2>
+    <a href="#" class="section-link" id="viewAllGainers">View All</a>
+  </div>
+  
+  <div class="gainers-container" id="gainersList">
+    <!-- Data will be loaded here -->
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Loading gainers...</span>
     </div>
+  </div>
+</div>
+      
+      <!-- Trending Section -->
+<div class="section trending">
+  <div class="section-header">
+    <h2 class="section-title">Trending</h2>
+    <a href="#" class="section-link" id="viewAllTrending">View All</a>
+  </div>
+  
+  <div class="trending-container" id="trendingList">
+    <!-- Data will be loaded here -->
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Loading trending assets...</span>
+    </div>
+  </div>
+</div>
 
     <!-- Trading View -->
     <div class="section trading-view">
@@ -3130,6 +3249,127 @@ function renderSparkline(containerId, data, isPositive) {
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', loadMarketOverview);
+
+      // Top Gainers Loader
+async function loadGainersData() {
+  const container = document.getElementById('gainersList');
+  container.innerHTML = `
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Loading gainers...</span>
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+    if (!response.ok) throw new Error('Failed to fetch gainers');
+    
+    const { data } = await response.json();
+    renderGainers(data);
+  } catch (error) {
+    console.error('Error loading gainers:', error);
+    container.innerHTML = `
+      <div class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Failed to load gainers. Please try again later.</span>
+        <button class="btn-retry" onclick="loadGainersData()">Retry</button>
+      </div>
+    `;
+  }
+}
+
+function renderGainers(data) {
+  const container = document.getElementById('gainersList');
+  container.innerHTML = '';
+
+  data.forEach(coin => {
+    const card = document.createElement('div');
+    card.className = 'gainer-card';
+    card.onclick = () => showCoinDetail(coin.id);
+    
+    card.innerHTML = `
+      <div class="gainer-header">
+        <img src="${coin.image}" alt="${coin.name}" class="gainer-icon">
+        <div>
+          <div class="gainer-name">${coin.name}</div>
+          <div class="gainer-symbol">${coin.symbol}</div>
+        </div>
+      </div>
+      <div class="gainer-price">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+      <div class="gainer-change ${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.priceChange24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange24h).toFixed(2)}%
+      </div>
+      <div class="gainer-sparkline" id="gainer-sparkline-${coin.id}"></div>
+    `;
+
+    container.appendChild(card);
+    renderSparkline(`gainer-sparkline-${coin.id}`, coin.sparkline, coin.priceChange24h >= 0);
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', loadGainersData);
+
+      // Trending Loader
+async function loadTrendingData() {
+  const container = document.getElementById('trendingList');
+  container.innerHTML = `
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span>Loading trending assets...</span>
+    </div>
+  `;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets/trending`);
+    if (!response.ok) throw new Error('Failed to fetch trending');
+    
+    const { data } = await response.json();
+    renderTrending(data);
+  } catch (error) {
+    console.error('Error loading trending:', error);
+    container.innerHTML = `
+      <div class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Failed to load trending assets. Please try again later.</span>
+        <button class="btn-retry" onclick="loadTrendingData()">Retry</button>
+      </div>
+    `;
+  }
+}
+
+function renderTrending(data) {
+  const container = document.getElementById('trendingList');
+  container.innerHTML = '';
+
+  data.forEach((coin, index) => {
+    const card = document.createElement('div');
+    card.className = 'trending-card';
+    card.onclick = () => showCoinDetail(coin.id);
+    
+    card.innerHTML = `
+      <div class="trending-badge">#${index + 1}</div>
+      <div class="trending-header">
+        <img src="${coin.image}" alt="${coin.name}" class="trending-icon">
+        <div>
+          <div class="trending-name">${coin.name}</div>
+          <div class="trending-symbol">${coin.symbol}</div>
+        </div>
+      </div>
+      <div class="trending-price">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+      <div class="trending-change ${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.priceChange24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange24h).toFixed(2)}%
+      </div>
+      <div class="trending-sparkline" id="trending-sparkline-${coin.id}"></div>
+    `;
+
+    container.appendChild(card);
+    renderSparkline(`trending-sparkline-${coin.id}`, coin.sparkline, coin.priceChange24h >= 0);
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', loadTrendingData);
       
       // News State Management
       let newsState = {
