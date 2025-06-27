@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -296,180 +296,76 @@
       text-decoration: underline;
     }
 
-   .market-overview {
-  background-color: var(--secondary-bg);
-  border-radius: 8px;
-  overflow: hidden;
-}
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
 
-.trading-panel-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-.trading-panel-header {
-  display: flex;
-  padding: 12px 16px;
-  background-color: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border-color);
+    }
 
-.header-col {
-  flex: 1;
-  min-width: 0;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-}
+    th {
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: var(--secondary-bg);
+      position: sticky;
+      top: var(--header-height);
+    }
 
-.header-col.asset { flex: 1.5; }
-.header-col.chart { flex: 1.2; }
-.header-col.action { flex: 0.8; justify-content: flex-end; }
+    tr:hover {
+      background-color: rgba(240, 185, 11, 0.03);
+    }
 
-.header-col.changes {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
+    .coin-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.trading-panel-body {
-  display: flex;
-  flex-direction: column;
-}
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
 
-.market-row {
-  display: flex;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-color);
-  align-items: center;
-  transition: background-color 0.2s;
-}
+    .coin-name {
+      font-weight: 500;
+    }
 
-.market-row:hover {
-  background-color: rgba(240, 185, 11, 0.05);
-}
+    .coin-symbol {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-left: 4px;
+    }
 
-.market-col {
-  flex: 1;
-  min-width: 0;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-}
+    .positive {
+      color: var(--positive);
+    }
 
-.market-col.asset { flex: 1.5; }
-.market-col.chart { flex: 1.2; }
-.market-col.action { flex: 0.8; justify-content: flex-end; }
+    .negative {
+      color: var(--negative);
+    }
 
-.coin-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
 
-.coin-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
-
-.coin-name {
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.coin-symbol {
-  color: var(--text-secondary);
-  font-size: 12px;
-  margin-left: 4px;
-}
-
-.price-value {
-  font-weight: 600;
-}
-
-.change-cell {
-  display: flex;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.change-cell.positive {
-  color: var(--positive);
-}
-
-.change-cell.negative {
-  color: var(--negative);
-}
-
-.sparkline-container {
-  width: 100%;
-  height: 40px;
-  position: relative;
-}
-
-.trade-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-trade {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s;
-  min-width: 60px;
-}
-
-.btn-buy {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: var(--positive);
-}
-
-.btn-buy:hover {
-  background-color: rgba(14, 203, 129, 0.25);
-}
-
-.btn-sell {
-  background-color: rgba(246, 70, 93, 0.15);
-  color: var(--negative);
-}
-
-.btn-sell:hover {
-  background-color: rgba(246, 70, 93, 0.25);
-}
-
-.loading-spinner {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-secondary);
-}
-
-.spinner {
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(240, 185, 11, 0.2);
-  border-top-color: var(--primary-accent);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+      min-width: 60px;
+    }
 
     /* Stats Box */
     .market-stats-grid {
@@ -576,172 +472,57 @@
     }
 
     /* Gainers/Trending Section */
-    /* Top Gainers Styling */
-.gainers-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  padding: 16px;
-}
+    .gainers-trending {
+      display: flex;
+      gap: 16px;
+    }
 
-.gainer-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s;
-  cursor: pointer;
-}
+    .gainers, .trending {
+      flex: 1;
+      background-color: var(--secondary-bg);
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
 
-.gainer-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-accent);
-}
+    .coin-list {
+      list-style: none;
+    }
 
-.gainer-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
+    .coin-list-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-.gainer-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
+    .coin-list-item:last-child {
+      border-bottom: none;
+    }
 
-.gainer-name {
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    .coin-list-item:hover {
+      background-color: rgba(240, 185, 11, 0.05);
+    }
 
-.gainer-symbol {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
+    .coin-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.gainer-price {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 8px 0;
-}
+    .price-info {
+      text-align: right;
+    }
 
-.gainer-change {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 14px;
-}
+    .price {
+      font-weight: 500;
+    }
 
-.gainer-change.positive {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: var(--positive);
-}
-
-.gainer-sparkline {
-  width: 100%;
-  height: 60px;
-  margin-top: 12px;
-}
-
-    /* Trending Styling */
-.trending-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-  padding: 16px;
-}
-
-.trending-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
-  padding: 16px;
-  border: 1px solid var(--border-color);
-  transition: all 0.3s;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.trending-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-accent);
-}
-
-.trending-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: var(--primary-accent);
-  color: #000;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-bottom-left-radius: 4px;
-}
-
-.trending-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.trending-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.trending-name {
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.trending-symbol {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
-.trending-price {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 8px 0;
-}
-
-.trending-change {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.trending-change.positive {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: var(--positive);
-}
-
-.trending-change.negative {
-  background-color: rgba(246, 70, 93, 0.15);
-  color: var(--negative);
-}
-
-.trending-sparkline {
-  width: 100%;
-  height: 60px;
-  margin-top: 12px;
-}
+    .price-change {
+      font-size: 13px;
+    }
 
     /* Trading View */
     .trading-view {
@@ -1875,38 +1656,44 @@
       </div>
     </div>
 
-    <!-- Market Overview Section -->
-<div class="section market-overview">
-  <div class="section-header">
-    <h2 class="section-title">Market Overview</h2>
-    <a href="#" class="section-link" id="viewAllMarkets">View All</a>
-  </div>
-  
-  <div class="trading-panel-container">
-    <div class="trading-panel-header">
-      <div class="header-col asset">Asset</div>
-      <div class="header-col price">Price</div>
-      <div class="header-col changes">
-        <span>1h</span>
-        <span>24h</span>
-        <span>7d</span>
+    <!-- Market Data Section -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">Market Overview</h2>
+        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
       </div>
-      <div class="header-col volume">Volume (24h)</div>
-      <div class="header-col market-cap">Market Cap</div>
-      <div class="header-col supply">Supply</div>
-      <div class="header-col chart">Chart</div>
-      <div class="header-col action">Action</div>
-    </div>
-    
-    <div class="trading-panel-body" id="marketOverviewBody">
-      <!-- Data will be loaded here -->
-      <div class="loading-spinner">
-        <div class="spinner"></div>
-        <span>Loading market data...</span>
+      
+      <div class="table-container">
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>Volume (24h)</th>
+              <th>Market Cap</th>
+              <th>Supply</th>
+              <th>Trend</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="marketTable">
+            <!-- Data will be populated here -->
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px;">
+                <div style="color: var(--positive);">Loading market data, please wait...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="pagination-controls" id="marketPagination" style="display: none;">
+        <button class="page-btn" id="prevMarketPage" disabled>Previous</button>
+        <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentMarketPage">1</span></span>
+        <button class="page-btn" id="nextMarketPage">Next</button>
       </div>
     </div>
-  </div>
-</div>
 
     <!-- Stats Section -->
     <div class="market-stats-grid">
@@ -1956,37 +1743,33 @@
     </div>
 
     <!-- Gainers & Trending Section -->
-    <!-- Top Gainers Section -->
-<div class="section gainers">
-  <div class="section-header">
-    <h2 class="section-title">Top Gainers</h2>
-    <a href="#" class="section-link" id="viewAllGainers">View All</a>
-  </div>
-  
-  <div class="gainers-container" id="gainersList">
-    <!-- Data will be loaded here -->
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <span>Loading gainers...</span>
-    </div>
-  </div>
-</div>
+    <div class="gainers-trending">
+      <div class="section gainers">
+        <div class="section-header">
+          <h2 class="section-title">Top Gainers</h2>
+          <a href="#" class="section-link" id="viewAllGainers">View All</a>
+        </div>
+        <div class="gainers-container" id="gainersList">
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading gainers data...
+          </div>
+        </div>
+      </div>
       
-      <!-- Trending Section -->
-<div class="section trending">
-  <div class="section-header">
-    <h2 class="section-title">Trending</h2>
-    <a href="#" class="section-link" id="viewAllTrending">View All</a>
-  </div>
-  
-  <div class="trending-container" id="trendingList">
-    <!-- Data will be loaded here -->
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <span>Loading trending assets...</span>
+      <div class="section trending">
+        <div class="section-header">
+          <h2 class="section-title">Trending</h2>
+          <a href="#" class="section-link" id="viewAllTrending">View All</a>
+        </div>
+        <div class="trending-container" id="trendingList">
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading trending data...
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
     <!-- Trading View -->
     <div class="section trading-view">
@@ -3125,252 +2908,255 @@
         }
       }
 
-     // Market Overview Loader
-async function loadMarketOverview() {
-  const container = document.getElementById('marketOverviewBody');
-  container.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <span>Loading market data...</span>
-    </div>
-  `;
+      // Load market data
+      async function loadMarketData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets`);
+          if (!response.ok) throw new Error('Failed to fetch market data');
+          
+          const { marketData } = await response.json();
+          
+          // Store market data
+          marketData.forEach(coin => {
+            coinPrices[coin.id] = {
+              originalPrice: coin.currentPrice,
+              currentPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
+          });
+          
+          // Update pagination info
+          marketPagination.totalPages = Math.ceil(marketData.length / marketPagination.itemsPerPage);
+          document.getElementById('marketPagination').style.display = 'flex';
+          
+          // Update UI
+          updateMarketTable(marketData);
+        } catch (error) {
+          console.error('Error loading market data:', error);
+          showToast('Failed to load market data', 'error');
+          
+          const tableBody = document.getElementById('marketTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load market data. Please try again later.
+              </td>
+            </tr>
+          `;
+        }
+      }
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/markets`);
-    if (!response.ok) throw new Error('Failed to fetch market data');
-    
-    const { data } = await response.json();
-    renderMarketOverview(data);
-  } catch (error) {
-    console.error('Error loading market overview:', error);
-    container.innerHTML = `
-      <div class="error-message">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>Failed to load market data. Please try again later.</span>
-        <button class="btn-retry" onclick="loadMarketOverview()">Retry</button>
-      </div>
-    `;
-  }
-}
+      // Update market table with pagination
+      function updateMarketTable(data) {
+        const tableBody = document.getElementById('marketTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (marketPagination.currentPage - 1) * marketPagination.itemsPerPage;
+        const endIndex = startIndex + marketPagination.itemsPerPage;
+        const visibleCoins = data.slice(startIndex, endIndex);
+        
+        visibleCoins.forEach(asset => {
+          const coinData = coinPrices[asset.id] || {
+            currentPrice: asset.currentPrice,
+            change24h: asset.change24h || 0
+          };
+          
+          // Generate random changes for demo
+          const change1h = (Math.random() * 2 - 1).toFixed(2);
+          const change24h = coinData.change24h;
+          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+          
+          // Determine trend direction
+          const isUpwardTrend = Math.random() > 0.5;
+          
+          const row = document.createElement('tr');
+          row.className = 'asset-row';
+          
+          row.innerHTML = `
+            <td class="asset-cell">
+              <img src="${asset.image}" alt="${asset.name}" class="asset-icon">
+              <div class="asset-info">
+                <span class="asset-name">${asset.name}</span>
+                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+            <td>
+              <div class="change-container">
+                <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+                  ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+                </span>
+                <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+                  ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+                </span>
+                <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+                  ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
+                </span>
+              </div>
+            </td>
+            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+            <td>
+              <div class="supply-container">
+                <span>${(asset.marketCap / coinData.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+                <div class="supply-bar-container">
+                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+                ${isUpwardTrend ? '↗' : '↘'}
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              </div>
+            </td>
+          `;
+          
+          row.addEventListener('click', (e) => {
+            if (!e.target.closest('.action-buttons')) {
+              showCoinDetail(asset.id);
+            }
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentMarketPage').textContent = marketPagination.currentPage;
+        document.getElementById('prevMarketPage').disabled = marketPagination.currentPage <= 1;
+        document.getElementById('nextMarketPage').disabled = marketPagination.currentPage >= marketPagination.totalPages;
+      }
 
-function renderMarketOverview(data) {
-  const container = document.getElementById('marketOverviewBody');
-  container.innerHTML = '';
+      // Load gainers data
+      async function loadGainersData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) throw new Error('Failed to fetch gainers');
+          
+          const { gainers } = await response.json();
+          gainersData = gainers;
+          
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
+          
+          // Update UI
+          updateGainersList(gainers);
+        } catch (error) {
+          console.error('Error loading gainers:', error);
+          showToast('Failed to load top gainers', 'error');
+          
+          const container = document.getElementById('gainersList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load gainers data
+            </div>
+          `;
+        }
+      }
 
-  data.forEach(coin => {
-    const row = document.createElement('div');
-    row.className = 'market-row';
-    
-    row.innerHTML = `
-      <div class="market-col asset">
-        <div class="coin-info">
-          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-          <span class="coin-name">${coin.name}</span>
-          <span class="coin-symbol">${coin.symbol}</span>
-        </div>
-      </div>
-      <div class="market-col price">
-        <span class="price-value">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</span>
-      </div>
-      <div class="market-col changes">
-        <span class="change-cell ${coin.priceChange1h >= 0 ? 'positive' : 'negative'}">
-          ${coin.priceChange1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange1h).toFixed(2)}%
-        </span>
-        <span class="change-cell ${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
-          ${coin.priceChange24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange24h).toFixed(2)}%
-        </span>
-        <span class="change-cell ${coin.priceChange7d >= 0 ? 'positive' : 'negative'}">
-          ${coin.priceChange7d >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange7d).toFixed(2)}%
-        </span>
-      </div>
-      <div class="market-col volume">
-        $${(coin.totalVolume / 1000000).toFixed(2)}M
-      </div>
-      <div class="market-col market-cap">
-        $${(coin.marketCap / 1000000000).toFixed(2)}B
-      </div>
-      <div class="market-col supply">
-        ${(coin.circulatingSupply / 1000000).toFixed(1)}M ${coin.symbol}
-      </div>
-      <div class="market-col chart">
-        <div class="sparkline-container" id="sparkline-${coin.id}"></div>
-      </div>
-      <div class="market-col action">
-        <div class="trade-actions">
-          <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-          <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-        </div>
-      </div>
-    `;
+      // Update gainers list
+      function updateGainersList(gainers = gainersData) {
+        const container = document.getElementById('gainersList');
+        container.innerHTML = '';
+        
+        // Show top 5 gainers by default
+        const topGainers = gainers.slice(0, 5);
+        
+        topGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'coin-list-item';
+          
+          card.innerHTML = `
+            <div class="coin-info">
+              <img src="${gainer.image}" alt="${gainer.name}" width="24">
+              <span>${gainer.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showCoinDetail(gainer.id));
+          container.appendChild(card);
+        });
+      }
 
-    container.appendChild(row);
-    renderSparkline(`sparkline-${coin.id}`, coin.sparkline, coin.priceChange24h >= 0);
-  });
-}
+      // Load trending data
+      async function loadTrendingData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trending`);
+          if (!response.ok) throw new Error('Failed to fetch trending');
+          
+          const { trending } = await response.json();
+          trendingData = trending;
+          
+          // Update pagination info
+          allTrendingPagination.totalPages = Math.ceil(trending.length / allTrendingPagination.itemsPerPage);
+          
+          // Update UI
+          updateTrendingList(trending);
+        } catch (error) {
+          console.error('Error loading trending:', error);
+          showToast('Failed to load trending assets', 'error');
+          
+          const container = document.getElementById('trendingList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load trending data
+            </div>
+          `;
+        }
+      }
 
-function renderSparkline(containerId, data, isPositive) {
-  const container = document.getElementById(containerId);
-  if (!container || !data || data.length === 0) return;
+      // Update trending list
+      function updateTrendingList(trending = trendingData) {
+        const container = document.getElementById('trendingList');
+        container.innerHTML = '';
+        
+        // Show top 5 trending by default
+        const topTrending = trending.slice(0, 5);
+        
+        topTrending.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'coin-list-item';
+          
+          card.innerHTML = `
+            <div class="coin-info">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
+              <span>${coin.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showCoinDetail(coin.id));
+          container.appendChild(card);
+        });
+      }
 
-  const width = container.offsetWidth;
-  const height = container.offsetHeight;
-  const margin = 2;
-  
-  // Normalize data to fit container
-  const max = Math.max(...data);
-  const min = Math.min(...data);
- const normalized = data.map(val => ((val - min) / (max - min)) * (height - margin * 2) + margin);
-  
-  // Create SVG
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  
-  // Create path
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  let d = `M0,${height - normalized[0]}`;
-  
-  for (let i = 1; i < normalized.length; i++) {
-    const x = (i / (normalized.length - 1)) * width;
-    d += ` L${x},${height - normalized[i]}`;
-  }
-  
-  path.setAttribute("d", d);
-  path.setAttribute("fill", "none");
-  path.setAttribute("stroke", isPositive ? "var(--positive)" : "var(--negative)");
-  path.setAttribute("stroke-width", "2");
-  path.setAttribute("stroke-linecap", "round");
-  path.setAttribute("stroke-linejoin", "round");
-  
-  svg.appendChild(path);
-  container.appendChild(svg);
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', loadMarketOverview);
-
-      // Top Gainers Loader
-async function loadGainersData() {
-  const container = document.getElementById('gainersList');
-  container.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <span>Loading gainers...</span>
-    </div>
-  `;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-    if (!response.ok) throw new Error('Failed to fetch gainers');
-    
-    const { data } = await response.json();
-    renderGainers(data);
-  } catch (error) {
-    console.error('Error loading gainers:', error);
-    container.innerHTML = `
-      <div class="error-message">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>Failed to load gainers. Please try again later.</span>
-        <button class="btn-retry" onclick="loadGainersData()">Retry</button>
-      </div>
-    `;
-  }
-}
-
-function renderGainers(data) {
-  const container = document.getElementById('gainersList');
-  container.innerHTML = '';
-
-  data.forEach(coin => {
-    const card = document.createElement('div');
-    card.className = 'gainer-card';
-    card.onclick = () => showCoinDetail(coin.id);
-    
-    card.innerHTML = `
-      <div class="gainer-header">
-        <img src="${coin.image}" alt="${coin.name}" class="gainer-icon">
-        <div>
-          <div class="gainer-name">${coin.name}</div>
-          <div class="gainer-symbol">${coin.symbol}</div>
-        </div>
-      </div>
-      <div class="gainer-price">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
-      <div class="gainer-change ${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
-        ${coin.priceChange24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange24h).toFixed(2)}%
-      </div>
-      <div class="gainer-sparkline" id="gainer-sparkline-${coin.id}"></div>
-    `;
-
-    container.appendChild(card);
-    renderSparkline(`gainer-sparkline-${coin.id}`, coin.sparkline, coin.priceChange24h >= 0);
-  });
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', loadGainersData);
-
-      // Trending Loader
-async function loadTrendingData() {
-  const container = document.getElementById('trendingList');
-  container.innerHTML = `
-    <div class="loading-spinner">
-      <div class="spinner"></div>
-      <span>Loading trending assets...</span>
-    </div>
-  `;
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/markets/trending`);
-    if (!response.ok) throw new Error('Failed to fetch trending');
-    
-    const { data } = await response.json();
-    renderTrending(data);
-  } catch (error) {
-    console.error('Error loading trending:', error);
-    container.innerHTML = `
-      <div class="error-message">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span>Failed to load trending assets. Please try again later.</span>
-        <button class="btn-retry" onclick="loadTrendingData()">Retry</button>
-      </div>
-    `;
-  }
-}
-
-function renderTrending(data) {
-  const container = document.getElementById('trendingList');
-  container.innerHTML = '';
-
-  data.forEach((coin, index) => {
-    const card = document.createElement('div');
-    card.className = 'trending-card';
-    card.onclick = () => showCoinDetail(coin.id);
-    
-    card.innerHTML = `
-      <div class="trending-badge">#${index + 1}</div>
-      <div class="trending-header">
-        <img src="${coin.image}" alt="${coin.name}" class="trending-icon">
-        <div>
-          <div class="trending-name">${coin.name}</div>
-          <div class="trending-symbol">${coin.symbol}</div>
-        </div>
-      </div>
-      <div class="trending-price">$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
-      <div class="trending-change ${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
-        ${coin.priceChange24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.priceChange24h).toFixed(2)}%
-      </div>
-      <div class="trending-sparkline" id="trending-sparkline-${coin.id}"></div>
-    `;
-
-    container.appendChild(card);
-    renderSparkline(`trending-sparkline-${coin.id}`, coin.sparkline, coin.priceChange24h >= 0);
-  });
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', loadTrendingData);
-      
       // News State Management
       let newsState = {
         allArticles: [],
@@ -4189,4 +3975,4 @@ document.addEventListener('DOMContentLoaded', loadTrendingData);
       };
     </script>
 </body>
-</html>
+</html>   
