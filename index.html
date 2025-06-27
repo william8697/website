@@ -3219,7 +3219,7 @@ function renderSparkline(containerId, data, isPositive) {
   // Normalize data to fit container
   const max = Math.max(...data);
   const min = Math.min(...data);
-  const normalized = data.map(val => ((val - min) / (max - min)) * (height - margin * 2) + margin;
+ const normalized = data.map(val => ((val - min) / (max - min)) * (height - margin * 2) + margin);
   
   // Create SVG
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
