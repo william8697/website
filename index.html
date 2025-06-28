@@ -3034,62 +3034,54 @@
       }
 
 
-      async function updateMarketStats() {
+     const MARKET_STATS_API = 'https://website-backendd-1.onrender.com/api/v1/market-stats';
+
+// Function to fetch and update market stats
+async function updateMarketStats() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/market-stats');
-    if (!response.ok) throw new Error('Failed to fetch stats');
+    const response = await fetch(MARKET_STATS_API);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     
     const { data } = await response.json();
     
-    // Update traders stats
-    document.getElementById('totalTraders').textContent = 
-      data.totalTraders.toLocaleString();
+    // Update DOM elements with the fetched data
+    document.getElementById('totalTraders').textContent = data.totalTraders.toLocaleString();
+    document.getElementById('tradersChange').textContent = data.tradersChange.toLocaleString();
+    document.getElementById('dailyVolume').textContent = `$${parseFloat(data.dailyVolume.replace(/[^0-9.]/g, '')).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}`;
+    document.getElementById('volumeChange').textContent = `$${data.volumeChange.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}`;
     
-    const tradersChangeElement = document.getElementById('tradersChange');
-    tradersChangeElement.textContent = data.tradersChange.toLocaleString();
+    // Update time indicators
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('tradersTime').textContent = `updated at ${now}`;
+    document.getElementById('volumeTime').textContent = `updated at ${now}`;
     
-    const tradersChangeContainer = document.getElementById('tradersChangeContainer');
-    tradersChangeContainer.className = data.tradersChange >= 0 ? 
-      'stat-change positive' : 'stat-change negative';
-    
-    document.getElementById('tradersTime').textContent = 
-      formatTime(data.statsTime);
-    
-    // Update volume stats
-    document.getElementById('dailyVolume').textContent = 
-      `$${(data.dailyVolume / 1000000).toFixed(2)}M`;
-    
-    const volumeChangeElement = document.getElementById('volumeChange');
-    volumeChangeElement.textContent = `$${data.volumeChange.toLocaleString()}`;
-    
-    const volumeChangeContainer = document.getElementById('volumeChangeContainer');
-    volumeChangeContainer.className = data.volumeChange >= 0 ? 
-      'stat-change positive' : 'stat-change negative';
-    
-    document.getElementById('volumeTime').textContent = 
-      formatTime(data.statsTime);
-    
-    // Add updating animation
-    document.querySelectorAll('.stat-value').forEach(el => {
-      el.classList.add('updating');
-      setTimeout(() => el.classList.remove('updating'), 1000);
-    });
+    // Update change indicators
+    document.getElementById('tradersChangeContainer').className = 
+      data.tradersChange >= 0 ? 'stat-change positive' : 'stat-change negative';
+    document.getElementById('volumeChangeContainer').className = 
+      data.volumeChange >= 0 ? 'stat-change positive' : 'stat-change negative';
     
   } catch (error) {
-    console.error('Error updating market stats:', error);
-    showToast('Failed to update market stats', 'error');
+    console.error('Failed to update market stats:', error);
+    document.getElementById('tradersTime').textContent = 'update failed';
+    document.getElementById('volumeTime').textContent = 'update failed';
   }
 }
 
-// Helper function to format time
-function formatTime(isoString) {
-  const date = new Date(isoString);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+// Initialize and set up periodic updates
+function initMarketStats() {
+  updateMarketStats(); // Initial load
+  setInterval(updateMarketStats, 30000); // Update every 30 seconds
 }
 
-// Initialize and update every 30 seconds
-updateMarketStats();
-setInterval(updateMarketStats, 30000);
+// Start when DOM is ready
+document.addEventListener('DOMContentLoaded', initMarketStats);
 
       // Load gainers data
       async function loadGainersData() {
