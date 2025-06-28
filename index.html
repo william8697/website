@@ -3062,7 +3062,7 @@ function initStatsLoadingState() {
 
 async function loadMarketStats() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/v1/market-stats');
+    const response = await fetch(`${API_BASE_URL}/market-stats`);
     if (!response.ok) throw new Error('Failed to fetch stats');
     
     const { data } = await response.json();
