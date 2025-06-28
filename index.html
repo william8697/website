@@ -387,80 +387,147 @@
     }
 
     /* Table Styles */
-    .table-container {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      padding: 0 8px;
-    }
+    /* marketTable.css */
+.asset-row {
+  transition: background-color 0.2s ease;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 800px;
-    }
+.asset-row:hover {
+  background-color: rgba(240, 185, 11, 0.05);
+}
 
-    th, td {
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 14px;
-      border-bottom: 1px solid var(--border-color);
-    }
+.asset-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+}
 
-    th {
-      font-weight: 600;
-      color: var(--text-secondary);
-      background-color: var(--secondary-bg);
-      position: sticky;
-      top: var(--header-height);
-      white-space: nowrap;
-    }
+.asset-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: contain;
+}
 
-    tr:hover {
-      background-color: rgba(240, 185, 11, 0.03);
-    }
+.asset-info {
+  display: flex;
+  flex-direction: column;
+}
 
-    .coin-cell {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.asset-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
 
-    .coin-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-    }
+.asset-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+}
 
-    .coin-name {
-      font-weight: 500;
-    }
+.price-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
 
-    .coin-symbol {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-left: 4px;
-    }
+.change-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
-    .positive {
-      color: var(--positive);
-    }
+.change-pill {
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
 
-    .negative {
-      color: var(--negative);
-    }
+.change-pill.positive {
+  background-color: rgba(2, 192, 118, 0.15);
+  color: var(--positive);
+}
 
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
+.change-pill.negative {
+  background-color: rgba(246, 70, 93, 0.15);
+  color: var(--negative);
+}
 
-    .btn-sm {
-      padding: 6px 12px;
-      font-size: 13px;
-      min-width: 70px;
-      border-radius: 4px;
-    }
+.supply-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
+.supply-bar-container {
+  width: 100%;
+  height: 4px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.supply-bar {
+  height: 100%;
+  background-color: var(--primary-accent);
+}
+
+.sparkline-cell {
+  width: 60px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sparkline-svg {
+  display: block;
+}
+
+.no-sparkline {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-trade {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-buy {
+  background-color: rgba(2, 192, 118, 0.15);
+  color: var(--positive);
+  border: 1px solid var(--positive);
+}
+
+.btn-buy:hover {
+  background-color: rgba(2, 192, 118, 0.25);
+}
+
+.btn-sell {
+  background-color: rgba(246, 70, 93, 0.15);
+  color: var(--negative);
+  border: 1px solid var(--negative);
+}
+
+.btn-sell:hover {
+  background-color: rgba(246, 70, 93, 0.25);
+}
     /* Stats Box */
     .market-stats-grid {
       display: grid;
@@ -1799,52 +1866,45 @@
       </div>
     </div>
 
-    <!-- Market Data Section -->
-    <div class="section">
-      <div class="section-header">
-        <h2 class="section-title">
-          <i class="fas fa-chart-bar"></i> Market Overview
-        </h2>
-        <a href="#" class="section-link" id="viewAllMarkets">
-          View All <i class="fas fa-chevron-right"></i>
-        </a>
-      </div>
-      
-      <div class="table-container">
-        <table class="market-table">
-          <thead>
-            <tr>
-              <th>Asset</th>
-              <th>Price</th>
-              <th>Change</th>
-              <th>Volume (24h)</th>
-              <th>Market Cap</th>
-              <th>Supply</th>
-              <th>Trend</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="marketTable">
-            <!-- Data will be populated here -->
-            <tr>
-              <td colspan="8" style="text-align: center; padding: 20px;">
-                <div style="color: var(--positive);">Loading market data, please wait...</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div class="pagination-controls" id="marketPagination" style="display: none;">
-        <button class="page-btn" id="prevMarketPage" disabled>
-          <i class="fas fa-chevron-left"></i> Previous
-        </button>
-        <span style="padding: 8px 16px; color: var(--text-secondary);">Page <span id="currentMarketPage">1</span></span>
-        <button class="page-btn" id="nextMarketPage">
-          Next <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
+    <!-- marketTable.html -->
+<div class="section">
+  <div class="section-header">
+    <h2 class="section-title">
+      <i class="fas fa-chart-bar"></i> Market Overview
+    </h2>
+    <a href="#" class="section-link" id="viewAllMarkets">
+      View All <i class="fas fa-chevron-right"></i>
+    </a>
+  </div>
+  
+  <div class="table-container">
+    <table class="market-table">
+      <thead>
+        <tr>
+          <th>Asset</th>
+          <th>Price</th>
+          <th>Change</th>
+          <th>Volume (24h)</th>
+          <th>Market Cap</th>
+          <th>Supply</th>
+          <th>Trend</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="marketTable">
+        <!-- Loading state -->
+        <tr>
+          <td colspan="8" style="text-align: center; padding: 20px;">
+            <div class="loading-spinner">
+              <i class="fas fa-spinner fa-spin"></i> Loading market data...
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+   
 
     <!-- Stats Section -->
     <div class="market-stats-grid">
