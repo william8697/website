@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -29,7 +29,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
 
     body, html {
@@ -54,7 +54,6 @@
       right: 0;
       z-index: 1000;
       border-bottom: 1px solid var(--border-color);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
     .logo {
@@ -67,7 +66,7 @@
     }
 
     .logo:hover {
-      border-color: rgba(0, 0, 0, 0.1);
+      border-color: rgba(255,255,255,0.2);
     }
 
     .logo-container {
@@ -84,6 +83,7 @@
       background: linear-gradient(45deg, #f0b90b, #f8d33a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(240, 185, 11, 0.3);
     }
 
     @media (max-width: 768px) {
@@ -155,7 +155,7 @@
     }
 
     .btn-outline:hover {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: rgba(255, 255, 255, 0.05);
     }
 
     .user-menu {
@@ -172,7 +172,6 @@
       font-size: 14px;
       font-weight: 500;
       color: var(--primary-accent);
-      border: 1px solid var(--border-color);
     }
 
     .user-avatar {
@@ -194,7 +193,7 @@
       right: 0;
       background-color: var(--secondary-bg);
       border-radius: 4px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       min-width: 200px;
       padding: 8px 0;
       display: none;
@@ -237,7 +236,6 @@
       align-items: center;
       gap: 12px;
       font-size: 14px;
-      border-left: 4px solid var(--primary-accent);
     }
 
     .alert-banner.warning {
@@ -269,14 +267,13 @@
     /* Section Styles */
     .section {
       background-color: var(--secondary-bg);
-      border-radius: 8px;
+      border-radius: 4px;
       margin-bottom: 16px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
     .section-header {
-      padding: 16px 20px;
+      padding: 16px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
@@ -293,30 +290,21 @@
       font-size: 14px;
       text-decoration: none;
       font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 4px;
     }
 
     .section-link:hover {
       text-decoration: underline;
     }
 
-    /* Market Overview Table Styles */
-    .market-overview {
-      padding: 0 20px 20px;
-    }
-
+    /* Table Styles */
     .table-container {
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1000px;
     }
 
     th, td {
@@ -332,104 +320,40 @@
       background-color: var(--secondary-bg);
       position: sticky;
       top: var(--header-height);
-      white-space: nowrap;
     }
 
     tr:hover {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: rgba(240, 185, 11, 0.03);
     }
 
-    .asset-cell {
+    .coin-cell {
       display: flex;
       align-items: center;
       gap: 8px;
-      min-width: 150px;
     }
 
-    .asset-icon {
+    .coin-icon {
       width: 24px;
       height: 24px;
       border-radius: 50%;
     }
 
-    .asset-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .asset-name {
+    .coin-name {
       font-weight: 500;
     }
 
-    .asset-symbol {
+    .coin-symbol {
       color: var(--text-secondary);
       font-size: 13px;
-    }
-
-    .price-cell {
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .change-container {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .change-pill {
-      font-size: 12px;
-      padding: 3px 6px;
-      border-radius: 4px;
-      white-space: nowrap;
+      margin-left: 4px;
     }
 
     .positive {
       color: var(--positive);
-      background-color: rgba(14, 203, 129, 0.1);
     }
 
     .negative {
       color: var(--negative);
-      background-color: rgba(246, 70, 93, 0.1);
-    }
-
-    .supply-container {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .supply-bar-container {
-      width: 100%;
-      height: 4px;
-      background-color: rgba(0, 0, 0, 0.05);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .supply-bar {
-      height: 100%;
-      background-color: var(--primary-accent);
-      border-radius: 2px;
-    }
-
-    .trend-sparkline {
-      width: 80px;
-      height: 30px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-    }
-
-    .trend-sparkline.positive {
-      background-color: var(--sparkline-up);
-    }
-
-    .trend-sparkline.negative {
-      background-color: var(--sparkline-down);
     }
 
     .action-buttons {
@@ -437,98 +361,124 @@
       gap: 8px;
     }
 
-    .btn-trade {
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 1px solid transparent;
-    }
-
-    .btn-buy {
-      background-color: rgba(14, 203, 129, 0.1);
-      color: var(--buy-color);
-      border-color: var(--buy-color);
-    }
-
-    .btn-buy:hover {
-      background-color: rgba(14, 203, 129, 0.2);
-    }
-
-    .btn-sell {
-      background-color: rgba(246, 70, 93, 0.1);
-      color: var(--sell-color);
-      border-color: var(--sell-color);
-    }
-
-    .btn-sell:hover {
-      background-color: rgba(246, 70, 93, 0.2);
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      padding: 16px 0;
-    }
-
-    .pagination-btn {
-      padding: 8px 12px;
-      border: 1px solid var(--border-color);
-      background-color: var(--secondary-bg);
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .pagination-btn:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-
-    .pagination-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+      min-width: 60px;
     }
 
     /* Stats Box */
+     .market-stats-section {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #1a1e24 0%, #232a32 100%);
+      border-radius: 16px;
+      border: 1px solid #2d3642;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .market-stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .market-stats-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #eaecef;
+      position: relative;
+      padding-left: 1rem;
+    }
+
+    .market-stats-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 70%;
+      width: 4px;
+      background: linear-gradient(to bottom, #f0b90b, #f8d33a);
+      border-radius: 2px;
+    }
+
+    .market-stats-refresh {
+      background: rgba(240, 185, 11, 0.1);
+      border: none;
+      color: #f0b90b;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .market-stats-refresh:hover {
+      background: rgba(240, 185, 11, 0.2);
+    }
+
+    .market-stats-refresh:active {
+      transform: scale(0.98);
+    }
+
     .market-stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 2rem 0;
+      gap: 1.25rem;
     }
 
     .stat-card {
-      background: var(--secondary-bg);
-      border-radius: 8px;
+      background: linear-gradient(145deg, #1e2329, #2b3139);
+      border-radius: 14px;
       padding: 1.5rem;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      border: 1px solid #3a424d;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
     }
 
     .stat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #f0b90b, #f8d33a);
     }
 
     .stat-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 1rem;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
     }
 
     .stat-icon {
       font-size: 1.25rem;
       color: #f0b90b;
+      width: 36px;
+      height: 36px;
+      background: rgba(240, 185, 11, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .stat-label {
-      color: var(--text-secondary);
+      color: #848e9c;
       font-size: 0.875rem;
       font-weight: 500;
       text-transform: uppercase;
@@ -536,28 +486,32 @@
     }
 
     .stat-value {
-      color: var(--text-primary);
+      color: #eaecef;
       font-size: 1.75rem;
-      font-weight: 600;
+      font-weight: 700;
       margin: 0.5rem 0;
       font-feature-settings: "tnum";
       transition: all 0.3s ease;
+      min-height: 2.5rem;
+      display: flex;
+      align-items: center;
     }
 
     .stat-meta {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.875rem;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
     }
 
     .stat-change {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 0.25rem;
       padding: 0.25rem 0.5rem;
       border-radius: 4px;
       font-weight: 500;
+      font-size: 0.875rem;
     }
 
     .positive {
@@ -576,48 +530,92 @@
     }
 
     .stat-time {
-      color: var(--text-secondary);
+      color: #848e9c;
       font-size: 0.75rem;
     }
 
-    .loading-text {
-      color: var(--positive);
-      font-style: italic;
-    }
-
-    /* Animation */
+    /* Animations */
     @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.6; }
-      100% { opacity: 1; }
+      0% { opacity: 0.6; }
+      50% { opacity: 0.3; }
+      100% { opacity: 0.6; }
     }
 
-    .updating {
-      animation: pulse 1s infinite;
-      color: #f0b90b;
+    @keyframes slideIn {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
+    .loading {
+      animation: pulse 1.5s infinite ease-in-out;
+      color: #848e9c !important;
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      border-radius: 4px;
+      min-width: 100px;
+      display: inline-block;
+    }
+
+    .stat-card.animated {
+      animation: slideIn 0.4s ease-out forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.1s; }
+    .stat-card:nth-child(2) { animation-delay: 0.2s; }
+    .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+    /* Number animation */
     .number-roll {
       display: inline-block;
       transition: all 0.5s ease-out;
     }
 
-    /* Gainers/Trending Section */
-    .gainers-trending {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .updating {
+      position: relative;
     }
 
+    .updating::after {
+      content: '';
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(240, 185, 11, 0.5);
+      border-top-color: #f0b90b;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      .gainers-trending {
+      .market-stats-grid {
         grid-template-columns: 1fr;
+      }
+      
+      .stat-card {
+        padding: 1.25rem;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
       }
     }
 
+    /* Gainers/Trending Section */
+    .gainers-trending {
+      display: flex;
+      gap: 16px;
+    }
+
     .gainers, .trending {
+      flex: 1;
       background-color: var(--secondary-bg);
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid var(--border-color);
     }
 
@@ -640,7 +638,7 @@
     }
 
     .coin-list-item:hover {
-      background-color: rgba(0, 0, 0, 0.02);
+      background-color: rgba(240, 185, 11, 0.05);
     }
 
     .coin-info {
@@ -727,7 +725,6 @@
     .news-section .section-header {
       margin-bottom: 24px;
       text-align: center;
-      border-bottom: none;
     }
 
     .news-section .section-title {
@@ -832,7 +829,7 @@
 
     .news-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
       border-color: var(--primary-accent);
     }
 
@@ -944,6 +941,150 @@
       filter: grayscale(0%);
     }
 
+    /* News Detail Modal */
+    .news-modal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .news-category-badge {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background-color: rgba(240, 185, 11, 0.1);
+      color: #f0b90b;
+    }
+
+    .news-detail-header {
+      margin-bottom: 20px;
+    }
+
+    .news-detail-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .news-detail-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .news-detail-content {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .news-detail-content p {
+      margin-bottom: 16px;
+    }
+
+    .news-detail-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    /* Loading Skeletons */
+    .news-skeleton {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .skeleton-image {
+      height: 180px;
+      background-color: rgba(255, 255, 255, 0.05);
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    .skeleton-content {
+      padding: 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .skeleton-line {
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .news-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .news-section {
+        padding: 20px;
+      }
+      
+      .news-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .news-filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .news-detail-title {
+        font-size: 20px;
+      }
+      
+      .news-detail-content {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .news-section .section-title {
+        font-size: 20px;
+      }
+      
+      .news-section .section-subtitle {
+        font-size: 14px;
+      }
+      
+      .news-pagination {
+        gap: 8px;
+      }
+      
+      .news-pagination .btn {
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+      
+      .news-detail-image {
+        max-height: 250px;
+      }
+      
+      .news-detail-title {
+        font-size: 18px;
+      }
+    }
+    
     /* Withdrawals Feed Styles */
     .withdrawals-feed {
       position: fixed;
@@ -956,7 +1097,7 @@
       overflow-y: auto;
       width: 300px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       z-index: 1000;
       font-size: 13px;
     }
@@ -1040,7 +1181,7 @@
       background-color: var(--secondary-bg);
       margin: 5% auto;
       padding: 24px;
-      border-radius: 8px;
+      border-radius: 4px;
       width: 90%;
       max-width: 800px;
       border: 1px solid var(--border-color);
@@ -1429,17 +1570,165 @@
       }
     }
 
-    /* Sparkline Chart */
-    .sparkline-container {
-      width: 80px;
-      height: 30px;
-      position: relative;
+    /* Asset Row Styles */
+    .asset-row {
+      cursor: pointer;
+      transition: background-color 0.2s;
     }
 
-    /* Loading State */
-    .loading-state {
+    .asset-row:hover {
+      background-color: rgba(240, 185, 11, 0.05);
+    }
+
+    .asset-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .asset-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+    }
+
+    .asset-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .asset-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .asset-symbol {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .price-cell {
+      font-weight: 600;
+    }
+
+    .change-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .change-pill {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .change-pill.positive {
+      background-color: rgba(14, 203, 129, 0.15);
       color: var(--positive);
-      font-style: italic;
+    }
+
+    .change-pill.negative {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: var(--negative);
+    }
+
+    .supply-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .supply-bar-container {
+      width: 100%;
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .supply-bar {
+      height: 100%;
+      background-color: var(--primary-accent);
+    }
+
+    .trend-sparkline {
+      width: 60px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .trend-sparkline.positive {
+      color: var(--positive);
+    }
+
+    .trend-sparkline.negative {
+      color: var(--negative);
+    }
+
+    .btn-trade {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      min-width: 50px;
+    }
+
+    .btn-buy {
+      background-color: rgba(14, 203, 129, 0.15);
+      color: var(--positive);
+    }
+
+    .btn-buy:hover {
+      background-color: rgba(14, 203, 129, 0.25);
+    }
+
+    .btn-sell {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: var(--negative);
+    }
+
+    .btn-sell:hover {
+      background-color: rgba(246, 70, 93, 0.25);
+    }
+
+    /* Pagination Controls */
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .page-btn {
+      padding: 6px 12px;
+      border-radius: 4px;
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .page-btn:hover {
+      background-color: rgba(240, 185, 11, 0.1);
+    }
+
+    .page-btn.active {
+      background-color: var(--primary-accent);
+      color: #000;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -1506,52 +1795,57 @@
     <div class="section">
       <div class="section-header">
         <h2 class="section-title">Market Overview</h2>
-        <a href="#" class="section-link" id="viewAllMarkets">
-          View All <i class="fas fa-chevron-right"></i>
-        </a>
+        <a href="#" class="section-link" id="viewAllMarkets">View All</a>
       </div>
       
-      <div class="market-overview">
-        <div class="table-container">
-          <table class="market-table">
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Price</th>
-                <th>Change</th>
-                <th>Volume (24h)</th>
-                <th>Market Cap</th>
-                <th>Supply</th>
-                <th>Trend</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="marketTable">
-              <!-- Loading state -->
-              <tr>
-                <td colspan="8" class="loading-state">Loading, please wait...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="pagination" id="marketPagination" style="display: none;">
-          <button class="pagination-btn" id="prevMarketPage" disabled>
-            <i class="fas fa-chevron-left"></i> Previous
-          </button>
-          <span id="marketPageIndicator">1/1</span>
-          <button class="pagination-btn" id="nextMarketPage">
-            Next <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
+      <div class="table-container">
+        <table class="market-table">
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>Volume (24h)</th>
+              <th>Market Cap</th>
+              <th>Supply</th>
+              <th>Trend</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="marketTable">
+            <!-- Data will be populated here -->
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px;">
+                <div style="color: var(--positive);">Loading market data, please wait...</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="pagination-controls" id="marketPagination" style="display: none;">
+        <button class="page-btn" id="prevMarketPage" disabled>Previous</button>
+        <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentMarketPage">1</span></span>
+        <button class="page-btn" id="nextMarketPage">Next</button>
       </div>
     </div>
 
-    <!-- Stats Section -->
-    <div class="market-stats-grid">
-      <div class="stat-card">
+<!-- Market Stats Section -->
+  <section class="market-stats-section">
+    <div class="market-stats-header">
+      <h2 class="market-stats-title">Market Statistics</h2>
+      <button class="market-stats-refresh" id="refreshStats">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+    </div>
+    
+    <div class="market-stats-grid" id="marketStatsGrid">
+      <!-- Total Traders Card -->
+      <div class="stat-card animated">
         <div class="stat-header">
-          <i class="stat-icon fas fa-users"></i>
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
           <div class="stat-label">Total Traders</div>
         </div>
         <div class="stat-value" id="totalTraders">Loading...</div>
@@ -1563,10 +1857,13 @@
           <span class="stat-time" id="tradersTime">updating now</span>
         </div>
       </div>
-
-      <div class="stat-card">
+      
+      <!-- 24h Volume Card -->
+      <div class="stat-card animated">
         <div class="stat-header">
-          <i class="stat-icon fas fa-chart-line"></i>
+          <div class="stat-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
           <div class="stat-label">24h Volume</div>
         </div>
         <div class="stat-value" id="dailyVolume">Loading...</div>
@@ -1578,13 +1875,16 @@
           <span class="stat-time" id="volumeTime">updating now</span>
         </div>
       </div>
-
-      <div class="stat-card">
+      
+      <!-- Total Assets Card -->
+      <div class="stat-card animated">
         <div class="stat-header">
-          <i class="stat-icon fas fa-coins"></i>
+          <div class="stat-icon">
+            <i class="fas fa-coins"></i>
+          </div>
           <div class="stat-label">Total Assets</div>
         </div>
-        <div class="stat-value">100+</div>
+        <div class="stat-value" id="totalAssets">100+</div>
         <div class="stat-meta">
           <span class="stat-change neutral">
             <i class="fas fa-lock"></i>
@@ -1593,32 +1893,33 @@
         </div>
       </div>
     </div>
+  </section>
 
     <!-- Gainers & Trending Section -->
     <div class="gainers-trending">
       <div class="section gainers">
         <div class="section-header">
           <h2 class="section-title">Top Gainers</h2>
-          <a href="#" class="section-link" id="viewAllGainers">
-            View All <i class="fas fa-chevron-right"></i>
-          </a>
+          <a href="#" class="section-link" id="viewAllGainers">View All</a>
         </div>
         <div class="gainers-container" id="gainersList">
-          <!-- Loading state -->
-          <div class="loading-state" style="padding: 16px;">Loading gainers...</div>
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading gainers data...
+          </div>
         </div>
       </div>
-        
+      
       <div class="section trending">
         <div class="section-header">
           <h2 class="section-title">Trending</h2>
-          <a href="#" class="section-link" id="viewAllTrending">
-            View All <i class="fas fa-chevron-right"></i>
-          </a>
+          <a href="#" class="section-link" id="viewAllTrending">View All</a>
         </div>
         <div class="trending-container" id="trendingList">
-          <!-- Loading state -->
-          <div class="loading-state" style="padding: 16px;">Loading trending assets...</div>
+          <!-- Data will be populated here -->
+          <div style="padding: 20px; text-align: center; color: var(--positive);">
+            Loading trending data...
+          </div>
         </div>
       </div>
     </div>
@@ -1748,8 +2049,14 @@
         <div class="withdrawals-close" onclick="toggleWithdrawalsFeed()">×</div>
       </div>
       <div id="withdrawalsList">
-        <!-- Loading state -->
-        <div class="loading-state" style="padding: 8px 0;">Loading withdrawals...</div>
+        <!-- Withdrawals will be loaded here -->
+        <div class="withdrawal-item">
+          <span class="withdrawal-icon">→</span>
+          <div class="withdrawal-details">
+            <div class="withdrawal-amount">Loading...</div>
+            <div class="withdrawal-time">please wait</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1761,6 +2068,117 @@
           <span class="close-modal" onclick="closeModal('coinModal')">&times;</span>
         </div>
         <div id="coinModalContent"></div>
+      </div>
+    </div>
+
+    <!-- All Coins Modal -->
+    <div class="modal" id="allCoinsModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">All Cryptocurrencies</h2>
+          <span class="close-modal" onclick="closeModal('allCoinsModal')">&times;</span>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allCoinsTable">
+              <!-- All coins data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading all coins, please wait...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="pagination-controls" id="allCoinsPagination" style="display: none;">
+          <button class="page-btn" id="prevAllCoinsPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllCoinsPage">1</span></span>
+          <button class="page-btn" id="nextAllCoinsPage">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Gainers Modal -->
+    <div class="modal" id="allGainersModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Top Gainers (24h)</h2>
+          <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allGainersTable">
+              <!-- All gainers data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading gainers, please wait...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="pagination-controls" id="allGainersPagination" style="display: none;">
+          <button class="page-btn" id="prevAllGainersPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllGainersPage">1</span></span>
+          <button class="page-btn" id="nextAllGainersPage">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Trending Modal -->
+    <div class="modal" id="allTrendingModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Trending Coins</h2>
+          <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
+        </div>
+        
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Coin</th>
+                <th>Price</th>
+                <th>24h Change</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="allTrendingTable">
+              <!-- All trending data will be loaded here -->
+              <tr>
+                <td colspan="4" style="text-align: center; padding: 20px;">
+                  <div style="color: var(--positive);">Loading trending coins, please wait...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="pagination-controls" id="allTrendingPagination" style="display: none;">
+          <button class="page-btn" id="prevAllTrendingPage" disabled>Previous</button>
+          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllTrendingPage">1</span></span>
+          <button class="page-btn" id="nextAllTrendingPage">Next</button>
+        </div>
       </div>
     </div>
 
@@ -1841,9 +2259,31 @@
       let socket = null;
       let adminMessages = [];
       let viewedMessages = [];
-      let currentMarketPage = 1;
-      const marketItemsPerPage = 15;
-      let allMarketData = [];
+      
+      // Pagination state
+      let marketPagination = {
+        currentPage: 1,
+        itemsPerPage: 15,
+        totalPages: 1
+      };
+      
+      let allCoinsPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
+      
+      let allGainersPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
+      
+      let allTrendingPagination = {
+        currentPage: 1,
+        itemsPerPage: 20,
+        totalPages: 1
+      };
 
       // Initialize the application
       document.addEventListener('DOMContentLoaded', async () => {
@@ -1897,7 +2337,7 @@
         });
         
         // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', (event) => {
           if (!event.target.closest('.nav-container') && navLinks.classList.contains('show')) {
             navLinks.classList.remove('show');
           }
@@ -1945,7 +2385,7 @@
         // View All links
         document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
           e.preventDefault();
-          showAllMarketData();
+          showAllCoins();
         });
         
         document.getElementById('viewAllGainers').addEventListener('click', (e) => {
@@ -1963,284 +2403,62 @@
         
         // Market pagination
         document.getElementById('prevMarketPage').addEventListener('click', () => {
-          if (currentMarketPage > 1) {
-            currentMarketPage--;
+          if (marketPagination.currentPage > 1) {
+            marketPagination.currentPage--;
             updateMarketTable();
           }
         });
         
         document.getElementById('nextMarketPage').addEventListener('click', () => {
-          const totalPages = Math.ceil(allMarketData.length / marketItemsPerPage);
-          if (currentMarketPage < totalPages) {
-            currentMarketPage++;
+          if (marketPagination.currentPage < marketPagination.totalPages) {
+            marketPagination.currentPage++;
             updateMarketTable();
           }
         });
-      }
-
-      // Load market data
-      async function loadMarketData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets`);
-          if (!response.ok) throw new Error('Failed to fetch market data');
-          
-          const { marketData } = await response.json();
-          allMarketData = marketData;
-          currentMarketPage = 1;
-          updateMarketTable();
-        } catch (error) {
-          console.error('Error loading market data:', error);
-          showToast('Failed to load market data', 'error');
-        }
-      }
-
-      // Update market table with pagination
-      function updateMarketTable() {
-        const tableBody = document.getElementById('marketTable');
-        const startIdx = (currentMarketPage - 1) * marketItemsPerPage;
-        const endIdx = startIdx + marketItemsPerPage;
-        const displayedData = allMarketData.slice(startIdx, endIdx);
-        const totalPages = Math.ceil(allMarketData.length / marketItemsPerPage);
         
-        // Update pagination controls
-        document.getElementById('marketPageIndicator').textContent = `${currentMarketPage}/${totalPages}`;
-        document.getElementById('prevMarketPage').disabled = currentMarketPage <= 1;
-        document.getElementById('nextMarketPage').disabled = currentMarketPage >= totalPages;
-        document.getElementById('marketPagination').style.display = 'flex';
-        
-        if (displayedData.length === 0) {
-          tableBody.innerHTML = '<tr><td colspan="8" class="loading-state">No market data available</td></tr>';
-          return;
-        }
-        
-        tableBody.innerHTML = '';
-        
-        displayedData.forEach(asset => {
-          const row = document.createElement('tr');
-          row.className = 'asset-row';
-          
-          // Generate random changes for demo
-          const change1h = (Math.random() * 2 - 1).toFixed(2);
-          const change24h = asset.change24h;
-          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
-          
-          // Determine trend direction
-          const isUpwardTrend = Math.random() > 0.5;
-          
-          row.innerHTML = `
-            <td class="asset-cell">
-              <img src="${asset.image}" alt="${asset.name}" class="asset-icon" width="24">
-              <div class="asset-info">
-                <span class="asset-name">${asset.name}</span>
-                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
-              </div>
-            </td>
-            <td class="price-cell">$${asset.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
-            <td>
-              <div class="change-container">
-                <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
-                  ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
-                </span>
-                <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
-                  ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
-                </span>
-                <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
-                  ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
-                </span>
-              </div>
-            </td>
-            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
-            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
-            <td>
-              <div class="supply-container">
-                <span>${(asset.marketCap / asset.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
-                <div class="supply-bar-container">
-                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
-                ${isUpwardTrend ? '↗' : '↘'}
-              </div>
-            </td>
-            <td>
-              <div class="action-buttons">
-                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
-                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
-              </div>
-            </td>
-          `;
-          
-          row.addEventListener('click', (e) => {
-            if (!e.target.closest('.action-buttons')) {
-              showCoinDetail(asset.id);
-            }
-          });
-          
-          tableBody.appendChild(row);
-        });
-      }
-
-      // Show all market data in the same table
-      function showAllMarketData() {
-        currentMarketPage = 1;
-        marketItemsPerPage = 50; // Show more items per page
-        updateMarketTable();
-        
-        // Scroll to the market section
-        document.querySelector('.market-overview').scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-
-      // Load gainers data
-      async function loadGainersData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to fetch gainers');
-          
-          const { gainers } = await response.json();
-          gainersData = gainers;
-          updateGainersList();
-        } catch (error) {
-          console.error('Error loading gainers:', error);
-          showToast('Failed to load top gainers', 'error');
-        }
-      }
-
-      // Update gainers list
-      function updateGainersList() {
-        const gainersList = document.getElementById('gainersList');
-        gainersList.innerHTML = '';
-        
-        // Show only top 5 gainers by default
-        const displayedGainers = gainersData.slice(0, 5);
-        
-        displayedGainers.forEach(coin => {
-          const item = document.createElement('div');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coin.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coin.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coin.change24h >= 0 ? '+' : ''}${coin.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          gainersList.appendChild(item);
-        });
-      }
-
-      // Show all gainers in the same section
-      function showAllGainers() {
-        const gainersList = document.getElementById('gainersList');
-        gainersList.innerHTML = '';
-        
-        gainersData.forEach(coin => {
-          const item = document.createElement('div');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coin.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coin.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coin.change24h >= 0 ? '+' : ''}${coin.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          gainersList.appendChild(item);
+        // All coins pagination
+        document.getElementById('prevAllCoinsPage').addEventListener('click', () => {
+          if (allCoinsPagination.currentPage > 1) {
+            allCoinsPagination.currentPage--;
+            updateAllCoinsTable();
+          }
         });
         
-        // Scroll to the gainers section
-        document.querySelector('.gainers').scrollIntoView({
-          behavior: 'smooth'
-        });
-      }
-
-      // Load trending data
-      async function loadTrendingData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/trending`);
-          if (!response.ok) throw new Error('Failed to fetch trending');
-          
-          const { trending } = await response.json();
-          trendingData = trending;
-          updateTrendingList();
-        } catch (error) {
-          console.error('Error loading trending:', error);
-          showToast('Failed to load trending assets', 'error');
-        }
-      }
-
-      // Update trending list
-      function updateTrendingList() {
-        const trendingList = document.getElementById('trendingList');
-        trendingList.innerHTML = '';
-        
-        // Show only top 5 trending by default
-        const displayedTrending = trendingData.slice(0, 5);
-        
-        displayedTrending.forEach(coin => {
-          const item = document.createElement('div');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coin.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coin.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coin.change24h >= 0 ? '+' : ''}${coin.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          trendingList.appendChild(item);
-        });
-      }
-
-      // Show all trending in the same section
-      function showAllTrending() {
-        const trendingList = document.getElementById('trendingList');
-        trendingList.innerHTML = '';
-        
-        trendingData.forEach(coin => {
-          const item = document.createElement('div');
-          item.className = 'coin-list-item';
-          item.innerHTML = `
-            <div class="coin-info">
-              <img src="${coin.image}" alt="${coin.name}" width="24">
-              <span>${coin.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coin.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</div>
-              <div class="price-change ${coin.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coin.change24h >= 0 ? '+' : ''}${coin.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          item.addEventListener('click', () => showCoinDetail(coin.id));
-          trendingList.appendChild(item);
+        document.getElementById('nextAllCoinsPage').addEventListener('click', () => {
+          if (allCoinsPagination.currentPage < allCoinsPagination.totalPages) {
+            allCoinsPagination.currentPage++;
+            updateAllCoinsTable();
+          }
         });
         
-        // Scroll to the trending section
-        document.querySelector('.trending').scrollIntoView({
-          behavior: 'smooth'
+        // All gainers pagination
+        document.getElementById('prevAllGainersPage').addEventListener('click', () => {
+          if (allGainersPagination.currentPage > 1) {
+            allGainersPagination.currentPage--;
+            updateAllGainersTable();
+          }
+        });
+        
+        document.getElementById('nextAllGainersPage').addEventListener('click', () => {
+          if (allGainersPagination.currentPage < allGainersPagination.totalPages) {
+            allGainersPagination.currentPage++;
+            updateAllGainersTable();
+          }
+        });
+        
+        // All trending pagination
+        document.getElementById('prevAllTrendingPage').addEventListener('click', () => {
+          if (allTrendingPagination.currentPage > 1) {
+            allTrendingPagination.currentPage--;
+            updateAllTrendingTable();
+          }
+        });
+        
+        document.getElementById('nextAllTrendingPage').addEventListener('click', () => {
+          if (allTrendingPagination.currentPage < allTrendingPagination.totalPages) {
+            allTrendingPagination.currentPage++;
+            updateAllTrendingTable();
+          }
         });
       }
 
@@ -2843,9 +3061,528 @@
         }
       }
 
+      // Load market data
+      async function loadMarketData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets`);
+          if (!response.ok) throw new Error('Failed to fetch market data');
+          
+          const { marketData } = await response.json();
+          
+          // Store market data
+          marketData.forEach(coin => {
+            coinPrices[coin.id] = {
+              originalPrice: coin.currentPrice,
+              currentPrice: coin.currentPrice,
+              change24h: coin.change24h || 0
+            };
+          });
+          
+          // Update pagination info
+          marketPagination.totalPages = Math.ceil(marketData.length / marketPagination.itemsPerPage);
+          document.getElementById('marketPagination').style.display = 'flex';
+          
+          // Update UI
+          updateMarketTable(marketData);
+        } catch (error) {
+          console.error('Error loading market data:', error);
+          showToast('Failed to load market data', 'error');
+          
+          const tableBody = document.getElementById('marketTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load market data. Please try again later.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      // Update market table with pagination
+      function updateMarketTable(data) {
+        const tableBody = document.getElementById('marketTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (marketPagination.currentPage - 1) * marketPagination.itemsPerPage;
+        const endIndex = startIndex + marketPagination.itemsPerPage;
+        const visibleCoins = data.slice(startIndex, endIndex);
+        
+        visibleCoins.forEach(asset => {
+          const coinData = coinPrices[asset.id] || {
+            currentPrice: asset.currentPrice,
+            change24h: asset.change24h || 0
+          };
+          
+          // Generate random changes for demo
+          const change1h = (Math.random() * 2 - 1).toFixed(2);
+          const change24h = coinData.change24h;
+          const change7d = (Math.random() * 5 - 2.5).toFixed(2);
+          
+          // Determine trend direction
+          const isUpwardTrend = Math.random() > 0.5;
+          
+          const row = document.createElement('tr');
+          row.className = 'asset-row';
+          
+          row.innerHTML = `
+            <td class="asset-cell">
+              <img src="${asset.image}" alt="${asset.name}" class="asset-icon">
+              <div class="asset-info">
+                <span class="asset-name">${asset.name}</span>
+                <span class="asset-symbol">${asset.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td class="price-cell">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+            <td>
+              <div class="change-container">
+                <span class="change-pill ${change1h >= 0 ? 'positive' : 'negative'}">
+                  ${change1h >= 0 ? '▲' : '▼'} ${Math.abs(change1h)}%
+                </span>
+                <span class="change-pill ${change24h >= 0 ? 'positive' : 'negative'}">
+                  ${change24h >= 0 ? '▲' : '▼'} ${Math.abs(change24h).toFixed(2)}%
+                </span>
+                <span class="change-pill ${change7d >= 0 ? 'positive' : 'negative'}">
+                  ${change7d >= 0 ? '▲' : '▼'} ${Math.abs(change7d)}%
+                </span>
+              </div>
+            </td>
+            <td>$${(asset.volume / 1000000).toFixed(2)}M</td>
+            <td>$${(asset.marketCap / 1000000000).toFixed(2)}B</td>
+            <td>
+              <div class="supply-container">
+                <span>${(asset.marketCap / coinData.currentPrice / 1000000).toFixed(1)}M ${asset.symbol.toUpperCase()}</span>
+                <div class="supply-bar-container">
+                  <div class="supply-bar" style="width: ${Math.min(100, (Math.random() * 100)).toFixed(0)}%"></div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="trend-sparkline ${isUpwardTrend ? 'positive' : 'negative'}">
+                ${isUpwardTrend ? '↗' : '↘'}
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-trade btn-buy" onclick="showTradeForm('${asset.id}', 'buy', event)">Buy</button>
+                <button class="btn-trade btn-sell" onclick="showTradeForm('${asset.id}', 'sell', event)">Sell</button>
+              </div>
+            </td>
+          `;
+          
+          row.addEventListener('click', (e) => {
+            if (!e.target.closest('.action-buttons')) {
+              showCoinDetail(asset.id);
+            }
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentMarketPage').textContent = marketPagination.currentPage;
+        document.getElementById('prevMarketPage').disabled = marketPagination.currentPage <= 1;
+        document.getElementById('nextMarketPage').disabled = marketPagination.currentPage >= marketPagination.totalPages;
+      }
+
+
+
+
+    // Market Stats Section - Frontend Implementation    
+    // DOM Elements
+    const elements = {
+      totalTraders: document.getElementById('totalTraders'),
+      dailyVolume: document.getElementById('dailyVolume'),
+      totalAssets: document.getElementById('totalAssets'),
+      tradersChange: document.getElementById('tradersChange'),
+      volumeChange: document.getElementById('volumeChange'),
+      tradersTime: document.getElementById('tradersTime'),
+      volumeTime: document.getElementById('volumeTime'),
+      refreshBtn: document.getElementById('refreshStats'),
+      statsGrid: document.getElementById('marketStatsGrid')
+    };
+
+    // Format numbers for display
+    function formatNumber(value, isCurrency = false) {
+      if (isCurrency) {
+        return new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }).format(value);
+      }
+      return new Intl.NumberFormat('en-US').format(value);
+    }
+
+    // Format time since update
+    function formatTimeSince(timestamp) {
+      const now = new Date();
+      const updatedAt = new Date(timestamp);
+      const diffInSeconds = Math.floor((now - updatedAt) / 1000);
+      
+      if (diffInSeconds < 60) {
+        return 'just now';
+      } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+      } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+      } else {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+      }
+    }
+
+    // Animate number change
+    function animateNumberChange(element, newValue, isCurrency = false) {
+      if (!element) return;
+      
+      // Add updating indicator
+      element.classList.add('updating');
+      
+      // Format the number
+      const formattedValue = isCurrency 
+        ? formatNumber(newValue, true) 
+        : formatNumber(newValue);
+      
+      // Add animation class
+      element.classList.add('number-roll');
+      
+      // Update the value after a short delay for animation
+      setTimeout(() => {
+        element.textContent = formattedValue;
+        element.classList.remove('updating');
+        
+        // Remove animation class after transition completes
+        setTimeout(() => {
+          element.classList.remove('number-roll');
+        }, 500);
+      }, 300);
+    }
+
+    // Fetch market stats from API
+    async function fetchMarketStats() {
+      try {
+        // Show loading state
+        elements.totalTraders.classList.add('loading');
+        elements.dailyVolume.classList.add('loading');
+        elements.tradersChange.textContent = '+0';
+        elements.volumeChange.textContent = '+$0';
+        elements.tradersTime.textContent = 'updating...';
+        elements.volumeTime.textContent = 'updating...';
+        
+        // Add pulse animation to cards
+        const statCards = document.querySelectorAll('.stat-card');
+        statCards.forEach(card => card.classList.add('loading'));
+        
+        // Disable refresh button during load
+        elements.refreshBtn.disabled = true;
+        elements.refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading';
+        
+        const response = await fetch(`${API_BASE_URL}/market-stats`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const { data } = await response.json();
+        
+        // Update UI with new data
+        animateNumberChange(elements.totalTraders, data.totalTraders);
+        animateNumberChange(elements.dailyVolume, data.dailyVolume, true);
+        
+        // Update changes
+        if (elements.tradersChange) {
+          elements.tradersChange.textContent = `+${formatNumber(data.tradersChange)}`;
+          elements.tradersChange.className = `stat-change ${data.tradersChange >= 0 ? 'positive' : 'negative'}`;
+        }
+        
+        if (elements.volumeChange) {
+          elements.volumeChange.textContent = `+$${formatNumber(data.volumeChange, true)}`;
+          elements.volumeChange.className = `stat-change ${data.volumeChange >= 0 ? 'positive' : 'negative'}`;
+        }
+        
+        // Update timestamps
+        if (elements.tradersTime) {
+          elements.tradersTime.textContent = formatTimeSince(data.lastUpdated);
+        }
+        
+        if (elements.volumeTime) {
+          elements.volumeTime.textContent = formatTimeSince(data.lastUpdated);
+        }
+        
+        // Update metadata
+        if (data._meta) {
+          console.log('Market stats loaded from:', data._meta.source);
+        }
+        
+      } catch (error) {
+        console.error('Error fetching market stats:', error);
+        
+        // Show error state
+        if (elements.totalTraders) {
+          elements.totalTraders.textContent = 'Error';
+          elements.totalTraders.style.color = '#f6465d';
+        }
+        
+        if (elements.dailyVolume) {
+          elements.dailyVolume.textContent = 'Error';
+          elements.dailyVolume.style.color = '#f6465d';
+        }
+        
+        if (elements.tradersTime) elements.tradersTime.textContent = 'update failed';
+        if (elements.volumeTime) elements.volumeTime.textContent = 'update failed';
+        
+        // Show error toast
+        showToast('Failed to load market stats. Using cached data.', 'error');
+        
+      } finally {
+        // Remove loading states
+        elements.totalTraders.classList.remove('loading');
+        elements.dailyVolume.classList.remove('loading');
+        statCards.forEach(card => card.classList.remove('loading'));
+        
+        // Re-enable refresh button
+        elements.refreshBtn.disabled = false;
+        elements.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast-notification ${type}`;
+      toast.innerHTML = `
+        <div class="toast-icon">
+          ${type === 'error' ? '⚠️' : type === 'success' ? '✓' : 'ℹ️'}
+        </div>
+        <div class="toast-message">${message}</div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 5000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load initial data
+      fetchMarketStats();
+      
+      // Set up refresh button
+      elements.refreshBtn.addEventListener('click', fetchMarketStats);
+      
+      // Set up periodic refresh (every 30 seconds)
+      setInterval(fetchMarketStats, 30000);
+      
+      // Add hover animations
+      const statCards = document.querySelectorAll('.stat-card');
+      statCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-5px)';
+          card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.25)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+          card.style.boxShadow = '';
+        });
+      });
+    });
+
+    // Add some basic toast styling
+    const toastStyle = document.createElement('style');
+    toastStyle.textContent = `
+      .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #2b3139;
+        color: #eaecef;
+        padding: 12px 20px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-left: 4px solid #f0b90b;
+      }
+      
+      .toast-notification.show {
+        opacity: 1;
+      }
+      
+      .toast-notification.error {
+        border-left-color: #f6465d;
+      }
+      
+      .toast-notification.success {
+        border-left-color: #0ecb81;
+      }
+      
+      .toast-icon {
+        font-size: 18px;
+      }
+      
+      .toast-message {
+        font-size: 14px;
+      }
+    `;
+    document.head.appendChild(toastStyle);
+      // Load gainers data
+      async function loadGainersData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) throw new Error('Failed to fetch gainers');
+          
+          const { gainers } = await response.json();
+          gainersData = gainers;
+          
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
+          
+          // Update UI
+          updateGainersList(gainers);
+        } catch (error) {
+          console.error('Error loading gainers:', error);
+          showToast('Failed to load top gainers', 'error');
+          
+          const container = document.getElementById('gainersList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load gainers data
+            </div>
+          `;
+        }
+      }
+
+      // Update gainers list
+      function updateGainersList(gainers = gainersData) {
+        const container = document.getElementById('gainersList');
+        container.innerHTML = '';
+        
+        // Show top 5 gainers by default
+        const topGainers = gainers.slice(0, 5);
+        
+        topGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'coin-list-item';
+          
+          card.innerHTML = `
+            <div class="coin-info">
+              <img src="${gainer.image}" alt="${gainer.name}" width="24">
+              <span>${gainer.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showCoinDetail(gainer.id));
+          container.appendChild(card);
+        });
+      }
+
+      // Load trending data
+      async function loadTrendingData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trending`);
+          if (!response.ok) throw new Error('Failed to fetch trending');
+          
+          const { trending } = await response.json();
+          trendingData = trending;
+          
+          // Update pagination info
+          allTrendingPagination.totalPages = Math.ceil(trending.length / allTrendingPagination.itemsPerPage);
+          
+          // Update UI
+          updateTrendingList(trending);
+        } catch (error) {
+          console.error('Error loading trending:', error);
+          showToast('Failed to load trending assets', 'error');
+          
+          const container = document.getElementById('trendingList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load trending data
+            </div>
+          `;
+        }
+      }
+
+      // Update trending list
+      function updateTrendingList(trending = trendingData) {
+        const container = document.getElementById('trendingList');
+        container.innerHTML = '';
+        
+        // Show top 5 trending by default
+        const topTrending = trending.slice(0, 5);
+        
+        topTrending.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'coin-list-item';
+          
+          card.innerHTML = `
+            <div class="coin-info">
+              <img src="${coin.image}" alt="${coin.name}" width="24">
+              <span>${coin.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showCoinDetail(coin.id));
+          container.appendChild(card);
+        });
+      }
+
+      // News State Management
+      let newsState = {
+        allArticles: [],
+        filteredArticles: [],
+        currentCategory: 'all',
+        currentPage: 1,
+        itemsPerPage: 6,
+        isLoading: false
+      };
+
       // Load news from API
       async function loadNews() {
         const container = document.getElementById('newsContainer');
+        newsState.isLoading = true;
         
         try {
           const response = await fetch(`${API_BASE_URL}/news`);
@@ -2859,7 +3596,7 @@
           }
           
           // Process and categorize articles
-          const processedArticles = data.data.articles.map(article => {
+          newsState.allArticles = data.data.articles.map(article => {
             // Extract category from title/content or assign default
             let category = 'market';
             const title = article.title.toLowerCase();
@@ -2880,15 +3617,13 @@
             };
           });
           
-          // Initialize news state
-          window.newsState = {
-            allArticles: processedArticles,
-            filteredArticles: processedArticles,
-            currentCategory: 'all',
-            currentPage: 1,
-            itemsPerPage: 6,
-            isLoading: false
-          };
+          // Initialize filtered articles
+          newsState.filteredArticles = [...newsState.allArticles];
+          newsState.currentPage = 1;
+          
+          // Calculate total pages
+          const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
+          document.getElementById('pageIndicator').textContent = `1/${totalPages}`;
           
           renderNews();
           
@@ -2896,7 +3631,7 @@
           console.error('Failed to load news:', error);
           container.innerHTML = `
             <div class="news-error" style="grid-column: 1 / -1; text-align: center; padding: 30px;">
-              <div style="margin-bottom: 12px; color: var(--text-secondary);">
+              <div style="margin-bottom: 12px; color: var(--negative);">
                 Couldn't load news at this time
               </div>
               <button class="btn btn-outline" onclick="loadNews()">
@@ -2904,41 +3639,45 @@
               </button>
             </div>
           `;
+        } finally {
+          newsState.isLoading = false;
         }
       }
 
       // Filter news by category
       function filterNews(category) {
-        if (!window.newsState) return;
-        
-        window.newsState.currentCategory = category;
-        window.newsState.currentPage = 1;
+        newsState.currentCategory = category;
+        newsState.currentPage = 1;
         
         if (category === 'all') {
-          window.newsState.filteredArticles = [...window.newsState.allArticles];
+          newsState.filteredArticles = [...newsState.allArticles];
         } else {
-          window.newsState.filteredArticles = window.newsState.allArticles.filter(
+          newsState.filteredArticles = newsState.allArticles.filter(
             article => article.category === category
           );
         }
+        
+        // Update pagination info
+        const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
+        document.getElementById('pageIndicator').textContent = `1/${totalPages}`;
+        document.getElementById('prevNewsBtn').disabled = true;
+        document.getElementById('nextNewsBtn').disabled = totalPages <= 1;
         
         renderNews();
       }
 
       // Render news based on current state
       function renderNews() {
-        if (!window.newsState) return;
-        
         const container = document.getElementById('newsContainer');
-        const startIdx = (window.newsState.currentPage - 1) * window.newsState.itemsPerPage;
-        const endIdx = startIdx + window.newsState.itemsPerPage;
-        const articlesToShow = window.newsState.filteredArticles.slice(startIdx, endIdx);
-        const totalPages = Math.ceil(window.newsState.filteredArticles.length / window.newsState.itemsPerPage);
+        const startIdx = (newsState.currentPage - 1) * newsState.itemsPerPage;
+        const endIdx = startIdx + newsState.itemsPerPage;
+        const articlesToShow = newsState.filteredArticles.slice(startIdx, endIdx);
+        const totalPages = Math.ceil(newsState.filteredArticles.length / newsState.itemsPerPage);
         
         // Update pagination controls
-        document.getElementById('pageIndicator').textContent = `${window.newsState.currentPage}/${totalPages}`;
-        document.getElementById('prevNewsBtn').disabled = window.newsState.currentPage <= 1;
-        document.getElementById('nextNewsBtn').disabled = window.newsState.currentPage >= totalPages;
+        document.getElementById('pageIndicator').textContent = `${newsState.currentPage}/${totalPages}`;
+        document.getElementById('prevNewsBtn').disabled = newsState.currentPage <= 1;
+        document.getElementById('nextNewsBtn').disabled = newsState.currentPage >= totalPages;
         
         // Clear container
         container.innerHTML = '';
@@ -3028,7 +3767,7 @@
         
         modal.style.display = 'block';
       }
-
+      
       // Load withdrawals
       async function loadWithdrawals() {
         try {
@@ -3290,6 +4029,255 @@
         modal.style.display = 'block';
       }
 
+      // Show all coins modal
+      async function showAllCoins() {
+        const modal = document.getElementById('allCoinsModal');
+        modal.style.display = 'block';
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/all`);
+          if (!response.ok) {
+            throw new Error('Failed to load all coins');
+          }
+          
+          const coins = await response.json();
+          marketData = coins;
+          
+          // Update pagination info
+          allCoinsPagination.totalPages = Math.ceil(coins.length / allCoinsPagination.itemsPerPage);
+          document.getElementById('allCoinsPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllCoinsTable(coins);
+        } catch (error) {
+          console.error('Error loading all coins:', error);
+          showToast('Failed to load all coins', 'error');
+          
+          const tableBody = document.getElementById('allCoinsTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load all coins. Please try again later.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      // Update all coins table with pagination
+      function updateAllCoinsTable(coins = marketData) {
+        const tableBody = document.getElementById('allCoinsTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allCoinsPagination.currentPage - 1) * allCoinsPagination.itemsPerPage;
+        const endIndex = startIndex + allCoinsPagination.itemsPerPage;
+        const visibleCoins = coins.slice(startIndex, endIndex);
+        
+        visibleCoins.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allCoinsModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllCoinsPage').textContent = allCoinsPagination.currentPage;
+        document.getElementById('prevAllCoinsPage').disabled = allCoinsPagination.currentPage <= 1;
+        document.getElementById('nextAllCoinsPage').disabled = allCoinsPagination.currentPage >= allCoinsPagination.totalPages;
+      }
+
+      // Show all gainers modal
+      async function showAllGainers() {
+        const modal = document.getElementById('allGainersModal');
+        modal.style.display = 'block';
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) {
+            throw new Error('Failed to load gainers');
+          }
+          
+          const { gainers } = await response.json();
+          gainersData = gainers;
+          
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
+          document.getElementById('allGainersPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllGainersTable(gainers);
+        } catch (error) {
+          console.error('Error loading gainers:', error);
+          showToast('Failed to load gainers', 'error');
+          
+          const tableBody = document.getElementById('allGainersTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load gainers. Please try again later.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      // Update all gainers table with pagination
+      function updateAllGainersTable(gainers = gainersData) {
+        const tableBody = document.getElementById('allGainersTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allGainersPagination.currentPage - 1) * allGainersPagination.itemsPerPage;
+        const endIndex = startIndex + allGainersPagination.itemsPerPage;
+        const visibleGainers = gainers.slice(startIndex, endIndex);
+        
+        visibleGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${gainer.image}" alt="${gainer.name}" class="coin-icon">
+                <span class="coin-name">${gainer.name}</span>
+                <span class="coin-symbol">${gainer.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${gainer.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allGainersModal');
+            showCoinDetail(gainer.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllGainersPage').textContent = allGainersPagination.currentPage;
+        document.getElementById('prevAllGainersPage').disabled = allGainersPagination.currentPage <= 1;
+        document.getElementById('nextAllGainersPage').disabled = allGainersPagination.currentPage >= allGainersPagination.totalPages;
+      }
+
+      // Show all trending modal
+      async function showAllTrending() {
+        const modal = document.getElementById('allTrendingModal');
+        modal.style.display = 'block';
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/trending`);
+          if (!response.ok) {
+            throw new Error('Failed to load trending');
+          }
+          
+          const { trending } = await response.json();
+          trendingData = trending;
+          
+          // Update pagination info
+          allTrendingPagination.totalPages = Math.ceil(trending.length / allTrendingPagination.itemsPerPage);
+          document.getElementById('allTrendingPagination').style.display = 'flex';
+          
+          // Update UI
+          updateAllTrendingTable(trending);
+        } catch (error) {
+          console.error('Error loading trending:', error);
+          showToast('Failed to load trending', 'error');
+          
+          const tableBody = document.getElementById('allTrendingTable');
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 20px; color: var(--negative);">
+                Failed to load trending. Please try again later.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      // Update all trending table with pagination
+      function updateAllTrendingTable(trending = trendingData) {
+        const tableBody = document.getElementById('allTrendingTable');
+        tableBody.innerHTML = '';
+        
+        // Calculate pagination slice
+        const startIndex = (allTrendingPagination.currentPage - 1) * allTrendingPagination.itemsPerPage;
+        const endIndex = startIndex + allTrendingPagination.itemsPerPage;
+        const visibleTrending = trending.slice(startIndex, endIndex);
+        
+        visibleTrending.forEach(coin => {
+          const coinData = coinPrices[coin.id] || {
+            currentPrice: coin.currentPrice,
+            change24h: coin.change24h || 0
+          };
+          
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="coin-cell">
+                <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+                <span class="coin-name">${coin.name}</span>
+                <span class="coin-symbol">${coin.symbol.toUpperCase()}</span>
+              </div>
+            </td>
+            <td>$${coinData.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}</td>
+            <td class="${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+              ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+            </td>
+            <td>
+              <button class="btn btn-primary btn-sm" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+            </td>
+          `;
+          
+          row.addEventListener('click', () => {
+            closeModal('allTrendingModal');
+            showCoinDetail(coin.id);
+          });
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Update pagination controls
+        document.getElementById('currentAllTrendingPage').textContent = allTrendingPagination.currentPage;
+        document.getElementById('prevAllTrendingPage').disabled = allTrendingPagination.currentPage <= 1;
+        document.getElementById('nextAllTrendingPage').disabled = allTrendingPagination.currentPage >= allTrendingPagination.totalPages;
+      }
+
       // Change trading chart
       function changeChart(symbol) {
         // Update tabs
@@ -3340,7 +4328,7 @@
         }
         
         // Update UI
-        updateMarketTable();
+        updateMarketTable(marketData);
         updateGainersList();
         updateTrendingList();
         
