@@ -367,8 +367,7 @@
       min-width: 60px;
     }
 
-    /* Stats Box */
-     /* Market Stats Section Styles */
+    /* Market Stats Section Styles */
 .market-stats-section {
   margin: 2rem 0;
   padding: 1.5rem;
@@ -1839,7 +1838,7 @@
     </button>
   </div>
   
-  <div class="market-stats-grid" id="marketStatsGrid">
+  <div class="market-stats-grid">
     <!-- Total Traders Card -->
     <div class="stat-card animated">
       <div class="stat-header">
@@ -1848,7 +1847,7 @@
         </div>
         <div class="stat-label">Total Traders</div>
       </div>
-      <div class="stat-value" id="totalTraders">Loading...</div>
+      <div class="stat-value" id="totalTraders">8,000,000+</div>
       <div class="stat-meta">
         <span class="stat-change positive" id="tradersChangeContainer">
           <i class="fas fa-arrow-up"></i>
@@ -1866,7 +1865,7 @@
         </div>
         <div class="stat-label">24h Volume</div>
       </div>
-      <div class="stat-value" id="dailyVolume">Loading...</div>
+      <div class="stat-value" id="dailyVolume">$652,000,000+</div>
       <div class="stat-meta">
         <span class="stat-change positive" id="volumeChangeContainer">
           <i class="fas fa-arrow-up"></i>
@@ -3187,7 +3186,7 @@
       }
 
 
-// Market Stats Section - Frontend Implementation
+// Market Stats Controller
 const marketStats = {
   elements: {
     totalTraders: document.getElementById('totalTraders'),
@@ -3199,8 +3198,7 @@ const marketStats = {
     volumeChangeContainer: document.getElementById('volumeChangeContainer'),
     tradersTime: document.getElementById('tradersTime'),
     volumeTime: document.getElementById('volumeTime'),
-    refreshBtn: document.getElementById('refreshStats'),
-    statsGrid: document.getElementById('marketStatsGrid')
+    refreshBtn: document.getElementById('refreshStats')
   },
 
   // Format numbers for display
@@ -3209,8 +3207,8 @@ const marketStats = {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
       }).format(value);
     }
     return new Intl.NumberFormat('en-US').format(value);
@@ -3377,7 +3375,6 @@ const marketStats = {
 document.addEventListener('DOMContentLoaded', () => {
   marketStats.init();
 });
-
     
       // Load gainers data
       async function loadGainersData() {
