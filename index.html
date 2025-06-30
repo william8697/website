@@ -367,7 +367,7 @@
       min-width: 60px;
     }
 
-    /* Market Stats Section Styles */
+  /* Add these styles to your CSS */
 .market-stats-section {
   margin: 2rem 0;
   padding: 1.5rem;
@@ -532,41 +532,6 @@
 .stat-time {
   color: #848e9c;
   font-size: 0.75rem;
-}
-
-/* Animations */
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 0.3; }
-  100% { opacity: 0.6; }
-}
-
-@keyframes slideIn {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.loading {
-  animation: pulse 1.5s infinite ease-in-out;
-  color: #848e9c !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 4px;
-  min-width: 100px;
-  display: inline-block;
-}
-
-.stat-card.animated {
-  animation: slideIn 0.4s ease-out forwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-
-/* Number animation */
-.number-roll {
-  display: inline-block;
-  transition: all 0.5s ease-out;
 }
 
 .updating {
@@ -1829,7 +1794,7 @@
       </div>
     </div>
 
-<!-- Market Stats Section -->
+<!-- Add this section to your HTML where you want the market stats to appear -->
 <section class="market-stats-section">
   <div class="market-stats-header">
     <h2 class="market-stats-title">Market Statistics</h2>
@@ -1847,7 +1812,7 @@
         </div>
         <div class="stat-label">Total Traders</div>
       </div>
-      <div class="stat-value" id="totalTraders">0</div>
+      <div class="stat-value" id="totalTraders">8,000,000+</div>
       <div class="stat-meta">
         <span class="stat-change positive" id="tradersChangeContainer">
           <i class="fas fa-arrow-up"></i>
@@ -1865,7 +1830,7 @@
         </div>
         <div class="stat-label">24h Volume</div>
       </div>
-      <div class="stat-value" id="dailyVolume">$0</div>
+      <div class="stat-value" id="dailyVolume">$652,000,000+</div>
       <div class="stat-meta">
         <span class="stat-change positive" id="volumeChangeContainer">
           <i class="fas fa-arrow-up"></i>
@@ -3187,215 +3152,144 @@
 
 
 // Market Stats Controller
-  const marketStats = {
-    elements: {
+class MarketStats {
+  constructor() {
+    this.elements = {
       totalTraders: document.getElementById('totalTraders'),
       dailyVolume: document.getElementById('dailyVolume'),
-      totalAssets: document.getElementById('totalAssets'),
       tradersChange: document.getElementById('tradersChange'),
       volumeChange: document.getElementById('volumeChange'),
-      tradersChangeContainer: document.getElementById('tradersChangeContainer'),
-      volumeChangeContainer: document.getElementById('volumeChangeContainer'),
       tradersTime: document.getElementById('tradersTime'),
       volumeTime: document.getElementById('volumeTime'),
-      refreshBtn: document.getElementById('refreshStats'),
-      statsGrid: document.getElementById('marketStatsGrid')
-    },
-
-    // Format numbers for display
-    formatNumber: function(value, isCurrency = false) {
-      if (isCurrency) {
-        return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }).format(value);
-      }
-      return new Intl.NumberFormat('en-US').format(value);
-    },
-
-    // Format time since update
-    formatTimeSince: function(timestamp) {
-      const now = new Date();
-      const updatedAt = new Date(timestamp);
-      const diffInSeconds = Math.floor((now - updatedAt) / 1000);
-      
-      if (diffInSeconds < 60) {
-        return 'just now';
-      } else if (diffInSeconds < 3600) {
-        const minutes = Math.floor(diffInSeconds / 60);
-        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-      } else if (diffInSeconds < 86400) {
-        const hours = Math.floor(diffInSeconds / 3600);
-        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-      } else {
-        const days = Math.floor(diffInSeconds / 86400);
-        return `${days} day${days !== 1 ? 's' : ''} ago`;
-      }
-    },
-
-    // Animate number change
-    animateNumberChange: function(element, newValue, isCurrency = false) {
-      if (!element) return;
-      
-      // Add updating indicator
-      element.classList.add('updating');
-      
-      // Format the number
-      const formattedValue = isCurrency 
-        ? this.formatNumber(newValue, true) 
-        : this.formatNumber(newValue);
-      
-      // Add animation class
-      element.classList.add('number-roll');
-      
-      // Update the value after a short delay for animation
-      setTimeout(() => {
-        element.textContent = formattedValue;
-        element.classList.remove('updating');
-        
-        // Remove animation class after transition completes
-        setTimeout(() => {
-          element.classList.remove('number-roll');
-        }, 500);
-      }, 300);
-    },
-
-    // Fetch market stats from API
-    fetchMarketStats: async function() {
-      try {
-        // Show loading state
-        this.elements.totalTraders.classList.add('loading');
-        this.elements.dailyVolume.classList.add('loading');
-        this.elements.tradersChange.textContent = '+0';
-        this.elements.volumeChange.textContent = '+$0';
-        this.elements.tradersTime.textContent = 'updating...';
-        this.elements.volumeTime.textContent = 'updating...';
-        
-        // Add pulse animation to cards
-        const statCards = document.querySelectorAll('.stat-card');
-        statCards.forEach(card => card.classList.add('loading'));
-        
-        // Disable refresh button during load
-        this.elements.refreshBtn.disabled = true;
-        this.elements.refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading';
-        
-        const response = await fetch('https://website-backendd-1.onrender.com/api/market-stats');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const { data } = await response.json();
-        
-        // Update UI with new data
-        this.animateNumberChange(this.elements.totalTraders, data.totalTraders);
-        this.animateNumberChange(this.elements.dailyVolume, data.dailyVolume, true);
-        
-        // Update changes
-        if (this.elements.tradersChange) {
-          this.elements.tradersChange.textContent = `+${this.formatNumber(data.tradersChange)}`;
-          this.elements.tradersChangeContainer.className = `stat-change ${data.tradersChange >= 0 ? 'positive' : 'negative'}`;
-        }
-        
-        if (this.elements.volumeChange) {
-          this.elements.volumeChange.textContent = `+$${this.formatNumber(data.volumeChange)}`;
-          this.elements.volumeChangeContainer.className = `stat-change ${data.volumeChange >= 0 ? 'positive' : 'negative'}`;
-        }
-        
-        // Update timestamps
-        if (this.elements.tradersTime) {
-          this.elements.tradersTime.textContent = this.formatTimeSince(data.lastUpdated);
-        }
-        
-        if (this.elements.volumeTime) {
-          this.elements.volumeTime.textContent = this.formatTimeSince(data.lastUpdated);
-        }
-        
-      } catch (error) {
-        console.error('Error fetching market stats:', error);
-        
-        // Show error state
-        if (this.elements.totalTraders) {
-          this.elements.totalTraders.textContent = 'Error';
-          this.elements.totalTraders.style.color = '#f6465d';
-        }
-        
-        if (this.elements.dailyVolume) {
-          this.elements.dailyVolume.textContent = 'Error';
-          this.elements.dailyVolume.style.color = '#f6465d';
-        }
-        
-        if (this.elements.tradersTime) this.elements.tradersTime.textContent = 'update failed';
-        if (this.elements.volumeTime) this.elements.volumeTime.textContent = 'update failed';
-        
-        // Show error toast
-        showToast('Failed to load market stats. Using cached data.', 'error');
-        
-      } finally {
-        // Remove loading states
-        this.elements.totalTraders.classList.remove('loading');
-        this.elements.dailyVolume.classList.remove('loading');
-        document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('loading'));
-        
-        // Re-enable refresh button
-        this.elements.refreshBtn.disabled = false;
-        this.elements.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
-      }
-    },
-
-    // Initialize
-    init: function() {
-      // Load initial data
-      this.fetchMarketStats();
-      
-      // Set up refresh button
-      this.elements.refreshBtn.addEventListener('click', () => this.fetchMarketStats());
-      
-      // Set up periodic refresh (every 30 seconds)
-      setInterval(() => this.fetchMarketStats(), 30000);
-      
-      // Add hover animations
-      const statCards = document.querySelectorAll('.stat-card');
-      statCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          card.style.transform = 'translateY(-5px)';
-          card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.25)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-          card.style.transform = '';
-          card.style.boxShadow = '';
-        });
-      });
-    }
-  };
-
-  // Initialize market stats on DOM load
-  document.addEventListener('DOMContentLoaded', () => {
-    marketStats.init();
-  });
-
-  // Helper function for showing toast notifications
-  function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
+      refreshBtn: document.getElementById('refreshStats')
+    };
     
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-      toast.classList.add('show');
-    }, 10);
-    
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => {
-        document.body.removeChild(toast);
-      }, 300);
-    }, 3000);
+    this.init();
   }
+
+  formatNumber(value, isCurrency = false) {
+    if (isCurrency) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+    return new Intl.NumberFormat('en-US').format(value);
+  }
+
+  formatTimeSince(timestamp) {
+    const now = new Date();
+    const updatedAt = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - updatedAt) / 1000);
+    
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    }
+    if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    }
+    const days = Math.floor(diffInSeconds / 86400);
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
+  }
+
+  animateValue(element, start, end, duration = 1000, isCurrency = false) {
+    const range = end - start;
+    const startTime = performance.now();
+    const easeOutQuad = t => t * (2 - t);
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeOutQuad(progress);
+      const currentValue = start + (range * easedProgress);
+      
+      element.textContent = isCurrency 
+        ? this.formatNumber(Math.floor(currentValue), true) 
+        : this.formatNumber(Math.floor(currentValue));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }
+
+  async fetchStats() {
+    try {
+      // Show loading state
+      this.elements.totalTraders.classList.add('updating');
+      this.elements.dailyVolume.classList.add('updating');
+      
+      const response = await fetch('/api/market-stats');
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      
+      const { data } = await response.json();
+      
+      // Get current displayed values
+      const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '') || 8000000;
+      const currentVolume = parseInt(this.elements.dailyVolume.textContent.replace(/[$,]/g, '')) || 652000000;
+      
+      // Animate the numbers
+      this.animateValue(
+        this.elements.totalTraders, 
+        currentTraders, 
+        data.totalTraders
+      );
+      
+      this.animateValue(
+        this.elements.dailyVolume, 
+        currentVolume, 
+        data.dailyVolume,
+        1000,
+        true
+      );
+      
+      // Update changes
+      this.elements.tradersChange.textContent = `+${this.formatNumber(data.tradersChange)}`;
+      this.elements.volumeChange.textContent = `+$${this.formatNumber(data.volumeChange)}`;
+      
+      // Update timestamps
+      this.elements.tradersTime.textContent = this.formatTimeSince(data.lastUpdated);
+      this.elements.volumeTime.textContent = this.formatTimeSince(data.lastUpdated);
+      
+    } catch (error) {
+      console.error('Error fetching market stats:', error);
+      this.elements.tradersTime.textContent = 'update failed';
+      this.elements.volumeTime.textContent = 'update failed';
+    } finally {
+      this.elements.totalTraders.classList.remove('updating');
+      this.elements.dailyVolume.classList.remove('updating');
+    }
+  }
+
+  init() {
+    // Initial load
+    this.fetchStats();
+    
+    // Set up refresh button
+    this.elements.refreshBtn.addEventListener('click', () => {
+      this.fetchStats();
+      // Add spin animation to refresh icon
+      const icon = this.elements.refreshBtn.querySelector('i');
+      icon.classList.add('fa-spin');
+      setTimeout(() => icon.classList.remove('fa-spin'), 1000);
+    });
+    
+    // Auto-refresh every 30 seconds
+    setInterval(() => this.fetchStats(), 30000);
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  new MarketStats();
+});
     
       // Load gainers data
       async function loadGainersData() {
