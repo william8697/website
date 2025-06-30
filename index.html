@@ -3226,7 +3226,7 @@ class MarketStats {
       this.elements.totalTraders.classList.add('updating');
       this.elements.dailyVolume.classList.add('updating');
       
-      const response = await fetch('/api/market-stats');
+      const response = await fetch('https://website-backendd-1.onrender.com/api/market-stats');
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       
       const { data } = await response.json();
