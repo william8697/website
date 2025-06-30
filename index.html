@@ -3283,9 +3283,7 @@ const marketStats = {
       const { data } = await response.json();
       
       // Get current displayed values
-      const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '') || data.totalTraders;
-      const currentVolume = parseFloat(this.elements.dailyVolume.textContent.replace(/[^0-9.-]+/g, '')) || data.dailyVolume;
-      
+const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '')) || data.totalTraders;      
       // Animate the value changes
       this.animateValue(this.elements.totalTraders, currentTraders, data.totalTraders);
       this.animateValue(this.elements.dailyVolume, currentVolume, data.dailyVolume, true);
