@@ -367,246 +367,110 @@
       min-width: 60px;
     }
 
-/* Add this to your existing CSS */
-.market-stats-section {
-  margin: 2rem 0;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #1a1e24 0%, #232a32 100%);
-  border-radius: 16px;
-  border: 1px solid #2d3642;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
+    /* Stats Box */
+    .market-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 2rem 0;
+    }
 
-.market-stats-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
+    .stat-card {
+      background: linear-gradient(135deg, #1e2329 0%, #2b3139 100%);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid #3a424d;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-.market-stats-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #eaecef;
-  position: relative;
-  padding-left: 1rem;
-}
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
 
-.market-stats-title::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 70%;
-  width: 4px;
-  background: linear-gradient(to bottom, #f0b90b, #f8d33a);
-  border-radius: 2px;
-}
+    .stat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
 
-.market-stats-refresh {
-  background: rgba(240, 185, 11, 0.1);
-  border: none;
-  color: #f0b90b;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
+    .stat-icon {
+      font-size: 1.25rem;
+      color: #f0b90b;
+    }
 
-.market-stats-refresh:hover {
-  background: rgba(240, 185, 11, 0.2);
-}
+    .stat-label {
+      color: #848e9c;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-.market-stats-refresh:active {
-  transform: scale(0.98);
-}
+    .stat-value {
+      color: #eaecef;
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+      font-feature-settings: "tnum";
+      transition: all 0.3s ease;
+    }
 
-.market-stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
-}
+    .stat-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+    }
 
-.stat-card {
-  background: linear-gradient(145deg, #1e2329, #2b3139);
-  border-radius: 14px;
-  padding: 1.5rem;
-  border: 1px solid #3a424d;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
+    .stat-change {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-}
+    .positive {
+      background-color: rgba(14, 203, 129, 0.15);
+      color: #0ecb81;
+    }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #f0b90b, #f8d33a);
-}
+    .negative {
+      background-color: rgba(246, 70, 93, 0.15);
+      color: #f6465d;
+    }
 
-.stat-header {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-}
+    .neutral {
+      background-color: rgba(240, 185, 11, 0.15);
+      color: #f0b90b;
+    }
 
-.stat-icon {
-  font-size: 1.25rem;
-  color: #f0b90b;
-  width: 36px;
-  height: 36px;
-  background: rgba(240, 185, 11, 0.1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .stat-time {
+      color: #848e9c;
+      font-size: 0.75rem;
+    }
 
-.stat-label {
-  color: #848e9c;
-  font-size: 0.875rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+    /* Animation */
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
 
-.stat-value {
-  color: #eaecef;
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin: 0.5rem 0;
-  font-feature-settings: "tnum";
-  transition: all 0.3s ease;
-  min-height: 2.5rem;
-  display: flex;
-  align-items: center;
-}
+    .updating {
+      animation: pulse 1s infinite;
+      color: #f0b90b;
+    }
 
-.stat-meta {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
+    .number-roll {
+      display: inline-block;
+      transition: all 0.5s ease-out;
+    }
 
-.stat-change {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.positive {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: #0ecb81;
-}
-
-.negative {
-  background-color: rgba(246, 70, 93, 0.15);
-  color: #f6465d;
-}
-
-.neutral {
-  background-color: rgba(240, 185, 11, 0.15);
-  color: #f0b90b;
-}
-
-.stat-time {
-  color: #848e9c;
-  font-size: 0.75rem;
-}
-
-/* Animations */
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 0.3; }
-  100% { opacity: 0.6; }
-}
-
-@keyframes slideIn {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.loading {
-  animation: pulse 1.5s infinite ease-in-out;
-  color: #848e9c !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
-  border-radius: 4px;
-  min-width: 100px;
-  display: inline-block;
-}
-
-.stat-card.animated {
-  animation: slideIn 0.4s ease-out forwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-
-/* Number animation */
-.number-roll {
-  display: inline-block;
-  transition: all 0.5s ease-out;
-}
-
-.updating {
-  position: relative;
-}
-
-.updating::after {
-  content: '';
-  position: absolute;
-  right: -15px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  border: 2px solid rgba(240, 185, 11, 0.5);
-  border-top-color: #f0b90b;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .market-stats-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .stat-card {
-    padding: 1.25rem;
-  }
-  
-  .stat-value {
-    font-size: 1.5rem;
-  }
-}
-
-    
     /* Gainers/Trending Section */
     .gainers-trending {
       display: flex;
@@ -1831,70 +1695,52 @@
       </div>
     </div>
 
-<!-- Add this to your existing HTML (around where the market stats section should be) -->
-<section class="market-stats-section">
-  <div class="market-stats-header">
-    <h2 class="market-stats-title">Market Statistics</h2>
-    <button class="market-stats-refresh" id="refreshStats">
-      <i class="fas fa-sync-alt"></i> Refresh
-    </button>
-  </div>
-  
-  <div class="market-stats-grid">
-    <!-- Total Traders Card -->
-    <div class="stat-card animated">
-      <div class="stat-header">
-        <div class="stat-icon">
-          <i class="fas fa-users"></i>
+    <!-- Stats Section -->
+    <div class="market-stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-users"></i>
+          <div class="stat-label">Total Traders</div>
         </div>
-        <div class="stat-label">Total Traders</div>
+        <div class="stat-value" id="totalTraders">Loading...</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="tradersChange">0</span>
+          </span>
+          <span class="stat-time" id="tradersTime">updating now</span>
+        </div>
       </div>
-      <div class="stat-value" id="totalTraders">8,000,000</div>
-      <div class="stat-meta">
-        <span class="stat-change positive" id="tradersChangeContainer">
-          <i class="fas fa-arrow-up"></i>
-          <span id="tradersChange">0</span>
-        </span>
-        <span class="stat-time" id="tradersTime">just now</span>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-chart-line"></i>
+          <div class="stat-label">24h Volume</div>
+        </div>
+        <div class="stat-value" id="dailyVolume">Loading...</div>
+        <div class="stat-meta">
+          <span class="stat-change positive">
+            <i class="fas fa-arrow-up"></i>
+            <span id="volumeChange">$0</span>
+          </span>
+          <span class="stat-time" id="volumeTime">updating now</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <i class="stat-icon fas fa-coins"></i>
+          <div class="stat-label">Total Assets</div>
+        </div>
+        <div class="stat-value">100+</div>
+        <div class="stat-meta">
+          <span class="stat-change neutral">
+            <i class="fas fa-lock"></i>
+            <span>fixed</span>
+          </span>
+        </div>
       </div>
     </div>
-    
-    <!-- 24h Volume Card -->
-    <div class="stat-card animated">
-      <div class="stat-header">
-        <div class="stat-icon">
-          <i class="fas fa-chart-line"></i>
-        </div>
-        <div class="stat-label">24h Volume</div>
-      </div>
-      <div class="stat-value" id="dailyVolume">$312,102,551.33</div>
-      <div class="stat-meta">
-        <span class="stat-change positive" id="volumeChangeContainer">
-          <i class="fas fa-arrow-up"></i>
-          <span id="volumeChange">$0</span>
-        </span>
-        <span class="stat-time" id="volumeTime">just now</span>
-      </div>
-    </div>
-    
-    <!-- Total Assets Card -->
-    <div class="stat-card animated">
-      <div class="stat-header">
-        <div class="stat-icon">
-          <i class="fas fa-coins"></i>
-        </div>
-        <div class="stat-label">Total Assets</div>
-      </div>
-      <div class="stat-value" id="totalAssets">100+</div>
-      <div class="stat-meta">
-        <span class="stat-change neutral">
-          <i class="fas fa-lock"></i>
-          <span>fixed</span>
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
 
     <!-- Gainers & Trending Section -->
     <div class="gainers-trending">
@@ -3187,182 +3033,68 @@
         document.getElementById('nextMarketPage').disabled = marketPagination.currentPage >= marketPagination.totalPages;
       }
 
-
-// Add this to your existing JavaScript (around line 3316 where the error occurs)
-const marketStats = {
-  elements: {
-    totalTraders: document.getElementById('totalTraders'),
-    dailyVolume: document.getElementById('dailyVolume'),
-    tradersChange: document.getElementById('tradersChange'),
-    volumeChange: document.getElementById('volumeChange'),
-    tradersChangeContainer: document.getElementById('tradersChangeContainer'),
-    volumeChangeContainer: document.getElementById('volumeChangeContainer'),
-    tradersTime: document.getElementById('tradersTime'),
-    volumeTime: document.getElementById('volumeTime'),
-    refreshBtn: document.getElementById('refreshStats')
-  },
-
-  // Format numbers with commas
-  formatNumber: function(num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  },
-
-  // Format currency
-  formatCurrency: function(num) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(num);
-  },
-
-  // Format time since update
-  formatTimeSince: function(dateString) {
-    const now = new Date();
-    const updatedAt = new Date(dateString);
-    const diffInSeconds = Math.floor((now - updatedAt) / 1000);
-    
-    if (diffInSeconds < 60) return 'just now';
-    if (diffInSeconds < 3600) {
-      const mins = Math.floor(diffInSeconds / 60);
-      return `${mins} min${mins !== 1 ? 's' : ''} ago`;
-    }
-    if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-    }
-    const days = Math.floor(diffInSeconds / 86400);
-    return `${days} day${days !== 1 ? 's' : ''} ago`;
-  },
-
-  // Animate number change
-  animateValue: function(element, start, end, isCurrency = false, duration = 1000) {
-    const startTime = performance.now();
-    const formatFn = isCurrency ? this.formatCurrency : this.formatNumber;
-    
-    function updateValue(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const value = start + (end - start) * progress;
-      
-      element.textContent = formatFn(Math.floor(value));
-      
-      if (progress < 1) {
-        requestAnimationFrame(updateValue);
+      // Load gainers data
+      async function loadGainersData() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
+          if (!response.ok) throw new Error('Failed to fetch gainers');
+          
+          const { gainers } = await response.json();
+          gainersData = gainers;
+          
+          // Update pagination info
+          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
+          
+          // Update UI
+          updateGainersList(gainers);
+        } catch (error) {
+          console.error('Error loading gainers:', error);
+          showToast('Failed to load top gainers', 'error');
+          
+          const container = document.getElementById('gainersList');
+          container.innerHTML = `
+            <div style="padding: 20px; text-align: center; color: var(--negative);">
+              Failed to load gainers data
+            </div>
+          `;
+        }
       }
-    }
-    
-    requestAnimationFrame(updateValue);
-  },
 
-  // Fetch market stats
-  fetchStats: async function() {
-    try {
-      // Show loading state
-      this.elements.totalTraders.textContent = 'Loading...';
-      this.elements.dailyVolume.textContent = 'Loading...';
-      this.elements.tradersChange.textContent = '+0';
-      this.elements.volumeChange.textContent = '+$0';
-      this.elements.tradersTime.textContent = 'updating...';
-      this.elements.volumeTime.textContent = 'updating...';
-      this.elements.refreshBtn.disabled = true;
-      this.elements.refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading';
-      
-      // Add loading animation to cards
-      document.querySelectorAll('.stat-card').forEach(card => {
-        card.classList.add('loading');
-      });
-      
-      const response = await fetch('https://website-backendd-1.onrender.com/api/market-stats');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // Update gainers list
+      function updateGainersList(gainers = gainersData) {
+        const container = document.getElementById('gainersList');
+        container.innerHTML = '';
+        
+        // Show top 5 gainers by default
+        const topGainers = gainers.slice(0, 5);
+        
+        topGainers.forEach(gainer => {
+          const coinData = coinPrices[gainer.id] || {
+            currentPrice: gainer.currentPrice,
+            change24h: gainer.change24h || 0
+          };
+          
+          const card = document.createElement('div');
+          card.className = 'coin-list-item';
+          
+          card.innerHTML = `
+            <div class="coin-info">
+              <img src="${gainer.image}" alt="${gainer.name}" width="24">
+              <span>${gainer.name}</span>
+            </div>
+            <div class="price-info">
+              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
+              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
+                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
+              </div>
+            </div>
+          `;
+          
+          card.addEventListener('click', () => showCoinDetail(gainer.id));
+          container.appendChild(card);
+        });
       }
-      
-      const { data } = await response.json();
-      
-     // Get current displayed values
-const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '')) || data.totalTraders;
-const currentVolume = parseFloat(this.elements.dailyVolume.textContent.replace(/[^0-9.-]+/g, '')) || data.dailyVolume;
-      
-// Animate the value changes
-this.animateValue(this.elements.totalTraders, currentTraders, data.totalTraders);
-this.animateValue(this.elements.dailyVolume, currentVolume, data.dailyVolume, true);
-      
-      // Update changes
-      this.elements.tradersChange.textContent = `+${this.formatNumber(data.tradersChange)}`;
-      this.elements.volumeChange.textContent = `+${this.formatCurrency(data.volumeChange)}`;
-      
-      // Update time
-      this.elements.tradersTime.textContent = this.formatTimeSince(data.lastUpdated);
-      this.elements.volumeTime.textContent = this.formatTimeSince(data.lastUpdated);
-      
-    } catch (error) {
-      console.error('Error fetching market stats:', error);
-      
-      // Show error state
-      this.elements.totalTraders.textContent = 'Error';
-      this.elements.dailyVolume.textContent = 'Error';
-      this.elements.tradersTime.textContent = 'update failed';
-      this.elements.volumeTime.textContent = 'update failed';
-      
-      // Try to use cached values if available
-      const cachedTraders = localStorage.getItem('cachedTotalTraders');
-      const cachedVolume = localStorage.getItem('cachedDailyVolume');
-      
-      if (cachedTraders && cachedVolume) {
-        this.elements.totalTraders.textContent = this.formatNumber(cachedTraders);
-        this.elements.dailyVolume.textContent = this.formatCurrency(cachedVolume);
-      }
-    } finally {
-      // Remove loading states
-      document.querySelectorAll('.stat-card').forEach(card => {
-        card.classList.remove('loading');
-      });
-      
-      // Re-enable refresh button
-      this.elements.refreshBtn.disabled = false;
-      this.elements.refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
-      
-      // Cache the values
-      if (this.elements.totalTraders.textContent !== 'Error') {
-        localStorage.setItem('cachedTotalTraders', this.elements.totalTraders.textContent.replace(/,/g, ''));
-        localStorage.setItem('cachedDailyVolume', this.elements.dailyVolume.textContent.replace(/[^0-9.-]+/g, ''));
-      }
-    }
-  },
 
-  // Initialize
-  init: function() {
-    // Load initial data
-    this.fetchStats();
-    
-    // Set up refresh button
-    this.elements.refreshBtn.addEventListener('click', () => this.fetchStats());
-    
-    // Set up periodic refresh (every 30 seconds)
-    setInterval(() => this.fetchStats(), 30000);
-    
-    // Add hover animations
-    document.querySelectorAll('.stat-card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-5px)';
-        card.style.boxShadow = '0 12px 24px rgba(0, 0, 0, 0.25)';
-      });
-      
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.boxShadow = '';
-      });
-    });
-  }
-};
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-  marketStats.init();
-});
       // Load trending data
       async function loadTrendingData() {
         try {
@@ -4243,4 +3975,4 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     </script>
 </body>
-</html>
+</html>   
