@@ -3202,52 +3202,73 @@ const marketStats = {
   },
 
   // Format numbers for display
-formatNumber: function(value, isCurrency = false) {
-  if (isCurrency) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(value);
-  }
-  return new Intl.NumberFormat('en-US').format(value);
-},
-
-// Animate number change with rolling effect
-animateNumberChange: function(element, newValue, isCurrency = false) {
-  if (!element) return;
-  
-  const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '')) || 0;
-  const difference = newValue - currentValue;
-  const duration = 1000; // 1 second
-  const startTime = performance.now();
-  
-  // Add updating indicator
-  element.classList.add('updating');
-  
-  const animate = (timestamp) => {
-    const progress = Math.min((timestamp - startTime) / duration, 1);
-    const currentFrameValue = currentValue + (difference * progress);
-    
-    // Format the number
-    const formattedValue = isCurrency 
-      ? this.formatNumber(Math.floor(currentFrameValue), true) 
-      : this.formatNumber(Math.floor(currentFrameValue));
-    
-    element.textContent = isCurrency 
-      ? formattedValue 
-      : formattedValue;
-    
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    } else {
-      element.classList.remove('updating');
+  formatNumber: function(value, isCurrency = false) {
+    if (isCurrency) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
     }
-  };
-  
-  requestAnimationFrame(animate);
-},
+    return new Intl.NumberFormat('en-US').format(value);
+  },
+
+  // Format time since update
+  formatTimeSince: function(timestamp) {
+    const now = new Date();
+    const updatedAt = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - updatedAt) / 1000);
+    
+    if (diffInSeconds < 60) {
+      return 'just now';
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `${days} day${days !== 1 ? 's' : ''} ago`;
+    }
+  },
+
+  // Animate number change with rolling effect
+  animateNumberChange: function(element, newValue, isCurrency = false) {
+    if (!element) return;
+    
+   const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '')) || 0; // Fixed line
+    const difference = newValue - currentValue;
+    const duration = 1000; // 1 second
+    const startTime = performance.now();
+    
+    // Add updating indicator
+    element.classList.add('updating');
+    
+    const animate = (timestamp) => {
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const currentFrameValue = currentValue + (difference * progress);
+      
+      // Format the number
+      const formattedValue = isCurrency 
+        ? this.formatNumber(Math.floor(currentFrameValue), true) 
+        : this.formatNumber(Math.floor(currentFrameValue));
+      
+      element.textContent = isCurrency 
+        ? formattedValue 
+        : formattedValue;
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        element.classList.remove('updating');
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  },
+
   // Fetch market stats from API
   fetchMarketStats: async function() {
     try {
@@ -3349,41 +3370,6 @@ animateNumberChange: function(element, newValue, isCurrency = false) {
 document.addEventListener('DOMContentLoaded', () => {
   marketStats.init();
 });
-      // Update gainers list
-      function updateGainersList(gainers = gainersData) {
-        const container = document.getElementById('gainersList');
-        container.innerHTML = '';
-        
-        // Show top 5 gainers by default
-        const topGainers = gainers.slice(0, 5);
-        
-        topGainers.forEach(gainer => {
-          const coinData = coinPrices[gainer.id] || {
-            currentPrice: gainer.currentPrice,
-            change24h: gainer.change24h || 0
-          };
-          
-          const card = document.createElement('div');
-          card.className = 'coin-list-item';
-          
-          card.innerHTML = `
-            <div class="coin-info">
-              <img src="${gainer.image}" alt="${gainer.name}" width="24">
-              <span>${gainer.name}</span>
-            </div>
-            <div class="price-info">
-              <div class="price">$${coinData.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</div>
-              <div class="price-change ${coinData.change24h >= 0 ? 'positive' : 'negative'}">
-                ${coinData.change24h >= 0 ? '+' : ''}${coinData.change24h.toFixed(2)}%
-              </div>
-            </div>
-          `;
-          
-          card.addEventListener('click', () => showCoinDetail(gainer.id));
-          container.appendChild(card);
-        });
-      }
-
       // Load trending data
       async function loadTrendingData() {
         try {
