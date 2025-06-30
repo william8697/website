@@ -3232,7 +3232,7 @@ class MarketStats {
       const { data } = await response.json();
       
       // Get current displayed values
-      const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '') || 8000000;
+      const currentTraders = parseInt(this.elements.totalTraders.textContent.replace(/,/g, '')) || 8000000;
       const currentVolume = parseInt(this.elements.dailyVolume.textContent.replace(/[$,]/g, '')) || 652000000;
       
       // Animate the numbers
