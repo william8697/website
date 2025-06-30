@@ -3202,73 +3202,52 @@ const marketStats = {
   },
 
   // Format numbers for display
-  formatNumber: function(value, isCurrency = false) {
-    if (isCurrency) {
-      return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(value);
-    }
-    return new Intl.NumberFormat('en-US').format(value);
-  },
+formatNumber: function(value, isCurrency = false) {
+  if (isCurrency) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(value);
+  }
+  return new Intl.NumberFormat('en-US').format(value);
+},
 
-  // Format time since update
-  formatTimeSince: function(timestamp) {
-    const now = new Date();
-    const updatedAt = new Date(timestamp);
-    const diffInSeconds = Math.floor((now - updatedAt) / 1000);
+// Animate number change with rolling effect
+animateNumberChange: function(element, newValue, isCurrency = false) {
+  if (!element) return;
+  
+  const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '')) || 0;
+  const difference = newValue - currentValue;
+  const duration = 1000; // 1 second
+  const startTime = performance.now();
+  
+  // Add updating indicator
+  element.classList.add('updating');
+  
+  const animate = (timestamp) => {
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const currentFrameValue = currentValue + (difference * progress);
     
-    if (diffInSeconds < 60) {
-      return 'just now';
-    } else if (diffInSeconds < 3600) {
-      const minutes = Math.floor(diffInSeconds / 60);
-      return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-    } else if (diffInSeconds < 86400) {
-      const hours = Math.floor(diffInSeconds / 3600);
-      return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    // Format the number
+    const formattedValue = isCurrency 
+      ? this.formatNumber(Math.floor(currentFrameValue), true) 
+      : this.formatNumber(Math.floor(currentFrameValue));
+    
+    element.textContent = isCurrency 
+      ? formattedValue 
+      : formattedValue;
+    
+    if (progress < 1) {
+      requestAnimationFrame(animate);
     } else {
-      const days = Math.floor(diffInSeconds / 86400);
-      return `${days} day${days !== 1 ? 's' : ''} ago`;
+      element.classList.remove('updating');
     }
-  },
-
-  // Animate number change with rolling effect
-  animateNumberChange: function(element, newValue, isCurrency = false) {
-    if (!element) return;
-    
-    const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '') || 0;
-    const difference = newValue - currentValue;
-    const duration = 1000; // 1 second
-    const startTime = performance.now();
-    
-    // Add updating indicator
-    element.classList.add('updating');
-    
-    const animate = (timestamp) => {
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const currentFrameValue = currentValue + (difference * progress);
-      
-      // Format the number
-      const formattedValue = isCurrency 
-        ? this.formatNumber(Math.floor(currentFrameValue), true) 
-        : this.formatNumber(Math.floor(currentFrameValue));
-      
-      element.textContent = isCurrency 
-        ? formattedValue 
-        : formattedValue;
-      
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      } else {
-        element.classList.remove('updating');
-      }
-    };
-    
-    requestAnimationFrame(animate);
-  },
-
+  };
+  
+  requestAnimationFrame(animate);
+},
   // Fetch market stats from API
   fetchMarketStats: async function() {
     try {
