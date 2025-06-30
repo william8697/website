@@ -3191,7 +3191,6 @@ const marketStats = {
   elements: {
     totalTraders: document.getElementById('totalTraders'),
     dailyVolume: document.getElementById('dailyVolume'),
-    totalAssets: document.getElementById('totalAssets'),
     tradersChange: document.getElementById('tradersChange'),
     volumeChange: document.getElementById('volumeChange'),
     tradersChangeContainer: document.getElementById('tradersChangeContainer'),
@@ -3239,9 +3238,9 @@ const marketStats = {
   animateNumberChange: function(element, newValue, isCurrency = false) {
     if (!element) return;
     
-    const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '')) || 0;
+    const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, '') || 0;
     const difference = newValue - currentValue;
-    const duration = 1000; // Animation duration in ms
+    const duration = 1000; // 1 second
     const startTime = performance.now();
     
     // Add updating indicator
@@ -3256,7 +3255,9 @@ const marketStats = {
         ? this.formatNumber(Math.floor(currentFrameValue), true) 
         : this.formatNumber(Math.floor(currentFrameValue));
       
-      element.textContent = formattedValue;
+      element.textContent = isCurrency 
+        ? formattedValue 
+        : formattedValue;
       
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -3300,41 +3301,28 @@ const marketStats = {
       this.animateNumberChange(this.elements.dailyVolume, data.dailyVolume, true);
       
       // Update changes
-      if (this.elements.tradersChange) {
-        this.elements.tradersChange.textContent = `+${this.formatNumber(data.tradersChange)}`;
-        this.elements.tradersChangeContainer.className = `stat-change ${data.tradersChange >= 0 ? 'positive' : 'negative'}`;
-      }
+      this.elements.tradersChange.textContent = `+${this.formatNumber(data.tradersChange)}`;
+      this.elements.tradersChangeContainer.className = `stat-change ${data.tradersChange >= 0 ? 'positive' : 'negative'}`;
       
-      if (this.elements.volumeChange) {
-        this.elements.volumeChange.textContent = `+$${this.formatNumber(data.volumeChange)}`;
-        this.elements.volumeChangeContainer.className = `stat-change ${data.volumeChange >= 0 ? 'positive' : 'negative'}`;
-      }
+      this.elements.volumeChange.textContent = `+$${this.formatNumber(data.volumeChange)}`;
+      this.elements.volumeChangeContainer.className = `stat-change ${data.volumeChange >= 0 ? 'positive' : 'negative'}`;
       
       // Update timestamps
-      if (this.elements.tradersTime) {
-        this.elements.tradersTime.textContent = this.formatTimeSince(data.lastUpdated);
-      }
-      
-      if (this.elements.volumeTime) {
-        this.elements.volumeTime.textContent = this.formatTimeSince(data.lastUpdated);
-      }
+      this.elements.tradersTime.textContent = this.formatTimeSince(data.lastUpdated);
+      this.elements.volumeTime.textContent = this.formatTimeSince(data.lastUpdated);
       
     } catch (error) {
       console.error('Error fetching market stats:', error);
       
       // Show error state
-      if (this.elements.totalTraders) {
-        this.elements.totalTraders.textContent = 'Error';
-        this.elements.totalTraders.style.color = '#f6465d';
-      }
+      this.elements.totalTraders.textContent = 'Error';
+      this.elements.totalTraders.style.color = '#f6465d';
       
-      if (this.elements.dailyVolume) {
-        this.elements.dailyVolume.textContent = 'Error';
-        this.elements.dailyVolume.style.color = '#f6465d';
-      }
+      this.elements.dailyVolume.textContent = 'Error';
+      this.elements.dailyVolume.style.color = '#f6465d';
       
-      if (this.elements.tradersTime) this.elements.tradersTime.textContent = 'update failed';
-      if (this.elements.volumeTime) this.elements.volumeTime.textContent = 'update failed';
+      this.elements.tradersTime.textContent = 'update failed';
+      this.elements.volumeTime.textContent = 'update failed';
       
       // Show error toast
       showToast('Failed to load market stats. Using cached data.', 'error');
@@ -3382,34 +3370,6 @@ const marketStats = {
 document.addEventListener('DOMContentLoaded', () => {
   marketStats.init();
 });
-    
-      // Load gainers data
-      async function loadGainersData() {
-        try {
-          const response = await fetch(`${API_BASE_URL}/markets/gainers`);
-          if (!response.ok) throw new Error('Failed to fetch gainers');
-          
-          const { gainers } = await response.json();
-          gainersData = gainers;
-          
-          // Update pagination info
-          allGainersPagination.totalPages = Math.ceil(gainers.length / allGainersPagination.itemsPerPage);
-          
-          // Update UI
-          updateGainersList(gainers);
-        } catch (error) {
-          console.error('Error loading gainers:', error);
-          showToast('Failed to load top gainers', 'error');
-          
-          const container = document.getElementById('gainersList');
-          container.innerHTML = `
-            <div style="padding: 20px; text-align: center; color: var(--negative);">
-              Failed to load gainers data
-            </div>
-          `;
-        }
-      }
-
       // Update gainers list
       function updateGainersList(gainers = gainersData) {
         const container = document.getElementById('gainersList');
