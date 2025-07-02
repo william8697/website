@@ -297,42 +297,36 @@
     }
 
     /* Table Styles */
-    .market-section {
-  background: #1e2329;
+  /* Market Overview Styles */
+.market-section {
+  background: var(--secondary-bg);
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.view-all {
-  background: transparent;
-  border: 1px solid #f0b90b;
-  color: #f0b90b;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .market-table {
   overflow-x: auto;
 }
 
-.coin-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 80px;
-  align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #2b3139;
+.market-table table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.coin-info {
+.market-table th, 
+.market-table td {
+  padding: 12px 16px;
+  text-align: right;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.market-table th:first-child,
+.market-table td:first-child {
+  text-align: left;
+}
+
+.coin-cell {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -341,28 +335,39 @@
 .coin-icon {
   width: 24px;
   height: 24px;
+  border-radius: 50%;
+}
+
+.coin-name {
+  font-weight: 500;
+}
+
+.coin-symbol {
+  color: var(--text-secondary);
+  font-size: 0.85em;
 }
 
 .positive {
-  color: #0ecb81;
+  color: var(--positive);
 }
 
 .negative {
-  color: #f6465d;
+  color: var(--negative);
 }
 
 .sparkline-container {
-  width: 80px;
-  height: 30px;
+  width: 100px;
+  height: 40px;
 }
 
-@media (max-width: 768px) {
-  .coin-row {
-    grid-template-columns: 2fr 1fr 1fr 1fr 80px;
-  }
-  .market-cap, .volume {
-    display: none;
-  }
+.view-all {
+  background: transparent;
+  border: 1px solid var(--primary-accent);
+  color: var(--primary-accent);
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
 }
 
   /* Market Stats Section Styles */
@@ -1789,17 +1794,30 @@
       </div>
     </div>
 
-    <!-- Market Data Section -->
-    <div class="market-section">
+  
+    <!-- Market Overview Section -->
+<section class="market-section">
   <div class="section-header">
     <h2>Market Overview</h2>
-    <button class="view-all">View All</button>
+    <button class="view-all" id="viewAllMarkets">View All</button>
   </div>
   <div class="market-table">
-    <!-- Filled dynamically -->
+    <table>
+      <thead>
+        <tr>
+          <th>Coin</th>
+          <th>Price</th>
+          <th>1h</th>
+          <th>24h</th>
+          <th>Volume (24h)</th>
+          <th>Market Cap</th>
+          <th>7d Chart</th>
+        </tr>
+      </thead>
+      <tbody id="marketData"></tbody>
+    </table>
   </div>
-</div>
-
+</section>
    <!-- Market Stats Section -->
 <section class="market-stats-section">
   <div class="market-stats-header">
