@@ -3031,72 +3031,178 @@
       // Market Overview
 document.addEventListener('DOMContentLoaded', async () => {
   try {
+    // Fetch market data from API
     const response = await fetch('https://website-backendd-1.onrender.com/api/markets');
+    
+    // Check if response is successful
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    // Parse JSON data
     const data = await response.json();
+    
+    // Validate data structure
+    if (!Array.isArray(data)) {
+      throw new Error('Invalid data format: Expected array');
+    }
+    
+    // Render top 5 coins
     renderMarketData(data.slice(0, 5));
     
-    document.getElementById('viewAllMarkets').addEventListener('click', () => {
-      window.location.href = 'all-markets.html';
-    });
+    // Set up "View All" button event listener
+    const viewAllButton = document.getElementById('viewAllMarkets');
+    if (viewAllButton) {
+      viewAllButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'all-markets.html';
+      });
+    }
+    
   } catch (error) {
     console.error('Market data error:', error);
+    
+    // Display error message to user
+    const container = document.getElementById('marketData');
+    if (container) {
+      container.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; color: var(--negative); padding: 20px;">
+            Failed to load market data. Please try again later.
+          </td>
+        </tr>
+      `;
+    }
   }
 });
 
 function renderMarketData(data) {
   const container = document.getElementById('marketData');
+  
+  // Validate container exists
+  if (!container) {
+    console.error('Market data container not found');
+    return;
+  }
+  
+  // Clear existing content
   container.innerHTML = '';
   
+  // Process each coin
   data.forEach(coin => {
-    const row = document.createElement('tr');
-    row.className = 'coin-row';
-    row.innerHTML = `
-      <td>
-        <div class="coin-cell">
-          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
-          <div>
-            <div>${coin.name}</div>
-            <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+    try {
+      // Validate required coin properties
+      if (!coin.id || !coin.name || !coin.symbol || !coin.image || 
+          typeof coin.current_price !== 'number' ||
+          typeof coin.price_change_percentage_1h !== 'number' ||
+          typeof coin.price_change_percentage_24h !== 'number' ||
+          typeof coin.total_volume !== 'number' ||
+          typeof coin.market_cap !== 'number' ||
+          !coin.sparkline_in_7d || !Array.isArray(coin.sparkline_in_7d.price)) {
+        console.warn('Invalid coin data structure:', coin);
+        return;
+      }
+      
+      // Create table row
+      const row = document.createElement('tr');
+      row.className = 'coin-row';
+      
+      // Format numbers
+      const currentPrice = coin.current_price.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 8
+      });
+      
+      const volume = (coin.total_volume / 1000000).toFixed(1);
+      const marketCap = (coin.market_cap / 1000000000).toFixed(2);
+      
+      // Set row HTML
+      row.innerHTML = `
+        <td>
+          <div class="coin-cell">
+            <img src="${coin.image}" alt="${coin.name}" class="coin-icon" 
+                 onerror="this.src='https://via.placeholder.com/24?text=COIN'">
+            <div>
+              <div>${coin.name}</div>
+              <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+            </div>
           </div>
-        </div>
-      </td>
-      <td>$${coin.current_price.toLocaleString()}</td>
-      <td class="${coin.price_change_percentage_1h >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_1h).toFixed(1)}%
-      </td>
-      <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
-      </td>
-      <td>$${(coin.total_volume / 1000000).toFixed(1)}M</td>
-      <td>$${(coin.market_cap / 1000000000).toFixed(2)}B</td>
-      <td><div class="sparkline-container" id="sparkline-${coin.id}"></div></td>
-    `;
-    container.appendChild(row);
-    renderSparkline(coin);
+        </td>
+        <td>$${currentPrice}</td>
+        <td class="${coin.price_change_percentage_1h >= 0 ? 'positive' : 'negative'}">
+          ${coin.price_change_percentage_1h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_1h).toFixed(1)}%
+        </td>
+        <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+          ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
+        </td>
+        <td>$${volume}M</td>
+        <td>$${marketCap}B</td>
+        <td><div class="sparkline-container" id="sparkline-${coin.id}"></div></td>
+      `;
+      
+      // Append row to table
+      container.appendChild(row);
+      
+      // Render sparkline chart
+      renderSparkline(coin);
+      
+    } catch (error) {
+      console.error('Error rendering coin:', coin, error);
+    }
   });
 }
 
 function renderSparkline(coin) {
-  const ctx = document.getElementById(`sparkline-${coin.id}`).getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: Array(7).fill(''),
-      datasets: [{
-        data: coin.sparkline_in_7d.price,
-        borderColor: coin.price_change_percentage_7d_in_currency >= 0 ? '#0ecb81' : '#f6465d',
-        borderWidth: 2,
-        fill: false,
-        tension: 0.4,
-        pointRadius: 0
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { x: { display: false }, y: { display: false } }
+  try {
+    const canvas = document.getElementById(`sparkline-${coin.id}`);
+    if (!canvas) {
+      console.error('Sparkline container not found for coin:', coin.id);
+      return;
     }
-  });
+    
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Could not get 2D context for canvas');
+      return;
+    }
+    
+    // Validate sparkline data
+    if (!coin.sparkline_in_7d || !Array.isArray(coin.sparkline_in_7d.price) || 
+        coin.sparkline_in_7d.price.length === 0) {
+      console.warn('Invalid sparkline data for coin:', coin.id);
+      return;
+    }
+    
+    // Create chart
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(7).fill(''),
+        datasets: [{
+          data: coin.sparkline_in_7d.price,
+          borderColor: coin.price_change_percentage_7d_in_currency >= 0 ? '#0ecb81' : '#f6465d',
+          borderWidth: 2,
+          fill: false,
+          tension: 0.4,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { 
+          legend: { display: false } 
+        },
+        scales: { 
+          x: { display: false }, 
+          y: { display: false } 
+        }
+      }
+    });
+    
+  } catch (error) {
+    console.error('Error rendering sparkline for coin:', coin.id, error);
+  }
 }
      // Market Stats Section - Frontend Implementation
 const marketStats = {
