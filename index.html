@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+       <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -298,7 +298,7 @@
     }
 
     /* Table Styles */
-.market-section {
+..market-section {
   background: var(--secondary-bg);
   border-radius: 12px;
   padding: 16px;
@@ -368,8 +368,31 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9em;
+  transition: all 0.2s ease;
 }
 
+.view-all:hover {
+  background: rgba(240, 185, 11, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .market-table th, 
+  .market-table td {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  .coin-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .sparkline-container {
+    width: 80px;
+    height: 30px;
+  }
+}
   /* Market Stats Section Styles */
 .market-stats-section {
   margin: 2rem 0;
@@ -1796,7 +1819,8 @@
 
   
  <!-- Market Overview Section -->
-<div class="market-section">
+
+  <section class="market-section">
   <div class="section-header">
     <h2>Market Overview</h2>
     <button class="view-all" id="viewAllMarkets">View All</button>
@@ -1812,15 +1836,14 @@
           <th>Volume (24h)</th>
           <th>Market Cap</th>
           <th>7d Chart</th>
-          <th>Action</th>
         </tr>
       </thead>
-      <tbody id="marketData"></tbody>
+      <tbody id="marketData">
+        <!-- Data will be loaded here -->
+      </tbody>
     </table>
   </div>
-</div>
-
-    
+</section>  
    <!-- Market Stats Section -->
 <section class="market-stats-section">
   <div class="market-stats-header">
@@ -3053,85 +3076,78 @@
       }
 
       // Market Overview
-// Market Data Loader
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadMarketData();
+      document.addEventListener('DOMContentLoaded', async () => {
+  await loadMarketData();
   
-  document.getElementById('viewAllMarkets')?.addEventListener('click', (e) => {
+  // View All click handler
+  document.getElementById('viewAllMarkets')?.addEventListener('click', async (e) => {
     e.preventDefault();
-    showAllCoins();
+    await showAllMarkets();
   });
 });
 
 async function loadMarketData() {
   try {
-    const response = await fetch(`${API_BASE_URL}/markets`);
+    const response = await fetch(`${API_BASE_URL}/markets?limit=10`);
     if (!response.ok) throw new Error('Network response was not ok');
     
-    const data = await response.json();
-    renderMarketOverview(data.slice(0, 10));
+    const { data } = await response.json();
+    renderMarketData(data);
+    
   } catch (error) {
     console.error('Failed to load market data:', error);
-    document.getElementById('marketData').innerHTML = `
+    showToast('Failed to load market data', 'error');
+    
+    const container = document.getElementById('marketData');
+    container.innerHTML = `
       <tr>
-        <td colspan="8" class="error-message">
+        <td colspan="7" class="error-message">
           Failed to load data. Please try again later.
         </td>
       </tr>`;
   }
 }
 
-function renderMarketOverview(data) {
+function renderMarketData(coins) {
   const container = document.getElementById('marketData');
   if (!container) return;
   
-  container.innerHTML = data.map(coin => `
+  container.innerHTML = coins.map(coin => `
     <tr data-coin-id="${coin.id}" class="clickable-row">
       <td>
         <div class="coin-cell">
           <img src="${coin.image}" alt="${coin.name}" class="coin-icon" 
-               onerror="this.onerror=null;this.src='https://via.placeholder.com/24'">
+               onerror="this.onerror=null;this.src='https://cryptocurrencyliveprices.com/img/${coin.id}.png'">
           <div>
             <div class="coin-name">${coin.name}</div>
             <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
           </div>
         </div>
       </td>
-      <td>$${coin.current_price.toLocaleString()}</td>
-      <td class="${coin.price_change_percentage_1h_in_currency >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_1h_in_currency >= 0 ? '▲' : '▼'} 
-        ${Math.abs(coin.price_change_percentage_1h_in_currency).toFixed(1)}%
+      <td>$${coin.currentPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 8})}</td>
+      <td class="${coin.priceChange1h >= 0 ? 'positive' : 'negative'}">
+        ${coin.priceChange1h >= 0 ? '▲' : '▼'} 
+        ${Math.abs(coin.priceChange1h).toFixed(1)}%
       </td>
-      <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} 
-        ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
+      <td class="${coin.priceChange24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.priceChange24h >= 0 ? '▲' : '▼'} 
+        ${Math.abs(coin.priceChange24h).toFixed(1)}%
       </td>
-      <td>$${(coin.total_volume / 1000000).toFixed(1)}M</td>
-      <td>$${(coin.market_cap / 1000000000).toFixed(2)}B</td>
+      <td>$${(coin.volume24h / 1000000).toFixed(1)}M</td>
+      <td>$${(coin.marketCap / 1000000000).toFixed(2)}B</td>
       <td>
         <div class="sparkline-container">
-          <canvas data-prices='${JSON.stringify(coin.sparkline_in_7d.price)}'
-                  data-trend="${coin.price_change_percentage_7d_in_currency >= 0 ? 'up' : 'down'}">
+          <canvas data-prices='${JSON.stringify(coin.sparkline)}'
+                  data-trend="${coin.priceChange7d >= 0 ? 'up' : 'down'}">
           </canvas>
         </div>
-      </td>
-      <td>
-        <button class="btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-        <button class="btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
       </td>
     </tr>
   `).join('');
 
   initSparklines();
-  
-  document.querySelectorAll('.clickable-row').forEach(row => {
-    row.addEventListener('click', () => {
-      const coinId = row.getAttribute('data-coin-id');
-      showCoinDetail(coinId);
-    });
-  });
+  setupRowClickHandlers();
 }
 
 function initSparklines() {
@@ -3162,7 +3178,34 @@ function initSparklines() {
     });
   });
 }
-      
+
+function setupRowClickHandlers() {
+  document.querySelectorAll('.clickable-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const coinId = row.getAttribute('data-coin-id');
+      showCoinDetail(coinId);
+    });
+  });
+}
+
+async function showAllMarkets() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/markets?limit=100`);
+    if (!response.ok) throw new Error('Failed to load all markets');
+    
+    const { data } = await response.json();
+    renderAllMarketsModal(data);
+    
+  } catch (error) {
+    console.error('Failed to load all markets:', error);
+    showToast('Failed to load all markets', 'error');
+  }
+}
+
+function renderAllMarketsModal(coins) {
+  // Implementation for showing all markets in a modal
+  // Similar to the market overview but with pagination
+}
      // Market Stats Section - Frontend Implementation
 const marketStats = {
   elements: {
