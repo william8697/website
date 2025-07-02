@@ -8,7 +8,6 @@
   <title>Bitluxo</title>
   <link rel="icon" href="https://www.dropbox.com/scl/fi/1dq16nex1borvvknpcwox/circular_dark_background.png?rlkey=sq2ujl2oxxk9vyvg1j7oz0cdb&raw=1" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --primary-bg: #0b0e11;
@@ -298,7 +297,73 @@
     }
 
     /* Table Styles */
- 
+    .market-section {
+  background: #1e2329;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.view-all {
+  background: transparent;
+  border: 1px solid #f0b90b;
+  color: #f0b90b;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.market-table {
+  overflow-x: auto;
+}
+
+.coin-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 80px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #2b3139;
+}
+
+.coin-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.coin-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.positive {
+  color: #0ecb81;
+}
+
+.negative {
+  color: #f6465d;
+}
+
+.sparkline-container {
+  width: 80px;
+  height: 30px;
+}
+
+@media (max-width: 768px) {
+  .coin-row {
+    grid-template-columns: 2fr 1fr 1fr 1fr 80px;
+  }
+  .market-cap, .volume {
+    display: none;
+  }
+}
 
   /* Market Stats Section Styles */
 .market-stats-section {
@@ -1725,6 +1790,15 @@
     </div>
 
     <!-- Market Data Section -->
+    <div class="market-section">
+  <div class="section-header">
+    <h2>Market Overview</h2>
+    <button class="view-all">View All</button>
+  </div>
+  <div class="market-table">
+    <!-- Filled dynamically -->
+  </div>
+</div>
 
    <!-- Market Stats Section -->
 <section class="market-stats-section">
@@ -2958,7 +3032,82 @@
       }
 
       // Market Overview
+async function loadMarketData() {
+  try {
+    const response = await fetch('/api/markets');
+    const data = await response.json();
+    renderMarketData(data.slice(0, 5));
+  } catch (error) {
+    console.error('Error loading market data:', error);
+  }
+}
 
+function renderMarketData(data) {
+  const container = document.querySelector('.market-table');
+  container.innerHTML = '';
+  
+  data.forEach(coin => {
+    const row = document.createElement('div');
+    row.className = 'coin-row';
+    
+    const isPositive = coin.price_change_percentage_24h >= 0;
+    
+    row.innerHTML = `
+      <div class="coin-info">
+        <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+        <div>
+          <div>${coin.name}</div>
+          <div style="color: #848e9c; font-size: 12px">${coin.symbol.toUpperCase()}</div>
+        </div>
+      </div>
+      <div>$${coin.current_price.toLocaleString()}</div>
+      <div class="${coin.price_change_percentage_1h_in_currency >= 0 ? 'positive' : 'negative'}">
+        ${coin.price_change_percentage_1h_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_1h_in_currency).toFixed(1)}%
+      </div>
+      <div class="${isPositive ? 'positive' : 'negative'}">
+        ${isPositive ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
+      </div>
+      <div class="volume">$${(coin.total_volume / 1000000).toFixed(1)}M</div>
+      <div class="market-cap">$${(coin.market_cap / 1000000000).toFixed(2)}B</div>
+      <div class="sparkline-container">
+        <canvas class="sparkline" data-prices="${JSON.stringify(coin.sparkline)}"></canvas>
+      </div>
+    `;
+    
+    container.appendChild(row);
+  });
+  
+  // Initialize sparklines
+  initSparklines();
+}
+
+function initSparklines() {
+  document.querySelectorAll('.sparkline').forEach(canvas => {
+    const prices = JSON.parse(canvas.dataset.prices);
+    const ctx = canvas.getContext('2d');
+    const isPositive = prices[prices.length - 1] >= prices[0];
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: Array(prices.length).fill(''),
+        datasets: [{
+          data: prices,
+          borderColor: isPositive ? '#0ecb81' : '#f6465d',
+          borderWidth: 2,
+          tension: 0.4,
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { x: { display: false }, y: { display: false } }
+      }
+    });
+  });
+}
      // Market Stats Section - Frontend Implementation
 const marketStats = {
   elements: {
@@ -4086,4 +4235,4 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     </script>
 </body>
-</html>   
+</html>  
