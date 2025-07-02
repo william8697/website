@@ -3067,7 +3067,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadMarketData() {
   try {
-    const response = await fetch('/api/markets');
+    const response = await fetch(`${API_BASE_URL}/markets`);
     if (!response.ok) throw new Error('Network response was not ok');
     
     const data = await response.json();
