@@ -3782,7 +3782,7 @@ function updateTradeTotal() {
   if (!currentTrade) return;
   
   const amount = parseFloat(marketElements.tradeAmount.value);
-  if (isNaN(amount) {
+  if (isNaN(amount)) {
     marketElements.tradeTotal.value = '$0.00';
     return;
   }
