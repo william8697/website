@@ -2972,7 +2972,7 @@
         await checkAuthStatus();
         
         // Load market data
-        await MarketOverview.init();
+        await MarketOverview.loadMarketData();
         
   
         // Load gainers data
@@ -4202,7 +4202,8 @@ const MarketOverview = (() => {
   return {
     init,
     showTradeModal,
-    closeModal
+    closeModal,
+    loadMarketData 
   };
 })();
 
