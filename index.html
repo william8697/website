@@ -299,10 +299,7 @@
 
     /* Table Styles */
 
-
-
-
-         .market-section {
+.market-section {
   background: var(--secondary-bg);
   border-radius: 12px;
   padding: 16px;
@@ -405,6 +402,38 @@
 
 .btn-sell:hover {
   background-color: rgba(246, 70, 93, 0.25);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.page-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  background-color: var(--card-bg);
+  color: var(--text-primary);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.page-btn:hover {
+  background-color: rgba(240, 185, 11, 0.1);
+}
+
+.page-btn.active {
+  background-color: var(--primary-accent);
+  color: #000;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
          
@@ -648,7 +677,7 @@
 }
 
     /* Gainers/Trending Section */
-   .gainers {
+  .gainers {
   flex: 1;
   background-color: var(--secondary-bg);
   border-radius: 4px;
@@ -706,7 +735,8 @@
   max-height: 400px;
   overflow-y: auto;
 }
-         .coin-list-item {
+
+.coin-list-item {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -741,7 +771,6 @@
 .price-change {
   font-size: 13px;
 }
-         
     /* Trading View */
     .trading-view {
       margin-top: 16px;
@@ -1876,7 +1905,8 @@
 
   
  <!-- Market Overview Section -->
-<div class="market-section">
+
+        <div class="market-section">
   <div class="section-header">
     <h2>Market Overview</h2>
     <button class="view-all" id="viewAllMarkets">View All</button>
@@ -1927,33 +1957,7 @@
     </div>
   </div>
 </div>
-
-<!-- Trade Modal -->
-<div class="modal" id="tradeModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title" id="tradeModalTitle">Trade</h2>
-      <span class="close-modal" onclick="closeModal('tradeModal')">&times;</span>
-    </div>
-    <div id="tradeModalContent">
-      <div class="form-group">
-        <label class="form-label">Amount (USDT)</label>
-        <input type="number" class="form-control" id="tradeAmount" placeholder="Enter amount">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Price</label>
-        <input type="text" class="form-control" id="tradePrice" readonly>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Total</label>
-        <input type="text" class="form-control" id="tradeTotal" readonly>
-      </div>
-      <button class="btn btn-primary" id="confirmTradeBtn">Confirm Trade</button>
-    </div>
-  </div>
-</div>
-
-         
+    
    <!-- Market Stats Section -->
 <section class="market-stats-section">
   <div class="market-stats-header">
@@ -2020,7 +2024,7 @@
 </section>
 
     <!-- Gainers & Trending Section -->
-    <div class="section gainers">
+  <div class="section gainers">
   <div class="section-header">
     <h2 class="section-title">Top Gainers</h2>
     <a href="#" class="section-link" id="viewAllGainers">View All</a>
@@ -2085,7 +2089,7 @@
     </div>
   </div>
 </div>
-
+    
     <!-- Trading View -->
     <div class="section trading-view">
       <div class="trading-tabs">
@@ -2221,179 +2225,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Coin Detail Modal -->
-    <div class="modal" id="coinModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="coinModalTitle">Coin Details</h2>
-          <span class="close-modal" onclick="closeModal('coinModal')">&times;</span>
-        </div>
-        <div id="coinModalContent"></div>
-      </div>
-    </div>
-
-    <!-- All Coins Modal -->
-    <div class="modal" id="allCoinsModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">All Cryptocurrencies</h2>
-          <span class="close-modal" onclick="closeModal('allCoinsModal')">&times;</span>
-        </div>
-        
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>24h Change</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="allCoinsTable">
-              <!-- All coins data will be loaded here -->
-              <tr>
-                <td colspan="4" style="text-align: center; padding: 20px;">
-                  <div style="color: var(--positive);">Loading all coins, please wait...</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="pagination-controls" id="allCoinsPagination" style="display: none;">
-          <button class="page-btn" id="prevAllCoinsPage" disabled>Previous</button>
-          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllCoinsPage">1</span></span>
-          <button class="page-btn" id="nextAllCoinsPage">Next</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- All Gainers Modal -->
-    <div class="modal" id="allGainersModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Top Gainers (24h)</h2>
-          <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
-        </div>
-        
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>24h Change</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="allGainersTable">
-              <!-- All gainers data will be loaded here -->
-              <tr>
-                <td colspan="4" style="text-align: center; padding: 20px;">
-                  <div style="color: var(--positive);">Loading gainers, please wait...</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="pagination-controls" id="allGainersPagination" style="display: none;">
-          <button class="page-btn" id="prevAllGainersPage" disabled>Previous</button>
-          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllGainersPage">1</span></span>
-          <button class="page-btn" id="nextAllGainersPage">Next</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- All Trending Modal -->
-    <div class="modal" id="allTrendingModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Trending Coins</h2>
-          <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
-        </div>
-        
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Coin</th>
-                <th>Price</th>
-                <th>24h Change</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="allTrendingTable">
-              <!-- All trending data will be loaded here -->
-              <tr>
-                <td colspan="4" style="text-align: center; padding: 20px;">
-                  <div style="color: var(--positive);">Loading trending coins, please wait...</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="pagination-controls" id="allTrendingPagination" style="display: none;">
-          <button class="page-btn" id="prevAllTrendingPage" disabled>Previous</button>
-          <span style="padding: 6px 12px; color: var(--text-secondary);">Page <span id="currentAllTrendingPage">1</span></span>
-          <button class="page-btn" id="nextAllTrendingPage">Next</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Trade Modal -->
-    <div class="modal" id="tradeModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title" id="tradeModalTitle">Trade</h2>
-          <span class="close-modal" onclick="closeModal('tradeModal')">&times;</span>
-        </div>
-        
-        <div id="tradeModalContent">
-          <div class="form-group">
-            <label class="form-label">Amount (USDT)</label>
-            <input type="number" class="form-control" id="tradeAmount" placeholder="Enter amount">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Price</label>
-            <input type="text" class="form-control" id="tradePrice" readonly>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label">Total</label>
-            <input type="text" class="form-control" id="tradeTotal" readonly>
-          </div>
-          
-          <button class="btn btn-primary" id="confirmTradeBtn" style="width: 100%; margin-top: 16px;">
-            Confirm Trade
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div class="modal" id="successModal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 class="modal-title">Trade Successful</h2>
-          <span class="close-modal" onclick="closeModal('successModal')">&times;</span>
-        </div>
-        
-        <div style="text-align: center; padding: 24px 0;">
-          <div style="font-size: 48px; color: var(--positive); margin-bottom: 16px;">✓</div>
-          <h3 style="margin-bottom: 8px;" id="successTitle">Trade Completed</h3>
-          <p id="successMessage"></p>
-          <button class="btn btn-primary" onclick="closeModal('successModal')" style="margin-top: 24px;">
-            Continue Trading
-          </button>
-        </div>
-      </div>
-    </div>
-
+    
     <!-- Footer -->
     <footer class="footer">
       <p>© 2025 Bitluxo. All rights reserved.</p>
@@ -3232,7 +3064,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadMarketData() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/overview?limit=10');
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=true&price_change_percentage=1h,24h,7d');
     if (!response.ok) throw new Error('Failed to load market data');
     
     const data = await response.json();
@@ -3325,7 +3157,7 @@ function setupMarketEventListeners() {
 
 async function showAllMarkets() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/overview?limit=100');
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h');
     if (!response.ok) throw new Error('Failed to load all markets');
     
     const data = await response.json();
@@ -3401,7 +3233,7 @@ function updateTradeTotal() {
   const amount = parseFloat(document.getElementById('tradeAmount').value);
   const price = window.currentTrade?.price;
   
-if (!price || isNaN(amount)) {
+  if (!price || isNaN(amount)) {
     document.getElementById('tradeTotal').value = '$0.00';
     return;
   }
@@ -3640,7 +3472,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
       // Load gainers data
-
 document.addEventListener('DOMContentLoaded', () => {
   loadGainersData();
   setupGainersEventListeners();
@@ -3648,7 +3479,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadGainersData() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/gainers?limit=5');
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=5&page=1');
     if (!response.ok) throw new Error('Failed to load gainers');
     
     const data = await response.json();
@@ -3685,8 +3516,7 @@ function renderGainers(data) {
     `;
     
     item.addEventListener('click', () => {
-      // You can implement a showCoinDetail function similar to Market Overview
-      console.log('Show detail for:', coin.id);
+      showCoinDetail(coin.id);
     });
     
     container.appendChild(item);
@@ -3702,7 +3532,7 @@ function setupGainersEventListeners() {
 
 async function showAllGainers() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/gainers?limit=20');
+    const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=20&page=1');
     if (!response.ok) throw new Error('Failed to load all gainers');
     
     const data = await response.json();
@@ -3743,6 +3573,11 @@ function renderAllGainers(data) {
   `).join('');
 }
 
+function showCoinDetail(coinId) {
+  // Implement your coin detail modal logic here
+  console.log('Showing details for coin:', coinId);
+}
+
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = 'none';
 }
@@ -3750,19 +3585,28 @@ function closeModal(modalId) {
 
       // Load trending data
 
-
-           document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   loadTrendingData();
   setupTrendingEventListeners();
 });
 
 async function loadTrendingData() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/trending?limit=5');
+    const response = await fetch('https://api.coingecko.com/api/v3/search/trending');
     if (!response.ok) throw new Error('Failed to load trending');
     
     const data = await response.json();
-    renderTrending(data);
+    // Process trending data to match our format
+    const trendingCoins = data.coins.map(coin => ({
+      id: coin.item.id,
+      name: coin.item.name,
+      symbol: coin.item.symbol,
+      image: coin.item.large,
+      current_price: coin.item.data.price,
+      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd
+    }));
+    
+    renderTrending(trendingCoins.slice(0, 5)); // Show top 5 trending
   } catch (error) {
     console.error('Error loading trending:', error);
     document.getElementById('trendingList').innerHTML = `
@@ -3795,8 +3639,7 @@ function renderTrending(data) {
     `;
     
     item.addEventListener('click', () => {
-      // You can implement a showCoinDetail function similar to Market Overview
-      console.log('Show detail for:', coin.id);
+      showCoinDetail(coin.id);
     });
     
     container.appendChild(item);
@@ -3812,11 +3655,20 @@ function setupTrendingEventListeners() {
 
 async function showAllTrending() {
   try {
-    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/trending?limit=20');
+    const response = await fetch('https://api.coingecko.com/api/v3/search/trending');
     if (!response.ok) throw new Error('Failed to load all trending');
     
     const data = await response.json();
-    renderAllTrending(data);
+    const trendingCoins = data.coins.map(coin => ({
+      id: coin.item.id,
+      name: coin.item.name,
+      symbol: coin.item.symbol,
+      image: coin.item.large,
+      current_price: coin.item.data.price,
+      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd
+    }));
+    
+    renderAllTrending(trendingCoins);
     document.getElementById('allTrendingModal').style.display = 'block';
   } catch (error) {
     console.error('Error loading all trending:', error);
@@ -3851,6 +3703,11 @@ function renderAllTrending(data) {
       </td>
     </tr>
   `).join('');
+}
+
+function showCoinDetail(coinId) {
+  // Implement your coin detail modal logic here
+  console.log('Showing details for coin:', coinId);
 }
 
 function closeModal(modalId) {
