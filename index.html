@@ -821,8 +821,7 @@
 }
 
     /* Gainers
-
-    /* Top Gainers Section */
+/* Top Gainers Section */
 .gainers {
   background-color: var(--secondary-bg);
   border-radius: 8px;
@@ -835,7 +834,7 @@
   overflow-y: auto;
 }
 
-.coin-list-item {
+.gainer-item {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -845,38 +844,109 @@
   transition: all 0.2s;
 }
 
-.coin-list-item:last-child {
+.gainer-item:last-child {
   border-bottom: none;
 }
 
-.coin-list-item:hover {
+.gainer-item:hover {
   background-color: rgba(240, 185, 11, 0.05);
 }
 
-.coin-info {
+.gainer-info {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
 }
 
-.price-info {
+.gainer-rank {
+  width: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.gainer-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.gainer-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.gainer-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.gainer-price-info {
   text-align: right;
+  min-width: 120px;
 }
 
-.price {
+.gainer-price {
   font-weight: 500;
 }
 
-.price-change {
+.gainer-change {
   font-size: 13px;
 }
 
-.price-change.positive {
+.gainer-change.positive {
   color: var(--positive);
 }
 
-.price-change.negative {
+.gainer-change.negative {
   color: var(--negative);
+}
+
+/* Gainers Modal */
+#gainersModal .modal-content {
+  max-width: 900px;
+}
+
+#gainersModal .search-container {
+  margin-bottom: 16px;
+}
+
+#gainersModal .search-input {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+#gainersModal table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#gainersModal th, 
+#gainersModal td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#gainersModal th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--card-bg);
+  position: sticky;
+  top: 0;
+}
+
+#gainersModal .coin-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
     
     /* Trending Section
@@ -895,7 +965,7 @@
   overflow-y: auto;
 }
 
-.coin-list-item {
+.trending-item {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
@@ -905,38 +975,112 @@
   transition: all 0.2s;
 }
 
-.coin-list-item:last-child {
+.trending-item:last-child {
   border-bottom: none;
 }
 
-.coin-list-item:hover {
+.trending-item:hover {
   background-color: rgba(240, 185, 11, 0.05);
 }
 
-.coin-info {
+.trending-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.trending-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.trending-name {
+  font-weight: 500;
+  flex: 1;
+}
+
+.trending-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.trending-price-info {
+  text-align: right;
+  min-width: 120px;
+}
+
+.trending-price {
+  font-weight: 500;
+}
+
+.trending-change {
+  font-size: 13px;
+}
+
+.trending-change.positive {
+  color: var(--positive);
+}
+
+.trending-change.negative {
+  color: var(--negative);
+}
+
+/* Trending Modal */
+#trendingModal .modal-content {
+  max-width: 900px;
+}
+
+#trendingModal .search-container {
+  margin-bottom: 16px;
+}
+
+#trendingModal .search-input {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+#trendingModal table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#trendingModal th, 
+#trendingModal td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#trendingModal th {
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--card-bg);
+  position: sticky;
+  top: 0;
+}
+
+#trendingModal .coin-cell {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.price-info {
-  text-align: right;
-}
-
-.price {
+#trendingModal .trending-score {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: rgba(240, 185, 11, 0.1);
+  color: var(--primary-accent);
+  font-size: 12px;
   font-weight: 500;
-}
-
-.price-change {
-  font-size: 13px;
-}
-
-.price-change.positive {
-  color: var(--positive);
-}
-
-.price-change.negative {
-  color: var(--negative);
 }
     
     /* Trading View */
@@ -2256,69 +2400,97 @@
 </section>
 
     <!-- Gainers & Trending Section -->
- <!-- Top Gainers Section -->
+<!-- Top Gainers Section -->
 <div class="section gainers">
   <div class="section-header">
-    <h2 class="section-title">Top Gainers</h2>
+    <h2 class="section-title">Top Gainers (24h)</h2>
     <button class="view-all" id="viewAllGainers">View All</button>
   </div>
   <div class="gainers-container" id="gainersList">
-    <!-- Data will be populated here -->
+    <!-- Top 5 gainers will be loaded here -->
   </div>
 </div>
 
-<!-- Modal for All Gainers -->
-<div class="modal" id="allGainersModal">
+<!-- Gainers Modal -->
+<div class="modal" id="gainersModal">
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title">Top Gainers (24h)</h2>
-      <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
+      <span class="close-modal" onclick="closeModal('gainersModal')">&times;</span>
     </div>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Coin</th>
-            <th>Price</th>
-            <th>24h Change</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="allGainersTable"></tbody>
-      </table>
+    <div class="modal-body">
+      <div class="search-container">
+        <input type="text" id="gainersSearch" placeholder="Search gainers..." class="search-input">
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>24h Volume</th>
+              <th>Market Cap</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="allGainersTable"></tbody>
+        </table>
+      </div>
+      <div class="pagination-controls">
+        <button class="page-btn" id="prevGainersPage">Previous</button>
+        <span id="currentGainersPage">1</span>
+        <button class="page-btn" id="nextGainersPage">Next</button>
+      </div>
     </div>
-  </div>
-</div>
-      <!-- Trending Section -->
-<div class="section trending">
-  <div class="section-header">
-    <h2 class="section-title">Trending</h2>
-    <button class="view-all" id="viewAllTrending">View All</button>
-  </div>
-  <div class="trending-container" id="trendingList">
-    <!-- Data will be populated here -->
   </div>
 </div>
 
-<!-- Modal for All Trending -->
-<div class="modal" id="allTrendingModal">
+    
+    <!-- Trending Section -->
+<div class="section trending">
+  <div class="section-header">
+    <h2 class="section-title">Trending Coins</h2>
+    <button class="view-all" id="viewAllTrending">View All</button>
+  </div>
+  <div class="trending-container" id="trendingList">
+    <!-- Top 5 trending will be loaded here -->
+  </div>
+</div>
+
+<!-- Trending Modal -->
+<div class="modal" id="trendingModal">
   <div class="modal-content">
     <div class="modal-header">
       <h2 class="modal-title">Trending Coins</h2>
-      <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
+      <span class="close-modal" onclick="closeModal('trendingModal')">&times;</span>
     </div>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Coin</th>
-            <th>Price</th>
-            <th>24h Change</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="allTrendingTable"></tbody>
-      </table>
+    <div class="modal-body">
+      <div class="search-container">
+        <input type="text" id="trendingSearch" placeholder="Search trending..." class="search-input">
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Coin</th>
+              <th>Price</th>
+              <th>24h Change</th>
+              <th>Market Cap</th>
+              <th>Popularity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="allTrendingTable"></tbody>
+        </table>
+      </div>
+      <div class="pagination-controls">
+        <button class="page-btn" id="prevTrendingPage">Previous</button>
+        <span id="currentTrendingPage">1</span>
+        <button class="page-btn" id="nextTrendingPage">Next</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3917,10 +4089,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Load gainers data
 
-// Top Gainers Section - Production Implementation
-
-// Configuration
+// Top Gainers Implementation
 const GAINERS_PER_PAGE = 5;
+const ALL_GAINERS_PER_PAGE = 20;
+let allGainersData = [];
+let gainersPagination = {
+  currentPage: 1,
+  totalPages: 1
+};
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -3928,37 +4104,39 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGainersEventListeners();
 });
 
-// Event Listeners
 function setupGainersEventListeners() {
   document.getElementById('viewAllGainers').addEventListener('click', showAllGainers);
+  document.getElementById('prevGainersPage').addEventListener('click', () => changeGainersPage(-1));
+  document.getElementById('nextGainersPage').addEventListener('click', () => changeGainersPage(1));
+  document.getElementById('gainersSearch').addEventListener('input', searchGainers);
 }
 
-// Load Gainers Data
 async function loadGainersData() {
   try {
     const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=${GAINERS_PER_PAGE}&page=1`);
     if (!response.ok) throw new Error('Failed to fetch gainers data');
     
-    const gainersData = await response.json();
-    renderGainers(gainersData);
+    const data = await response.json();
+    renderGainers(data);
   } catch (error) {
     console.error('Error loading gainers:', error);
-    showGainersError('gainersList', 'Failed to load gainers data');
+    showError('gainersList', 'Failed to load gainers data');
   }
 }
 
-// Render Gainers
 function renderGainers(data) {
   const gainersList = document.getElementById('gainersList');
-  gainersList.innerHTML = data.map(coin => `
-    <div class="coin-list-item" onclick="showTradeModal('${coin.id}')">
-      <div class="coin-info">
-        <img src="${coin.image}" alt="${coin.name}" width="24">
-        <span>${coin.name}</span>
+  gainersList.innerHTML = data.map((coin, index) => `
+    <div class="gainer-item" onclick="showTradeModal('${coin.id}')">
+      <div class="gainer-info">
+        <span class="gainer-rank">${index + 1}</span>
+        <img src="${coin.image}" alt="${coin.name}" class="gainer-icon">
+        <span class="gainer-name">${coin.name}</span>
+        <span class="gainer-symbol">${coin.symbol.toUpperCase()}</span>
       </div>
-      <div class="price-info">
-        <div class="price">$${formatNumber(coin.current_price, 2)}</div>
-        <div class="price-change positive">
+      <div class="gainer-price-info">
+        <div class="gainer-price">$${formatNumber(coin.current_price, 2)}</div>
+        <div class="gainer-change positive">
           ▲ ${coin.price_change_percentage_24h.toFixed(2)}%
         </div>
       </div>
@@ -3966,28 +4144,37 @@ function renderGainers(data) {
   `).join('');
 }
 
-// Show All Gainers Modal
 async function showAllGainers() {
   try {
-    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=50&page=1`);
+    showLoader('gainersModal');
+    
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=price_change_percentage_24h_desc&per_page=100&page=1`);
     if (!response.ok) throw new Error('Failed to fetch all gainers');
     
-    const allGainersData = await response.json();
-    renderAllGainers(allGainersData);
-    document.getElementById('allGainersModal').style.display = 'block';
+    allGainersData = await response.json();
+    gainersPagination.totalPages = Math.ceil(allGainersData.length / ALL_GAINERS_PER_PAGE);
+    
+    renderAllGainers();
+    document.getElementById('gainersModal').style.display = 'block';
   } catch (error) {
     console.error('Error loading all gainers:', error);
-    showGainersError('allGainersTable', 'Failed to load all gainers');
+    showError('allGainersTable', 'Failed to load all gainers');
+  } finally {
+    hideLoader('gainersModal');
   }
 }
 
-// Render All Gainers
-function renderAllGainers(data) {
-  const allGainersTable = document.getElementById('allGainersTable');
-  allGainersTable.innerHTML = data.map(coin => `
+function renderAllGainers() {
+  const start = (gainersPagination.currentPage - 1) * ALL_GAINERS_PER_PAGE;
+  const end = start + ALL_GAINERS_PER_PAGE;
+  const paginatedData = allGainersData.slice(start, end);
+  
+  const tableBody = document.getElementById('allGainersTable');
+  tableBody.innerHTML = paginatedData.map((coin, index) => `
     <tr class="asset-row" data-coin-id="${coin.id}">
+      <td>${start + index + 1}</td>
       <td>
-        <div class="asset-cell" onclick="showTradeModal('${coin.id}')">
+        <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
           <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
           <div class="asset-info">
             <span class="asset-name">${coin.name}</span>
@@ -3995,39 +4182,84 @@ function renderAllGainers(data) {
           </div>
         </div>
       </td>
-      <td class="price-cell">$${formatNumber(coin.current_price, 2)}</td>
-      <td class="positive">
-        ▲ ${coin.price_change_percentage_24h.toFixed(2)}%
-      </td>
+      <td>$${formatNumber(coin.current_price, 2)}</td>
+      <td class="positive">▲ ${coin.price_change_percentage_24h.toFixed(2)}%</td>
+      <td>$${formatNumber(coin.total_volume, 0)}</td>
+      <td>$${formatNumber(coin.market_cap, 0)}</td>
       <td>
         <button class="btn-trade btn-buy" onclick="showTradeModal('${coin.id}')">Trade</button>
       </td>
     </tr>
   `).join('');
+  
+  updateGainersPagination();
 }
 
-// Helper Functions
-function formatNumber(num, decimals = 2) {
-  return num.toLocaleString('en-US', {
-    minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
-  });
-}
-
-function showGainersError(elementId, message) {
-  const element = document.getElementById(elementId);
-  if (element) {
-    element.innerHTML = `
-      <div style="padding: 20px; text-align: center; color: var(--negative);">
-        ${message}
-      </div>`;
+function changeGainersPage(delta) {
+  const newPage = gainersPagination.currentPage + delta;
+  if (newPage > 0 && newPage <= gainersPagination.totalPages) {
+    gainersPagination.currentPage = newPage;
+    renderAllGainers();
   }
+}
+
+function updateGainersPagination() {
+  document.getElementById('currentGainersPage').textContent = gainersPagination.currentPage;
+  document.getElementById('prevGainersPage').disabled = gainersPagination.currentPage <= 1;
+  document.getElementById('nextGainersPage').disabled = gainersPagination.currentPage >= gainersPagination.totalPages;
+}
+
+function searchGainers() {
+  const searchTerm = document.getElementById('gainersSearch').value.toLowerCase();
+  if (!searchTerm) {
+    renderAllGainers();
+    return;
+  }
+  
+  const filteredData = allGainersData.filter(coin => 
+    coin.name.toLowerCase().includes(searchTerm) || 
+    coin.symbol.toLowerCase().includes(searchTerm)
+  );
+  
+  gainersPagination.totalPages = Math.ceil(filteredData.length / ALL_GAINERS_PER_PAGE);
+  gainersPagination.currentPage = 1;
+  
+  const tableBody = document.getElementById('allGainersTable');
+  tableBody.innerHTML = filteredData.slice(0, ALL_GAINERS_PER_PAGE).map((coin, index) => `
+    <tr class="asset-row" data-coin-id="${coin.id}">
+      <td>${index + 1}</td>
+      <td>
+        <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
+          <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
+          <div class="asset-info">
+            <span class="asset-name">${coin.name}</span>
+            <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+          </div>
+        </div>
+      </td>
+      <td>$${formatNumber(coin.current_price, 2)}</td>
+      <td class="positive">▲ ${coin.price_change_percentage_24h.toFixed(2)}%</td>
+      <td>$${formatNumber(coin.total_volume, 0)}</td>
+      <td>$${formatNumber(coin.market_cap, 0)}</td>
+      <td>
+        <button class="btn-trade btn-buy" onclick="showTradeModal('${coin.id}')">Trade</button>
+      </td>
+    </tr>
+  `).join('');
+  
+  updateGainersPagination();
 }
 
 // Trending Section - Production Implementation
 
-// Configuration
+// Trending Implementation
 const TRENDING_PER_PAGE = 5;
+const ALL_TRENDING_PER_PAGE = 20;
+let allTrendingData = [];
+let trendingPagination = {
+  currentPage: 1,
+  totalPages: 1
+};
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -4035,12 +4267,13 @@ document.addEventListener('DOMContentLoaded', () => {
   setupTrendingEventListeners();
 });
 
-// Event Listeners
 function setupTrendingEventListeners() {
   document.getElementById('viewAllTrending').addEventListener('click', showAllTrending);
+  document.getElementById('prevTrendingPage').addEventListener('click', () => changeTrendingPage(-1));
+  document.getElementById('nextTrendingPage').addEventListener('click', () => changeTrendingPage(1));
+  document.getElementById('trendingSearch').addEventListener('input', searchTrending);
 }
 
-// Load Trending Data
 async function loadTrendingData() {
   try {
     const response = await fetch(`https://api.coingecko.com/api/v3/search/trending`);
@@ -4052,29 +4285,31 @@ async function loadTrendingData() {
       name: coin.item.name,
       symbol: coin.item.symbol,
       image: coin.item.large,
-      current_price: coin.item.data.price,
-      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd
+      price: coin.item.data.price,
+      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd,
+      market_cap: coin.item.data.market_cap,
+      score: coin.item.score
     }));
     
-    renderTrending(trendingData);
+    renderTrending(trendingData.slice(0, TRENDING_PER_PAGE));
   } catch (error) {
     console.error('Error loading trending:', error);
-    showTrendingError('trendingList', 'Failed to load trending data');
+    showError('trendingList', 'Failed to load trending data');
   }
 }
 
-// Render Trending
 function renderTrending(data) {
   const trendingList = document.getElementById('trendingList');
-  trendingList.innerHTML = data.slice(0, TRENDING_PER_PAGE).map(coin => `
-    <div class="coin-list-item" onclick="showTradeModal('${coin.id}')">
-      <div class="coin-info">
-        <img src="${coin.image}" alt="${coin.name}" width="24">
-        <span>${coin.name}</span>
+  trendingList.innerHTML = data.map(coin => `
+    <div class="trending-item" onclick="showTradeModal('${coin.id}')">
+      <div class="trending-info">
+        <img src="${coin.image}" alt="${coin.name}" class="trending-icon">
+        <span class="trending-name">${coin.name}</span>
+        <span class="trending-symbol">${coin.symbol.toUpperCase()}</span>
       </div>
-      <div class="price-info">
-        <div class="price">$${formatNumber(coin.current_price, 2)}</div>
-        <div class="price-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+      <div class="trending-price-info">
+        <div class="trending-price">$${formatNumber(coin.price, 2)}</div>
+        <div class="trending-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
           ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </div>
       </div>
@@ -4082,37 +4317,48 @@ function renderTrending(data) {
   `).join('');
 }
 
-// Show All Trending Modal
 async function showAllTrending() {
   try {
+    showLoader('trendingModal');
+    
     const response = await fetch(`https://api.coingecko.com/api/v3/search/trending`);
     if (!response.ok) throw new Error('Failed to fetch all trending');
     
     const data = await response.json();
-    const allTrendingData = data.coins.map(coin => ({
+    allTrendingData = data.coins.map(coin => ({
       id: coin.item.id,
       name: coin.item.name,
       symbol: coin.item.symbol,
       image: coin.item.large,
-      current_price: coin.item.data.price,
-      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd
+      price: coin.item.data.price,
+      price_change_percentage_24h: coin.item.data.price_change_percentage_24h.usd,
+      market_cap: coin.item.data.market_cap,
+      score: coin.item.score
     }));
     
-    renderAllTrending(allTrendingData);
-    document.getElementById('allTrendingModal').style.display = 'block';
+    trendingPagination.totalPages = Math.ceil(allTrendingData.length / ALL_TRENDING_PER_PAGE);
+    
+    renderAllTrending();
+    document.getElementById('trendingModal').style.display = 'block';
   } catch (error) {
     console.error('Error loading all trending:', error);
-    showTrendingError('allTrendingTable', 'Failed to load all trending');
+    showError('allTrendingTable', 'Failed to load all trending');
+  } finally {
+    hideLoader('trendingModal');
   }
 }
 
-// Render All Trending
-function renderAllTrending(data) {
-  const allTrendingTable = document.getElementById('allTrendingTable');
-  allTrendingTable.innerHTML = data.map(coin => `
+function renderAllTrending() {
+  const start = (trendingPagination.currentPage - 1) * ALL_TRENDING_PER_PAGE;
+  const end = start + ALL_TRENDING_PER_PAGE;
+  const paginatedData = allTrendingData.slice(start, end);
+  
+  const tableBody = document.getElementById('allTrendingTable');
+  tableBody.innerHTML = paginatedData.map((coin, index) => `
     <tr class="asset-row" data-coin-id="${coin.id}">
+      <td>${start + index + 1}</td>
       <td>
-        <div class="asset-cell" onclick="showTradeModal('${coin.id}')">
+        <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
           <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
           <div class="asset-info">
             <span class="asset-name">${coin.name}</span>
@@ -4120,18 +4366,79 @@ function renderAllTrending(data) {
           </div>
         </div>
       </td>
-      <td class="price-cell">$${formatNumber(coin.current_price, 2)}</td>
+      <td>$${formatNumber(coin.price, 2)}</td>
       <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
         ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
       </td>
+      <td>$${formatNumber(coin.market_cap, 0)}</td>
+      <td><span class="trending-score">${coin.score.toFixed(2)}</span></td>
       <td>
         <button class="btn-trade btn-buy" onclick="showTradeModal('${coin.id}')">Trade</button>
       </td>
     </tr>
   `).join('');
+  
+  updateTrendingPagination();
 }
 
-// Helper Functions
+function changeTrendingPage(delta) {
+  const newPage = trendingPagination.currentPage + delta;
+  if (newPage > 0 && newPage <= trendingPagination.totalPages) {
+    trendingPagination.currentPage = newPage;
+    renderAllTrending();
+  }
+}
+
+function updateTrendingPagination() {
+  document.getElementById('currentTrendingPage').textContent = trendingPagination.currentPage;
+  document.getElementById('prevTrendingPage').disabled = trendingPagination.currentPage <= 1;
+  document.getElementById('nextTrendingPage').disabled = trendingPagination.currentPage >= trendingPagination.totalPages;
+}
+
+function searchTrending() {
+  const searchTerm = document.getElementById('trendingSearch').value.toLowerCase();
+  if (!searchTerm) {
+    renderAllTrending();
+    return;
+  }
+  
+  const filteredData = allTrendingData.filter(coin => 
+    coin.name.toLowerCase().includes(searchTerm) || 
+    coin.symbol.toLowerCase().includes(searchTerm)
+  );
+  
+  trendingPagination.totalPages = Math.ceil(filteredData.length / ALL_TRENDING_PER_PAGE);
+  trendingPagination.currentPage = 1;
+  
+  const tableBody = document.getElementById('allTrendingTable');
+  tableBody.innerHTML = filteredData.slice(0, ALL_TRENDING_PER_PAGE).map((coin, index) => `
+    <tr class="asset-row" data-coin-id="${coin.id}">
+      <td>${index + 1}</td>
+      <td>
+        <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
+          <img src="${coin.image}" alt="${coin.name}" class="asset-icon">
+          <div class="asset-info">
+            <span class="asset-name">${coin.name}</span>
+            <span class="asset-symbol">${coin.symbol.toUpperCase()}</span>
+          </div>
+        </div>
+      </td>
+      <td>$${formatNumber(coin.price, 2)}</td>
+      <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
+      </td>
+      <td>$${formatNumber(coin.market_cap, 0)}</td>
+      <td><span class="trending-score">${coin.score.toFixed(2)}</span></td>
+      <td>
+        <button class="btn-trade btn-buy" onclick="showTradeModal('${coin.id}')">Trade</button>
+      </td>
+    </tr>
+  `).join('');
+  
+  updateTrendingPagination();
+}
+
+// Shared Helper Functions
 function formatNumber(num, decimals = 2) {
   return num.toLocaleString('en-US', {
     minimumFractionDigits: decimals,
@@ -4139,7 +4446,7 @@ function formatNumber(num, decimals = 2) {
   });
 }
 
-function showTrendingError(elementId, message) {
+function showError(elementId, message) {
   const element = document.getElementById(elementId);
   if (element) {
     element.innerHTML = `
@@ -4149,6 +4456,30 @@ function showTrendingError(elementId, message) {
   }
 }
 
+function showLoader(modalId) {
+  const modal = document.getElementById(modalId);
+  const tableBody = modal.querySelector('tbody');
+  if (tableBody) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; padding: 20px;">
+          <div class="loading-spinner"></div>
+          Loading data...
+        </td>
+      </tr>`;
+  }
+}
+
+function hideLoader(modalId) {
+  // Loading state is automatically removed when data is rendered
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+
+
+      
       
       // News State Management
       let newsState = {
