@@ -3414,7 +3414,7 @@ async function executeTrade() {
   const { coinId, type, price } = window.currentTrade || {};
   const amount = parseFloat(document.getElementById('tradeAmount').value);
   
-  if (!coinId || isNaN(amount) {
+  if (!coinId || isNaN(amount)) {
     alert('Please enter a valid amount');
     return;
   }
