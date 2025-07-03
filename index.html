@@ -3917,33 +3917,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Load gainers data
 
-
-      // Top Gainers Section - Production Implementation
-
-// Configuration
-const GAINERS_PER_PAGE = 5;
-
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  loadGainersData();
-  setupEventListeners();
-});
-
-// Event Listeners
-function setupEventListeners() {
-  elements.viewAllGainers.addEventListener('click', showAllGainers);
-  
-  // Close modal when clicking outside
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal')) {
-      e.target.style.display = 'none';
-    }
-  });
-}
-
-// Load Gainers Data
-
 // Top Gainers Section - Production Implementation
 
 // Configuration
@@ -4050,8 +4023,6 @@ function showGainersError(elementId, message) {
       </div>`;
   }
 }
-      // Load trending data
-
 
 // Trending Section - Production Implementation
 
