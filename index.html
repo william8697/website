@@ -300,6 +300,7 @@
     /* Table Styles */
 
 
+/* Market Overview Section */
 .market-section {
   background: var(--secondary-bg);
   border-radius: 12px;
@@ -406,138 +407,6 @@
   background-color: rgba(246, 70, 93, 0.25);
 }
 
-/* Pagination Controls */
-.pagination-controls {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.page-btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.page-btn:hover {
-  background-color: rgba(240, 185, 11, 0.1);
-}
-
-.page-btn.active {
-  background-color: var(--primary-accent);
-  color: #000;
-}
-
-.page-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Asset Row Styles */
-.asset-row {
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.asset-row:hover {
-  background-color: rgba(240, 185, 11, 0.05);
-}
-
-.asset-cell {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.asset-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-}
-
-.asset-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.asset-name {
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.asset-symbol {
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
-.price-cell {
-  font-weight: 600;
-}
-
-.change-container {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.change-pill {
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.change-pill.positive {
-  background-color: rgba(14, 203, 129, 0.15);
-  color: var(--positive);
-}
-
-.change-pill.negative {
-  background-color: rgba(246, 70, 93, 0.15);
-  color: var(--negative);
-}
-
-.supply-container {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.supply-bar-container {
-  width: 100%;
-  height: 4px;
-  background-color: var(--border-color);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.supply-bar {
-  height: 100%;
-  background-color: var(--primary-accent);
-}
-
-.trend-sparkline {
-  width: 60px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-
-.trend-sparkline.positive {
-  color: var(--positive);
-}
-
-.trend-sparkline.negative {
-  color: var(--negative);
-}
-
 /* Trading Modal Styles */
 .coin-icon-lg {
   width: 48px;
@@ -616,35 +485,101 @@
   margin-top: 24px;
 }
 
-.form-group {
-  margin-bottom: 16px;
+/* Asset Row Styles */
+.asset-row {
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.form-label {
-  display: block;
-  margin-bottom: 8px;
+.asset-row:hover {
+  background-color: rgba(240, 185, 11, 0.05);
+}
+
+.asset-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.asset-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-name {
+  font-weight: 500;
   font-size: 14px;
+}
+
+.asset-symbol {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.price-cell {
+  font-weight: 600;
+}
+
+.change-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.change-pill {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 500;
 }
 
-.form-control {
-  width: 100%;
-  padding: 10px 12px;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
+.change-pill.positive {
+  background-color: rgba(14, 203, 129, 0.15);
+  color: var(--positive);
+}
+
+.change-pill.negative {
+  background-color: rgba(246, 70, 93, 0.15);
+  color: var(--negative);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.page-btn {
+  padding: 6px 12px;
   border-radius: 4px;
+  background-color: var(--card-bg);
   color: var(--text-primary);
-  font-size: 14px;
+  border: none;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
-.form-control:focus {
-  outline: none;
-  border-color: var(--primary-accent);
-  box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+.page-btn:hover {
+  background-color: rgba(240, 185, 11, 0.1);
 }
 
-    
+.page-btn.active {
+  background-color: var(--primary-accent);
+  color: #000;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
          
   /* Market Stats Section Styles */
 .market-stats-section {
@@ -2321,6 +2256,8 @@
 
   
  <!-- Market Overview Section -->
+
+<!-- Market Overview Section -->
 <div class="market-section">
   <div class="section-header">
     <h2>Market Overview</h2>
@@ -2434,6 +2371,7 @@
     </div>
   </div>
 </div>
+    
     
    <!-- Market Stats Section -->
 <section class="market-stats-section">
@@ -3537,14 +3475,16 @@
 
 // Market Overview Section - Production Implementation
 
+// Market Overview Section - Production Implementation
+
 // Configuration
-const BACKEND_URL = 'https://website-backendd-1.onrender.com';
 const MARKET_PER_PAGE = 5;
 const ALL_MARKETS_PER_PAGE = 20;
-
+let marketChart = null;
+let currentTrade = null;
 
 // DOM Elements
-const elements = {
+const marketElements = {
   marketTable: document.getElementById('marketData'),
   allMarketsModal: document.getElementById('allMarketsModal'),
   allMarketsTable: document.getElementById('allMarketsTable'),
@@ -3573,16 +3513,16 @@ const elements = {
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
   loadMarketData();
-  setupEventListeners();
+  setupMarketEventListeners();
 });
 
 // Event Listeners
-function setupEventListeners() {
-  elements.viewAllMarkets.addEventListener('click', showAllMarkets);
-  elements.prevMarketsPage.addEventListener('click', () => changeMarketsPage(-1));
-  elements.nextMarketsPage.addEventListener('click', () => changeMarketsPage(1));
-  elements.tradeAmount.addEventListener('input', updateTradeTotal);
-  elements.confirmTradeBtn.addEventListener('click', executeTrade);
+function setupMarketEventListeners() {
+  marketElements.viewAllMarkets.addEventListener('click', showAllMarkets);
+  marketElements.prevMarketsPage.addEventListener('click', () => changeMarketsPage(-1));
+  marketElements.nextMarketsPage.addEventListener('click', () => changeMarketsPage(1));
+  marketElements.tradeAmount.addEventListener('input', updateTradeTotal);
+  marketElements.confirmTradeBtn.addEventListener('click', executeTrade);
   
   // Close modals when clicking outside
   document.addEventListener('click', (e) => {
@@ -3595,20 +3535,20 @@ function setupEventListeners() {
 // Load Market Data
 async function loadMarketData() {
   try {
-    const response = await fetch(`${API_BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${MARKET_PER_PAGE}&page=1&sparkline=true&price_change_percentage=1h,24h,7d`);
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${MARKET_PER_PAGE}&page=1&sparkline=true&price_change_percentage=1h,24h,7d`);
     if (!response.ok) throw new Error('Failed to fetch market data');
     
-    marketData = await response.json();
-    renderMarketData();
+    const marketData = await response.json();
+    renderMarketData(marketData);
   } catch (error) {
     console.error('Error loading market data:', error);
-    showError('marketData', 'Failed to load market data');
+    showMarketError('marketData', 'Failed to load market data');
   }
 }
 
 // Render Market Data
-function renderMarketData() {
-  elements.marketTable.innerHTML = marketData.map(coin => `
+function renderMarketData(data) {
+  marketElements.marketTable.innerHTML = data.map(coin => `
     <tr class="asset-row" data-coin-id="${coin.id}">
       <td>
         <div class="asset-cell" onclick="showTradeModal('${coin.id}')">
@@ -3674,25 +3614,25 @@ function initSparklines() {
 // Show All Markets Modal
 async function showAllMarkets() {
   try {
-    const response = await fetch(`${API_BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`);
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h`);
     if (!response.ok) throw new Error('Failed to fetch all markets');
     
-    allMarketsData = await response.json();
-    renderAllMarkets();
-    elements.allMarketsModal.style.display = 'block';
+    const allMarketsData = await response.json();
+    renderAllMarkets(allMarketsData);
+    marketElements.allMarketsModal.style.display = 'block';
   } catch (error) {
     console.error('Error loading all markets:', error);
-    showError('allMarketsTable', 'Failed to load all markets');
+    showMarketError('allMarketsTable', 'Failed to load all markets');
   }
 }
 
 // Render All Markets
-function renderAllMarkets(page = 1) {
+function renderAllMarkets(data, page = 1) {
   const start = (page - 1) * ALL_MARKETS_PER_PAGE;
   const end = start + ALL_MARKETS_PER_PAGE;
-  const paginatedData = allMarketsData.slice(start, end);
+  const paginatedData = data.slice(start, end);
   
-  elements.allMarketsTable.innerHTML = paginatedData.map(coin => `
+  marketElements.allMarketsTable.innerHTML = paginatedData.map(coin => `
     <tr class="asset-row" data-coin-id="${coin.id}">
       <td>
         <div class="asset-cell" onclick="showTradeModal('${coin.id}')">
@@ -3713,17 +3653,17 @@ function renderAllMarkets(page = 1) {
     </tr>
   `).join('');
   
-  const totalPages = Math.ceil(allMarketsData.length / ALL_MARKETS_PER_PAGE);
-  elements.currentMarketsPage.textContent = page;
-  elements.prevMarketsPage.disabled = page <= 1;
-  elements.nextMarketsPage.disabled = page >= totalPages;
+  const totalPages = Math.ceil(data.length / ALL_MARKETS_PER_PAGE);
+  marketElements.currentMarketsPage.textContent = page;
+  marketElements.prevMarketsPage.disabled = page <= 1;
+  marketElements.nextMarketsPage.disabled = page >= totalPages;
 }
 
 // Change Markets Page
 function changeMarketsPage(delta) {
-  const currentPage = parseInt(elements.currentMarketsPage.textContent);
+  const currentPage = parseInt(marketElements.currentMarketsPage.textContent);
   const newPage = currentPage + delta;
-  renderAllMarkets(newPage);
+  renderAllMarkets(allMarketsData, newPage);
 }
 
 // Show Trade Modal
@@ -3731,56 +3671,51 @@ async function showTradeModal(coinId) {
   // Check authentication first
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
   if (!token) {
-    alert('You must be logged in to perform this action');
+    showToast('You must be logged in to perform this action');
     return;
   }
   
   try {
-    // Find coin data
-    let coin = marketData.find(c => c.id === coinId) || 
-               allMarketsData.find(c => c.id === coinId);
+    // Fetch coin data
+    const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=true`);
+    if (!response.ok) throw new Error('Failed to fetch coin data');
     
-    if (!coin) {
-      // If coin not in cached data, fetch it individually
-      const response = await fetch(`${API_BASE_URL}/coins/markets?vs_currency=usd&ids=${coinId}&sparkline=true`);
-      if (!response.ok) throw new Error('Failed to fetch coin data');
-      const [coinData] = await response.json();
-      coin = coinData;
-    }
+    const coinData = await response.json();
+    const marketData = coinData.market_data;
     
     // Set modal content
-    elements.tradeCoinIcon.src = coin.image;
-    elements.tradeCoinIcon.alt = coin.name;
-    elements.tradeCoinName.textContent = coin.name;
-    elements.tradeCoinSymbol.textContent = coin.symbol.toUpperCase();
-    elements.tradeCoinPrice.textContent = `$${formatNumber(coin.current_price, 2)}`;
+    marketElements.tradeCoinIcon.src = coinData.image.small;
+    marketElements.tradeCoinIcon.alt = coinData.name;
+    marketElements.tradeCoinName.textContent = coinData.name;
+    marketElements.tradeCoinSymbol.textContent = coinData.symbol.toUpperCase();
+    marketElements.tradeCoinPrice.textContent = `$${formatNumber(marketData.current_price.usd, 2)}`;
     
-    const priceChange = coin.price_change_percentage_24h || 0;
-    elements.tradeCoinChange.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
-    elements.tradeCoinChange.className = `price-change-lg ${priceChange >= 0 ? 'positive' : 'negative'}`;
+    const priceChange = marketData.price_change_percentage_24h || 0;
+    marketElements.tradeCoinChange.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
+    marketElements.tradeCoinChange.className = `price-change-lg ${priceChange >= 0 ? 'positive' : 'negative'}`;
     
-    elements.tradeMarketCap.textContent = `$${formatNumber(coin.market_cap / 1000000000, 2)}B`;
-    elements.tradeVolume.textContent = `$${formatNumber(coin.total_volume / 1000000, 1)}M`;
-    elements.tradeHigh24h.textContent = `$${formatNumber(coin.high_24h, 2)}`;
-    elements.tradeLow24h.textContent = `$${formatNumber(coin.low_24h, 2)}`;
-    elements.tradePrice.value = `$${formatNumber(coin.current_price, 2)}`;
-    elements.tradeAmount.value = '';
-    elements.tradeTotal.value = '$0.00';
+    marketElements.tradeMarketCap.textContent = `$${formatNumber(marketData.market_cap.usd / 1000000000, 2)}B`;
+    marketElements.tradeVolume.textContent = `$${formatNumber(marketData.total_volume.usd / 1000000, 1)}M`;
+    marketElements.tradeHigh24h.textContent = `$${formatNumber(marketData.high_24h.usd, 2)}`;
+    marketElements.tradeLow24h.textContent = `$${formatNumber(marketData.low_24h.usd, 2)}`;
+    marketElements.tradePrice.value = `$${formatNumber(marketData.current_price.usd, 2)}`;
+    marketElements.tradeAmount.value = '';
+    marketElements.tradeTotal.value = '$0.00';
     
     // Set current trade
     currentTrade = {
-      coinId: coin.id,
-      coinName: coin.name,
-      coinSymbol: coin.symbol,
-      price: coin.current_price,
+      coinId: coinData.id,
+      coinName: coinData.name,
+      coinSymbol: coinData.symbol,
+      price: marketData.current_price.usd,
       type: 'buy'
     };
     
     // Initialize chart
-    initTradeChart(coin.sparkline_in_7d?.price || []);
+    initTradeChart(coinData.market_data.sparkline_7d.price);
     
     // Show modal
-    elements.tradeModal.style.display = 'block';
+    marketElements.tradeModal.style.display = 'block';
     
     // Check user balance
     await checkUserBalance();
@@ -3797,7 +3732,7 @@ function initTradeChart(prices) {
     marketChart.destroy();
   }
   
-  const ctx = elements.tradeChart.getContext('2d');
+  const ctx = marketElements.tradeChart.getContext('2d');
   marketChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -3850,14 +3785,14 @@ function initTradeChart(prices) {
 function updateTradeTotal() {
   if (!currentTrade) return;
   
-  const amount = parseFloat(elements.tradeAmount.value);
-  if (isNaN(amount) || amount <= 0) {
-    elements.tradeTotal.value = '$0.00';
+  const amount = parseFloat(marketElements.tradeAmount.value);
+  if (isNaN(amount) {
+    marketElements.tradeTotal.value = '$0.00';
     return;
   }
   
   const total = amount * currentTrade.price;
-  elements.tradeTotal.value = `$${formatNumber(total, 2)}`;
+  marketElements.tradeTotal.value = `$${formatNumber(total, 2)}`;
 }
 
 // Check User Balance
@@ -3866,7 +3801,7 @@ async function checkUserBalance() {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (!token) return;
     
-    const response = await fetch(`${BACKEND_URL}/api/user/balance`, {
+    const response = await fetch(`${API_BASE_URL}/balance-check`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -3875,11 +3810,11 @@ async function checkUserBalance() {
     if (response.ok) {
       const { balance } = await response.json();
       if (balance < 100) {
-        elements.confirmTradeBtn.disabled = true;
-        elements.confirmTradeBtn.textContent = 'Insufficient Balance ($100 min)';
+        marketElements.confirmTradeBtn.disabled = true;
+        marketElements.confirmTradeBtn.textContent = 'Insufficient balance. Please deposit.';
       } else {
-        elements.confirmTradeBtn.disabled = false;
-        elements.confirmTradeBtn.textContent = `${currentTrade.type === 'buy' ? 'Buy' : 'Sell'} ${currentTrade.coinSymbol.toUpperCase()}`;
+        marketElements.confirmTradeBtn.disabled = false;
+        marketElements.confirmTradeBtn.textContent = `${currentTrade.type === 'buy' ? 'Buy' : 'Sell'} ${currentTrade.coinSymbol.toUpperCase()}`;
       }
     }
   } catch (error) {
@@ -3891,7 +3826,7 @@ async function checkUserBalance() {
 async function executeTrade() {
   if (!currentTrade) return;
   
-  const amount = parseFloat(elements.tradeAmount.value);
+  const amount = parseFloat(marketElements.tradeAmount.value);
   if (isNaN(amount) || amount <= 0) {
     showToast('Please enter a valid amount', 'error');
     return;
@@ -3904,7 +3839,7 @@ async function executeTrade() {
       return;
     }
     
-    const response = await fetch(`${BACKEND_URL}/api/trades`, {
+    const response = await fetch(`${API_BASE_URL}/execute-trade`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -3940,7 +3875,7 @@ function formatNumber(num, decimals = 2) {
   });
 }
 
-function showError(elementId, message) {
+function showMarketError(elementId, message) {
   const element = document.getElementById(elementId);
   if (element) {
     element.innerHTML = `
@@ -3980,7 +3915,6 @@ function closeModal(modalId) {
 // Expose functions to global scope for HTML onclick handlers
 window.showTradeModal = showTradeModal;
 window.closeModal = closeModal;
-
       
      // Market Stats Section - Frontend Implementation
 const marketStats = {
