@@ -2985,7 +2985,7 @@
         
   
         // Load gainers data
-        await loadGainersData();
+        await TopGainers.loadGainersData();
         
         // Load trending data
         await loadTrendingData();
@@ -4537,7 +4537,8 @@ const TopGainers = (() => {
   return {
     init,
     showTradeModal,
-    closeModal
+    closeModal,
+    loadGainersData
   };
 })();
 
