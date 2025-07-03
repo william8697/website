@@ -2988,7 +2988,7 @@
         await TopGainers.loadGainersData();
         
         // Load trending data
-        await loadTrendingData();
+        await Trending.loadTrendingData();
         
         // Load news
         await loadNews();
@@ -4697,7 +4697,8 @@ const Trending = (() => {
   return {
     init,
     showTradeModal,
-    closeModal
+    closeModal,
+    loadTrendingData
   };
 })();
 
