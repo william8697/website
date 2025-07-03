@@ -3018,123 +3018,39 @@
       }
 
       // Set up event listeners
-      function setupEventListeners() {
-        // Navigation links
-        document.getElementById('marketsLink').addEventListener('click', (e) => {
-          e.preventDefault();
-          loadMarketData();
-        });
-        
-        document.getElementById('tradeLink').addEventListener('click', (e) => {
-          e.preventDefault();
-          if (!currentUser) {
-            showToast('Please login to access the trading platform', 'error');
-            return;
-          }
-          // Load trade content in main view
-          loadTradeContent();
-        });
-        
-        document.getElementById('futuresLink').addEventListener('click', (e) => {
-          e.preventDefault();
-          if (!currentUser) {
-            showToast('Please login to access futures trading', 'error');
-            return;
-          }
-          // Load futures content in main view
-          loadFuturesContent();
-        });
-        
-        document.getElementById('earnLink').addEventListener('click', (e) => {
-          e.preventDefault();
-          if (!currentUser) {
-            showToast('Please login to access earn products', 'error');
-            return;
-          }
-          // Load earn content in main view
-          loadEarnContent();
-        });
-        
-        // View All links
-        document.getElementById('viewAllMarkets').addEventListener('click', (e) => {
-          e.preventDefault();
-          showAllCoins();
-        });
-        
-        document.getElementById('viewAllGainers').addEventListener('click', (e) => {
-          e.preventDefault();
-          showAllGainers();
-        });
-        
-        document.getElementById('viewAllTrending').addEventListener('click', (e) => {
-          e.preventDefault();
-          showAllTrending();
-        });
-        
-        // Trade amount input
-        document.getElementById('tradeAmount').addEventListener('input', updateTradeTotal);
-        
-        // Market pagination
-        document.getElementById('prevMarketPage').addEventListener('click', () => {
-          if (marketPagination.currentPage > 1) {
-            marketPagination.currentPage--;
-            updateMarketTable();
-          }
-        });
-        
-        document.getElementById('nextMarketPage').addEventListener('click', () => {
-          if (marketPagination.currentPage < marketPagination.totalPages) {
-            marketPagination.currentPage++;
-            updateMarketTable();
-          }
-        });
-        
-        // All coins pagination
-        document.getElementById('prevAllCoinsPage').addEventListener('click', () => {
-          if (allCoinsPagination.currentPage > 1) {
-            allCoinsPagination.currentPage--;
-            updateAllCoinsTable();
-          }
-        });
-        
-        document.getElementById('nextAllCoinsPage').addEventListener('click', () => {
-          if (allCoinsPagination.currentPage < allCoinsPagination.totalPages) {
-            allCoinsPagination.currentPage++;
-            updateAllCoinsTable();
-          }
-        });
-        
-        // All gainers pagination
-        document.getElementById('prevAllGainersPage').addEventListener('click', () => {
-          if (allGainersPagination.currentPage > 1) {
-            allGainersPagination.currentPage--;
-            updateAllGainersTable();
-          }
-        });
-        
-        document.getElementById('nextAllGainersPage').addEventListener('click', () => {
-          if (allGainersPagination.currentPage < allGainersPagination.totalPages) {
-            allGainersPagination.currentPage++;
-            updateAllGainersTable();
-          }
-        });
-        
-        // All trending pagination
-        document.getElementById('prevAllTrendingPage').addEventListener('click', () => {
-          if (allTrendingPagination.currentPage > 1) {
-            allTrendingPagination.currentPage--;
-            updateAllTrendingTable();
-          }
-        });
-        
-        document.getElementById('nextAllTrendingPage').addEventListener('click', () => {
-          if (allTrendingPagination.currentPage < allTrendingPagination.totalPages) {
-            allTrendingPagination.currentPage++;
-            updateAllTrendingTable();
-          }
-        });
-      }
-
+     const setupEventListeners = () => {
+  // Only add listeners if elements exist
+  if (elements.viewAllMarkets) {
+    elements.viewAllMarkets.addEventListener('click', showAllMarkets);
+  }
+  
+  if (elements.prevMarketsPage) {
+    elements.prevMarketsPage.addEventListener('click', () => changePage(-1));
+  }
+  
+  if (elements.nextMarketsPage) {
+    elements.nextMarketsPage.addEventListener('click', () => changePage(1));
+  }
+  
+  if (elements.tradeAmount) {
+    elements.tradeAmount.addEventListener('input', updateTradeTotal);
+  }
+  
+  if (elements.confirmBuyBtn) {
+    elements.confirmBuyBtn.addEventListener('click', () => executeTrade('buy'));
+  }
+  
+  if (elements.confirmSellBtn) {
+    elements.confirmSellBtn.addEventListener('click', () => executeTrade('sell'));
+  }
+  
+  // This global listener doesn't need a check
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal')) {
+      closeModal(e.target.id);
+    }
+  });
+};
       // Load trade content in main view
       function loadTradeContent() {
         const mainContent = document.querySelector('.main-content');
@@ -4207,8 +4123,16 @@ const MarketOverview = (() => {
   };
 })();
 
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', MarketOverview.init); 
+// Initialize only after DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize other components first if needed
+  marketStats.init();
+  TopGainers.init();
+  Trending.init();
+  
+  // Then initialize MarketOverview
+  MarketOverview.init();
+}); 
       
      // Market Stats Section - Frontend Implementation
 const marketStats = {
