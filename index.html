@@ -299,13 +299,12 @@
 
     /* Table Styles */
 
-
 /* Market Overview Section */
-.market-overview-section {
+.market-overview {
   background: var(--secondary-bg);
   border-radius: 12px;
   border: 1px solid var(--border-color);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   overflow: hidden;
 }
 
@@ -313,15 +312,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .section-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-title i {
+  color: var(--primary-accent);
 }
 
 .section-actions {
@@ -330,8 +335,8 @@
   gap: 12px;
 }
 
-.view-all-btn {
-  background: transparent;
+.btn-view-all {
+  background: rgba(240, 185, 11, 0.1);
   border: 1px solid var(--primary-accent);
   color: var(--primary-accent);
   padding: 8px 16px;
@@ -345,11 +350,11 @@
   gap: 6px;
 }
 
-.view-all-btn:hover {
-  background: rgba(240, 185, 11, 0.1);
+.btn-view-all:hover {
+  background: rgba(240, 185, 11, 0.2);
 }
 
-.market-table-container {
+.market-table-wrapper {
   overflow-x: auto;
   padding: 0 4px;
 }
@@ -357,16 +362,17 @@
 .market-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px;
+  min-width: 900px;
 }
 
 .market-table th {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-secondary);
   padding: 12px 16px;
   text-align: right;
   border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .market-table th.text-left {
@@ -379,22 +385,37 @@
   border-bottom: 1px solid var(--border-color);
   font-size: 14px;
   font-weight: 500;
+  transition: background 0.2s;
 }
 
 .market-table td.text-left {
   text-align: left;
 }
 
+.market-table td.text-center {
+  text-align: center;
+}
+
+.market-table tr:hover td {
+  background: rgba(240, 185, 11, 0.05);
+}
+
 .coin-cell {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 }
 
 .coin-icon {
   width: 24px;
   height: 24px;
+  border-radius: 50%;
+}
+
+.coin-icon-lg {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
 }
 
@@ -406,6 +427,7 @@
 .coin-symbol {
   color: var(--text-secondary);
   font-size: 13px;
+  text-transform: uppercase;
 }
 
 .positive {
@@ -426,7 +448,7 @@
   margin-left: auto;
 }
 
-.trade-btn {
+.btn-trade {
   background: rgba(240, 185, 11, 0.1);
   border: none;
   color: var(--primary-accent);
@@ -438,12 +460,28 @@
   transition: all 0.2s;
 }
 
-.trade-btn:hover {
+.btn-trade:hover {
   background: rgba(240, 185, 11, 0.2);
 }
 
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(240, 185, 11, 0.3);
+  border-top-color: var(--primary-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* Modals */
-.modal-overlay {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -458,25 +496,27 @@
   visibility: hidden;
   transition: all 0.3s;
   backdrop-filter: blur(5px);
+  padding: 20px;
 }
 
-.modal-overlay.active {
+.modal.active {
   opacity: 1;
   visibility: visible;
 }
 
-.modal-container {
+.modal-dialog {
   background: var(--secondary-bg);
   border-radius: 12px;
-  width: 90%;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 900px;
   max-height: 90vh;
   overflow: hidden;
   transform: translateY(20px);
   transition: transform 0.3s;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.modal-overlay.active .modal-container {
+.modal.active .modal-dialog {
   transform: translateY(0);
 }
 
@@ -484,7 +524,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -495,6 +535,12 @@
   color: var(--text-primary);
 }
 
+.modal-title-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .modal-close {
   background: transparent;
   border: none;
@@ -502,16 +548,23 @@
   font-size: 20px;
   cursor: pointer;
   transition: color 0.2s;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
 .modal-close:hover {
+  background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
 }
 
-.modal-content {
-  padding: 20px;
+.modal-body {
+  padding: 24px;
   overflow-y: auto;
-  max-height: calc(90vh - 60px);
+  max-height: calc(90vh - 73px);
 }
 
 /* All Markets Modal */
@@ -520,22 +573,29 @@
   margin-bottom: 16px;
 }
 
-.market-search input {
-  width: 100%;
-  padding: 10px 16px 10px 40px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  color: var(--text-primary);
-  font-size: 14px;
-}
-
 .market-search i {
   position: absolute;
   left: 16px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
+}
+
+.market-search input {
+  width: 100%;
+  padding: 12px 16px 12px 42px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.market-search input:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+  outline: none;
 }
 
 .market-pagination {
@@ -555,6 +615,9 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .market-pagination button:disabled {
@@ -569,53 +632,60 @@
 .market-pagination span {
   font-size: 14px;
   color: var(--text-primary);
+  min-width: 30px;
+  text-align: center;
 }
 
 /* Trading Modal */
 .trading-modal {
-  max-width: 500px;
+  max-width: 800px;
+}
+
+.trading-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .coin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.coin-info {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.coin-info h4 {
-  font-size: 20px;
+.coin-header h4 {
+  font-size: 18px;
   margin: 0 0 4px 0;
   color: var(--text-primary);
 }
 
-.coin-info span {
+.coin-header span {
   font-size: 14px;
   color: var(--text-secondary);
+  text-transform: uppercase;
 }
 
-.coin-price {
-  text-align: right;
+.price-display {
+  margin: 16px 0;
 }
 
-.coin-price span:first-child {
-  font-size: 24px;
+.price-display span:first-child {
+  font-size: 28px;
   font-weight: 600;
   display: block;
   color: var(--text-primary);
+}
+
+.price-display span:last-child {
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .coin-stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .stat-card {
@@ -639,30 +709,25 @@
 }
 
 .chart-container {
-  height: 200px;
-  margin-bottom: 20px;
+  height: 220px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px;
 }
 
-.trade-form .form-group {
+.trading-form .form-group {
   margin-bottom: 16px;
 }
 
-.trade-form label {
+.trading-form label {
   display: block;
   font-size: 13px;
   color: var(--text-secondary);
   margin-bottom: 8px;
 }
 
-.input-group {
-  position: relative;
-}
-
-.trade-form input {
+.form-control {
   width: 100%;
   padding: 12px 16px;
   background: var(--card-bg);
@@ -670,6 +735,17 @@
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 14px;
+  transition: all 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 2px rgba(240, 185, 11, 0.2);
+  outline: none;
+}
+
+.input-group {
+  position: relative;
 }
 
 .input-symbol {
@@ -679,6 +755,7 @@
   transform: translateY(-50%);
   font-size: 14px;
   color: var(--text-secondary);
+  text-transform: uppercase;
 }
 
 .form-actions {
@@ -707,6 +784,11 @@
   background: #0eb877;
 }
 
+.btn-buy:disabled {
+  background: rgba(14, 203, 129, 0.5);
+  cursor: not-allowed;
+}
+
 .btn-sell {
   background: var(--negative);
   color: #fff;
@@ -716,21 +798,50 @@
   background: #e5394d;
 }
 
+.btn-sell:disabled {
+  background: rgba(246, 70, 93, 0.5);
+  cursor: not-allowed;
+}
+
+.balance-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  text-align: right;
+}
+
+.balance-info span {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  .modal-container {
-    width: 95%;
+  .trading-container {
+    grid-template-columns: 1fr;
   }
   
-  .trading-modal {
-    max-width: 95%;
+  .modal-dialog {
+    max-height: 95vh;
+  }
+  
+  .modal-body {
+    max-height: calc(95vh - 73px);
+    padding: 16px;
   }
   
   .coin-stats-grid {
     grid-template-columns: 1fr;
   }
+  
+  .chart-container {
+    height: 180px;
+  }
+  
+  .price-display span:first-child {
+    font-size: 24px;
+  }
 }
-
     
          
   /* Market Stats Section Styles */
@@ -2372,147 +2483,171 @@
 
 
 <!-- Market Overview Section -->
-<div class="market-overview-section">
+<section class="market-overview">
   <div class="section-header">
-    <h2 class="section-title">Market Overview</h2>
+    <h2 class="section-title">
+      <i class="fas fa-chart-line"></i> Market Overview
+    </h2>
     <div class="section-actions">
-      <button class="view-all-btn" id="viewAllMarketsBtn">
+      <button class="btn-view-all" id="viewAllMarkets">
         View All <i class="fas fa-chevron-right"></i>
       </button>
     </div>
   </div>
-  
-  <div class="market-table-container">
+
+  <div class="market-table-wrapper">
     <table class="market-table">
       <thead>
         <tr>
-          <th class="text-left">Pair</th>
-          <th class="text-right">Last Price</th>
-          <th class="text-right">24h Change</th>
-          <th class="text-right">24h Volume</th>
+          <th class="text-left">Asset</th>
+          <th class="text-right">Price</th>
+          <th class="text-right">24h</th>
+          <th class="text-right">Volume (24h)</th>
           <th class="text-right">Market Cap</th>
           <th class="text-right">7D Chart</th>
-          <th class="text-right">Action</th>
+          <th class="text-right">Trade</th>
         </tr>
       </thead>
-      <tbody id="marketOverviewTable">
-        <!-- Data will be populated here -->
+      <tbody id="marketData">
+        <!-- Loading state -->
+        <tr>
+          <td colspan="7" class="text-center">
+            <div class="loading-spinner"></div>
+            Loading market data...
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
-</div>
+</section>
 
 <!-- All Markets Modal -->
-<div class="modal-overlay" id="allMarketsModal">
-  <div class="modal-container">
+<div class="modal" id="allMarketsModal">
+  <div class="modal-dialog">
     <div class="modal-header">
       <h3>All Cryptocurrencies</h3>
       <button class="modal-close" id="closeAllMarketsModal">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <div class="modal-content">
+    <div class="modal-body">
       <div class="market-search">
-        <input type="text" id="marketSearchInput" placeholder="Search coins...">
         <i class="fas fa-search"></i>
+        <input type="text" id="marketSearch" placeholder="Search coins...">
       </div>
-      <div class="market-table-container">
+      <div class="market-table-wrapper">
         <table class="market-table">
           <thead>
             <tr>
-              <th class="text-left">Pair</th>
+              <th class="text-left">Asset</th>
               <th class="text-right">Price</th>
-              <th class="text-right">24h Change</th>
-              <th class="text-right">Action</th>
+              <th class="text-right">24h</th>
+              <th class="text-right">Trade</th>
             </tr>
           </thead>
-          <tbody id="allMarketsTable">
-            <!-- Data will be populated here -->
+          <tbody id="allMarketsData">
+            <!-- Data loaded dynamically -->
           </tbody>
         </table>
       </div>
       <div class="market-pagination">
-        <button id="prevMarketsPage" disabled><i class="fas fa-chevron-left"></i></button>
+        <button id="prevMarketsPage" disabled>
+          <i class="fas fa-chevron-left"></i>
+        </button>
         <span id="currentMarketsPage">1</span>
-        <button id="nextMarketsPage"><i class="fas fa-chevron-right"></i></button>
+        <button id="nextMarketsPage">
+          <i class="fas fa-chevron-right"></i>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Trading Modal -->
-<div class="modal-overlay" id="tradeModal">
-  <div class="modal-container trading-modal">
+<div class="modal" id="tradingModal">
+  <div class="modal-dialog trading-modal">
     <div class="modal-header">
-      <h3 id="tradeModalTitle">Trade</h3>
-      <button class="modal-close" id="closeTradeModal">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="modal-content">
-      <div class="coin-header">
-        <div class="coin-info">
-          <img id="tradeCoinIcon" src="" alt="" class="coin-icon">
+      <div class="modal-title-container">
+        <h3 id="tradeModalTitle">Trade</h3>
+        <div class="coin-header">
+          <img id="tradeCoinIcon" src="" alt="" class="coin-icon-lg">
           <div>
             <h4 id="tradeCoinName">-</h4>
             <span id="tradeCoinSymbol">-</span>
           </div>
         </div>
-        <div class="coin-price">
-          <span id="tradeCoinPrice">-</span>
-          <span id="tradeCoinChange" class="neutral">-</span>
-        </div>
       </div>
-      
-      <div class="coin-stats-grid">
-        <div class="stat-card">
-          <span class="stat-label">24h High</span>
-          <span id="tradeHigh24h" class="stat-value">-</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">24h Low</span>
-          <span id="tradeLow24h" class="stat-value">-</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">24h Volume</span>
-          <span id="tradeVolume" class="stat-value">-</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Market Cap</span>
-          <span id="tradeMarketCap" class="stat-value">-</span>
-        </div>
-      </div>
-      
-      <div class="chart-container">
-        <canvas id="tradeChart"></canvas>
-      </div>
-      
-      <div class="trade-form">
-        <div class="form-group">
-          <label for="tradePrice">Price (USD)</label>
-          <div class="input-group">
-            <input type="text" id="tradePrice" class="form-control" readonly>
+      <button class="modal-close" id="closeTradingModal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="trading-container">
+        <div class="trading-info">
+          <div class="price-display">
+            <span id="tradeCoinPrice">-</span>
+            <span id="tradeCoinChange" class="neutral">-</span>
+          </div>
+          
+          <div class="coin-stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">24h High</span>
+              <span id="tradeHigh24h" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">24h Low</span>
+              <span id="tradeLow24h" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">24h Volume</span>
+              <span id="tradeVolume" class="stat-value">-</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Market Cap</span>
+              <span id="tradeMarketCap" class="stat-value">-</span>
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <canvas id="tradeChart"></canvas>
           </div>
         </div>
         
-        <div class="form-group">
-          <label for="tradeAmount">Amount</label>
-          <div class="input-group">
-            <input type="number" id="tradeAmount" class="form-control" placeholder="0.00" step="0.00000001" min="0">
-            <span id="tradeCoinSymbolDisplay" class="input-symbol">-</span>
+        <div class="trading-form">
+          <div class="form-group">
+            <label for="tradeType">Order Type</label>
+            <select id="tradeType" class="form-control">
+              <option value="market">Market</option>
+              <option value="limit">Limit</option>
+            </select>
           </div>
-        </div>
-        
-        <div class="form-group">
-          <label for="tradeTotal">Total (USD)</label>
-          <div class="input-group">
+          
+          <div class="form-group" id="limitPriceGroup" style="display: none;">
+            <label for="limitPrice">Limit Price (USD)</label>
+            <input type="number" id="limitPrice" class="form-control" step="0.00000001" min="0">
+          </div>
+          
+          <div class="form-group">
+            <label for="tradeAmount">Amount</label>
+            <div class="input-group">
+              <input type="number" id="tradeAmount" class="form-control" placeholder="0.00" step="0.00000001" min="0">
+              <span class="input-symbol" id="tradeCoinSymbolDisplay">-</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="tradeTotal">Total (USD)</label>
             <input type="text" id="tradeTotal" class="form-control" readonly>
           </div>
-        </div>
-        
-        <div class="form-actions">
-          <button id="buyBtn" class="btn-buy">Buy</button>
-          <button id="sellBtn" class="btn-sell">Sell</button>
+          
+          <div class="form-actions">
+            <button id="buyBtn" class="btn-buy">Buy</button>
+            <button id="sellBtn" class="btn-sell">Sell</button>
+          </div>
+          
+          <div class="balance-info" id="balanceInfo">
+            <span>Available: <span id="availableBalance">$0.00</span></span>
+          </div>
         </div>
       </div>
     </div>
