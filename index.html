@@ -4028,7 +4028,7 @@ const MarketOverview = (() => {
     if (!currentTrade) return;
     
     const amount = parseFloat(elements.tradeAmount.value);
-    if (isNaN(amount) {
+    if (isNaN(amount)) {
       showToast('Please enter a valid amount', 'error');
       return;
     }
