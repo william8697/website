@@ -298,7 +298,11 @@
     }
 
     /* Table Styles */
-.market-section {
+
+
+
+
+         .market-section {
   background: var(--secondary-bg);
   border-radius: 12px;
   padding: 16px;
@@ -368,22 +372,21 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9em;
+  transition: all 0.2s;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 8px;
+.view-all:hover {
+  background: rgba(240, 185, 11, 0.1);
 }
 
 .btn-trade {
-  padding: 4px 8px;
+  padding: 6px 12px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   border: none;
   transition: all 0.2s;
-  min-width: 50px;
 }
 
 .btn-buy {
@@ -403,6 +406,8 @@
 .btn-sell:hover {
   background-color: rgba(246, 70, 93, 0.25);
 }
+
+         
   /* Market Stats Section Styles */
 .market-stats-section {
   margin: 2rem 0;
@@ -643,7 +648,7 @@
 }
 
     /* Gainers/Trending Section */
-    .gainers {
+   .gainers {
   flex: 1;
   background-color: var(--secondary-bg);
   border-radius: 4px;
@@ -669,6 +674,10 @@
   border-bottom: none;
 }
 
+.coin-list-item:hover {
+  background-color: rgba(240, 185, 11, 0.05);
+}
+
 .coin-info {
   display: flex;
   align-items: center;
@@ -686,12 +695,7 @@
 .price-change {
   font-size: 13px;
 }
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-}
-         .trending {
+        .trending {
   flex: 1;
   background-color: var(--secondary-bg);
   border-radius: 4px;
@@ -716,6 +720,10 @@
   border-bottom: none;
 }
 
+.coin-list-item:hover {
+  background-color: rgba(240, 185, 11, 0.05);
+}
+
 .coin-info {
   display: flex;
   align-items: center;
@@ -733,13 +741,7 @@
 .price-change {
   font-size: 13px;
 }
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-/* Reuse styles from gainers since they're similar */
+         
     /* Trading View */
     .trading-view {
       margin-top: 16px;
@@ -1874,8 +1876,7 @@
 
   
  <!-- Market Overview Section -->
-
-<section class="market-section">
+<div class="market-section">
   <div class="section-header">
     <h2>Market Overview</h2>
     <button class="view-all" id="viewAllMarkets">View All</button>
@@ -1897,7 +1898,60 @@
       <tbody id="marketData"></tbody>
     </table>
   </div>
-</section>
+</div>
+
+<!-- Modal for All Markets -->
+<div class="modal" id="allMarketsModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">All Cryptocurrencies</h2>
+      <span class="close-modal" onclick="closeModal('allMarketsModal')">&times;</span>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>24h Change</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="allMarketsTable"></tbody>
+      </table>
+    </div>
+    <div class="pagination-controls">
+      <button class="page-btn" id="prevMarketsPage">Previous</button>
+      <span id="currentMarketsPage">1</span>
+      <button class="page-btn" id="nextMarketsPage">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- Trade Modal -->
+<div class="modal" id="tradeModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="tradeModalTitle">Trade</h2>
+      <span class="close-modal" onclick="closeModal('tradeModal')">&times;</span>
+    </div>
+    <div id="tradeModalContent">
+      <div class="form-group">
+        <label class="form-label">Amount (USDT)</label>
+        <input type="number" class="form-control" id="tradeAmount" placeholder="Enter amount">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Price</label>
+        <input type="text" class="form-control" id="tradePrice" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Total</label>
+        <input type="text" class="form-control" id="tradeTotal" readonly>
+      </div>
+      <button class="btn btn-primary" id="confirmTradeBtn">Confirm Trade</button>
+    </div>
+  </div>
+</div>
 
          
    <!-- Market Stats Section -->
@@ -1972,8 +2026,29 @@
     <a href="#" class="section-link" id="viewAllGainers">View All</a>
   </div>
   <div class="gainers-container" id="gainersList">
-    <div style="padding: 20px; text-align: center; color: var(--positive);">
-      Loading gainers data...
+    <!-- Data will be populated here -->
+  </div>
+</div>
+
+<!-- Modal for All Gainers -->
+<div class="modal" id="allGainersModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Top Gainers (24h)</h2>
+      <span class="close-modal" onclick="closeModal('allGainersModal')">&times;</span>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>24h Change</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="allGainersTable"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -1984,8 +2059,29 @@
     <a href="#" class="section-link" id="viewAllTrending">View All</a>
   </div>
   <div class="trending-container" id="trendingList">
-    <div style="padding: 20px; text-align: center; color: var(--positive);">
-      Loading trending data...
+    <!-- Data will be populated here -->
+  </div>
+</div>
+
+<!-- Modal for All Trending -->
+<div class="modal" id="allTrendingModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Trending Coins</h2>
+      <span class="close-modal" onclick="closeModal('allTrendingModal')">&times;</span>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Coin</th>
+            <th>Price</th>
+            <th>24h Change</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="allTrendingTable"></tbody>
+      </table>
     </div>
   </div>
 </div>
@@ -3129,67 +3225,58 @@
 
       // Market Overview
 
-
 document.addEventListener('DOMContentLoaded', () => {
   loadMarketData();
-  document.getElementById('viewAllMarkets')?.addEventListener('click', showAllCoinsModal);
+  setupMarketEventListeners();
 });
 
 async function loadMarketData() {
   try {
     const response = await fetch('https://website-backendd-1.onrender.com/api/markets/overview?limit=10');
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error('Failed to load market data');
     
     const data = await response.json();
     renderMarketData(data);
   } catch (error) {
-    console.error('Failed to load market data:', error);
+    console.error('Error loading market data:', error);
     document.getElementById('marketData').innerHTML = `
       <tr>
-        <td colspan="8" class="error-message">
-          Failed to load data. Please try again later.
+        <td colspan="8" style="text-align: center; color: var(--negative); padding: 20px;">
+          Failed to load market data. Please try again later.
         </td>
       </tr>`;
   }
 }
 
-function renderMarketData(coins) {
-  const container = document.getElementById('marketData');
-  container.innerHTML = coins.map(coin => `
+function renderMarketData(data) {
+  const tableBody = document.getElementById('marketData');
+  tableBody.innerHTML = data.map(coin => `
     <tr data-coin-id="${coin.id}">
       <td>
         <div class="coin-cell">
-          <img src="${coin.image}" alt="${coin.name}" class="coin-icon" 
-               onerror="this.onerror=null;this.src='https://via.placeholder.com/24'">
+          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
           <div>
             <div class="coin-name">${coin.name}</div>
             <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
           </div>
         </div>
       </td>
-      <td>$${coin.current_price.toLocaleString()}</td>
-      <td class="${coin.price_change_percentage_1h >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_1h >= 0 ? '▲' : '▼'} 
-        ${Math.abs(coin.price_change_percentage_1h).toFixed(1)}%
+      <td>$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+      <td class="${coin.price_change_percentage_1h_in_currency >= 0 ? 'positive' : 'negative'}">
+        ${coin.price_change_percentage_1h_in_currency >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_1h_in_currency).toFixed(1)}%
       </td>
       <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} 
-        ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
+        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
       </td>
       <td>$${(coin.total_volume / 1000000).toFixed(1)}M</td>
       <td>$${(coin.market_cap / 1000000000).toFixed(2)}B</td>
       <td>
         <div class="sparkline-container">
-          <canvas data-prices='${JSON.stringify(coin.sparkline)}'
-                  data-trend="${coin.price_change_percentage_7d >= 0 ? 'up' : 'down'}">
-          </canvas>
+          <canvas data-prices='${JSON.stringify(coin.sparkline_in_7d.price)}'></canvas>
         </div>
       </td>
       <td>
-        <div class="action-buttons">
-          <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
-          <button class="btn-trade btn-sell" onclick="showTradeForm('${coin.id}', 'sell', event)">Sell</button>
-        </div>
+        <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
       </td>
     </tr>
   `).join('');
@@ -3200,7 +3287,6 @@ function renderMarketData(coins) {
 function initSparklines() {
   document.querySelectorAll('.sparkline-container canvas').forEach(canvas => {
     const prices = JSON.parse(canvas.dataset.prices);
-    const isPositive = canvas.dataset.trend === 'up';
     const ctx = canvas.getContext('2d');
     
     new Chart(ctx, {
@@ -3209,7 +3295,7 @@ function initSparklines() {
         labels: Array(prices.length).fill(''),
         datasets: [{
           data: prices,
-          borderColor: isPositive ? '#0ecb81' : '#f6465d',
+          borderColor: prices[0] <= prices[prices.length-1] ? '#0ecb81' : '#f6465d',
           borderWidth: 2,
           tension: 0.4,
           fill: false,
@@ -3226,57 +3312,116 @@ function initSparklines() {
   });
 }
 
-async function showTradeForm(coinId, action, event) {
-  event.stopPropagation();
+function setupMarketEventListeners() {
+  // View All Markets
+  document.getElementById('viewAllMarkets').addEventListener('click', showAllMarkets);
+  
+  // Trade form amount input
+  document.getElementById('tradeAmount')?.addEventListener('input', updateTradeTotal);
+  
+  // Confirm trade button
+  document.getElementById('confirmTradeBtn')?.addEventListener('click', executeTrade);
+}
+
+async function showAllMarkets() {
+  try {
+    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/overview?limit=100');
+    if (!response.ok) throw new Error('Failed to load all markets');
+    
+    const data = await response.json();
+    renderAllMarkets(data);
+    document.getElementById('allMarketsModal').style.display = 'block';
+  } catch (error) {
+    console.error('Error loading all markets:', error);
+    document.getElementById('allMarketsTable').innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; color: var(--negative); padding: 20px;">
+          Failed to load market data. Please try again later.
+        </td>
+      </tr>`;
+  }
+}
+
+function renderAllMarkets(data) {
+  const tableBody = document.getElementById('allMarketsTable');
+  tableBody.innerHTML = data.map(coin => `
+    <tr data-coin-id="${coin.id}">
+      <td>
+        <div class="coin-cell">
+          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+          <div>
+            <div class="coin-name">${coin.name}</div>
+            <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+          </div>
+        </div>
+      </td>
+      <td>$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+      <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(1)}%
+      </td>
+      <td>
+        <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function showTradeForm(coinId, type, event) {
+  if (event) event.stopPropagation();
   
   // Check authentication
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
   if (!token) {
-    showToast('You must be logged in to trade', 'error');
+    alert('You must be logged in to perform this action');
     return;
   }
   
-  try {
-    // Get current price
-    const response = await fetch(`https://website-backendd-1.onrender.com/api/markets/overview?limit=1&ids=${coinId}`);
-    if (!response.ok) throw new Error('Failed to get current price');
-    
-    const [coin] = await response.json();
-    if (!coin) throw new Error('Coin not found');
-    
-    // Show trade modal
-    const modal = document.getElementById('tradeModal');
-    const title = document.getElementById('tradeModalTitle');
-    const priceInput = document.getElementById('tradePrice');
-    const amountInput = document.getElementById('tradeAmount');
-    const confirmBtn = document.getElementById('confirmTradeBtn');
-    
-    title.textContent = `${action === 'buy' ? 'Buy' : 'Sell'} ${coin.name}`;
-    priceInput.value = `$${coin.current_price.toLocaleString()}`;
-    amountInput.value = '';
-    document.getElementById('tradeTotal').value = '$0.00';
-    
-    confirmBtn.textContent = `${action === 'buy' ? 'Buy' : 'Sell'} ${coin.symbol.toUpperCase()}`;
-    confirmBtn.onclick = () => executeTrade(coinId, action, coin.current_price);
-    
-    modal.style.display = 'block';
-  } catch (error) {
-    console.error('Trade form error:', error);
-    showToast('Failed to prepare trade', 'error');
-  }
+  // Find coin data
+  const row = document.querySelector(`tr[data-coin-id="${coinId}"]`);
+  if (!row) return;
+  
+  const coinName = row.querySelector('.coin-name').textContent;
+  const coinSymbol = row.querySelector('.coin-symbol').textContent;
+  const priceText = row.querySelector('td:nth-child(2)').textContent;
+  const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+  
+  // Set up modal
+  document.getElementById('tradeModalTitle').textContent = `${type === 'buy' ? 'Buy' : 'Sell'} ${coinName} (${coinSymbol})`;
+  document.getElementById('tradePrice').value = priceText;
+  document.getElementById('tradeAmount').value = '';
+  document.getElementById('tradeTotal').value = '$0.00';
+  
+  // Store current trade info
+  window.currentTrade = { coinId, type, price };
+  
+  document.getElementById('tradeModal').style.display = 'block';
 }
 
-async function executeTrade(coinId, action, price) {
+function updateTradeTotal() {
+  const amount = parseFloat(document.getElementById('tradeAmount').value);
+  const price = window.currentTrade?.price;
+  
+  if (!price || isNaN(amount) {
+    document.getElementById('tradeTotal').value = '$0.00';
+    return;
+  }
+  
+  const total = amount * price;
+  document.getElementById('tradeTotal').value = `$${total.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+}
+
+async function executeTrade() {
+  const { coinId, type, price } = window.currentTrade || {};
   const amount = parseFloat(document.getElementById('tradeAmount').value);
   
-  if (isNaN(amount) || amount <= 0) {
-    showToast('Please enter a valid amount', 'error');
+  if (!coinId || isNaN(amount) {
+    alert('Please enter a valid amount');
     return;
   }
   
   try {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const response = await fetch(`https://website-backendd-1.onrender.com/api/trades/${action}`, {
+    const response = await fetch('https://website-backendd-1.onrender.com/api/trades/execute', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -3285,42 +3430,29 @@ async function executeTrade(coinId, action, price) {
       body: JSON.stringify({
         coinId,
         amount,
-        price
+        price,
+        type
       })
     });
     
     if (!response.ok) {
       const error = await response.json();
-      if (error.code === 'INSUFFICIENT_BALANCE') {
-        showToast('Insufficient balance. Please deposit.', 'error');
-      } else if (error.code === 'INSUFFICIENT_HOLDINGS') {
-        showToast('Insufficient holdings to sell', 'error');
-      } else {
-        throw new Error(error.error || 'Trade failed');
-      }
-      return;
+      throw new Error(error.error || 'Trade failed');
     }
     
     const result = await response.json();
-    showToast(`Trade executed successfully! New balance: $${result.newBalance.toFixed(2)}`);
+    alert(`Trade executed successfully! New balance: $${result.newBalance.toFixed(2)}`);
     closeModal('tradeModal');
     
-    // Update UI if needed
-    if (typeof updateUserBalance === 'function') {
-      updateUserBalance(result.newBalance);
-    }
-    
   } catch (error) {
-    console.error('Trade execution error:', error);
-    showToast('Trade failed. Please try again.', 'error');
+    console.error('Trade error:', error);
+    alert(error.message || 'Failed to execute trade');
   }
 }
 
-function showAllCoinsModal() {
-  // Implementation would be similar to the trade modal but showing all coins
-  // This would use the same /api/markets/overview endpoint with a higher limit
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
 }
-
            
      // Market Stats Section - Frontend Implementation
 const marketStats = {
@@ -3508,18 +3640,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
       // Load gainers data
-     document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', () => {
   loadGainersData();
-  document.getElementById('viewAllGainers')?.addEventListener('click', showAllGainersModal);
+  setupGainersEventListeners();
 });
 
 async function loadGainersData() {
   try {
     const response = await fetch('https://website-backendd-1.onrender.com/api/markets/gainers?limit=5');
-    if (!response.ok) throw new Error('Failed to fetch gainers');
+    if (!response.ok) throw new Error('Failed to load gainers');
     
-    const { gainers } = await response.json();
-    renderGainers(gainers);
+    const data = await response.json();
+    renderGainers(data);
   } catch (error) {
     console.error('Error loading gainers:', error);
     document.getElementById('gainersList').innerHTML = `
@@ -3529,53 +3662,107 @@ async function loadGainersData() {
   }
 }
 
-function renderGainers(gainers) {
+function renderGainers(data) {
   const container = document.getElementById('gainersList');
   container.innerHTML = '';
   
-  gainers.forEach(gainer => {
-    const card = document.createElement('div');
-    card.className = 'coin-list-item';
+  data.forEach(coin => {
+    const item = document.createElement('div');
+    item.className = 'coin-list-item';
+    item.setAttribute('data-coin-id', coin.id);
     
-    card.innerHTML = `
+    item.innerHTML = `
       <div class="coin-info">
-        <img src="${gainer.image}" alt="${gainer.name}" width="24">
-        <span>${gainer.name}</span>
+        <img src="${coin.image}" alt="${coin.name}" width="24">
+        <span>${coin.name}</span>
       </div>
       <div class="price-info">
-        <div class="price">$${gainer.current_price.toLocaleString()}</div>
-        <div class="price-change ${gainer.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-          ${gainer.price_change_percentage_24h >= 0 ? '+' : ''}${gainer.price_change_percentage_24h.toFixed(2)}%
+        <div class="price">$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
+        <div class="price-change positive">
+          ▲ ${coin.price_change_percentage_24h.toFixed(2)}%
         </div>
-      </div>
-      <div class="action-buttons">
-        <button class="btn-trade btn-buy" onclick="showTradeForm('${gainer.id}', 'buy', event)">Buy</button>
       </div>
     `;
     
-    card.addEventListener('click', () => showCoinDetail(gainer.id));
-    container.appendChild(card);
+    item.addEventListener('click', () => {
+      // You can implement a showCoinDetail function similar to Market Overview
+      console.log('Show detail for:', coin.id);
+    });
+    
+    container.appendChild(item);
   });
 }
 
-function showAllGainersModal() {
-  // Implementation would show all gainers in a modal
-  // Similar to the market overview modal but sorted by gain
+function setupGainersEventListeners() {
+  document.getElementById('viewAllGainers').addEventListener('click', (e) => {
+    e.preventDefault();
+    showAllGainers();
+  });
 }
 
+async function showAllGainers() {
+  try {
+    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/gainers?limit=20');
+    if (!response.ok) throw new Error('Failed to load all gainers');
+    
+    const data = await response.json();
+    renderAllGainers(data);
+    document.getElementById('allGainersModal').style.display = 'block';
+  } catch (error) {
+    console.error('Error loading all gainers:', error);
+    document.getElementById('allGainersTable').innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; color: var(--negative); padding: 20px;">
+          Failed to load gainers data
+        </td>
+      </tr>`;
+  }
+}
+
+function renderAllGainers(data) {
+  const tableBody = document.getElementById('allGainersTable');
+  tableBody.innerHTML = data.map(coin => `
+    <tr data-coin-id="${coin.id}">
+      <td>
+        <div class="coin-cell">
+          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+          <div>
+            <div class="coin-name">${coin.name}</div>
+            <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+          </div>
+        </div>
+      </td>
+      <td>$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+      <td class="positive">
+        ▲ ${coin.price_change_percentage_24h.toFixed(2)}%
+      </td>
+      <td>
+        <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+           
+
       // Load trending data
-    document.addEventListener('DOMContentLoaded', () => {
+
+
+           document.addEventListener('DOMContentLoaded', () => {
   loadTrendingData();
-  document.getElementById('viewAllTrending')?.addEventListener('click', showAllTrendingModal);
+  setupTrendingEventListeners();
 });
 
 async function loadTrendingData() {
   try {
     const response = await fetch('https://website-backendd-1.onrender.com/api/markets/trending?limit=5');
-    if (!response.ok) throw new Error('Failed to fetch trending');
+    if (!response.ok) throw new Error('Failed to load trending');
     
-    const { trending } = await response.json();
-    renderTrending(trending);
+    const data = await response.json();
+    renderTrending(data);
   } catch (error) {
     console.error('Error loading trending:', error);
     document.getElementById('trendingList').innerHTML = `
@@ -3585,37 +3772,89 @@ async function loadTrendingData() {
   }
 }
 
-function renderTrending(trending) {
+function renderTrending(data) {
   const container = document.getElementById('trendingList');
   container.innerHTML = '';
   
-  trending.forEach(coin => {
-    const card = document.createElement('div');
-    card.className = 'coin-list-item';
+  data.forEach(coin => {
+    const item = document.createElement('div');
+    item.className = 'coin-list-item';
+    item.setAttribute('data-coin-id', coin.id);
     
-    card.innerHTML = `
+    item.innerHTML = `
       <div class="coin-info">
         <img src="${coin.image}" alt="${coin.name}" width="24">
         <span>${coin.name}</span>
       </div>
       <div class="price-info">
-        <div class="price">$${coin.current_price.toLocaleString()}</div>
+        <div class="price">$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</div>
         <div class="price-change ${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
-          ${coin.price_change_percentage_24h >= 0 ? '+' : ''}${coin.price_change_percentage_24h.toFixed(2)}%
+          ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </div>
-      </div>
-      <div class="action-buttons">
-        <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Buy</button>
       </div>
     `;
     
-    card.addEventListener('click', () => showCoinDetail(coin.id));
-    container.appendChild(card);
+    item.addEventListener('click', () => {
+      // You can implement a showCoinDetail function similar to Market Overview
+      console.log('Show detail for:', coin.id);
+    });
+    
+    container.appendChild(item);
   });
 }
 
-function showAllTrendingModal() {
-  // Implementation would show all trending coins in a modal
+function setupTrendingEventListeners() {
+  document.getElementById('viewAllTrending').addEventListener('click', (e) => {
+    e.preventDefault();
+    showAllTrending();
+  });
+}
+
+async function showAllTrending() {
+  try {
+    const response = await fetch('https://website-backendd-1.onrender.com/api/markets/trending?limit=20');
+    if (!response.ok) throw new Error('Failed to load all trending');
+    
+    const data = await response.json();
+    renderAllTrending(data);
+    document.getElementById('allTrendingModal').style.display = 'block';
+  } catch (error) {
+    console.error('Error loading all trending:', error);
+    document.getElementById('allTrendingTable').innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; color: var(--negative); padding: 20px;">
+          Failed to load trending data
+        </td>
+      </tr>`;
+  }
+}
+
+function renderAllTrending(data) {
+  const tableBody = document.getElementById('allTrendingTable');
+  tableBody.innerHTML = data.map(coin => `
+    <tr data-coin-id="${coin.id}">
+      <td>
+        <div class="coin-cell">
+          <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
+          <div>
+            <div class="coin-name">${coin.name}</div>
+            <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+          </div>
+        </div>
+      </td>
+      <td>$${coin.current_price.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+      <td class="${coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative'}">
+        ${coin.price_change_percentage_24h >= 0 ? '▲' : '▼'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
+      </td>
+      <td>
+        <button class="btn-trade btn-buy" onclick="showTradeForm('${coin.id}', 'buy', event)">Trade</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
 }
 
       // News State Management
