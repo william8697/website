@@ -1,4 +1,4 @@
-       <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -3401,7 +3401,7 @@ function updateTradeTotal() {
   const amount = parseFloat(document.getElementById('tradeAmount').value);
   const price = window.currentTrade?.price;
   
-  if (!price || isNaN(amount) {
+if (!price || isNaN(amount)) {
     document.getElementById('tradeTotal').value = '$0.00';
     return;
   }
