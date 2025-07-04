@@ -2467,14 +2467,14 @@
         await checkAuthStatus();
         
         // Load market data
-        await MarketOverview.loadMarketData();
+        await loadMarketData();
         
   
         // Load gainers data
-        await TopGainers.loadGainersData();
+        await loadGainersData();
         
         // Load trending data
-        await Trending.loadTrendingData();
+        await loadTrendingData();
         
         // Load news
         await loadNews();
