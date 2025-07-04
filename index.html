@@ -2513,39 +2513,47 @@
       }
 
       // Set up event listeners
-     const setupEventListeners = () => {
-  // Only add listeners if elements exist
-  if (elements.viewAllMarkets) {
-    elements.viewAllMarkets.addEventListener('click', showAllMarkets);
+  function setupEventListeners() {
+  // Get references to elements directly
+  const viewAllMarkets = document.getElementById('viewAllMarkets');
+  const prevMarketsPage = document.getElementById('prevMarketsPage');
+  const nextMarketsPage = document.getElementById('nextMarketsPage');
+  const tradeAmount = document.getElementById('tradeAmount');
+  const confirmBuyBtn = document.getElementById('confirmBuyBtn');
+  const confirmSellBtn = document.getElementById('confirmSellBtn');
+
+  // Add event listeners if elements exist
+  if (viewAllMarkets) {
+    viewAllMarkets.addEventListener('click', showAllMarkets);
   }
   
-  if (elements.prevMarketsPage) {
-    elements.prevMarketsPage.addEventListener('click', () => changePage(-1));
+  if (prevMarketsPage) {
+    prevMarketsPage.addEventListener('click', () => changePage(-1));
   }
   
-  if (elements.nextMarketsPage) {
-    elements.nextMarketsPage.addEventListener('click', () => changePage(1));
+  if (nextMarketsPage) {
+    nextMarketsPage.addEventListener('click', () => changePage(1));
   }
   
-  if (elements.tradeAmount) {
-    elements.tradeAmount.addEventListener('input', updateTradeTotal);
+  if (tradeAmount) {
+    tradeAmount.addEventListener('input', updateTradeTotal);
   }
   
-  if (elements.confirmBuyBtn) {
-    elements.confirmBuyBtn.addEventListener('click', () => executeTrade('buy'));
+  if (confirmBuyBtn) {
+    confirmBuyBtn.addEventListener('click', () => executeTrade('buy'));
   }
   
-  if (elements.confirmSellBtn) {
-    elements.confirmSellBtn.addEventListener('click', () => executeTrade('sell'));
+  if (confirmSellBtn) {
+    confirmSellBtn.addEventListener('click', () => executeTrade('sell'));
   }
   
-  // This global listener doesn't need a check
+  // Global click handler for modals
   document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
       closeModal(e.target.id);
     }
   });
-};
+}
       // Load trade content in main view
       function loadTradeContent() {
         const mainContent = document.querySelector('.main-content');
