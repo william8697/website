@@ -2496,22 +2496,24 @@
       });
 
       // Setup mobile menu toggle
-      function setupMobileMenu() {
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-          navLinks.classList.toggle('show');
-        });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (event) => {
-          if (!event.target.closest('.nav-container') && navLinks.classList.contains('show')) {
-            navLinks.classList.remove('show');
-          }
-        });
+     function setupMobileMenu() {
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const navLinks = document.getElementById('navLinks');
+  
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Prevent event from bubbling up
+      navLinks.classList.toggle('show');
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && e.target !== mobileMenuBtn) {
+        navLinks.classList.remove('show');
       }
-
+    });
+  }
+}
       // Set up event listeners
   function setupEventListeners() {
   // Get references to elements directly
