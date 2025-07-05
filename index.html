@@ -4480,12 +4480,11 @@ function initTradingViewChart(coinId, symbol) {
       'Volume@tv-basicstudies'
     ]
   });
-  
-// TradingView widget doesn't support onChartReady, so use a timeout
+
 setTimeout(() => {
   elements.tradeChartPlaceholder.style.display = 'none';
   document.getElementById('tradingview-chart').style.display = 'block';
-}, 1000); // 1 second delay for chart to load
+}, 1000); // 1 second delay to allow chart to load
   
 // Update TradingView Chart Timeframe
 function updateTradingViewChart(timeframe) {
@@ -6090,6 +6089,7 @@ function showError(elementId, message) {
           event.target.style.display = 'none';
         }
   };
+  
     </script>
 </body>
 </html>  
