@@ -3697,7 +3697,7 @@ const MarketOverview = (() => {
       
       for (let i = 1; i < sparklineData.length; i++) {
         const x = (i / (sparklineData.length - 1)) * canvas.width;
-const y = canvas.height - ((sparklineData[i] / Math.max(...sparklineData)) * canvas.height;        ctx.lineTo(x, y);
+const y = canvas.height - (sparklineData[i] / Math.max(...sparklineData)) * canvas.height;
       }
       
       ctx.strokeStyle = isPositive ? 'var(--positive)' : 'var(--negative)';
