@@ -871,9 +871,10 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
-#tradingViewChart {
+#tradingview-chart {
   width: 100%;
-  height: 300px;
+  height: 400px;
+  border-radius: 8px;
 }
 
 .trading-form-container {
@@ -2782,7 +2783,7 @@
             <button class="chart-period-btn">ALL</button>
           </div>
         </div>
-        <div id="tradingViewChart" style="height: 300px;"></div>
+        <div id="tradingview-chart" style="height: 400px;"></div>
       </div>
 
       <div class="trading-form-container">
@@ -3898,138 +3899,81 @@
       }
 
 // Market Overview Section - Production Implementation
-class MarketOverview {
-  constructor() {
-    this.marketData = [];
-    this.allMarketsData = [];
-    this.filteredMarketsData = [];
-    this.currentTrade = null;
-    this.userBalance = 0;
-    this.orderBookData = { bids: [], asks: [] };
-    this.tradingViewWidget = null;
-    
-    // Initialize
-    this.initElements();
-    this.setupEventListeners();
+const marketOverview = {
+  // Configuration
+  API_BASE_URL: 'https://website-backendd-1.onrender.com/api/v1',
+  COINGECKO_API: 'https://api.coingecko.com/api/v3',
+  INITIAL_DISPLAY_COUNT: 5,
+  ALL_MARKETS_PER_PAGE: 20,
+  currentTrade: null,
+  marketData: [],
+  allMarketsData: [],
+  filteredMarketsData: [],
+  marketPagination: {
+    currentPage: 1,
+    totalPages: 1
+  },
+  orderBookData: {
+    bids: [],
+    asks: []
+  },
+  currentUserBalance: 0,
+  tradingViewWidget: null,
+
+  // Initialize
+  init: function() {
     this.loadMarketData();
+    this.setupEventListeners();
     this.checkUserBalance();
-  }
+  },
 
-  initElements() {
-    this.elements = {
-      marketTable: document.getElementById('marketData'),
-      refreshMarkets: document.getElementById('refreshMarkets'),
-      viewAllMarkets: document.getElementById('viewAllMarkets'),
-      allMarketsModal: document.getElementById('allMarketsModal'),
-      allMarketsTable: document.getElementById('allMarketsTable'),
-      marketSearch: document.getElementById('marketSearch'),
-      prevMarketsPage: document.getElementById('prevMarketsPage'),
-      nextMarketsPage: document.getElementById('nextMarketsPage'),
-      currentMarketsPage: document.getElementById('currentMarketsPage'),
-      totalMarketsPages: document.getElementById('totalMarketsPages'),
-      tradeModal: document.getElementById('tradeModal'),
-      tradeCoinIcon: document.getElementById('tradeCoinIcon'),
-      tradeCoinName: document.getElementById('tradeCoinName'),
-      tradeCoinSymbol: document.getElementById('tradeCoinSymbol'),
-      tradeCoinPrice: document.getElementById('tradeCoinPrice'),
-      tradeCoinChange: document.getElementById('tradeCoinChange'),
-      tradePrice: document.getElementById('tradePrice'),
-      tradeAmount: document.getElementById('tradeAmount'),
-      tradeTotal: document.getElementById('tradeTotal'),
-      tradeAmountCurrency: document.getElementById('tradeAmountCurrency'),
-      availableBalance: document.getElementById('availableBalance'),
-      confirmTradeBtn: document.getElementById('confirmTradeBtn'),
-      tradeBtnText: document.getElementById('tradeBtnText'),
-      tradeBtnAsset: document.getElementById('tradeBtnAsset'),
-      tradingViewChart: document.getElementById('tradingViewChart'),
-      askOrders: document.getElementById('askOrders'),
-      bidOrders: document.getElementById('bidOrders'),
-      marketSpread: document.getElementById('marketSpread'),
-      orderBookDepth: document.getElementById('orderBookDepth')
-    };
-  }
-
-  setupEventListeners() {
-    // Refresh Market Data
-    this.elements.refreshMarkets.addEventListener('click', () => {
-      this.elements.refreshMarkets.classList.add('rotating');
-      this.loadMarketData();
-    });
-    
-    // View All Markets
-    this.elements.viewAllMarkets.addEventListener('click', () => this.showAllMarkets());
-    
-    // Market Search
-    this.elements.marketSearch.addEventListener('input', () => this.filterMarkets());
-    
-    // Market Pagination
-    this.elements.prevMarketsPage.addEventListener('click', () => this.changeMarketsPage(-1));
-    this.elements.nextMarketsPage.addEventListener('click', () => this.changeMarketsPage(1));
-    
-    // Trade Amount Input
-    this.elements.tradeAmount.addEventListener('input', () => this.updateTradeTotal());
-    
-    // Percentage Buttons
-    document.querySelectorAll('.input-action-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const percentage = parseFloat(e.currentTarget.dataset.action) / 100;
-        const maxAmount = this.userBalance / this.currentTrade.price;
-        this.elements.tradeAmount.value = (maxAmount * percentage).toFixed(8);
-        this.updateTradeTotal();
-      });
-    });
-    
-    // Confirm Trade Button
-    this.elements.confirmTradeBtn.addEventListener('click', () => this.executeTrade());
-    
-    // Modal Tabs
-    document.querySelectorAll('.modal-tab').forEach(tab => {
-      tab.addEventListener('click', (e) => {
-        if (this.currentTrade) {
-          this.currentTrade.type = e.currentTarget.dataset.tab;
-          this.updateTradeModal();
-        }
-      });
-    });
-    
-    // Chart Period Buttons
-    document.querySelectorAll('.chart-period-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.chart-period-btn').forEach(b => b.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-        this.updateTradingViewChart(this.currentTrade.coin.symbol, e.currentTarget.textContent);
-      });
-    });
-    
-    // Order Book Depth Select
-    this.elements.orderBookDepth.addEventListener('change', () => {
-      this.simulateOrderBook(this.currentTrade.price);
-    });
-  }
-
-  async loadMarketData() {
+  // Load market data from CoinGecko API
+  loadMarketData: async function() {
     try {
-      this.showMarketLoading();
+      this.showLoadingState();
       
-      // Fetch from CoinGecko API
-      const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=1h,24h');
+      // Fetch top cryptocurrencies by market cap
+      const response = await fetch(`${this.COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${this.INITIAL_DISPLAY_COUNT}&page=1&sparkline=true&price_change_percentage=1h,24h`);
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error('Failed to fetch market data');
       
       this.marketData = await response.json();
       this.renderMarketData();
-      this.elements.refreshMarkets.classList.remove('rotating');
+      
+      // Also load all markets data for the "View All" modal
+      await this.loadAllMarketsData();
+      
     } catch (error) {
       console.error('Error loading market data:', error);
-      this.showMarketError('Failed to load market data. Please try again later.');
-      this.elements.refreshMarkets.classList.remove('rotating');
+      this.showErrorState('Failed to load market data. Please try again later.');
+    } finally {
+      document.getElementById('refreshMarkets').classList.remove('rotating');
     }
-  }
+  },
 
-  showMarketLoading() {
-    this.elements.marketTable.innerHTML = `
+  // Load all markets data for the "View All" modal
+  loadAllMarketsData: async function() {
+    try {
+      const response = await fetch(`${this.COINGECKO_API}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h`);
+      
+      if (!response.ok) throw new Error('Failed to fetch all markets data');
+      
+      this.allMarketsData = await response.json();
+      this.filteredMarketsData = [...this.allMarketsData];
+      
+      // Calculate total pages
+      this.marketPagination.totalPages = Math.ceil(this.filteredMarketsData.length / this.ALL_MARKETS_PER_PAGE);
+      document.getElementById('totalMarketsPages').textContent = this.marketPagination.totalPages;
+      
+    } catch (error) {
+      console.error('Error loading all markets data:', error);
+    }
+  },
+
+  // Show loading state
+  showLoadingState: function() {
+    const marketTable = document.getElementById('marketData');
+    marketTable.innerHTML = `
       <tr>
         <td colspan="9" class="loading-cell">
           <div class="loading-spinner"></div>
@@ -4037,10 +3981,13 @@ class MarketOverview {
         </td>
       </tr>
     `;
-  }
+    document.getElementById('refreshMarkets').classList.add('rotating');
+  },
 
-  showMarketError(message) {
-    this.elements.marketTable.innerHTML = `
+  // Show error state
+  showErrorState: function(message) {
+    const marketTable = document.getElementById('marketData');
+    marketTable.innerHTML = `
       <tr>
         <td colspan="9" class="error-cell">
           <i class="fas fa-exclamation-circle"></i>
@@ -4049,15 +3996,18 @@ class MarketOverview {
         </td>
       </tr>
     `;
-  }
+  },
 
-  renderMarketData() {
+  // Render market data in the table
+  renderMarketData: function() {
+    const marketTable = document.getElementById('marketData');
+    
     if (!this.marketData || this.marketData.length === 0) {
-      this.showMarketError('No market data available');
+      this.showErrorState('No market data available');
       return;
     }
     
-    this.elements.marketTable.innerHTML = this.marketData.map((coin, index) => `
+    marketTable.innerHTML = this.marketData.map((coin, index) => `
       <tr class="asset-row" data-coin-id="${coin.id}">
         <td class="coin-column rank">${index + 1}</td>
         <td class="coin-column">
@@ -4090,9 +4040,10 @@ class MarketOverview {
     `).join('');
     
     this.initSparklines();
-  }
+  },
 
-  initSparklines() {
+  // Initialize sparkline charts
+  initSparklines: function() {
     document.querySelectorAll('.sparkline-container canvas').forEach(canvas => {
       const prices = JSON.parse(canvas.dataset.prices);
       const ctx = canvas.getContext('2d');
@@ -4131,91 +4082,23 @@ class MarketOverview {
         }
       });
     });
-  }
+  },
 
-  async showAllMarkets() {
-    try {
-      this.showAllMarketsLoading();
-      this.elements.allMarketsModal.style.display = 'flex';
-      
-      // Fetch from CoinGecko API
-      const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      this.allMarketsData = await response.json();
-      this.filteredMarketsData = [...this.allMarketsData];
-      
-      // Calculate total pages
-      this.marketPagination = {
-        currentPage: 1,
-        itemsPerPage: 20,
-        totalPages: Math.ceil(this.filteredMarketsData.length / 20)
-      };
-      
-      this.elements.totalMarketsPages.textContent = this.marketPagination.totalPages;
-      
-      // Render first page
-      this.renderAllMarkets();
-    } catch (error) {
-      console.error('Error loading all markets:', error);
-      this.showAllMarketsError('Failed to load all markets. Please try again later.');
-    }
-  }
-
-  showAllMarketsLoading() {
-    this.elements.allMarketsTable.innerHTML = `
-      <tr>
-        <td colspan="4" class="loading-cell">
-          <div class="loading-spinner"></div>
-          <div>Loading all markets...</div>
-        </td>
-      </tr>
-    `;
-  }
-
-  showAllMarketsError(message) {
-    this.elements.allMarketsTable.innerHTML = `
-      <tr>
-        <td colspan="4" class="error-cell">
-          <i class="fas fa-exclamation-circle"></i>
-          <div>${message}</div>
-          <button class="retry-btn" onclick="marketOverview.showAllMarkets()">Retry</button>
-        </td>
-      </tr>
-    `;
-  }
-
-  filterMarkets() {
-    const searchTerm = this.elements.marketSearch.value.toLowerCase();
-    
-    if (searchTerm === '') {
-      this.filteredMarketsData = [...this.allMarketsData];
-    } else {
-      this.filteredMarketsData = this.allMarketsData.filter(coin => 
-        coin.name.toLowerCase().includes(searchTerm) || 
-        coin.symbol.toLowerCase().includes(searchTerm)
-      );
-    }
-    
-    // Reset to first page
-    this.marketPagination.currentPage = 1;
-    this.marketPagination.totalPages = Math.ceil(this.filteredMarketsData.length / this.marketPagination.itemsPerPage);
-    this.elements.totalMarketsPages.textContent = this.marketPagination.totalPages;
-    
-    // Render results
+  // Show all markets modal
+  showAllMarkets: function() {
+    document.getElementById('allMarketsModal').style.display = 'flex';
     this.renderAllMarkets();
-  }
+  },
 
-  renderAllMarkets() {
-    const startIndex = (this.marketPagination.currentPage - 1) * this.marketPagination.itemsPerPage;
-    const endIndex = startIndex + this.marketPagination.itemsPerPage;
+  // Render all markets with pagination
+  renderAllMarkets: function() {
+    const startIndex = (this.marketPagination.currentPage - 1) * this.ALL_MARKETS_PER_PAGE;
+    const endIndex = startIndex + this.ALL_MARKETS_PER_PAGE;
     const paginatedData = this.filteredMarketsData.slice(startIndex, endIndex);
+    const allMarketsTable = document.getElementById('allMarketsTable');
     
     if (paginatedData.length === 0) {
-      this.elements.allMarketsTable.innerHTML = `
+      allMarketsTable.innerHTML = `
         <tr>
           <td colspan="4" class="no-results-cell">
             <i class="fas fa-search"></i>
@@ -4226,7 +4109,7 @@ class MarketOverview {
       return;
     }
     
-    this.elements.allMarketsTable.innerHTML = paginatedData.map(coin => `
+    allMarketsTable.innerHTML = paginatedData.map(coin => `
       <tr class="asset-row" data-coin-id="${coin.id}">
         <td class="coin-column">
           <div class="coin-cell" onclick="marketOverview.showTradeModal('${coin.id}')">
@@ -4248,27 +4131,51 @@ class MarketOverview {
     `).join('');
     
     // Update pagination controls
-    this.elements.currentMarketsPage.textContent = this.marketPagination.currentPage;
-    this.elements.prevMarketsPage.disabled = this.marketPagination.currentPage <= 1;
-    this.elements.nextMarketsPage.disabled = this.marketPagination.currentPage >= this.marketPagination.totalPages;
-  }
+    document.getElementById('currentMarketsPage').textContent = this.marketPagination.currentPage;
+    document.getElementById('prevMarketsPage').disabled = this.marketPagination.currentPage <= 1;
+    document.getElementById('nextMarketsPage').disabled = this.marketPagination.currentPage >= this.marketPagination.totalPages;
+  },
 
-  changeMarketsPage(delta) {
+  // Filter markets based on search input
+  filterMarkets: function() {
+    const searchTerm = document.getElementById('marketSearch').value.toLowerCase();
+    
+    if (searchTerm === '') {
+      this.filteredMarketsData = [...this.allMarketsData];
+    } else {
+      this.filteredMarketsData = this.allMarketsData.filter(coin => 
+        coin.name.toLowerCase().includes(searchTerm) || 
+        coin.symbol.toLowerCase().includes(searchTerm)
+      );
+    }
+    
+    // Reset to first page
+    this.marketPagination.currentPage = 1;
+    this.marketPagination.totalPages = Math.ceil(this.filteredMarketsData.length / this.ALL_MARKETS_PER_PAGE);
+    document.getElementById('totalMarketsPages').textContent = this.marketPagination.totalPages;
+    
+    // Render results
+    this.renderAllMarkets();
+  },
+
+  // Change markets page
+  changeMarketsPage: function(delta) {
     const newPage = this.marketPagination.currentPage + delta;
     
     if (newPage >= 1 && newPage <= this.marketPagination.totalPages) {
       this.marketPagination.currentPage = newPage;
       this.renderAllMarkets();
     }
-  }
+  },
 
-  async showTradeModal(coinId, event = null) {
+  // Show trade modal for a specific coin
+  showTradeModal: async function(coinId, event = null) {
     if (event) {
       event.stopPropagation();
     }
     
     try {
-      // Check if user is logged in (in a real app, this would check your auth system)
+      // Check if user is logged in
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       if (!token) {
         this.showToast('You must be logged in to trade', 'error');
@@ -4281,37 +4188,27 @@ class MarketOverview {
       
       // If coin not found, fetch it from API
       if (!coin) {
-        this.showTradeLoading();
-        
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-        if (!response.ok) throw new Error('Coin not found');
+        const response = await fetch(`${this.COINGECKO_API}/coins/markets?vs_currency=usd&ids=${coinId}&sparkline=true&price_change_percentage=24h`);
+        if (!response.ok) throw new Error('Failed to fetch coin data');
         
         const data = await response.json();
-        coin = {
-          id: data.id,
-          name: data.name,
-          symbol: data.symbol,
-          image: data.image.small,
-          current_price: data.market_data.current_price.usd,
-          price_change_percentage_24h: data.market_data.price_change_percentage_24h,
-          sparkline_in_7d: {
-            price: data.market_data.sparkline_7d.price || []
-          }
-        };
+        if (data.length > 0) {
+          coin = data[0];
+        } else {
+          throw new Error('Coin not found');
+        }
       }
       
       this.setupTradeModal(coin);
+      
     } catch (error) {
       console.error('Error showing trade modal:', error);
       this.showToast('Failed to load trading data', 'error');
     }
-  }
+  },
 
-  showTradeLoading() {
-    this.elements.tradingViewChart.style.display = 'none';
-  }
-
-  setupTradeModal(coin) {
+  // Setup trade modal with coin data
+  setupTradeModal: function(coin) {
     // Set current trade
     this.currentTrade = {
       coin: coin,
@@ -4320,22 +4217,22 @@ class MarketOverview {
     };
     
     // Update modal UI
-    this.elements.tradeCoinIcon.src = coin.image;
-    this.elements.tradeCoinIcon.alt = coin.name;
-    this.elements.tradeCoinName.textContent = coin.name;
-    this.elements.tradeCoinSymbol.textContent = coin.symbol.toUpperCase();
-    this.elements.tradeCoinPrice.textContent = `$${this.formatCurrency(coin.current_price)}`;
+    document.getElementById('tradeCoinIcon').src = coin.image;
+    document.getElementById('tradeCoinIcon').alt = coin.name;
+    document.getElementById('tradeCoinName').textContent = coin.name;
+    document.getElementById('tradeCoinSymbol').textContent = coin.symbol.toUpperCase();
+    document.getElementById('tradeCoinPrice').textContent = `$${this.formatCurrency(coin.current_price)}`;
     
     const priceChange = coin.price_change_percentage_24h || 0;
-    this.elements.tradeCoinChange.textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
-    this.elements.tradeCoinChange.className = `price-change-lg ${priceChange >= 0 ? 'positive' : 'negative'}`;
+    document.getElementById('tradeCoinChange').textContent = `${priceChange >= 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
+    document.getElementById('tradeCoinChange').className = `price-change-lg ${priceChange >= 0 ? 'positive' : 'negative'}`;
     
-    this.elements.tradePrice.value = `$${this.formatCurrency(coin.current_price)}`;
-    this.elements.tradeAmount.value = '';
-    this.elements.tradeTotal.value = '$0.00';
-    this.elements.tradeAmountCurrency.textContent = coin.symbol.toUpperCase();
-    this.elements.tradeBtnText.textContent = 'Buy';
-    this.elements.tradeBtnAsset.textContent = coin.symbol.toUpperCase();
+    document.getElementById('tradePrice').value = `$${this.formatCurrency(coin.current_price)}`;
+    document.getElementById('tradeAmount').value = '';
+    document.getElementById('tradeTotal').value = '$0.00';
+    document.getElementById('tradeAmountCurrency').textContent = coin.symbol.toUpperCase();
+    document.getElementById('tradeBtnText').textContent = 'Buy';
+    document.getElementById('tradeBtnAsset').textContent = coin.symbol.toUpperCase();
     
     // Update tabs
     document.querySelectorAll('.modal-tab').forEach(tab => {
@@ -4349,23 +4246,21 @@ class MarketOverview {
     this.simulateOrderBook(coin.current_price);
     
     // Show modal
-    this.elements.tradeModal.style.display = 'flex';
+    document.getElementById('tradeModal').style.display = 'flex';
     
     // Check user balance
     this.checkUserBalance();
-  }
+  },
 
-  initTradingViewChart(symbol) {
+  // Initialize TradingView chart
+  initTradingViewChart: function(symbol) {
     // Destroy previous widget if it exists
     if (this.tradingViewWidget) {
       this.tradingViewWidget.remove();
       this.tradingViewWidget = null;
     }
     
-    // Show the chart container
-    this.elements.tradingViewChart.style.display = 'block';
-    
-    // Create new TradingView widget
+    // Create new widget
     this.tradingViewWidget = new TradingView.widget({
       autosize: true,
       symbol: `BINANCE:${symbol}USDT`,
@@ -4376,36 +4271,23 @@ class MarketOverview {
       locale: 'en',
       toolbar_bg: '#1e2329',
       enable_publishing: false,
-      hide_top_toolbar: true,
-      hide_side_toolbar: true,
-      allow_symbol_change: false,
-      container_id: 'tradingViewChart'
+      hide_side_toolbar: false,
+      allow_symbol_change: true,
+      container_id: 'tradingview-chart',
+      studies: [
+        'RSI@tv-basicstudies',
+        'MACD@tv-basicstudies',
+        'Volume@tv-basicstudies'
+      ]
     });
-  }
+  },
 
-  updateTradingViewChart(symbol, interval) {
-    if (!this.tradingViewWidget) return;
-    
-    // Map our button text to TradingView intervals
-    const intervalMap = {
-      '1D': 'D',
-      '1W': 'W',
-      '1M': 'M',
-      '1Y': '12M',
-      'ALL': 'ALL'
-    };
-    
-    this.tradingViewWidget.chart().setSymbol(`BINANCE:${symbol}USDT`);
-    this.tradingViewWidget.chart().setResolution(intervalMap[interval] || interval);
-  }
-
-  simulateOrderBook(currentPrice) {
+  // Simulate order book data
+  simulateOrderBook: function(currentPrice) {
     // Generate bids (buy orders)
     this.orderBookData.bids = [];
-    const depth = parseFloat(this.elements.orderBookDepth.value) / 100;
-    
     for (let i = 0; i < 10; i++) {
-      const price = currentPrice * (1 - (i * depth));
+      const price = currentPrice * (1 - (i * 0.001));
       const amount = Math.random() * 10;
       this.orderBookData.bids.push({
         price: price,
@@ -4417,7 +4299,7 @@ class MarketOverview {
     // Generate asks (sell orders)
     this.orderBookData.asks = [];
     for (let i = 0; i < 10; i++) {
-      const price = currentPrice * (1 + (i * depth));
+      const price = currentPrice * (1 + (i * 0.001));
       const amount = Math.random() * 10;
       this.orderBookData.asks.push({
         price: price,
@@ -4428,15 +4310,16 @@ class MarketOverview {
     
     // Calculate spread
     const spread = ((this.orderBookData.asks[0].price - this.orderBookData.bids[0].price) / currentPrice) * 100;
-    this.elements.marketSpread.textContent = `Spread: ${spread.toFixed(2)}%`;
+    document.getElementById('marketSpread').textContent = `Spread: ${spread.toFixed(2)}%`;
     
     // Render order book
     this.renderOrderBook();
-  }
+  },
 
-  renderOrderBook() {
+  // Render order book
+  renderOrderBook: function() {
     // Render asks (sell orders)
-    this.elements.askOrders.innerHTML = this.orderBookData.asks.map(order => `
+    document.getElementById('askOrders').innerHTML = this.orderBookData.asks.map(order => `
       <div class="order-book-row ask">
         <span class="price">${this.formatCurrency(order.price)}</span>
         <span class="amount">${order.amount.toFixed(4)}</span>
@@ -4445,25 +4328,29 @@ class MarketOverview {
     `).join('');
     
     // Render bids (buy orders)
-    this.elements.bidOrders.innerHTML = this.orderBookData.bids.map(order => `
+    document.getElementById('bidOrders').innerHTML = this.orderBookData.bids.map(order => `
       <div class="order-book-row bid">
         <span class="price">${this.formatCurrency(order.price)}</span>
         <span class="amount">${order.amount.toFixed(4)}</span>
         <span class="total">${this.formatCurrency(order.total)}</span>
       </div>
     `).join('');
-  }
+  },
 
-  async checkUserBalance() {
+  // Check user balance from backend
+  checkUserBalance: async function() {
     try {
-      // In production, this would call your backend API
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       if (!token) {
-        this.showToast('You must be logged in to trade', 'error');
+        document.getElementById('availableBalance').textContent = '$0.00';
+        document.getElementById('confirmTradeBtn').disabled = true;
+        document.getElementById('confirmTradeBtn').innerHTML = `
+          <span>You must be logged in to trade</span>
+        `;
         return;
       }
       
-      const response = await fetch(`${API_BASE_URL}/account/balance`, {
+      const response = await fetch(`${this.API_BASE_URL}/auth/balance`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -4471,61 +4358,63 @@ class MarketOverview {
       
       if (response.ok) {
         const data = await response.json();
-        this.userBalance = data.balance;
+        this.currentUserBalance = data.balance || 0;
+        document.getElementById('availableBalance').textContent = `$${this.formatCurrency(this.currentUserBalance)}`;
+        
+        if (this.currentUserBalance < 100) {
+          document.getElementById('confirmTradeBtn').disabled = true;
+          document.getElementById('confirmTradeBtn').innerHTML = `
+            <span>Insufficient Balance</span>
+            <span>(Minimum $100 required)</span>
+          `;
+        } else {
+          document.getElementById('confirmTradeBtn').disabled = false;
+          document.getElementById('confirmTradeBtn').innerHTML = `
+            <span id="tradeBtnText">${this.currentTrade.type === 'buy' ? 'Buy' : 'Sell'}</span>
+            <span id="tradeBtnAsset">${this.currentTrade.coin.symbol.toUpperCase()}</span>
+          `;
+        }
       } else {
-        // Fallback to simulated balance if API fails
-        this.userBalance = 2500 + Math.random() * 5000;
-      }
-      
-      this.elements.availableBalance.textContent = `$${this.formatCurrency(this.userBalance)}`;
-      
-      if (this.userBalance < 100) {
-        this.elements.confirmTradeBtn.disabled = true;
-        this.elements.confirmTradeBtn.innerHTML = `
-          <span>Insufficient Balance</span>
-          <span>(Minimum $100 required)</span>
-        `;
-      } else {
-        this.elements.confirmTradeBtn.disabled = false;
-        this.elements.confirmTradeBtn.innerHTML = `
-          <span id="tradeBtnText">${this.currentTrade.type === 'buy' ? 'Buy' : 'Sell'}</span>
-          <span id="tradeBtnAsset">${this.currentTrade.coin.symbol.toUpperCase()}</span>
-        `;
+        throw new Error('Failed to fetch balance');
       }
     } catch (error) {
-      console.error('Error checking balance:', error);
-      // Fallback to simulated balance
-      this.userBalance = 2500 + Math.random() * 5000;
-      this.elements.availableBalance.textContent = `$${this.formatCurrency(this.userBalance)}`;
+      console.error('Error checking user balance:', error);
+      document.getElementById('availableBalance').textContent = '$0.00';
+      document.getElementById('confirmTradeBtn').disabled = true;
+      document.getElementById('confirmTradeBtn').innerHTML = `
+        <span>Error checking balance</span>
+      `;
     }
-  }
+  },
 
-  updateTradeModal() {
+  // Update trade modal based on selected tab
+  updateTradeModal: function() {
     if (!this.currentTrade) return;
     
     // Update button text
-    this.elements.tradeBtnText.textContent = this.currentTrade.type === 'buy' ? 'Buy' : 'Sell';
+    document.getElementById('tradeBtnText').textContent = this.currentTrade.type === 'buy' ? 'Buy' : 'Sell';
     
     // Update form based on trade type
     if (this.currentTrade.type === 'sell') {
       // In production, you would check the user's holdings
-      this.elements.tradeAmountCurrency.textContent = this.currentTrade.coin.symbol.toUpperCase();
-      this.elements.availableBalance.textContent = `0 ${this.currentTrade.coin.symbol.toUpperCase()}`;
-      this.elements.confirmTradeBtn.disabled = true;
-      this.elements.confirmTradeBtn.innerHTML = `
+      document.getElementById('tradeAmountCurrency').textContent = this.currentTrade.coin.symbol.toUpperCase();
+      document.getElementById('availableBalance').textContent = `0 ${this.currentTrade.coin.symbol.toUpperCase()}`;
+      document.getElementById('confirmTradeBtn').disabled = true;
+      document.getElementById('confirmTradeBtn').innerHTML = `
         <span>No ${this.currentTrade.coin.symbol.toUpperCase()} available</span>
       `;
     } else {
-      this.elements.tradeAmountCurrency.textContent = this.currentTrade.coin.symbol.toUpperCase();
+      document.getElementById('tradeAmountCurrency').textContent = this.currentTrade.coin.symbol.toUpperCase();
       this.checkUserBalance();
     }
-  }
+  },
 
-  updateTradeTotal() {
+  // Update trade total when amount changes
+  updateTradeTotal: function() {
     if (!this.currentTrade) return;
     
-    const amount = parseFloat(this.elements.tradeAmount.value);
-    const totalInput = this.elements.tradeTotal;
+    const amount = parseFloat(document.getElementById('tradeAmount').value);
+    const totalInput = document.getElementById('tradeTotal');
     
     if (isNaN(amount) || amount <= 0) {
       totalInput.value = '$0.00';
@@ -4536,24 +4425,25 @@ class MarketOverview {
     totalInput.value = `$${this.formatCurrency(total)}`;
     
     // Validate against user balance for buy orders
-    if (this.currentTrade.type === 'buy' && total > this.userBalance) {
-      this.elements.confirmTradeBtn.disabled = true;
-      this.elements.confirmTradeBtn.innerHTML = `
+    if (this.currentTrade.type === 'buy' && total > this.currentUserBalance) {
+      document.getElementById('confirmTradeBtn').disabled = true;
+      document.getElementById('confirmTradeBtn').innerHTML = `
         <span>Insufficient Balance</span>
       `;
     } else if (this.currentTrade.type === 'buy') {
-      this.elements.confirmTradeBtn.disabled = false;
-      this.elements.confirmTradeBtn.innerHTML = `
+      document.getElementById('confirmTradeBtn').disabled = false;
+      document.getElementById('confirmTradeBtn').innerHTML = `
         <span id="tradeBtnText">Buy</span>
         <span id="tradeBtnAsset">${this.currentTrade.coin.symbol.toUpperCase()}</span>
       `;
     }
-  }
+  },
 
-  async executeTrade() {
+  // Execute trade (buy/sell)
+  executeTrade: async function() {
     if (!this.currentTrade) return;
     
-    const amount = parseFloat(this.elements.tradeAmount.value);
+    const amount = parseFloat(document.getElementById('tradeAmount').value);
     
     if (isNaN(amount)) {
       this.showToast('Please enter a valid amount', 'error');
@@ -4567,7 +4457,7 @@ class MarketOverview {
     
     // Validate balance for buy orders
     const total = amount * this.currentTrade.price;
-    if (this.currentTrade.type === 'buy' && total > this.userBalance) {
+    if (this.currentTrade.type === 'buy' && total > this.currentUserBalance) {
       this.showToast('Insufficient balance for this trade', 'error');
       return;
     }
@@ -4579,18 +4469,9 @@ class MarketOverview {
       return;
     }
     
-    // Show loading state
-    const originalBtnHTML = this.elements.confirmTradeBtn.innerHTML;
-    this.elements.confirmTradeBtn.innerHTML = `
-      <div class="btn-spinner"></div>
-      <span>Processing...</span>
-    `;
-    this.elements.confirmTradeBtn.disabled = true;
-    
     try {
-      // In production, this would call your backend API
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      const response = await fetch(`${API_BASE_URL}/trades/${this.currentTrade.type}`, {
+      const response = await fetch(`${this.API_BASE_URL}/trades/${this.currentTrade.type}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -4603,35 +4484,33 @@ class MarketOverview {
         })
       });
       
-      if (!response.ok) {
-        throw new Error('Trade execution failed');
+      if (response.ok) {
+        const result = await response.json();
+        
+        // Update user balance
+        this.currentUserBalance = result.newBalance;
+        document.getElementById('userBalanceDisplay').textContent = `$${this.formatCurrency(this.currentUserBalance)}`;
+        
+        // Show success message
+        this.showToast(
+          `${this.currentTrade.type === 'buy' ? 'Buy' : 'Sell'} order executed successfully!`,
+          'success'
+        );
+        
+        // Close modal
+        this.closeModal('tradeModal');
+      } else {
+        const error = await response.json();
+        this.showToast(error.message || 'Trade failed', 'error');
       }
-      
-      const result = await response.json();
-      
-      // Update user balance
-      this.userBalance = result.newBalance;
-      this.elements.availableBalance.textContent = `$${this.formatCurrency(this.userBalance)}`;
-      
-      // Show success message
-      this.showToast(
-        `${this.currentTrade.type === 'buy' ? 'Buy' : 'Sell'} order executed successfully!`,
-        'success'
-      );
-      
-      // Close modal
-      this.closeModal('tradeModal');
     } catch (error) {
       console.error('Error executing trade:', error);
-      this.showToast('Trade execution failed. Please try again.', 'error');
-    } finally {
-      // Reset button
-      this.elements.confirmTradeBtn.innerHTML = originalBtnHTML;
-      this.elements.confirmTradeBtn.disabled = false;
+      this.showToast('Network error. Please try again.', 'error');
     }
-  }
+  },
 
-  closeModal(modalId) {
+  // Close modal
+  closeModal: function(modalId) {
     document.getElementById(modalId).style.display = 'none';
     
     // Clean up TradingView widget when trade modal closes
@@ -4639,9 +4518,10 @@ class MarketOverview {
       this.tradingViewWidget.remove();
       this.tradingViewWidget = null;
     }
-  }
+  },
 
-  showToast(message, type = 'success') {
+  // Show toast notification
+  showToast: function(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `
@@ -4664,9 +4544,10 @@ class MarketOverview {
         document.body.removeChild(toast);
       }, 300);
     }, 3000);
-  }
+  },
 
-  formatCurrency(value, isLarge = false) {
+  // Format currency
+  formatCurrency: function(value, isLarge = false) {
     if (value >= 1e12) {
       return `$${(value / 1e12).toFixed(2)}T`;
     } else if (value >= 1e9) {
@@ -4682,13 +4563,98 @@ class MarketOverview {
     } else {
       return `$${value.toFixed(8)}`;
     }
+  },
+
+  // Setup event listeners
+  setupEventListeners: function() {
+    // Refresh Market Data
+    document.getElementById('refreshMarkets').addEventListener('click', () => {
+      document.getElementById('refreshMarkets').classList.add('rotating');
+      this.loadMarketData();
+    });
+    
+    // View All Markets
+    document.getElementById('viewAllMarkets').addEventListener('click', () => this.showAllMarkets());
+    
+    // Market Search
+    document.getElementById('marketSearch').addEventListener('input', () => this.filterMarkets());
+    
+    // Market Pagination
+    document.getElementById('prevMarketsPage').addEventListener('click', () => this.changeMarketsPage(-1));
+    document.getElementById('nextMarketsPage').addEventListener('click', () => this.changeMarketsPage(1));
+    
+    // Trade Amount Input
+    document.getElementById('tradeAmount').addEventListener('input', () => this.updateTradeTotal());
+    
+    // Percentage Buttons
+    document.querySelectorAll('.input-action-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const percentage = parseFloat(this.dataset.action) / 100;
+        const maxAmount = marketOverview.currentUserBalance / marketOverview.currentTrade.price;
+        document.getElementById('tradeAmount').value = (maxAmount * percentage).toFixed(8);
+        marketOverview.updateTradeTotal();
+      });
+    });
+    
+    // Confirm Trade Button
+    document.getElementById('confirmTradeBtn').addEventListener('click', () => this.executeTrade());
+    
+    // Modal Tabs
+    document.querySelectorAll('.modal-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        if (marketOverview.currentTrade) {
+          marketOverview.currentTrade.type = this.dataset.tab;
+          marketOverview.updateTradeModal();
+        }
+      });
+    });
+    
+    // Chart Period Buttons
+    document.querySelectorAll('.chart-period-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.chart-period-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Update TradingView chart interval
+        if (marketOverview.tradingViewWidget) {
+          const interval = this.textContent === '1D' ? 'D' :
+                          this.textContent === '1W' ? 'W' :
+                          this.textContent === '1M' ? 'M' :
+                          this.textContent === '1Y' ? '12M' : 'ALL';
+          
+          marketOverview.tradingViewWidget.chart().setChartType(interval === 'ALL' ? 1 : 0);
+          if (interval !== 'ALL') {
+            marketOverview.tradingViewWidget.chart().setResolution(interval);
+          }
+        }
+      });
+    });
+    
+    // Order Book Depth Selector
+    document.getElementById('orderBookDepth').addEventListener('change', function() {
+      if (marketOverview.currentTrade) {
+        marketOverview.simulateOrderBook(marketOverview.currentTrade.price);
+      }
+    });
+    
+    // Close modals when clicking outside
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) {
+        this.closeModal(e.target.id);
+      }
+    });
   }
-}
+};
 
 // Initialize Market Overview when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-  window.marketOverview = new MarketOverview();
+  marketOverview.init();
 });
+
+// Expose functions to global scope
+window.showTradeModal = (coinId, event) => marketOverview.showTradeModal(coinId, event);
+window.closeModal = (modalId) => marketOverview.closeModal(modalId);
+      
      // Market Stats Section - Frontend Implementation
 const marketStats = {
   elements: {
