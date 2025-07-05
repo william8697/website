@@ -4481,13 +4481,12 @@ function initTradingViewChart(coinId, symbol) {
     ]
   });
   
-  // When widget is ready, hide placeholder
-  tradingViewWidget.onChartReady(() => {
-    elements.tradeChartPlaceholder.style.display = 'none';
-    document.getElementById('tradingview-chart').style.display = 'block';
-  });
-}
-
+// TradingView widget doesn't support onChartReady, so use a timeout
+setTimeout(() => {
+  elements.tradeChartPlaceholder.style.display = 'none';
+  document.getElementById('tradingview-chart').style.display = 'block';
+}, 1000); // 1 second delay for chart to load
+  
 // Update TradingView Chart Timeframe
 function updateTradingViewChart(timeframe) {
   if (!tradingViewWidget) return;
