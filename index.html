@@ -5238,7 +5238,7 @@ const topGainers = {
       
       row.innerHTML = `
         <td class="coin-column">
-          <div class="coin-cell" onclick="openTradeModal('${coin.id}')">
+          <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
             <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
             <div class="coin-info">
               <span class="coin-name">${coin.name}</span>
@@ -5251,7 +5251,7 @@ const topGainers = {
           ${coin.price_change_percentage_24h >= 0 ? '↑' : '↓'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </td>
         <td class="action-column">
-          <button class="trade-btn" onclick="openTradeModal('${coin.id}', event)">Trade</button>
+          <button class="trade-btn" onclick="showTradeModal('${coin.id}', event)">Trade</button>
         </td>
       `;
       
@@ -5281,7 +5281,7 @@ const topGainers = {
       
       row.innerHTML = `
         <td class="coin-column">
-          <div class="coin-cell" onclick="openTradeModal('${coin.id}')">
+          <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
             <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
             <div class="coin-info">
               <span class="coin-name">${coin.name}</span>
@@ -5294,7 +5294,7 @@ const topGainers = {
           ${coin.price_change_percentage_24h >= 0 ? '↑' : '↓'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </td>
         <td class="action-column">
-          <button class="trade-btn" onclick="openTradeModal('${coin.id}', event)">Trade</button>
+          <button class="trade-btn" onclick="showTradeModal('${coin.id}', event)">Trade</button>
         </td>
       `;
       
@@ -5467,7 +5467,7 @@ const trendingCoins = {
       
       row.innerHTML = `
         <td class="coin-column">
-          <div class="coin-cell" onclick="openTradeModal('${coin.id}')">
+          <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
             <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
             <div class="coin-info">
               <span class="coin-name">${coin.name}</span>
@@ -5480,7 +5480,7 @@ const trendingCoins = {
           ${coin.price_change_percentage_24h >= 0 ? '↑' : '↓'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </td>
         <td class="action-column">
-          <button class="trade-btn" onclick="openTradeModal('${coin.id}', event)">Trade</button>
+          <button class="trade-btn" onclick="showTradeModal('${coin.id}', event)">Trade</button>
         </td>
       `;
       
@@ -5510,7 +5510,7 @@ const trendingCoins = {
       
       row.innerHTML = `
         <td class="coin-column">
-          <div class="coin-cell" onclick="openTradeModal('${coin.id}')">
+          <div class="coin-cell" onclick="showTradeModal('${coin.id}')">
             <img src="${coin.image}" alt="${coin.name}" class="coin-icon">
             <div class="coin-info">
               <span class="coin-name">${coin.name}</span>
@@ -5523,7 +5523,7 @@ const trendingCoins = {
           ${coin.price_change_percentage_24h >= 0 ? '↑' : '↓'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
         </td>
         <td class="action-column">
-          <button class="trade-btn" onclick="openTradeModal('${coin.id}', event)">Trade</button>
+          <button class="trade-btn" onclick="showTradeModal('${coin.id}', event)">Trade</button>
         </td>
       `;
       
