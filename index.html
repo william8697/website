@@ -3693,7 +3693,7 @@ const MarketOverview = (() => {
       
       // Draw sparkline
       ctx.beginPath();
-      ctx.moveTo(0, canvas.height - ((sparklineData[0] / Math.max(...sparklineData)) * canvas.height);
+      ctx.moveTo(0, canvas.height - ((sparklineData[0] / Math.max(...sparklineData)) * canvas.height));
       
       for (let i = 1; i < sparklineData.length; i++) {
         const x = (i / (sparklineData.length - 1)) * canvas.width;
